@@ -2,13 +2,19 @@
 #define bteditor_H
 
 #include <QtGui/QMainWindow>
+#include "ui_bteditor.h"
 
-class bteditor : public QMainWindow
+class btBrain;
+
+class bteditor : public QMainWindow, private Ui::BtEditor
 {
 Q_OBJECT
 public:
-    bteditor();
+    bteditor(QWidget *parent = 0);
     virtual ~bteditor();
+    void setupActions();
+private:
+    btBrain *brain;
 };
 
 #endif // bteditor_H

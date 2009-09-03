@@ -1,22 +1,26 @@
 #include "bteditor.h"
+#include "btbrain.h"
+#include "btavailablenodesmodel.h"
+#include "btnodetypesmodel.h"
 
-#include <QtGui/QLabel>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QAction>
-
-bteditor::bteditor()
+bteditor::bteditor(QWidget *parent)
 {
-    QLabel* l = new QLabel( this );
-    l->setText( "Hello World!" );
-    setCentralWidget( l );
-    QAction* a = new QAction(this);
-    a->setText( "Quit" );
-    connect(a, SIGNAL(triggered()), SLOT(close()) );
-    menuBar()->addMenu( "File" )->addAction( a );
+    setupUi(this);
+    setupActions();
+
+    brain = new btBrain(this);
+    btNodeTypesModel *nodeTypes = new btNodeTypesModel(brain, this);
+    connect(brain, SIGNAL(nodeTypeAdded(btNodeType*)), nodeTypes, SLOT(newBehaviorTreeTypeAdded(btNodeType*)));
+    this->availableNodes->setModel(nodeTypes);
+    brain->newBehaviorTree();
 }
 
 bteditor::~bteditor()
 {}
+
+void bteditor::setupActions()
+{
+    connect(actionQuit, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+}
 
 #include "bteditor.moc"
