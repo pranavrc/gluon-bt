@@ -12,7 +12,7 @@ class btNodeType : public QObject
     Q_ENUMS(Category)
 
 public:
-    enum Category { Unusable = -1, Action = 0, Condition = 1, Composite = 2, Decorator = 3, Reference = 4 };
+    enum Category { UnusableCategory = -1, ActionCategory = 0, ConditionCategory = 1, CompositeCategory = 2, DecoratorCategory = 3, ReferenceCategory = 4 };
 
     btNodeType(QObject *parent = 0);
     ~btNodeType();

@@ -24,7 +24,7 @@ public:
     int rowCount(const QModelIndex &index) const;
     int columnCount(const QModelIndex &index) const;
     
-public slots:
+public Q_SLOTS:
     void newBehaviorTreeTypeAdded(btNodeType* newType);
 
 private:

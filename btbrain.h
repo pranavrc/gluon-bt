@@ -21,7 +21,7 @@ public:
     QList<btNodeType *> nodeTypes;
     QList<btTreeModel *> behaviorTrees;
     
-signals:
+public Q_SIGNALS:
     void behaviorTreeAdded(btTreeModel* newTree);
     void nodeTypeAdded(btNodeType* newNodeType);
 };

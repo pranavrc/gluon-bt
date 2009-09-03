@@ -12,19 +12,19 @@ QString btNodeType::categoryToString() const
 {
     switch(category())
     {
-        case btNodeType::Action:
+        case btNodeType::ActionCategory:
             return tr("Action");
             break;
-        case btNodeType::Composite:
+        case btNodeType::CompositeCategory:
             return tr("Composite");
             break;
-        case btNodeType::Condition:
+        case btNodeType::ConditionCategory:
             return tr("Condition");
             break;
-        case btNodeType::Decorator:
+        case btNodeType::DecoratorCategory:
             return tr("Decorator");
             break;
-        case btNodeType::Reference:
+        case btNodeType::ReferenceCategory:
             return tr("Reference");
             break;
         default:
