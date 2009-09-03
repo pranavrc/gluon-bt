@@ -34,19 +34,19 @@ btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
     {
         switch(nodeType->category())
         {
-            case btNodeType::Action:
+            case btNodeType::ActionCategory:
                 node = new btNodeTypesModelNode(nodeType, nodeAction);
                 break;
-            case btNodeType::Condition:
+            case btNodeType::ConditionCategory:
                 node = new btNodeTypesModelNode(nodeType, nodeCondition);
                 break;
-            case btNodeType::Composite:
+            case btNodeType::CompositeCategory:
                 node = new btNodeTypesModelNode(nodeType, nodeComposite);
                 break;
-            case btNodeType::Decorator:
+            case btNodeType::DecoratorCategory:
                 node = new btNodeTypesModelNode(nodeType, nodeDecorator);
                 break;
-            case btNodeType::Reference:
+            case btNodeType::ReferenceCategory:
                 node = new btNodeTypesModelNode(nodeType, nodeReference);
                 break;
             default:
@@ -66,19 +66,19 @@ void btNodeTypesModel::newBehaviorTreeTypeAdded(btNodeType* newType)
     btNodeTypesModelNode *node;
     switch(newType->category())
     {
-        case btNodeType::Action:
+        case btNodeType::ActionCategory:
             node = new btNodeTypesModelNode(newType, nodeAction);
             break;
-        case btNodeType::Condition:
+        case btNodeType::ConditionCategory:
             node = new btNodeTypesModelNode(newType, nodeCondition);
             break;
-        case btNodeType::Composite:
+        case btNodeType::CompositeCategory:
             node = new btNodeTypesModelNode(newType, nodeComposite);
             break;
-        case btNodeType::Decorator:
+        case btNodeType::DecoratorCategory:
             node = new btNodeTypesModelNode(newType, nodeDecorator);
             break;
-        case btNodeType::Reference:
+        case btNodeType::ReferenceCategory:
             node = new btNodeTypesModelNode(newType, nodeReference);
             break;
         default:
