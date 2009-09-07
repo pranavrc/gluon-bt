@@ -8,27 +8,35 @@ class btNodeType : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE setName)
     Q_PROPERTY(QString description READ description WRITE setDescription)
-    Q_PROPERTY(Category category READ category WRITE setCategory)
-    Q_ENUMS(Category)
-
+    Q_PROPERTY(nodeType type READ type WRITE setNodeType)
+	Q_ENUMS(nodeType)
+	
 public:
-    enum Category { UnusableCategory = -1, ActionCategory = 0, ConditionCategory = 1, CompositeCategory = 2, DecoratorCategory = 3, ReferenceCategory = 4 };
-
-    btNodeType(QObject *parent = 0);
+	
+	enum nodeType
+	{
+		Unusable = -1,
+		Action,
+		Composite,
+		Condition,
+		Reference ,
+		Decorator
+	};
+	
+    btNodeType(QObject* parent = 0);
     ~btNodeType();
 
     void setName(QString name);
-    QString name() const;
+	QString name() const;
     void setDescription(QString description);
     QString description() const;
-    void setCategory(Category category);
-    Category category() const;
-
-    QString categoryToString() const;
-private:
+    nodeType type() const;
+	void setNodeType(nodeType type);
+	
+protected:
     QString m_name;
     QString m_description;
-    Category m_category;
+    nodeType m_type;
 };
 
 #endif // BTNODETYPE_H

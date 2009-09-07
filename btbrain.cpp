@@ -3,38 +3,40 @@
 #include "btnodetypesmodel.h"
 #include "btnodetype.h"
 #include "btnode.h"
+#include "btcompositenode.h"
+#include "btconditionnode.h"
 
 btBrain::btBrain(QObject *parent)
 {
-    btNodeType *node = new btNodeType();
-    node->setName("Sequence");
-    node->setDescription("A sequence of behaviors, launched in order (fails if one fails)");
-    node->setCategory(btNodeType::CompositeCategory);
-    nodeTypes.append(node);
+    btCompositeNode *compositeNode = new btCompositeNode();
+    compositeNode->setName("Sequence");
+    compositeNode->setDescription("A sequence of behaviors, launched in order (fails if one fails)");
+    compositeNode->setNodeType(btNodeType::Composite);
+    nodeTypes.append((btNodeType*)compositeNode);
 
-    node = new btNodeType();
-    node->setName("Selector");
-    node->setDescription("A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)");
-    node->setCategory(btNodeType::CompositeCategory);
-    nodeTypes.append(node);
+    compositeNode = new btCompositeNode();
+    compositeNode->setName("Selector");
+    compositeNode->setDescription("A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)");
+    compositeNode->setNodeType(btNodeType::Composite);
+    nodeTypes.append((btNodeType*)compositeNode);
 
-    node = new btNodeType();
-    node->setName("Parallel");
-    node->setDescription("A collection of behaviors which are launched at the same time");
-    node->setCategory(btNodeType::CompositeCategory);
-    nodeTypes.append(node);
+    compositeNode = new btCompositeNode();
+    compositeNode->setName("Parallel");
+    compositeNode->setDescription("A collection of behaviors which are launched at the same time");
+    compositeNode->setNodeType(btNodeType::Composite);
+    nodeTypes.append(compositeNode);
 
-    node = new btNodeType();
-    node->setName("Random");
-    node->setDescription("A collection of behaviors from which is selected one to be launched");
-    node->setCategory(btNodeType::CompositeCategory);
-    nodeTypes.append(node);
+    compositeNode = new btCompositeNode();
+    compositeNode->setName("Random");
+    compositeNode->setDescription("A collection of behaviors from which is selected one to be launched");
+    compositeNode->setNodeType(btNodeType::Composite);
+    nodeTypes.append((btNodeType*)compositeNode);
 
-    node = new btNodeType();
-    node->setName("InBehavior");
-    node->setDescription("Check whether you are in a specified behavior");
-    node->setCategory(btNodeType::ConditionCategory);
-    nodeTypes.append(node);
+    btConditionNode * conditionNode = new btConditionNode();
+    conditionNode->setName("InBehavior");
+    conditionNode->setDescription("Check whether you are in a specified behavior");
+    conditionNode->setNodeType(btNodeType::Condition);
+    nodeTypes.append((btNodeType*)conditionNode);
 }
 
 btBrain::~btBrain()
@@ -69,7 +71,7 @@ btTreeModel *btBrain::newBehaviorTree()
     btNodeType *newType = new btNodeType(this);
     newType->setName(newTree->name());
     newType->setDescription(tr("A reference to the behavior tree named %1").arg(newTree->name()));
-    newType->setCategory(btNodeType::ReferenceCategory);
+    newType->setNodeType(btNodeType::Reference);
     
     // Finally inform those around us of this wonderful occurrence 
     emit behaviorTreeAdded(newTree);

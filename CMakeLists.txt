@@ -12,6 +12,12 @@ set(bteditor_SRCS
     btnodetypesmodel.cpp
     btnodetypesmodelnode.cpp
     bttreemodel.cpp
+	btactionnode.cpp
+	btcompositenode.cpp
+	btconditionnode.cpp
+	btdecoratornode.cpp
+	btreferencenode.cpp
+	btunusablenode.cpp
 	main.cpp
 )
 
