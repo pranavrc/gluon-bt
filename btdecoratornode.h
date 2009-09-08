@@ -1,7 +1,7 @@
 #ifndef _BTDECORATORNODE_H_
 #define _BTDECORATORNODE_H_
 
-#include "btNodeType.h"
+#include "btnodetype.h"
 
 class btDecoratorNode : public btNodeType
 {

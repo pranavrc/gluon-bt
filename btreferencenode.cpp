@@ -2,6 +2,7 @@
 
 btReferenceNode::btReferenceNode()
 {
+    setNodeType(btNodeType::ReferenceNodeType);
 }
 
 btReferenceNode::~btReferenceNode()

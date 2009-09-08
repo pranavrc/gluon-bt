@@ -2,6 +2,7 @@
 
 btCompositeNode::btCompositeNode()
 {
+    setNodeType(btNodeType::CompositeNodeType);
 }
 
 

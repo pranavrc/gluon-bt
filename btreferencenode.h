@@ -1,7 +1,7 @@
 #ifndef _BTREFERENCENODE_H_
 #define _BTREFERENCENODE_H_
 
-#include "btNodeType.h"
+#include "btnodetype.h"
 
 class btReferenceNode :public btNodeType
 {

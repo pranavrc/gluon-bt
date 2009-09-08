@@ -1,7 +1,7 @@
 #ifndef _BTACTIONNODE_H_
 #define _BTACTIONNODE_H_
 
-#include "btNodeType.h";
+#include "btnodetype.h"
 
 class btActionNode : public btNodeType
 {

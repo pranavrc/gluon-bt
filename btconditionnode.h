@@ -1,7 +1,7 @@
 #ifndef _BTCONDITIONNODE_H_
 #define _BTCONDITIONNODE_H_
 
-#include "btNodeType.h"
+#include "btnodetype.h"
 
 class btConditionNode : public btNodeType
 {

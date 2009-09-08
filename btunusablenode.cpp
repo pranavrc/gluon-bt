@@ -2,6 +2,7 @@
 
 btUnusableNode::btUnusableNode()
 {
+    setNodeType(btNodeType::UnusableNodeType);
 }
 
 btUnusableNode::~btUnusableNode()

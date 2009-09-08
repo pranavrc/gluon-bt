@@ -1,7 +1,7 @@
 #ifndef _BTUNUSABLENODE_H_
 #define _BTUNUSABLENODE_H_
 
-#include "btNodeType.h"
+#include "btnodetype.h"
 
 class btUnusableNode : public btNodeType
 {

@@ -1,7 +1,7 @@
 #ifndef _BTCOMPOSITNODE_H_
 #define _BTCOMPOSITNODE_H_
 
-#include "btNodeType.h"
+#include "btnodetype.h"
 
 class btCompositeNode : public btNodeType
 {
