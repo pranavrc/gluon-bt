@@ -5,6 +5,9 @@ find_package(Qt4 REQUIRED)
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
 set(bteditor_SRCS
+    btavailablenodestreeview.cpp
+    bttreeeditor.cpp
+    
     btbrain.cpp
     bteditor.cpp
     btnode.cpp

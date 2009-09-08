@@ -5,38 +5,39 @@
 #include "btnode.h"
 #include "btcompositenode.h"
 #include "btconditionnode.h"
+#include <QtCore/qtextstream.h>
 
 btBrain::btBrain(QObject *parent)
 {
     btCompositeNode *compositeNode = new btCompositeNode();
     compositeNode->setName("Sequence");
     compositeNode->setDescription("A sequence of behaviors, launched in order (fails if one fails)");
-    compositeNode->setNodeType(btNodeType::Composite);
-    nodeTypes.append((btNodeType*)compositeNode);
+    nodeTypes.append(compositeNode);
 
     compositeNode = new btCompositeNode();
     compositeNode->setName("Selector");
     compositeNode->setDescription("A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)");
-    compositeNode->setNodeType(btNodeType::Composite);
-    nodeTypes.append((btNodeType*)compositeNode);
+    nodeTypes.append(compositeNode);
 
     compositeNode = new btCompositeNode();
     compositeNode->setName("Parallel");
     compositeNode->setDescription("A collection of behaviors which are launched at the same time");
-    compositeNode->setNodeType(btNodeType::Composite);
     nodeTypes.append(compositeNode);
 
     compositeNode = new btCompositeNode();
     compositeNode->setName("Random");
     compositeNode->setDescription("A collection of behaviors from which is selected one to be launched");
-    compositeNode->setNodeType(btNodeType::Composite);
-    nodeTypes.append((btNodeType*)compositeNode);
+    nodeTypes.append(compositeNode);
 
     btConditionNode * conditionNode = new btConditionNode();
     conditionNode->setName("InBehavior");
     conditionNode->setDescription("Check whether you are in a specified behavior");
-    conditionNode->setNodeType(btNodeType::Condition);
-    nodeTypes.append((btNodeType*)conditionNode);
+    nodeTypes.append(conditionNode);
+    
+    btDecoratorNode * decoratorNode = new btDecoratorNode();
+    decoratorNode->setName("Resource Guard");
+    decoratorNode->setDescription("Make sure that a specific resource is available before accepting traversal into the associated node");
+    nodeTypes.append(decoratorNode);
 }
 
 btBrain::~btBrain()
@@ -56,7 +57,7 @@ btNodeType *btBrain::findNodeTypeByName(QString name)
 btTreeModel *btBrain::newBehaviorTree()
 {
     // First create the new BT
-    btTreeModel *newTree = new btTreeModel(this);
+    btTreeModel *newTree = new btTreeModel(this, this);
     newTree->setName(tr("New Tree"));
     // We set the root node to be a sequence, as this is the fastest to choose that it should simply run the first child node (no selection, just runs children in sequence)
     btNode *btRootNode = new btNode(this->findNodeTypeByName("Sequence"));
@@ -71,7 +72,7 @@ btTreeModel *btBrain::newBehaviorTree()
     btNodeType *newType = new btNodeType(this);
     newType->setName(newTree->name());
     newType->setDescription(tr("A reference to the behavior tree named %1").arg(newTree->name()));
-    newType->setNodeType(btNodeType::Reference);
+    newType->setNodeType(btNodeType::ReferenceNodeType);
     
     // Finally inform those around us of this wonderful occurrence 
     emit behaviorTreeAdded(newTree);

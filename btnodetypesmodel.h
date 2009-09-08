@@ -14,6 +14,10 @@ public:
     btNodeTypesModel(btBrain *brain, QObject *parent = 0);
     ~btNodeTypesModel();
 
+    QMimeData* mimeData(const QModelIndexList &indexes) const;
+    QStringList mimeTypes() const;
+    Qt::DropActions supportedDropActions() const;
+    
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

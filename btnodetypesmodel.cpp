@@ -1,7 +1,9 @@
+#include <QMimeData>
 #include "btnodetype.h"
 #include "btnodetypesmodelnode.h"
 #include "btnodetypesmodel.h"
 #include "btbrain.h"
+#include <qmessagebox.h>
 
 btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
         :QAbstractItemModel(parent)
@@ -34,19 +36,24 @@ btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
     {
         switch(nodeType->type())
         {
-            case btNodeType::Action:
+            case btNodeType::ActionNodeType
+:
                 node = new btNodeTypesModelNode(nodeType, nodeAction);
                 break;
-            case btNodeType::Condition:
+            case btNodeType::ConditionNodeType
+:
                 node = new btNodeTypesModelNode(nodeType, nodeCondition);
                 break;
-            case btNodeType::Composite:
+            case btNodeType::CompositeNodeType
+:
                 node = new btNodeTypesModelNode(nodeType, nodeComposite);
                 break;
-            case btNodeType::Decorator:
+            case btNodeType::DecoratorNodeType
+:
                 node = new btNodeTypesModelNode(nodeType, nodeDecorator);
                 break;
-            case btNodeType::Reference:
+            case btNodeType::ReferenceNodeType
+:
                 node = new btNodeTypesModelNode(nodeType, nodeReference);
                 break;
             default:
@@ -66,19 +73,24 @@ void btNodeTypesModel::newBehaviorTreeTypeAdded(btNodeType* newType)
     btNodeTypesModelNode *node;
     switch(newType->type())
     {
-        case btNodeType::Action:
+        case btNodeType::ActionNodeType
+:
             node = new btNodeTypesModelNode(newType, nodeAction);
             break;
-        case btNodeType::Condition:
+        case btNodeType::ConditionNodeType
+:
             node = new btNodeTypesModelNode(newType, nodeCondition);
             break;
-        case btNodeType::Composite:
+        case btNodeType::CompositeNodeType
+:
             node = new btNodeTypesModelNode(newType, nodeComposite);
             break;
-        case btNodeType::Decorator:
+        case btNodeType::DecoratorNodeType
+:
             node = new btNodeTypesModelNode(newType, nodeDecorator);
             break;
-        case btNodeType::Reference:
+        case btNodeType::ReferenceNodeType
+:
             node = new btNodeTypesModelNode(newType, nodeReference);
             break;
         default:
@@ -112,10 +124,21 @@ QVariant btNodeTypesModel::data(const QModelIndex &index, int role) const
 
 Qt::ItemFlags btNodeTypesModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
-        return Qt::ItemIsEnabled;
-
-    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+    Qt::ItemFlags thisIndexFlags;
+    
+    if (index.isValid())
+    {
+        btNodeTypesModelNode *node = static_cast<btNodeTypesModelNode*>(index.internalPointer());
+        if(node->nodeType())
+            thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags;
+        else
+            thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsDropEnabled | defaultFlags;
+    }
+    else
+        thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsDropEnabled | defaultFlags;
+    
+    return thisIndexFlags;
 }
 
 QModelIndex btNodeTypesModel::index(int row, int column, const QModelIndex &parent) const
@@ -177,6 +200,40 @@ btNodeType *btNodeTypesModel::nodeTypeFromIndex(const QModelIndex &index) const
         return static_cast<btNodeType*>(nodeTypes.at(index.row()));
     else*/
         return 0;
+}
+
+Qt::DropActions btNodeTypesModel::supportedDropActions() const
+{
+    return Qt::CopyAction;
+}
+
+QStringList btNodeTypesModel::mimeTypes() const
+{
+    QStringList types;
+    types << "application/bt.nodetype";
+    return types;
+}
+
+QMimeData* btNodeTypesModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    QByteArray encodedData;
+    QDataStream stream(&encodedData, QIODevice::WriteOnly);
+    
+    foreach(QModelIndex index, indexes)
+    {
+        if (index.isValid())
+        {
+            btNodeTypesModelNode *node = static_cast<btNodeTypesModelNode*>(index.internalPointer());
+            if(node->nodeType())
+            {
+                stream << node->name();
+                stream << node->nodeType()->name();
+            }
+        }
+    }
+    mimeData->setData("application/bt.nodetype", encodedData);
+    return mimeData;
 }
 
 #include "btnodetypesmodel.moc"

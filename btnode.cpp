@@ -58,10 +58,13 @@ QVariant btNode::data(int column) const
 	switch(column)
 	{
 		case 0:
-			return m_name;
+            return name();
 			break;
-		case 1:
-			return m_description;
+        case 1:
+            if( decorators.count() > 0 )
+                return QString("%1 (%2)").arg(description()).arg(decorators.count());
+            else
+                return description();
 			break;
 		default:
 			return nodeData.value(column - 2);
@@ -78,3 +81,8 @@ QString btNode::description() const { return m_description; }
 
 void btNode::setType(btNodeType *type) { m_type = type; }
 btNodeType *btNode::type() const { return m_type; }
+
+void btNode::addDecorator(btDecoratorNode* decorator) { decorators.append(decorator); }
+void btNode::removeDecorator(btDecoratorNode* decorator) { decorators.removeAll(decorator); }
+int btNode::decoratorCount() { return decorators.count(); }
+

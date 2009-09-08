@@ -20,7 +20,7 @@ public:
     int row() const;
     btNodeTypesModelNode *parent();
 
-    btNodeTypesModelNode nodeType() const;
+    btNodeType *nodeType() const;
     void setNodeType(btNodeType *nodeType);
 
     void setName(QString name);

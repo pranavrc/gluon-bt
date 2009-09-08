@@ -4,11 +4,16 @@
 btAvailableNodesModel::btAvailableNodesModel(QObject *parent)
         : QAbstractProxyModel(parent)
 {
-    categories.insert(btNodeType::Action, "Action");
-    categories.insert(btNodeType::Condition, "Condition");
-    categories.insert(btNodeType::Composite, "Composite");
-    categories.insert(btNodeType::Decorator, "Decorator");
-    categories.insert(btNodeType::Reference, "Reference");
+    categories.insert(btNodeType::ActionNodeType
+, "Action");
+    categories.insert(btNodeType::ConditionNodeType
+, "Condition");
+    categories.insert(btNodeType::CompositeNodeType
+, "Composite");
+    categories.insert(btNodeType::DecoratorNodeType
+, "Decorator");
+    categories.insert(btNodeType::ReferenceNodeType
+, "Reference");
 }
 
 QModelIndex btAvailableNodesModel::mapFromSource(const QModelIndex &sourceIndex) const
@@ -95,7 +100,8 @@ QVariant btAvailableNodesModel::data(const QModelIndex &index, int role) const
     int itemCount = sourceModel()->rowCount(QModelIndex());
     if(index.row() >= itemCount)
     {
-        int category = btNodeType::Action;
+        int category = btNodeType::ActionNodeType
+;
         category = index.row() - itemCount;
         return categories[category];
     }

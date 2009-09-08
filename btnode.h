@@ -2,6 +2,7 @@
 #define BTNODE_H
 
 #include <QList>
+#include "btdecoratornode.h"
 
 class QString;
 class QVariant;
@@ -29,6 +30,9 @@ public:
 	void setType(btNodeType *newType);
 	btNodeType* type() const;
 
+    void addDecorator(btDecoratorNode* decorator);
+    void removeDecorator(btDecoratorNode* decorator);
+    int decoratorCount();
 private:
 	btNodeType *m_type;
 	
@@ -38,6 +42,7 @@ private:
 	QString m_name;
     QString m_description;
 	QList<QVariant> nodeData;
+    QList<btDecoratorNode*> decorators;
 };
 
 #endif // BTNODE_H

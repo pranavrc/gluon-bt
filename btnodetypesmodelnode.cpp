@@ -43,14 +43,28 @@ int btNodeTypesModelNode::columnCount() const
 
 QVariant btNodeTypesModelNode::data(int column) const
 {
-    Q_UNUSED(column);
-    return m_name;
+    switch(column)
+    {
+        case 0:
+            return m_name;
+            break;
+        case 1:
+            return nodeData->type();
+            break;
+        default:
+            return m_name;
+            break;
+    }
+    
 }
 
 btNodeTypesModelNode *btNodeTypesModelNode::parent()
 {
     return parentNode;
 }
+
+btNodeType *btNodeTypesModelNode::nodeType() const { return nodeData; }
+void btNodeTypesModelNode::setNodeType(btNodeType *nodeType) { nodeData = nodeType; }
 
 void btNodeTypesModelNode::setName(QString name) { m_name = name; }
 QString btNodeTypesModelNode::name() const { return m_name; }

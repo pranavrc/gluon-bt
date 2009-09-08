@@ -1,10 +1,15 @@
+#include <QMimeData>
 #include "bttreemodel.h"
 #include "btnode.h"
 #include "btnodetype.h"
+#include <qmessagebox.h>
+#include "btbrain.h"
 
-btTreeModel::btTreeModel(QObject* parent)
+btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
+    : QAbstractItemModel(parent)
 {
     rootNode = new btNode();
+    brain = containingBrain;
 }
 
 btTreeModel::~btTreeModel()
@@ -83,6 +88,10 @@ QVariant btTreeModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+bool btTreeModel::setData ( const QModelIndex & index, const QVariant & value, int role )
+{
+}
+
 QVariant btTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
@@ -95,6 +104,80 @@ QVariant btTreeModel::headerData(int section, Qt::Orientation orientation, int r
             return tr("Type");
     }
     return QVariant();
+}
+
+Qt::ItemFlags btTreeModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+    Qt::ItemFlags thisIndexFlags;
+    
+    if (index.isValid())
+    {
+        thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags;
+    }
+    else
+        thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsDropEnabled | defaultFlags;
+    
+    return thisIndexFlags;
+}
+
+QStringList btTreeModel::mimeTypes() const
+{
+    QStringList types;
+    types << "application/bt.nodetype";
+    return types;
+}
+
+bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+{
+    if(action == Qt::IgnoreAction)
+        return true;
+    
+    if(!data->hasFormat("application/bt.nodetype"))
+        return false;
+    
+    if(column > 0)
+        return false;
+    
+    // We only do the parent thing here - we accept no drops in empty space at all
+    if(!parent.isValid())
+        return false;
+    
+    QByteArray encodedData = data->data("application/bt.nodetype");
+    QDataStream stream(&encodedData, QIODevice::ReadOnly);
+    QHash<QString,QString> nodeTypes;
+    int rows = 0;
+    
+    while(!stream.atEnd())
+    {
+        QString nodeType;
+        QString btType;
+        stream >> nodeType;
+        stream >> btType;
+        nodeTypes.insert(nodeType, btType);
+        ++rows;
+    }
+
+    btNode* parentNode = static_cast<btNode*>(parent.internalPointer());
+    insertRows(parent.row(), rows, parent);
+    QHashIterator<QString, QString> i(nodeTypes);
+    while (i.hasNext()) {
+        i.next();
+        btNodeType *theNodeType = brain->findNodeTypeByName(i.value());
+        theNodeType->setName(i.key());
+        theNodeType->setParent(this);
+        // Figure out whether the dropped item is a special case (decorators are added to the parent item directly, rather than added as children)
+        if(theNodeType->type() == btNodeType::DecoratorNodeType)
+        {
+            parentNode->addDecorator(qobject_cast<btDecoratorNode*>(theNodeType));
+        }
+        else
+        {
+            btNode *newChild = new btNode(theNodeType, parentNode);
+            newChild->setName(tr("New %1").arg(theNodeType->name()));
+        }
+    }
+    return true;
 }
 
 void btTreeModel::setName(QString name) { m_name = name; }

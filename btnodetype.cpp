@@ -15,6 +15,12 @@ void btNodeType::setDescription(QString description) { m_description = descripti
 QString btNodeType::description() const { return m_description; }
 
 void btNodeType::setNodeType(nodeType type){m_type = type;}
-btNodeType::nodeType btNodeType::type() const { return m_type; }
+btNodeType::nodeType btNodeType::type() const
+{
+    if(m_type)
+        return m_type;
+    else
+        return UnusableNodeType;
+}
 
 #include "btnodetype.moc"

@@ -15,12 +15,12 @@ public:
 	
 	enum nodeType
 	{
-		Unusable = -1,
-		Action,
-		Composite,
-		Condition,
-		Reference ,
-		Decorator
+		UnusableNodeType = -1,
+		ActionNodeType,
+		CompositeNodeType,
+		ConditionNodeType,
+		ReferenceNodeType,
+        DecoratorNodeType
 	};
 	
     btNodeType(QObject* parent = 0);
