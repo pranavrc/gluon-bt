@@ -33,6 +33,7 @@ public:
     void addDecorator(btDecoratorNode* decorator);
     void removeDecorator(btDecoratorNode* decorator);
     int decoratorCount();
+    QList<btDecoratorNode*> decorators() const;
 private:
 	btNodeType *m_type;
 	
@@ -42,7 +43,7 @@ private:
 	QString m_name;
     QString m_description;
 	QList<QVariant> nodeData;
-    QList<btDecoratorNode*> decorators;
+    QList<btDecoratorNode*> m_decorators;
 };
 
 #endif // BTNODE_H
