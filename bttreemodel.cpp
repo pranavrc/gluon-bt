@@ -146,7 +146,6 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     QByteArray encodedData = data->data("application/bt.nodetype");
     QDataStream stream(&encodedData, QIODevice::ReadOnly);
     QHash<QString,QString> nodeTypes;
-    int rows = 0;
     
     while(!stream.atEnd())
     {
@@ -155,17 +154,28 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
         stream >> nodeType;
         stream >> btType;
         nodeTypes.insert(nodeType, btType);
-        ++rows;
     }
 
     btNode* parentNode = static_cast<btNode*>(parent.internalPointer());
-    insertRows(parent.row(), rows, parent);
+    int rows = 0;
+    QList<btNodeType*> theNodeTypes;
     QHashIterator<QString, QString> i(nodeTypes);
-    while (i.hasNext()) {
+    while (i.hasNext())
+    {
         i.next();
         btNodeType *theNodeType = brain->findNodeTypeByName(i.value());
         theNodeType->setName(i.key());
         theNodeType->setParent(this);
+        theNodeTypes.append(theNodeType);
+        if(theNodeType->type() != btNodeType::DecoratorNodeType)
+            ++rows;
+    }
+
+    // Yes, this is kinda nasty - but we may well be dropping decorators, which are not true children
+    if(rows > 0)
+        beginInsertRows(parent, parentNode->childCount(), rows);
+    foreach(btNodeType* theNodeType, theNodeTypes)
+    {
         // Figure out whether the dropped item is a special case (decorators are added to the parent item directly, rather than added as children)
         if(theNodeType->type() == btNodeType::DecoratorNodeType)
         {
@@ -177,6 +187,9 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             newChild->setName(tr("New %1").arg(theNodeType->name()));
         }
     }
+    if(rows > 0)
+        endInsertRows();
+
     return true;
 }
 
