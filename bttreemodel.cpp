@@ -4,6 +4,7 @@
 #include "btnodetype.h"
 #include <qmessagebox.h>
 #include "btbrain.h"
+#include "btdecoratornode.h"
 
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
@@ -73,19 +74,28 @@ QModelIndex btTreeModel::parent(const QModelIndex &child) const
 
 QVariant btTreeModel::data(const QModelIndex &index, int role) const
 {
-    if(role != Qt::DisplayRole)
-        return QVariant();
-
     btNode *node = nodeFromIndex(index);
     if(!node)
         return QVariant();
-
-    if(index.column() == 0)
-        return node->name();
+    
+    if(role == Qt::DisplayRole)
+    {
+        return node->data(index.column());
+    }
+    else if(role == Qt::ToolTipRole)
+    {
+        QString tip;
+        tip = "<html>";
+        tip += tr("Decorators: %1").arg(node->decoratorCount());
+        tip += "<table>";
+        foreach(btDecoratorNode* theNode, node->decorators())
+            tip += "<tr><td>" + theNode->name() + "</td><td>" + theNode->description() + "</td></tr>";
+        tip += "</table>";
+        tip += "</html>";
+        return tip;
+    }
     else
-        return node->type()->name();
-
-    return QVariant();
+        return QVariant();
 }
 
 bool btTreeModel::setData ( const QModelIndex & index, const QVariant & value, int role )
@@ -189,6 +199,8 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     }
     if(rows > 0)
         endInsertRows();
+    else
+        emit dataChanged(parent, parent);//Update the view for the parent node we have (likely) just added a decorator to
 
     return true;
 }
