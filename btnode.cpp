@@ -77,7 +77,13 @@ void btNode::setName(QString name) { m_name = name; }
 QString btNode::name() const { return m_name; }
 
 void btNode::setDescription(QString description) { m_description = description; }
-QString btNode::description() const { return m_description; }
+QString btNode::description() const
+{
+    if(m_description.isEmpty())
+        return type()->name();
+    else
+        return m_description;
+}
 
 void btNode::setType(btNodeType *type) { m_type = type; }
 btNodeType *btNode::type() const { return m_type; }
