@@ -36,8 +36,7 @@ int btNode::childCount() const
 
 int btNode::columnCount() const
 {
-	// This is name + description + whatever data the node type asks for
-	return nodeData.count() + 2;
+	return 3;
 }
 
 int btNode::row() const
@@ -53,6 +52,16 @@ btNode *btNode::parent()
 	return parentNode;
 }
 
+QVariant btNode::headerData(int column) const
+{
+    if(column == 0)
+        return tr("Name");
+    else if(column == 1)
+        return tr("Description");
+    else if(column == 2)
+        return tr("Type");
+}
+
 QVariant btNode::data(int column) const
 {
 	switch(column)
@@ -61,15 +70,16 @@ QVariant btNode::data(int column) const
             return name();
 			break;
         case 1:
-            if( m_decorators
-.count() > 0 )
-                return QString("%1 (%2)").arg(description()).arg(m_decorators
-.count());
+            if( m_decorators.count() > 0 )
+                return QString("%1 (%2)").arg(description()).arg(m_decorators.count());
             else
                 return description();
 			break;
+        case 2:
+            return type()->name();
+            break;
 		default:
-			return nodeData.value(column - 2);
+			return QVariant();
 			break;
 	}
 	return QVariant();
@@ -95,3 +105,4 @@ void btNode::removeDecorator(btDecoratorNode* decorator) { m_decorators.removeAl
 int btNode::decoratorCount() { return m_decorators.count(); }
 QList<btDecoratorNode*> btNode::decorators() const { return m_decorators; }
 
+#include "btnode.moc"

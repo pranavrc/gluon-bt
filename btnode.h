@@ -1,6 +1,7 @@
 #ifndef BTNODE_H
 #define BTNODE_H
 
+#include <QObject>
 #include <QList>
 #include "btdecoratornode.h"
 
@@ -8,8 +9,10 @@ class QString;
 class QVariant;
 class btNodeType;
 
-class btNode
+class btNode : public QObject
 {
+Q_OBJECT;
+
 public:
     btNode(btNodeType *type = 0, btNode *parent = 0);
     ~btNode();
@@ -22,6 +25,7 @@ public:
 	int row() const;
 	btNode *parent();
 	QVariant data(int column) const;
+    QVariant headerData(int column) const;
 	
     void setName(QString name);
     QString name() const;
