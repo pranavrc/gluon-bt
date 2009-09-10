@@ -20,7 +20,7 @@
 #ifndef BTTREEEDITOR_H
 #define BTTREEEDITOR_H
 
-#include <../../home/leinir/qt4/include/QtGui/QTreeView>
+#include <QtGui/QTreeView>
 
 
 class btTreeEditor:public QTreeView
