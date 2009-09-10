@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>730</width>
-    <height>448</height>
+    <width>917</width>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,6 +26,12 @@
       <property name="animated">
        <bool>true</bool>
       </property>
+      <attribute name="headerDefaultSectionSize">
+       <number>150</number>
+      </attribute>
+      <attribute name="headerDefaultSectionSize">
+       <number>150</number>
+      </attribute>
      </widget>
     </item>
     <item row="0" column="0">
@@ -56,7 +62,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>730</width>
+     <width>917</width>
      <height>21</height>
     </rect>
    </property>
@@ -122,8 +128,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>161</width>
-          <height>356</height>
+          <width>229</width>
+          <height>519</height>
          </rect>
         </property>
        </widget>
