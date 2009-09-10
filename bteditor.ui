@@ -117,6 +117,12 @@
      </property>
      <item row="1" column="0">
       <widget class="QScrollArea" name="propertyScrollArea">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
        </property>
@@ -288,12 +294,12 @@
   <customwidget>
    <class>btAvailableNodesTreeView</class>
    <extends>QTreeView</extends>
-   <header>../btavailablenodestreeview.h</header>
+   <header>btavailablenodestreeview.h</header>
   </customwidget>
   <customwidget>
    <class>btTreeEditor</class>
    <extends>QTreeView</extends>
-   <header>../bttreeeditor.h</header>
+   <header>bttreeeditor.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
