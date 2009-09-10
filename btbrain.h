@@ -27,6 +27,9 @@ public:
 Q_SIGNALS:
     void behaviorTreeAdded(btTreeModel* newTree);
     void nodeTypeAdded(btNodeType* newNodeType);
+
+private:
+    QString m_name;
 };
 
 #endif // BTBRAIN_H

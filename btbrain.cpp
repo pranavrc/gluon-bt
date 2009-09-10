@@ -86,7 +86,7 @@ void btBrain::deleteBehaviorTree(btTreeModel *behaviorTree)
     behaviorTrees.removeAll(behaviorTree);
 }
 
-void btNode::setName(QString name) { m_name = name; }
-QString btNode::name() const { return m_name; }
+void btBrain::setName(QString name) { m_name = name; }
+QString btBrain::name() const { return m_name; }
 
 #include "btbrain.moc"
