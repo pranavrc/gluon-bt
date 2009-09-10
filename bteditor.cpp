@@ -3,7 +3,6 @@
 #include "bteditor.h"
 #include "btbrain.h"
 #include "bttreemodel.h"
-#include "btavailablenodesmodel.h"
 #include "btnodetypesmodel.h"
 
 bteditor::bteditor(QWidget *parent)
