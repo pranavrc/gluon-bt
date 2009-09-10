@@ -31,6 +31,10 @@ bteditor::~bteditor()
 void bteditor::setupActions()
 {
     connect(
+        actionNew_Tree, SIGNAL(triggered(bool)),
+        this, SLOT(createNewBehaviorTree())
+        );
+    connect(
         actionQuit, SIGNAL(triggered(bool)),
         qApp, SLOT(quit())
         );
@@ -40,6 +44,17 @@ void bteditor::setupActions()
         );
 }
 
+void bteditor::showBehaviorTree(btTreeModel* showThis)
+{
+    this->btEditor->setModel(showThis);
+    this->currentBTNameLabel->setText(showThis->name());
+}
+
+void bteditor::createNewBehaviorTree()
+{
+    m_brain->newBehaviorTree();
+}
+
 void bteditor::showBehaviorTreeListCicked()
 {
     QMessageBox::about(this, this->windowTitle(), "Show list of all behavior trees... menu permayhaps?");
@@ -47,8 +62,7 @@ void bteditor::showBehaviorTreeListCicked()
 
 void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
 {
-    this->btEditor->setModel(newTree);
-    this->currentBTNameLabel->setText(newTree->name());
+    showBehaviorTree(newTree);
 }
 
 #include "bteditor.moc"

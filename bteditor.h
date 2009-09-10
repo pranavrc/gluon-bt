@@ -14,8 +14,11 @@ public:
     bteditor(QWidget *parent = 0);
     virtual ~bteditor();
     void setupActions();
+    
+    void showBehaviorTree(btTreeModel* showThis);
 
 public Q_SLOTS:
+    void createNewBehaviorTree();
     void newBehaviorTreeAdded(btTreeModel* newTree);
     void showBehaviorTreeListCicked();
     
