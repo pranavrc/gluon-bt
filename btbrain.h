@@ -8,7 +8,8 @@ class btTreeModel;
 
 class btBrain : public QObject
 {
-    Q_OBJECT
+    Q_OBJECT;
+    Q_PROPERTY(QString name READ name WRITE setName);
 
 public:
     btBrain(QObject *parent = 0);
@@ -21,6 +22,8 @@ public:
     QList<btNodeType *> nodeTypes;
     QList<btTreeModel *> behaviorTrees;
     
+    void setName(QString name);
+    QString name() const;
 Q_SIGNALS:
     void behaviorTreeAdded(btTreeModel* newTree);
     void nodeTypeAdded(btNodeType* newNodeType);
