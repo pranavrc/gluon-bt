@@ -16,6 +16,8 @@ Q_OBJECT;
 public:
     btNode(btNodeType *type = 0, btNode *parent = 0);
     ~btNode();
+    
+    bool runBehavior();
 
 	void appendChild(btNode *);
 	

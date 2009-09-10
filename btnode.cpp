@@ -19,6 +19,13 @@ btNode::~btNode()
     // delete(m_type);
 }
 
+bool btNode::runBehavior()
+{
+    // First run all the decorators, and bail out if even one of them fails
+    
+    // Then run the behavior itself (that is, the btNodeType's run function)
+}
+
 void btNode::appendChild(btNode *node)
 {
 	children.append(node);
