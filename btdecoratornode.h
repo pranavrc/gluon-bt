@@ -10,6 +10,8 @@ class btDecoratorNode : public btNodeType
 public:
 	btDecoratorNode();	
 	~btDecoratorNode();
+	
+	bool run();
 };
 
 #endif

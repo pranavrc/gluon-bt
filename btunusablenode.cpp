@@ -9,4 +9,9 @@ btUnusableNode::~btUnusableNode()
 {
 }
 
+bool btUnusableNode::run()
+{
+	return false;
+}
+
 #include "btunusablenode.moc"

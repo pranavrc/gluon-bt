@@ -10,6 +10,8 @@ class btUnusableNode : public btNodeType
 public:
 	btUnusableNode();	
 	~btUnusableNode();
+	
+	bool run();
 };
 
 #endif

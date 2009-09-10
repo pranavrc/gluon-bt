@@ -32,6 +32,7 @@ public:
     QString description() const;
     nodeType type() const;
 	void setNodeType(nodeType type);
+	virtual bool run();
 	
 protected:
     QString m_name;

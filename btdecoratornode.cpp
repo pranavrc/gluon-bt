@@ -9,4 +9,9 @@ btDecoratorNode::~btDecoratorNode()
 {
 }
 
+bool btDecoratorNode::run()
+{
+	return false;
+}
+
 #include "btdecoratornode.moc"

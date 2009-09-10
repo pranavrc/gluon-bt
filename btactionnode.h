@@ -10,6 +10,8 @@ class btActionNode : public btNodeType
 public:
 	btActionNode(QObject* parent = 0);	
 	~btActionNode();
+	
+	bool run();
 };
 
 #endif

@@ -10,4 +10,9 @@ btConditionNode::~btConditionNode()
 {
 }
 
+bool btConditionNode::run()
+{
+	return false;
+}
+
 #include "btconditionnode.moc"

@@ -9,4 +9,9 @@ btReferenceNode::~btReferenceNode()
 {
 }
 
+bool btReferenceNode::run()
+{
+	return false;
+}
+
 #include "btreferencenode.moc"

@@ -23,4 +23,9 @@ btNodeType::nodeType btNodeType::type() const
         return UnusableNodeType;
 }
 
+bool btNodeType::run()
+{
+	return false;
+}
+
 #include "btnodetype.moc"

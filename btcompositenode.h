@@ -10,6 +10,8 @@ class btCompositeNode : public btNodeType
 public:
 	btCompositeNode();	
 	~btCompositeNode();
+	
+	bool run();
 };
 
 #endif

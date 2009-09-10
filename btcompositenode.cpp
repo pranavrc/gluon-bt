@@ -10,4 +10,9 @@ btCompositeNode::~btCompositeNode()
 {
 }
 
+bool btCompositeNode::run()
+{
+	return false;
+}
+
 #include "btcompositenode.moc"

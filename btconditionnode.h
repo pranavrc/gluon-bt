@@ -10,6 +10,8 @@ class btConditionNode : public btNodeType
 public:
 	btConditionNode();	
 	~btConditionNode();
+	
+	bool run();
 };
 
 #endif

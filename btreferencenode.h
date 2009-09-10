@@ -10,6 +10,8 @@ class btReferenceNode :public btNodeType
 public:
 	btReferenceNode();	
 	~btReferenceNode();
+	
+	bool run();
 };
 
 #endif

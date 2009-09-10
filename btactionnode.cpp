@@ -9,4 +9,9 @@ btActionNode::~btActionNode()
 {
 }
 
+bool btActionNode::run()
+{
+	return false;
+}
+
 #include "btactionnode.moc"
