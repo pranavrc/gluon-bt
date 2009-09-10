@@ -17,6 +17,7 @@ public:
     ~btTreeModel();
 
     void setRootNode(btNode *newRoot);
+    btNode * rootNode() const;
 
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QModelIndex parent(const QModelIndex &child) const;
@@ -38,7 +39,7 @@ private:
 	
     btNode *nodeFromIndex(const QModelIndex &index) const;
 
-    btNode *rootNode;
+    btNode *m_rootNode;
     btBrain *brain;
 };
 

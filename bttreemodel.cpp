@@ -9,26 +9,31 @@
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
 {
-    rootNode = new btNode();
+    m_rootNode = new btNode();
     brain = containingBrain;
 }
 
 btTreeModel::~btTreeModel()
 {
-    delete(rootNode);
+    delete(m_rootNode);
 }
 
 void btTreeModel::setRootNode(btNode *newRoot)
 {
-    delete(rootNode);
-    rootNode = newRoot;
+    delete(m_rootNode);
+    m_rootNode = newRoot;
     reset();
+}
+
+btNode * btTreeModel::rootNode() const
+{
+    return m_rootNode;
 }
 
 QModelIndex btTreeModel::index(int row, int column, const QModelIndex &parent) const
 {
     // If we don't have a root node, we need to return an empty QModelIndex
-    if(!rootNode)
+    if(!m_rootNode)
         return QModelIndex();
     btNode *parentNode = nodeFromIndex(parent);
     return createIndex(row, column, parentNode->child(row));
@@ -39,7 +44,7 @@ btNode *btTreeModel::nodeFromIndex(const QModelIndex &index) const
     if(index.isValid())
         return static_cast<btNode*>(index.internalPointer());
     else
-        return rootNode;
+        return m_rootNode;
 }
 
 int btTreeModel::rowCount(const QModelIndex &parent) const
@@ -66,7 +71,7 @@ QModelIndex btTreeModel::parent(const QModelIndex &child) const
     if(!parentNode)
         return QModelIndex();
 
-	if(parentNode == rootNode)
+	if(parentNode == m_rootNode)
 		return QModelIndex();
 
     return createIndex(parentNode->row(), child.column(), parentNode);
@@ -104,15 +109,9 @@ bool btTreeModel::setData ( const QModelIndex & index, const QVariant & value, i
 
 QVariant btTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
-    {
-        if(section == 0)
-            return tr("Name");
-        else if(section == 1)
-            return tr("Description");
-        else if(section == 2)
-            return tr("Type");
-    }
+    Q_UNUSED(orientation);
+    if(role == Qt::DisplayRole)
+        m_rootNode->headerData(section);
     return QVariant();
 }
 
