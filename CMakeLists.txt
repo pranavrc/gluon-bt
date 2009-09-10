@@ -2,7 +2,7 @@ project(bteditor)
 cmake_minimum_required(VERSION 2.6)
 find_package(Qt4 REQUIRED)
 
-include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR})
 
 set(bteditor_SRCS
     btavailablenodestreeview.cpp
