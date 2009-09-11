@@ -71,34 +71,34 @@ btNodeTypesModel::~btNodeTypesModel()
 void btNodeTypesModel::newBehaviorTreeTypeAdded(btNodeType* newType)
 {
     btNodeTypesModelNode *node;
+    QModelIndex parent;
     switch(newType->type())
     {
-        case btNodeType::ActionNodeType
-:
+        case btNodeType::ActionNodeType:
             node = new btNodeTypesModelNode(newType, nodeAction);
+            parent = createIndex(nodeAction->row(), 0, node);
             break;
-        case btNodeType::ConditionNodeType
-:
+        case btNodeType::ConditionNodeType:
             node = new btNodeTypesModelNode(newType, nodeCondition);
+            parent = createIndex(nodeCondition->row(), 0, node);
             break;
-        case btNodeType::CompositeNodeType
-:
+        case btNodeType::CompositeNodeType:
             node = new btNodeTypesModelNode(newType, nodeComposite);
+            parent = createIndex(nodeComposite->row(), 0, node);
             break;
-        case btNodeType::DecoratorNodeType
-:
+        case btNodeType::DecoratorNodeType:
             node = new btNodeTypesModelNode(newType, nodeDecorator);
+            parent = createIndex(nodeDecorator->row(), 0, node);
             break;
-        case btNodeType::ReferenceNodeType
-:
+        case btNodeType::ReferenceNodeType:
             node = new btNodeTypesModelNode(newType, nodeReference);
+            parent = createIndex(nodeReference->row(), 0, node);
             break;
         default:
             break;
     }
     node->setName(newType->name());
-    QModelIndex index = createIndex(node->row(), 0, node);
-    this->dataChanged(index, index);
+    dataChanged(parent, parent);
 }
 
 QVariant btNodeTypesModel::headerData(int section, Qt::Orientation orientation, int role) const
