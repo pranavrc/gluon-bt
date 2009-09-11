@@ -77,7 +77,7 @@ QVariant btNode::data(int column) const
             return name();
 			break;
         case 1:
-            if( m_decorators.count() > 0 )
+            if( !m_decorators.isEmpty() )
                 return QString("%1 (%2)").arg(description()).arg(m_decorators.count());
             else
                 return description();
