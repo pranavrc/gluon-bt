@@ -5,6 +5,9 @@ find_package(Qt4 REQUIRED)
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR})
 
 set(btlib_SRCS
+    btnodetype.cpp
+    btabstractfactory.cpp
+    btnodetypefactory.cpp
     main.cpp
 )
 
