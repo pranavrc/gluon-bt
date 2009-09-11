@@ -3,10 +3,11 @@
 
 #include <QObject>
 #include <QString>
+#include "btnodetype.h"
 
 class btAbstractFactory{
     public:
-        virtual btnodetype* newObject (QString classname) = 0;
+        virtual btNodeType* newObject (QString classname) = 0;
         virtual ~AbstractFactory() {}
 };
 

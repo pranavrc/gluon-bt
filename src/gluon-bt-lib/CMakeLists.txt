@@ -8,6 +8,7 @@ set(btlib_SRCS
     btnodetype.cpp
     btabstractfactory.cpp
     btnodetypefactory.cpp
+    btselectornode.cpp
     main.cpp
 )
 

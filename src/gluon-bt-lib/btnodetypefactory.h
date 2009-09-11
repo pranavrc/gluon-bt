@@ -1,10 +1,17 @@
 #ifndef BTNODEFACTORY_H
 #define BTNODEFACTORY_H
 
-class btNodeFactory : public QObject, public btAbstractFactory {
+#include <QObject>
+#include <QString>
+#include "btAbstractFactory.h"
+
+class btNodeTypeFactory : public QObject, public btAbstractFactory {
         Q_OBJECT
     public:
-        static btNodeFactory* instance(); //singleton
+        static btNodeTypeFactory* instance(); //singleton
+        virtual btNodeType* newNodeType(QString classname);
+    private:
+        btNodeTypeFactory() {}
 
 };
 
