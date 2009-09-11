@@ -22,6 +22,8 @@ set(bteditor_SRCS
 	btreferencenode.cpp
 	btunusablenode.cpp
 	main.cpp
+    
+    modeltest.cpp
 )
 
 set(bteditor_UIS
