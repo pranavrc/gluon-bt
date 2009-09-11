@@ -7,5 +7,6 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
     btNodeType* node = btNodeTypeFactory::instance()->newObject("Selector");
+    node->run();
     return app.exec();
 }

@@ -8,4 +8,13 @@ btNodeType* btNodeTypeFactory::newObject(QString classname) {
     }
 }
 
+btNodeTypeFactory* btNodeTypeFactory::instance() {
+    static btNodeTypeFactory* singleton = 0;
+    if(singleton == 0){
+        singleton = new btNodeTypeFactory();
+        //singleton->setParent(qApp); fix
+    }
+    return singleton;
+}
+
 #include "btnodetypefactory.moc"

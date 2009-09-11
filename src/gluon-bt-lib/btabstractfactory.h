@@ -1,7 +1,6 @@
 #ifndef BTABSTRACTFACTORY_H
 #define BTABSTRACTFACTORY_H
 
-#include <QObject>
 #include <QString>
 #include "btnodetype.h"
 

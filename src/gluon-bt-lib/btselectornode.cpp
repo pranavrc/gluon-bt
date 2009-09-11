@@ -3,5 +3,8 @@
 
 bool btSelectorNode::run()
 {
-        return false;
+    qDebug("Selector Behavior run");
+    return false;
 }
+
+#include "btselectornode.moc"
