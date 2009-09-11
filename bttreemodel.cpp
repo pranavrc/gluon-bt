@@ -35,8 +35,20 @@ QModelIndex btTreeModel::index(int row, int column, const QModelIndex &parent) c
     // If we don't have a root node, we need to return an empty QModelIndex
     if(!m_rootNode)
         return QModelIndex();
+    
+    // We shouldn't allow for less-than-zero values for row and column...
+    if(row < 0 ||column < 0)
+        return QModelIndex();
+    
     btNode *parentNode = nodeFromIndex(parent);
-    return createIndex(row, column, parentNode->child(row));
+    
+    // Don't allow for the creation of indexes for anything bigger than what exists
+    if(row >= parentNode->childCount() || column >= parentNode->columnCount())
+        return QModelIndex();
+    //if(column == 0)
+        return createIndex(row, column, parentNode->child(row));
+    
+    //return createIndex(row, column, 0);
 }
 
 btNode *btTreeModel::nodeFromIndex(const QModelIndex &index) const
@@ -74,11 +86,14 @@ QModelIndex btTreeModel::parent(const QModelIndex &child) const
 	if(parentNode == m_rootNode)
 		return QModelIndex();
 
-    return createIndex(parentNode->row(), child.column(), parentNode);
+    return createIndex(parentNode->row(), 0, parentNode);
 }
 
 QVariant btTreeModel::data(const QModelIndex &index, int role) const
 {
+    if(!index.isValid())
+        return QVariant();
+    
     btNode *node = nodeFromIndex(index);
     if(!node)
         return QVariant();
@@ -105,6 +120,11 @@ QVariant btTreeModel::data(const QModelIndex &index, int role) const
 
 bool btTreeModel::setData ( const QModelIndex & index, const QVariant & value, int role )
 {
+    if(index == QModelIndex())
+        return false;
+    
+    emit dataChanged(index, index);
+    return true;
 }
 
 QVariant btTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -121,11 +141,9 @@ Qt::ItemFlags btTreeModel::flags(const QModelIndex &index) const
     Qt::ItemFlags thisIndexFlags;
     
     if (index.isValid())
-    {
         thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags;
-    }
-    else
-        thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsDropEnabled | defaultFlags;
+    //else
+        //thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsDropEnabled | defaultFlags;
     
     return thisIndexFlags;
 }
