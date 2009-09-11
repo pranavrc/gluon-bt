@@ -7,7 +7,8 @@
 class btSelectorNode : public btNodeType{
         Q_OBJECT
     public:
+        btSelectorNode() {}
         bool run();
 };
 
-#endif BTSELECTORNODE_H
+#endif //BTSELECTORNODE_H

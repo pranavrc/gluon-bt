@@ -4,12 +4,13 @@
 #include <QObject>
 #include <QString>
 #include "btAbstractFactory.h"
+#include "btselectornode.h"
 
 class btNodeTypeFactory : public QObject, public btAbstractFactory {
         Q_OBJECT
     public:
         static btNodeTypeFactory* instance(); //singleton
-        virtual btNodeType* newNodeType(QString classname);
+        virtual btNodeType* newObject(QString classname);
     private:
         btNodeTypeFactory() {}
 
