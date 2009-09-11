@@ -6,6 +6,7 @@
 
 class btBrain;
 class btTreeModel;
+class btNode;
 
 class bteditor : public QMainWindow, private Ui::BtEditor
 {
@@ -16,11 +17,14 @@ public:
     void setupActions();
     
     void showBehaviorTree(btTreeModel* showThis);
-
+    void showPropertiesFor(btNode* showFor);
+    
 public Q_SLOTS:
     void createNewBehaviorTree();
     void newBehaviorTreeAdded(btTreeModel* newTree);
     void showBehaviorTreeListCicked();
+    
+    void editorSelectionChanded(const QItemSelection& selected, const QItemSelection& deselected);
     
 private:
     btBrain *m_brain;
