@@ -5,6 +5,7 @@
 #include "bttreemodel.h"
 #include "btnodetypesmodel.h"
 #include "btnode.h"
+#include "modeltest.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -42,19 +43,22 @@ void bteditor::setupActions()
         showBehaviorTreeList, SIGNAL(clicked(bool)),
         this, SLOT(showBehaviorTreeListCicked())
         );
-    connect(
-        this->btEditor->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-        this, SLOT(editorSelectionChanded(QItemSelection,QItemSelection))
-        );
 }
 
 void bteditor::showBehaviorTree(btTreeModel* showThis)
 {
+    disconnect(this, SLOT(editorSelectionChanged(QItemSelection,QItemSelection)));
     this->btEditor->setModel(showThis);
+    this->btEditor->setSelectionModel(new QItemSelectionModel(showThis));
+    connect(
+        this->btEditor->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+        this, SLOT(editorSelectionChanged(QItemSelection,QItemSelection))
+        );
     this->currentBTNameLabel->setText(showThis->name());
+    //new ModelTest(showThis, this);
 }
 
-void bteditor::editorSelectionChanded(const QItemSelection& selected, const QItemSelection& deselected)
+void bteditor::editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     btNode* selectedNode = static_cast<btNode*>(btEditor->selectionModel()->currentIndex().internalPointer());
     showPropertiesFor(selectedNode);

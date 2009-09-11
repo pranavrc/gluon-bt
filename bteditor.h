@@ -24,7 +24,7 @@ public Q_SLOTS:
     void newBehaviorTreeAdded(btTreeModel* newTree);
     void showBehaviorTreeListCicked();
     
-    void editorSelectionChanded(const QItemSelection& selected, const QItemSelection& deselected);
+    void editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
     
 private:
     btBrain *m_brain;
