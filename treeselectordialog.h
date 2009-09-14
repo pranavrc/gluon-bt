@@ -24,6 +24,7 @@ private:
     QPushButton*        cancel_button;
     QPushButton*        ok_button;
     QStringListModel*   model;
+    QStringList*        list;
 };
 
 #endif // TREESELECTORDIALOG_H

@@ -15,20 +15,21 @@ TreeSelectorDialog::TreeSelectorDialog()
     mainLayout->addWidget(treelist);
     mainLayout->addLayout(buttonLayout);
     this->setLayout(mainLayout);
-
+    list = new QStringList();
     model = new QStringListModel();
+    model->setStringList(*list);
+    treelist->setModel(model);
 
 }
 
 void TreeSelectorDialog::updateModel(QList<btTreeModel *> behaviortrees){
-    QStringList* list = new QStringList();
-
     if(!behaviortrees.isEmpty()){
+        list->clear();
         foreach(btTreeModel* bttm,behaviortrees){
             list->append(bttm->name());
+
         }
         model->setStringList(*list);
-        treelist->setModel(model);
     }else{
         qDebug("Listen er tom");
     }
@@ -37,5 +38,6 @@ void TreeSelectorDialog::updateModel(QList<btTreeModel *> behaviortrees){
 }
 
 void TreeSelectorDialog::updateModel(btTreeModel * behaviortree){
-
+    list->append(behaviortree->name());
+    model->setStringList(*list);
 }
