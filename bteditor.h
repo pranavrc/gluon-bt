@@ -3,6 +3,7 @@
 
 #include <QtGui/QMainWindow>
 #include "ui_bteditor.h"
+#include "treeselectordialog.h"
 
 class btBrain;
 class btTreeModel;
@@ -29,8 +30,10 @@ public Q_SLOTS:
 private:
     btBrain *m_brain;
     btTreeModel *m_currentBehaviorTree;
+    TreeSelectorDialog *treeSelectDialog;
 
 private slots:
+    void on_actionSave_As_triggered();
     void on_actionOpen_triggered();
 };
 

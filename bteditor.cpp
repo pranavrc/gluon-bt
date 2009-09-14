@@ -7,6 +7,7 @@
 #include "btnodetypesmodel.h"
 #include "btnode.h"
 #include "modeltest.h"
+#include "treeselectordialog.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -15,6 +16,7 @@ bteditor::bteditor(QWidget *parent)
 
     m_brain = new btBrain(this);
     btNodeTypesModel *nodeTypes = new btNodeTypesModel(m_brain, this);
+    treeSelectDialog = new TreeSelectorDialog();
     connect(
         m_brain, SIGNAL(nodeTypeAdded(btNodeType*)),
         nodeTypes, SLOT(newBehaviorTreeTypeAdded(btNodeType*))
@@ -77,12 +79,15 @@ void bteditor::createNewBehaviorTree()
 
 void bteditor::showBehaviorTreeListCicked()
 {
-    QMessageBox::about(this, this->windowTitle(), "Show list of all behavior trees... menu permayhaps?");
+    treeSelectDialog->updateModel(m_brain->behaviorTrees);
+    treeSelectDialog->show();
+    //QMessageBox::about(this, this->windowTitle(), "Show list of all behavior trees... menu permayhaps?");
 }
 
 void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
 {
     showBehaviorTree(newTree);
+    treeSelectDialog->updateModel(newTree);
 }
 
 #include "bteditor.moc"
@@ -92,4 +97,14 @@ void bteditor::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                  "",
                                                  tr("Behavior Trees (*.glbt *.xml)"));
+    QMessageBox::about(this, this->windowTitle(),fileName);
+}
+
+void bteditor::on_actionSave_As_triggered()
+{
+    // get name of tree, use when saving
+     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+                            "untitled.glbt",
+                            tr("Behavior Trees (*.glbt *.xml)"));
+     // call kims code
 }

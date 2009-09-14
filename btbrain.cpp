@@ -58,6 +58,7 @@ btTreeModel *btBrain::newBehaviorTree()
 {
     // First create the new BT
     btTreeModel *newTree = new btTreeModel(this, this);
+    this->behaviorTrees.append(newTree);
     newTree->setName(tr("New Tree"));
     // We set the root node to be a sequence, as this is the fastest to choose that it should simply run the first child node (no selection, just runs children in sequence)
     btNode *btRootNode = new btNode(this->findNodeTypeByName("Sequence"));
