@@ -32,7 +32,11 @@ bool btNodeType::run()
 
 btNodeType * btNodeType::copy()
 {
+<<<<<<< HEAD
     btNodeType * copyNode = nodeTypeFactory::instance()->newObject(this->type());
+=======
+    btNodeType * copyNode = new btNodeType();
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
 
     const QMetaObject * mo = this->metaObject();
 

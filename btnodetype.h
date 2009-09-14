@@ -18,7 +18,11 @@ public:
 
     enum nodeType
     {
+<<<<<<< HEAD
         UnusableNodeType = 0,
+=======
+        UnusableNodeType = -1,
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
         ActionNodeType,
         CompositeNodeType,
         ConditionNodeType,

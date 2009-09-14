@@ -1,7 +1,12 @@
 #include "projectparser.h"
 
+<<<<<<< HEAD
 #include <QDebug>
 #include <QtXml>
+=======
+#include <QtXml>
+#include <QtDebug>
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
 
 #include "btbrain.h"
 #include "btcompositenode.h"
@@ -9,7 +14,10 @@
 #include "btnodetype.h"
 #include "btnode.h"
 #include "bttreemodel.h"
+<<<<<<< HEAD
 #include "btreferencenode.h"
+=======
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
 
 projectParser::projectParser()
 {
@@ -56,6 +64,7 @@ btBrain* projectParser::parseProject(QString xmlData)
 
                 btNode * newBTNode = new btNode();
 
+<<<<<<< HEAD
                 newBTNode->setType(nodeTypeFactory::instance()->newObject("composite"));
 
                 btTreeModel* newTreeModel = new btTreeModel(brain, brain);
@@ -72,6 +81,24 @@ btBrain* projectParser::parseProject(QString xmlData)
                 behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()] = newTreeModel;
                 brain->addBehaviorTree(newTreeModel);
                 brain->addNodeType(newTreeType);
+=======
+                for(int j = 0; j < brain->nodeTypes.count(); j++)
+                {
+                    if(brain->nodeTypes[j]->className() == nodeAttributes.namedItem("nodetype").nodeValue())
+                    {
+                        newBTNode->setType(brain->nodeTypes[j]->copy());
+                        break;
+                    }
+                }
+
+                newBTNode->setName(nodeAttributes.namedItem("name").nodeValue());
+                newBTNode->setDescription(nodeAttributes.namedItem("description").nodeValue());
+                btTreeModel* newTreeModel = new btTreeModel(brain, brain);
+                newTreeModel->setRootNode(newBTNode);
+
+                behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()] = newTreeModel;
+                brain->addBehaviorTree(newTreeModel);
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
             }
 
             //then parse every tree, and link them together
@@ -98,7 +125,14 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
         btNodeType* newNode = nodeTypeFactory::instance()->newObject(nodeTypeAttributes.namedItem("category").nodeValue());
         newNode->setName(nodeTypeAttributes.namedItem("name").nodeValue());
         newNode->setDescription(nodeTypeAttributes.namedItem("description").nodeValue());
+<<<<<<< HEAD
         newNode->setClassName(nodeTypeAttributes.namedItem("classname").nodeValue());
+=======
+<<<<<<< HEAD
+=======
+        newNode->setClassName(nodeTypeAttributes.namedItem("classname").nodeValue());
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
 
         for(int j = 0; j < currentNodeType.childNodes().count(); j++)
         {
@@ -109,12 +143,25 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
             newNode->setProperty(propertyAttributes.namedItem("datatype").nodeName().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());
         }
 
+<<<<<<< HEAD
         brain->addNodeType(newNode);
+=======
+<<<<<<< HEAD
+        brain->nodeTypes.append(newNode);
+=======
+        brain->addNodeType(newNode);
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
     }
 }
 
 void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * brain)
+<<<<<<< HEAD
 {
+=======
+<<<<<<< HEAD
+{    
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
     for(int i = 0; i < xNode.childNodes().count(); i++)
     {
         QDomNode currentNode = xNode.childNodes().at(i);
@@ -135,6 +182,31 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
         {
             if(currentNode.nodeName() == "property")
             {
+<<<<<<< HEAD
+=======
+                QDomNode currentAttribute = nodeAttributes.childNodes().at(j);
+=======
+{
+    for(int i = 0; i < xNode.childNodes().count(); i++)
+    {
+        QDomNode currentNode = xNode.childNodes().at(i);
+        QDomNamedNodeMap nodeAttributes = currentNode.attributes();
+
+        if(!nodeAttributes.namedItem("uid").isNull())
+        {
+            btNode* rootNode = behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()]->rootNode();
+            btNode* copyNode = new btNode( rootNode->type()->copy());
+            copyNode->setName(rootNode->name());
+            copyNode->setDescription(rootNode->description());
+
+            parseBehaviorTrees(currentNode, copyNode, brain);
+            behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()]->setRootNode(copyNode);
+        }
+        else
+        {
+            if(currentNode.nodeName() == "property")
+            {
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
                 btNodeType* nodeType = node->type()->copy();
                 if(nodeAttributes.namedItem("name").nodeName() == "reference")
                 {
@@ -142,7 +214,12 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
                     btRefNode->setReferenceBehaviorTree(behaviorTreesList[nodeAttributes.namedItem("value").nodeValue().toInt()]);
                 }
 
+<<<<<<< HEAD
                 nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue().toUtf8(), nodeAttributes.namedItem("value").nodeValue());
+=======
+                nodeType->setProperty(nodeAttributes.namedItem("name").nodeName().toUtf8(), nodeAttributes.namedItem("name").nodeValue());
+                nodeType->setProperty(nodeAttributes.namedItem("value").nodeName().toUtf8(), nodeAttributes.namedItem("value").nodeValue());
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
                 node->setType(nodeType);
                 return;
             }
@@ -152,12 +229,17 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
             for(int j = 0; j < nodeAttributes.count(); j++)
             {
                 QDomNode currentAttribute = nodeAttributes.item(j);
+<<<<<<< HEAD
                 qDebug() << "nodename" << currentAttribute.nodeName();
                 qDebug() << "nodevalue" << currentAttribute.nodeValue();
+=======
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
                 if(currentAttribute.nodeName() == "nodetype")
                 {
                     for(int k = 0; k < brain->nodeTypes.count(); k++)
                     {
+<<<<<<< HEAD
                         if(brain->nodeTypes[k]->className() == nodeAttributes.namedItem("nodetype").nodeValue())
                         {
                             newBTNode->setType(brain->nodeTypes[k]->copy());
@@ -167,17 +249,35 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
                         {
                             newBTNode->setType(new btReferenceNode());
                             break;
+=======
+<<<<<<< HEAD
+                        if(brain->nodeTypes[k]->name() == nodeAttributes.namedItem("nodetype").nodeValue())
+                        {
+                            newBTNode->setType(brain->nodeTypes[k]->copy());
+=======
+                        if(brain->nodeTypes[k]->className() == nodeAttributes.namedItem("nodetype").nodeValue())
+                        {
+                            newBTNode->setType(brain->nodeTypes[k]->copy());
+                            break;
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
                         }
                     }
                 }
                 else
                 {
+<<<<<<< HEAD
                     btNodeType * btType =  newBTNode->type()->copy();
                     btType->setProperty(currentAttribute.nodeName().toUtf8(), currentAttribute.nodeValue());
                     newBTNode->setType(btType);
+=======
+<<<<<<< HEAD
+                    newBTNode->setProperty(currentNode.nodeName().toUtf8(), currentNode.nodeValue());
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
                 }
             }
 
+<<<<<<< HEAD
             newBTNode->setName(newBTNode->type()->name());
             newBTNode->setDescription(newBTNode->type()->description());
 
@@ -195,6 +295,24 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
                 node->appendChild(newBTNode);
             }
             newBTNode->setParent(node);
+=======
+        if(currentNode.hasChildNodes())
+        {
+            parseBehaviorTrees(currentNode, newBTNode,brain);
+=======
+                    newBTNode->setProperty(currentAttribute.nodeName().toUtf8(), currentAttribute.nodeValue());
+                }
+            }
+
+            if(currentNode.hasChildNodes())
+            {
+                parseBehaviorTrees(currentNode, newBTNode,brain);
+            }
+
+            node->appendChild(newBTNode);
+            newBTNode->setParent(node);
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
         }
     }
 }

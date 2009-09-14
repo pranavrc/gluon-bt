@@ -4,9 +4,14 @@
 #include <QObject>
 #include <QHash>
 
+<<<<<<< HEAD
 class QDomNode;
 class btBrain;
 class btTreeModel;
+=======
+class btBrain;
+class QDomNode;
+>>>>>>> done parsing the xml file, now only need to editor to see the changes
 class btNode;
 
 class projectParser : public QObject
