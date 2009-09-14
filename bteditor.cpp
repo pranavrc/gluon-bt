@@ -1,4 +1,5 @@
 #include <QMessageBox>
+#include <QFileDialog>
 
 #include "bteditor.h"
 #include "btbrain.h"
@@ -85,3 +86,10 @@ void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
 }
 
 #include "bteditor.moc"
+
+void bteditor::on_actionOpen_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                 "",
+                                                 tr("Behavior Trees (*.glbt *.xml)"));
+}

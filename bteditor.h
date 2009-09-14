@@ -29,6 +29,9 @@ public Q_SLOTS:
 private:
     btBrain *m_brain;
     btTreeModel *m_currentBehaviorTree;
+
+private slots:
+    void on_actionOpen_triggered();
 };
 
 #endif // bteditor_H
