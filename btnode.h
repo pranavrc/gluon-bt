@@ -12,6 +12,8 @@ class btNodeType;
 class btNode : public QObject
 {
 Q_OBJECT;
+Q_PROPERTY(QString name READ name WRITE setName);
+Q_PROPERTY(QString description READ description WRITE setDescription);
 
 public:
     btNode(btNodeType *type = 0, btNode *parent = 0);

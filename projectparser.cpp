@@ -35,8 +35,32 @@ btBrain* projectParser::parseProject(QString xmlData)
             parseNodeTypes(nodeTypes, brain);
         }
 
-        if(!nodeTypes.isNull())
+        if(!behaviorTrees.isNull())
         {
+            //first parsing every root node of the behavior trees
+            for(int i = 0; i < behaviorTrees.childNodes().count(); i++)
+            {
+                QDomNode currentNode = behaviorTrees.childNodes().at(i);
+                QDomNamedNodeMap nodeAttributes = currentNode.attributes();
+
+                btNode * newBTNode = new btNode();
+
+                for(int j = 0; j < brain->nodeTypes.count(); j++)
+                {
+                    if(brain->nodeTypes[j]->name() == nodeAttributes.namedItem("nodetype").nodeValue())
+                    {
+                        newBTNode->setType(brain->nodeTypes[j]->copy());
+                        break;
+                    }
+                }
+
+                newBTNode->setName(nodeAttributes.namedItem("name").nodeValue());
+                newBTNode->setDescription(nodeAttributes.namedItem("description").nodeValue());
+
+                behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()] = newBTNode;
+            }
+
+            //then parse every tree, and link them together
             parseBehaviorTrees(behaviorTrees, brain);
         }
     }
@@ -74,8 +98,44 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
     }
 }
 
-void projectParser::parseBehaviorTrees(QDomNode xNode, btBrain * brain)
-{
+void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * brain)
+{    
+    for(int i = 0; i < xNode.childNodes().count(); i++)
+    {
+        QDomNode currentNode = xNode.childNodes().at(i);
+        QDomNode nodeAttributes = currentNode.attributes();
+
+        if(currentNode.nodeName() == "property")
+        {
+
+        }
+        else
+        {
+            for(int j = 0; j < nodeAttributes.childNodes().count(); j++)
+            {
+                QDomNode currentAttribute = nodeAttributes.childNodes().at(j);
+                if(currentAttribute.nodeName() == "nodetype")
+                {
+                    for(int k = 0; k < brain->nodeTypes.count(); k++)
+                    {
+                        if(brain->nodeTypes[k]->name() == nodeAttributes.namedItem("nodetype").nodeValue())
+                        {
+                            newBTNode->setType(brain->nodeTypes[k]->copy());
+                        }
+                    }
+                }
+                else
+                {
+                    newBTNode->setProperty(currentNode.nodeName().toUtf8(), currentNode.nodeValue());
+                }
+            }
+        }
+
+        if(currentNode.hasChildNodes())
+        {
+            parseBehaviorTrees(currentNode, newBTNode,brain);
+        }
+    }
 }
 
 #include "projectparser.moc"

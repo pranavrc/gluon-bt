@@ -2,6 +2,8 @@
 #define BTNODETYPE_H
 
 #include <QObject>
+#include <QMetaObject>
+#include <QMetaProperty>
 
 class btNodeType : public QObject
 {
@@ -33,6 +35,7 @@ public:
     nodeType type() const;
 	void setNodeType(nodeType type);
 	virtual bool run();
+    btNodeType * copy();
 	
 protected:
     QString m_name;

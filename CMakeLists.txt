@@ -7,8 +7,8 @@ include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_
 set(bteditor_SRCS
     btavailablenodestreeview.cpp
     bttreeeditor.cpp
-	projectParser.cpp
-	nodeTypeFactory.cpp
+        projectparser.cpp
+        nodetypefactory.cpp
    
     btbrain.cpp
     bteditor.cpp

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="testingBrain">
     <nodetypes>
-            <nodetype name="Sequence" description=":D" category="composite" classname="sequenceClass">
+            <nodetype name="sequence" description=":D" category="composite" classname="sequenceClass">
                 <property name="prop" description="property" datartype="QString"/>          
             </nodetype>
             <nodetype name="run" description=":D" category="action" classname="runClass">
@@ -9,4 +9,13 @@
             <nodetype name="blocker" description="blocks things" category="decorator" classname="blockerClass">
             </nodetype>
     </nodetypes>
+    <behaviortrees>
+        <behaviortree name="test tree" description="testing snask" uid="1">
+            <behaviornode name="lalala" description="blabla" nodetype="Sequence">
+                <behaviornode name="blabla" description="lalala" nodetype="run">
+                
+                </behaviornode>
+            </behaviornode>
+        </behaviortree>
+    </behaviortrees>
 </project>

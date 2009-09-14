@@ -4,11 +4,13 @@
 #include <QObject>
 #include <QtXml>
 #include <QtDebug>
+#include <QHash>
 
 #include "btbrain.h"
 #include "btcompositenode.h"
 #include "nodetypefactory.h"
 #include "btnodetype.h"
+#include "btnode.h"
 
 class projectParser : public QObject
 {
@@ -25,6 +27,8 @@ public:
 private:
 	projectParser();
 	
+    QHash<int, btNode*> behaviorTreesList;
+
 	void parseNodeTypes(QDomNode xNode, btBrain * brain);
 	void parseBehaviorTrees(QDomNode xNode, btBrain * brain);
 };
