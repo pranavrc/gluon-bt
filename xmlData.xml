@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<project name="testingBrain">
+    <nodetypes>
+            <nodetype name="Sequence" description=":D" category="composite" classname="sequenceClass">
+                <property name="prop" description="property" datartype="QString"/>          
+            </nodetype>
+            <nodetype name="run" description=":D" category="action" classname="runClass">
+            </nodetype>
+            <nodetype name="blocker" description="blocks things" category="decorator" classname="blockerClass">
+            </nodetype>
+    </nodetypes>
+</project>
