@@ -1,7 +1,7 @@
 #ifndef TREESELECTORDIALOG_H
 #define TREESELECTORDIALOG_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QListView>
@@ -10,12 +10,17 @@
 
 #include "bttreemodel.h"
 
-class TreeSelectorDialog : public QWidget
+class TreeSelectorDialog : public QDialog
 {
+    Q_OBJECT
 public:
     TreeSelectorDialog();
     void updateModel(QList<btTreeModel *> behaviortrees);
     void updateModel(btTreeModel * behaviortree);
+    void setupActions();
+
+public Q_SLOTS:
+    void chooseTree();
 
 private:
     QVBoxLayout*        mainLayout;
