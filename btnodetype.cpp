@@ -57,4 +57,19 @@ QString btNodeType::className() const
     return m_className;
 }
 
+btNodeType * btNodeType::copy()
+{
+    btNodeType * copyNode = new btNodeType();
+
+    const QMetaObject * mo = this->metaObject();
+
+    for(int i = 0; i < mo->propertyCount(); i++)
+    {
+        QMetaProperty moProperty = mo->property(i);
+        copyNode->setProperty(moProperty.name(), this->property(moProperty.name()));
+    }
+
+    return copyNode;
+}
+
 #include "btnodetype.moc"
