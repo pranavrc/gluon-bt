@@ -24,6 +24,9 @@ public:
     
     void setName(QString name);
     QString name() const;
+
+    void addBehaviorTree(btTreeModel * newTree);
+    void addNodeType(btNodeType * newNodeType);
 Q_SIGNALS:
     void behaviorTreeAdded(btTreeModel* newTree);
     void nodeTypeAdded(btNodeType* newNodeType);

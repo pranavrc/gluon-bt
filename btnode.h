@@ -42,6 +42,7 @@ public:
     void removeDecorator(btDecoratorNode* decorator);
     int decoratorCount();
     QList<btDecoratorNode*> decorators() const;
+
 private:
 	btNodeType *m_type;
 	

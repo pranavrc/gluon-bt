@@ -90,4 +90,15 @@ void btBrain::deleteBehaviorTree(btTreeModel *behaviorTree)
 void btBrain::setName(QString name) { m_name = name; }
 QString btBrain::name() const { return m_name; }
 
+void btBrain::addBehaviorTree(btTreeModel* newTree)
+{
+    behaviorTrees.append(newTree);
+    emit behaviorTreeAdded(newTree);
+}
+
+void btBrain::addNodeType(btNodeType* newNodeType)
+{
+    nodeTypes.append(newNodeType);
+    emit nodeTypeAdded(newNodeType);
+}
 #include "btbrain.moc"

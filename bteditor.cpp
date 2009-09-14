@@ -37,7 +37,7 @@ bteditor::bteditor(QWidget *parent)
         this, SLOT(newBehaviorTreeAdded(btTreeModel*))
         );
     this->availableNodes->setModel(nodeTypes);
-    m_brain->newBehaviorTree();
+//    m_brain->newBehaviorTree();
 }
 
 bteditor::~bteditor()

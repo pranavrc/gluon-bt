@@ -8,12 +8,28 @@
             </nodetype>
             <nodetype name="blocker" description="blocks things" category="decorator" classname="blockerClass">
             </nodetype>
+            <nodetype name="link" description=":D" category="reference" classname="referenceClass">
+                <property name="reference" description="reference to another tree" datartype="behaviortree"/>          
+            </nodetype>
     </nodetypes>
     <behaviortrees>
         <behaviortree name="test tree" description="testing snask" uid="1">
-            <behaviornode name="lalala" description="blabla" nodetype="Sequence">
+            <decorator name="sss" description="dssd" nodetype="blockerClass">
+            </decorator>
+            <behaviornode name="lalala" description="blabla" nodetype="sequenceClass">
+                <behaviornode name="blabla" description="lalala" nodetype="runClass">
+                    <property name="prop" value="sdfdfsdfs"/> 
+                </behaviornode>
+            </behaviornode>
+            <behaviornode name="link thingy" description="asdfsdafasd" nodetype="referenceClass">
+                <property name="reference" value="2"/>
+            </behaviornode>
+        </behaviortree>
+        
+        <behaviortree name="test tree" description="testing snask" uid="2">
+            <behaviornode name="sdfs" description="asdfsd" nodetype="sequenceClass">
+                <property name="prop" value="sdfdfsdfs"/> 
                 <behaviornode name="blabla" description="lalala" nodetype="run">
-                
                 </behaviornode>
             </behaviornode>
         </behaviortree>
