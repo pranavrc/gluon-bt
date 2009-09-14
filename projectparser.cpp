@@ -98,7 +98,10 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
         btNodeType* newNode = nodeTypeFactory::instance()->newObject(nodeTypeAttributes.namedItem("category").nodeValue());
         newNode->setName(nodeTypeAttributes.namedItem("name").nodeValue());
         newNode->setDescription(nodeTypeAttributes.namedItem("description").nodeValue());
+<<<<<<< HEAD
         newNode->setClassName(nodeTypeAttributes.namedItem("classname").nodeValue());
+=======
+>>>>>>> files for parsing project files. Only nodetype parsing is working at the moment.
 
         for(int j = 0; j < currentNodeType.childNodes().count(); j++)
         {
@@ -109,6 +112,7 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
             newNode->setProperty(propertyAttributes.namedItem("datatype").nodeName().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());
         }
 
+<<<<<<< HEAD
         brain->addNodeType(newNode);
     }
 }
@@ -197,6 +201,14 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
             newBTNode->setParent(node);
         }
     }
+=======
+        brain->nodeTypes.append(newNode);
+    }
+}
+
+void projectParser::parseBehaviorTrees(QDomNode xNode, btBrain * brain)
+{
+>>>>>>> files for parsing project files. Only nodetype parsing is working at the moment.
 }
 
 #include "projectparser.moc"

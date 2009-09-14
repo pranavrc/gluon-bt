@@ -14,13 +14,13 @@ nodeTypeFactory::nodeTypeFactory()
 
 nodeTypeFactory* nodeTypeFactory::instance()
 {
-    static nodeTypeFactory * factoryInstance;
-    if(factoryInstance == NULL)
-    {
-        factoryInstance = new nodeTypeFactory();
-    }
-
-    return factoryInstance;
+	static nodeTypeFactory * factoryInstance;
+	if(factoryInstance == NULL)
+	{
+		factoryInstance = new nodeTypeFactory();
+	}
+	
+	return factoryInstance;
 }
 
 btNodeType * nodeTypeFactory::newObject(QString typeCategory)
