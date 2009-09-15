@@ -18,7 +18,7 @@ bteditor::bteditor(QWidget *parent)
 	
 //////////
 	//remove this and use the menu items for loading :D
-	QFile file("xmlData.xml");
+    QFile file("xmlData.xml");
         file.open(QIODevice::ReadOnly | QIODevice::Text);
 	QByteArray byteArray = file.readAll();
 	QString fileContents(byteArray.data());	
@@ -101,7 +101,7 @@ void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
     treeSelectDialog->updateModel(newTree);
 }
 
-#include "bteditor.moc"
+
 
 void bteditor::on_actionOpen_triggered()
 {
@@ -125,3 +125,5 @@ void bteditor::setBehaviorTree(int index)
     // missing sanity check
     showBehaviorTree(m_brain->behaviorTrees[index]);
 }
+
+#include "bteditor.moc"

@@ -27,6 +27,7 @@ set(bteditor_SRCS
 	main.cpp
     modeltest.cpp
 )
+
  
 set(bteditor_UIS
     bteditor.ui
