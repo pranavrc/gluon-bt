@@ -103,9 +103,10 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
         {
             QDomNode currentProperty = currentNodeType.childNodes().at(j);
             QDomNamedNodeMap propertyAttributes = currentProperty.attributes();
-            newNode->setProperty(propertyAttributes.namedItem("name").nodeName().toUtf8(), propertyAttributes.namedItem("name").nodeValue());
+            /*newNode->setProperty(propertyAttributes.namedItem("name").nodeName().toUtf8(), propertyAttributes.namedItem("name").nodeValue());
             newNode->setProperty(propertyAttributes.namedItem("description").nodeName().toUtf8(), propertyAttributes.namedItem("description").nodeValue());
-            newNode->setProperty(propertyAttributes.namedItem("datatype").nodeName().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());
+            newNode->setProperty(propertyAttributes.namedItem("datatype").nodeName().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());*/
+            newNode->setProperty(propertyAttributes.namedItem("name").nodeValue().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());
         }
 
         brain->addNodeType(newNode);
@@ -143,7 +144,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
 
                 nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue().toUtf8(), nodeAttributes.namedItem("value").nodeValue());
                 node->setType(nodeType);
-                return;
+                continue;
             }
 
             btNode *  newBTNode = new btNode();
