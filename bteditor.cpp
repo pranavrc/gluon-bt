@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QFile>
 
 #include "bteditor.h"
 #include "btbrain.h"
@@ -8,13 +9,24 @@
 #include "btnode.h"
 #include "modeltest.h"
 #include "treeselectordialog.h"
+#include "projectparser.h"
 
 bteditor::bteditor(QWidget *parent)
 {
     setupUi(this);
     setupActions();
-
-    m_brain = new btBrain(this);
+	
+//////////
+	//remove this and use the menu items for loading :D
+	QFile file("xmlData.xml");
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+	QByteArray byteArray = file.readAll();
+	QString fileContents(byteArray.data());	
+	file.close();
+///////////
+	
+    m_brain = projectParser::instance()->parseProject(fileContents); //new btBrain(this);
+    showBehaviorTree(m_brain->behaviorTrees[0]);
     btNodeTypesModel *nodeTypes = new btNodeTypesModel(m_brain, this);
     treeSelectDialog = new TreeSelectorDialog(this);
     connect(
@@ -26,7 +38,7 @@ bteditor::bteditor(QWidget *parent)
         this, SLOT(newBehaviorTreeAdded(btTreeModel*))
         );
     this->availableNodes->setModel(nodeTypes);
-    m_brain->newBehaviorTree();
+//    m_brain->newBehaviorTree();
 }
 
 bteditor::~bteditor()

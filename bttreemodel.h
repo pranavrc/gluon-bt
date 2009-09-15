@@ -11,6 +11,7 @@ class btTreeModel : public QAbstractItemModel
 {
     Q_OBJECT
 	Q_PROPERTY(QString name READ name WRITE setName)
+    Q_PROPERTY(QString description READ description WRITE setDescription)
 
 public:
     btTreeModel(QObject *parent = 0, btBrain* containingBrain = 0);
@@ -34,9 +35,13 @@ public:
 
     QString name() const;
     void setName(QString name);
+
+    QString description() const;
+    void setDescription(QString description);
 private:
 	QString m_name;
-	
+    QString m_description;
+
     btNode *nodeFromIndex(const QModelIndex &index) const;
 
     btNode *m_rootNode;

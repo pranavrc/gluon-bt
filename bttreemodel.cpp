@@ -190,7 +190,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     while (i.hasNext())
     {
         i.next();
-        btNodeType *theNodeType = brain->findNodeTypeByName(i.value());
+        btNodeType *theNodeType = brain->findNodeTypeByName(i.value())->copy();
         theNodeType->setName(i.key());
         theNodeType->setParent(this);
         theNodeTypes.append(theNodeType);
@@ -224,5 +224,15 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
 
 void btTreeModel::setName(QString name) { m_name = name; }
 QString btTreeModel::name() const { return m_name; }
+
+void btTreeModel::setDescription(QString description)
+{
+    m_description = description;
+}
+
+QString btTreeModel::description() const
+{
+    return m_description;
+}
 
 #include "bttreemodel.moc"

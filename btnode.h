@@ -12,6 +12,8 @@ class btNodeType;
 class btNode : public QObject
 {
 Q_OBJECT;
+Q_PROPERTY(QString name READ name WRITE setName);
+Q_PROPERTY(QString description READ description WRITE setDescription);
 
 public:
     btNode(btNodeType *type = 0, btNode *parent = 0);
@@ -34,12 +36,13 @@ public:
     void setDescription(QString description);
     QString description() const;
 	void setType(btNodeType *newType);
-	btNodeType* type() const;
+    btNodeType* type() const;
 
     void addDecorator(btDecoratorNode* decorator);
     void removeDecorator(btDecoratorNode* decorator);
     int decoratorCount();
     QList<btDecoratorNode*> decorators() const;
+
 private:
 	btNodeType *m_type;
 	
