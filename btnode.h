@@ -36,7 +36,7 @@ public:
     void setDescription(QString description);
     QString description() const;
 	void setType(btNodeType *newType);
-	btNodeType* type() const;
+    btNodeType* type() const;
 
     void addDecorator(btDecoratorNode* decorator);
     void removeDecorator(btDecoratorNode* decorator);

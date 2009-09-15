@@ -18,7 +18,7 @@ public:
 
     enum nodeType
     {
-        UnusableNodeType = -1,
+        UnusableNodeType = 0,
         ActionNodeType,
         CompositeNodeType,
         ConditionNodeType,

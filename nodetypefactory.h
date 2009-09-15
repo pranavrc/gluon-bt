@@ -2,13 +2,8 @@
 #define _NODETYPEFACYORY_H_
 
 #include <QObject>
+
 #include "btnodetype.h"
-#include "btactionnode.h"
-#include "btcompositenode.h"
-#include "btconditionnode.h"
-#include "btdecoratornode.h"
-#include "btreferencenode.h"
-#include "btunusablenode.h"
 
 class nodeTypeFactory: public QObject
 {
@@ -18,6 +13,7 @@ public:
 	static nodeTypeFactory * instance();
 	
 	btNodeType * newObject(QString typeCategory);
+    btNodeType * newObject(btNodeType::nodeType type);
 private:
 	nodeTypeFactory();
 };

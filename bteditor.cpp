@@ -26,6 +26,7 @@ bteditor::bteditor(QWidget *parent)
 ///////////
 	
     m_brain = projectParser::instance()->parseProject(fileContents); //new btBrain(this);
+    showBehaviorTree(m_brain->behaviorTrees[0]);
     btNodeTypesModel *nodeTypes = new btNodeTypesModel(m_brain, this);
     treeSelectDialog = new TreeSelectorDialog();
     connect(

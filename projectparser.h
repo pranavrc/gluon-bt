@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QHash>
 
-class btBrain;
 class QDomNode;
+class btBrain;
+class btTreeModel;
 class btNode;
 
 class projectParser : public QObject

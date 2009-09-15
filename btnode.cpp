@@ -14,9 +14,7 @@ btNode::btNode(btNodeType *type, btNode *parent)
 btNode::~btNode()
 {
     qDeleteAll(children);
-    delete(parentNode);
-	// m_type is pointing to an entry in a list of items in btBrain, and as such should NOT be deleted here - the code is here to make clear exactly what not to write
-    // delete(m_type);
+    delete(m_type);
 }
 
 bool btNode::runBehavior()
@@ -104,7 +102,11 @@ QString btNode::description() const
         return m_description;
 }
 
-void btNode::setType(btNodeType *type) { m_type = type; }
+void btNode::setType(btNodeType *type)
+{
+    delete(m_type);
+    m_type = type;
+}
 btNodeType *btNode::type() const { return m_type; }
 
 void btNode::addDecorator(btDecoratorNode* decorator) { m_decorators.append(decorator); }

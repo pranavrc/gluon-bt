@@ -225,4 +225,14 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
 void btTreeModel::setName(QString name) { m_name = name; }
 QString btTreeModel::name() const { return m_name; }
 
+void btTreeModel::setDescription(QString description)
+{
+    m_description = description;
+}
+
+QString btTreeModel::description() const
+{
+    return m_description;
+}
+
 #include "bttreemodel.moc"

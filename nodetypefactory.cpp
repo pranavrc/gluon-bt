@@ -1,5 +1,12 @@
 #include "nodetypefactory.h"
 
+#include "btactionnode.h"
+#include "btcompositenode.h"
+#include "btconditionnode.h"
+#include "btdecoratornode.h"
+#include "btunusablenode.h"
+#include "btreferencenode.h"
+
 nodeTypeFactory::nodeTypeFactory()
 {
 }
@@ -7,46 +14,74 @@ nodeTypeFactory::nodeTypeFactory()
 
 nodeTypeFactory* nodeTypeFactory::instance()
 {
-	static nodeTypeFactory * factoryInstance;
-	if(factoryInstance == NULL)
-	{
-		factoryInstance = new nodeTypeFactory();
-	}
-	
-	return factoryInstance;
+    static nodeTypeFactory * factoryInstance;
+    if(factoryInstance == NULL)
+    {
+        factoryInstance = new nodeTypeFactory();
+    }
+
+    return factoryInstance;
 }
 
 btNodeType * nodeTypeFactory::newObject(QString typeCategory)
 {
-	btNodeType * newNode = 0;
-	
-	if(typeCategory == tr("action"))
-	{
-		newNode = new btActionNode(this);
-	}
-	else if(typeCategory == tr("condition"))
-	{
-		newNode = new btConditionNode();		
-	}
-	else if(typeCategory == tr("composite"))
-	{
-		newNode = new btCompositeNode();
-	}
-	else if(typeCategory == tr("decorator"))
-	{
-		newNode = new btDecoratorNode();
-	}
-	else if(typeCategory == tr("reference"))
-	{
-		newNode = new btReferenceNode();
-	}
-	else
-	{
-		newNode = new btUnusableNode();
-	}
-	
-	return newNode;
+    btNodeType * newNode = 0;
+
+    if(typeCategory == "action")
+    {
+        newNode = new btActionNode(this);
+    }
+    else if(typeCategory == "condition")
+    {
+        newNode = new btConditionNode();
+    }
+    else if(typeCategory == "composite")
+    {
+        newNode = new btCompositeNode();
+    }
+    else if(typeCategory == "decorator")
+    {
+        newNode = new btDecoratorNode();
+    }
+    else if(typeCategory == "reference")
+    {
+        newNode = new btDecoratorNode();
+    }
+    else
+    {
+        newNode = new btUnusableNode();
+    }
+
+    return newNode;
 }
-	
+
+btNodeType * nodeTypeFactory::newObject(btNodeType::nodeType type)
+{
+    btNodeType * newNode = 0;
+    switch(type)
+    {
+    case btNodeType::ActionNodeType:
+        newNode = new btActionNode();
+        break;
+    case btNodeType::CompositeNodeType:
+        newNode = new btCompositeNode();
+        break;
+    case btNodeType::ConditionNodeType:
+        newNode = new btConditionNode();
+        break;
+    case btNodeType::DecoratorNodeType:
+        newNode = new btDecoratorNode();
+        break;
+    case btNodeType::UnusableNodeType:
+        newNode = new btUnusableNode();
+        break;
+    case btNodeType::ReferenceNodeType:
+        newNode = new btReferenceNode();
+        break;
+    }
+
+    return newNode;
+}
+
 
 #include "nodetypefactory.moc"
