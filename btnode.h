@@ -28,6 +28,7 @@ public:
 	int columnCount() const;
 	int row() const;
 	btNode *parent();
+    void setParentNode(btNode * node);
 	QVariant data(int column) const;
     QVariant headerData(int column) const;
 	
