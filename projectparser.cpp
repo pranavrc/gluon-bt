@@ -194,7 +194,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
             {
                 node->appendChild(newBTNode);
             }
-            newBTNode->setParent(node);
+            newBTNode->setParentNode(node);
         }
     }
 }

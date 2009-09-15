@@ -114,4 +114,9 @@ void btNode::removeDecorator(btDecoratorNode* decorator) { m_decorators.removeAl
 int btNode::decoratorCount() { return m_decorators.count(); }
 QList<btDecoratorNode*> btNode::decorators() const { return m_decorators; }
 
+void btNode::setParentNode(btNode * node)
+{
+    parentNode = node;
+}
+
 #include "btnode.moc"
