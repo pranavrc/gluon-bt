@@ -50,7 +50,7 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 row, Q
 
 void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 row, btNode * node)
 {
-    QString propertyName, propertyDescription;
+    /*QString propertyName, propertyDescription;
     QVariant propertyValue;
     
     QLabel * titleLabel = new QLabel(this);
@@ -68,7 +68,7 @@ void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 
         propertyName = metaproperty.name();
         propertyValue = object->property(propertyName);
         appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
-    }
+    }*/
 }
 
 void btPropertyWidget::setupPropertyView()
