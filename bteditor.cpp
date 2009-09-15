@@ -18,7 +18,7 @@ bteditor::bteditor(QWidget *parent)
 	
 //////////
 	//remove this and use the menu items for loading :D
-	QFile file("xmlData.xml");
+    QFile file("xmlData.xml");
         file.open(QIODevice::ReadOnly | QIODevice::Text);
 	QByteArray byteArray = file.readAll();
 	QString fileContents(byteArray.data());	
@@ -28,7 +28,7 @@ bteditor::bteditor(QWidget *parent)
     m_brain = projectParser::instance()->parseProject(fileContents); //new btBrain(this);
     showBehaviorTree(m_brain->behaviorTrees[0]);
     btNodeTypesModel *nodeTypes = new btNodeTypesModel(m_brain, this);
-    treeSelectDialog = new TreeSelectorDialog();
+    treeSelectDialog = new TreeSelectorDialog(this);
     connect(
         m_brain, SIGNAL(nodeTypeAdded(btNodeType*)),
         nodeTypes, SLOT(newBehaviorTreeTypeAdded(btNodeType*))
@@ -93,7 +93,6 @@ void bteditor::showBehaviorTreeListCicked()
 {
     treeSelectDialog->updateModel(m_brain->behaviorTrees);
     treeSelectDialog->show();
-    //QMessageBox::about(this, this->windowTitle(), "Show list of all behavior trees... menu permayhaps?");
 }
 
 void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
@@ -102,7 +101,7 @@ void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
     treeSelectDialog->updateModel(newTree);
 }
 
-#include "bteditor.moc"
+
 
 void bteditor::on_actionOpen_triggered()
 {
@@ -120,3 +119,11 @@ void bteditor::on_actionSave_As_triggered()
                             tr("Behavior Trees (*.glbt *.xml)"));
      // call kims code
 }
+
+void bteditor::setBehaviorTree(int index)
+{
+    // missing sanity check
+    showBehaviorTree(m_brain->behaviorTrees[index]);
+}
+
+#include "bteditor.moc"

@@ -7,14 +7,19 @@
 #include <QListView>
 #include <QPushButton>
 #include <QStringListModel>
+#include <QMessageBox>
+#include <QDebug>
 
+#include "bteditor.h"
 #include "bttreemodel.h"
+
+class bteditor;
 
 class TreeSelectorDialog : public QDialog
 {
     Q_OBJECT
 public:
-    TreeSelectorDialog();
+    TreeSelectorDialog(bteditor* bte);
     void updateModel(QList<btTreeModel *> behaviortrees);
     void updateModel(btTreeModel * behaviortree);
     void setupActions();
@@ -30,6 +35,7 @@ private:
     QPushButton*        ok_button;
     QStringListModel*   model;
     QStringList*        list;
+    bteditor*           bte;
 };
 
 #endif // TREESELECTORDIALOG_H

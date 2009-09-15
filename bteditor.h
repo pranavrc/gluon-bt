@@ -8,6 +8,7 @@
 class btBrain;
 class btTreeModel;
 class btNode;
+class TreeSelectorDialog;
 
 class bteditor : public QMainWindow, private Ui::BtEditor
 {
@@ -24,6 +25,7 @@ public Q_SLOTS:
     void createNewBehaviorTree();
     void newBehaviorTreeAdded(btTreeModel* newTree);
     void showBehaviorTreeListCicked();
+    void setBehaviorTree(int index);
     
     void editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
     
