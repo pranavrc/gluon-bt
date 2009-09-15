@@ -142,8 +142,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
                     btRefNode->setReferenceBehaviorTree(behaviorTreesList[nodeAttributes.namedItem("value").nodeValue().toInt()]);
                 }
 
-                nodeType->setProperty(nodeAttributes.namedItem("name").nodeName().toUtf8(), nodeAttributes.namedItem("name").nodeValue());
-                nodeType->setProperty(nodeAttributes.namedItem("value").nodeName().toUtf8(), nodeAttributes.namedItem("value").nodeValue());
+                nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue(), nodeAttributes.namedItem("value").nodeValue());
                 node->setType(nodeType);
                 return;
             }
