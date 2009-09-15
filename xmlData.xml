@@ -11,9 +11,6 @@
             </nodetype>
             <nodetype name="blocker" description="blocks things" category="decorator" classname="blockerClass">
             </nodetype>
-            <nodetype name="link" description=":D" category="reference" classname="referenceClass">
-                <property name="reference" description="reference to another tree" datartype="behaviortree"/>          
-            </nodetype>
     </nodetypes>
     <behaviortrees>
         <behaviortree name="test tree" description="testing snask" uid="1">
