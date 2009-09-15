@@ -16,7 +16,7 @@ bteditor::bteditor(QWidget *parent)
 
     m_brain = new btBrain(this);
     btNodeTypesModel *nodeTypes = new btNodeTypesModel(m_brain, this);
-    treeSelectDialog = new TreeSelectorDialog();
+    treeSelectDialog = new TreeSelectorDialog(this);
     connect(
         m_brain, SIGNAL(nodeTypeAdded(btNodeType*)),
         nodeTypes, SLOT(newBehaviorTreeTypeAdded(btNodeType*))
@@ -81,7 +81,6 @@ void bteditor::showBehaviorTreeListCicked()
 {
     treeSelectDialog->updateModel(m_brain->behaviorTrees);
     treeSelectDialog->show();
-    //QMessageBox::about(this, this->windowTitle(), "Show list of all behavior trees... menu permayhaps?");
 }
 
 void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
@@ -107,4 +106,10 @@ void bteditor::on_actionSave_As_triggered()
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
      // call kims code
+}
+
+void bteditor::setBehaviorTree(int index)
+{
+    // missing sanity check
+    showBehaviorTree(m_brain->behaviorTrees[index]);
 }
