@@ -66,7 +66,7 @@ void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 
     {
         QMetaProperty metaproperty = metaobject->property(i);
         propertyName = metaproperty.name();
-        propertyValue = object->property(name);
+        propertyValue = object->property(propertyName);
         appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
     }
 }
@@ -78,6 +78,8 @@ void btPropertyWidget::setupPropertyView()
     qint32 row = 0;
 
     appendObjectToPropertyView(propertyLayout, row, m_node);
+    
+    //foreach()
     
     this->setLayout(propertyLayout);
 }
