@@ -1,5 +1,7 @@
 #include "btnodetype.h"
 
+#include "nodetypefactory.h"
+
 btNodeType::btNodeType(QObject * parent)
 {
 }
@@ -30,7 +32,7 @@ bool btNodeType::run()
 
 btNodeType * btNodeType::copy()
 {
-    btNodeType * copyNode = new btNodeType();
+    btNodeType * copyNode = nodeTypeFactory::instance()->newObject(this->type());
 
     const QMetaObject * mo = this->metaObject();
 
@@ -53,21 +55,6 @@ void btNodeType::setClassName(QString className)
 QString btNodeType::className() const
 {
     return m_className;
-}
-
-btNodeType * btNodeType::copy()
-{
-    btNodeType * copyNode = new btNodeType();
-
-    const QMetaObject * mo = this->metaObject();
-
-    for(int i = 0; i < mo->propertyCount(); i++)
-    {
-        QMetaProperty moProperty = mo->property(i);
-        copyNode->setProperty(moProperty.name(), this->property(moProperty.name()));
-    }
-
-    return copyNode;
 }
 
 #include "btnodetype.moc"
