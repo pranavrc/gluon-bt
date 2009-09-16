@@ -29,6 +29,9 @@
       <attribute name="headerDefaultSectionSize">
        <number>150</number>
       </attribute>
+      <attribute name="headerDefaultSectionSize">
+       <number>150</number>
+      </attribute>
      </widget>
     </item>
     <item row="0" column="0">
@@ -60,7 +63,7 @@
      <x>0</x>
      <y>0</y>
      <width>917</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -98,6 +101,12 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockWidget_2">
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>85</height>
+    </size>
+   </property>
    <property name="features">
     <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
@@ -112,7 +121,7 @@
      <property name="margin">
       <number>0</number>
      </property>
-     <item row="1" column="0">
+     <item row="0" column="0">
       <widget class="QScrollArea" name="propertyScrollArea">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -137,8 +146,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>69</width>
-          <height>522</height>
+          <width>229</width>
+          <height>519</height>
          </rect>
         </property>
        </widget>
