@@ -34,7 +34,7 @@ btPropertyWidget::~btPropertyWidget()
 {
 }
 
-void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 row, QString name, QString description, QVariant value, QVariant options)
+void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, QString name, QString description, QVariant value, QVariant options)
 {
     ++row;
     
@@ -48,27 +48,48 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 row, Q
     }
 }
 
-void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 row, btNode * node)
+void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object)
 {
-    /*QString propertyName, propertyDescription;
+    QString propertyName, propertyDescription;
     QVariant propertyValue;
     
+    const QMetaObject *metaobject = object->metaObject();
+    
+    int count = metaobject->propertyCount();
+    for (int i=0; i<count; ++i)
+    {
+        QMetaProperty metaproperty = metaobject->property(i);
+        propertyName = metaproperty.name();
+        propertyValue = object->property(propertyName.toUtf8());
+        appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
+    }
+}
+
+void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btNode * node)
+{
+    ++row;
+    QLabel * titleLabel = new QLabel(this);
+    titleLabel->setText(node->name());
+    titleLabel->setToolTip(node->description());
+    layout->addWidget(titleLabel, 0, row, 2, 0);
+ 
+    // Add a new property line for each property in the object's metaobject...
+    QObject *object = node;
+    appendMetaObjectToPropertyView(layout, row, object);
+    
+}
+
+void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint32 &row, btNodeType * node)
+{
+    ++row;
     QLabel * titleLabel = new QLabel(this);
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
     layout->addWidget(titleLabel, 0, row, 2, 0);
     
     // Add a new property line for each property in the object's metaobject...
-    QObject *object = this->m_node;
-    const QMetaObject *metaobject = object->metaObject();
-    int count = metaobject->propertyCount();
-    for (int i=0; i<count; ++i)
-    {
-        QMetaProperty metaproperty = metaobject->property(i);
-        propertyName = metaproperty.name();
-        propertyValue = object->property(propertyName);
-        appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
-    }*/
+    QObject *object = node;
+    appendMetaObjectToPropertyView(layout, row, object);
 }
 
 void btPropertyWidget::setupPropertyView()
@@ -77,9 +98,16 @@ void btPropertyWidget::setupPropertyView()
     
     qint32 row = 0;
 
-    appendObjectToPropertyView(propertyLayout, row, m_node);
+    // First add yourself...
+    appendObjectToPropertyView(propertyLayout, row, node());
     
-    //foreach()
+    // Then add all the decorators...
+    btDecoratorNode * decorator;
+    foreach(decorator, node()->decorators())
+        appendComponentToPropertyView(propertyLayout, row, decorator);
+    
+    // Finally, add the node's nodeType
+    appendComponentToPropertyView(propertyLayout, row, node()->type());
     
     this->setLayout(propertyLayout);
 }

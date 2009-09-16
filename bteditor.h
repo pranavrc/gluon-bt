@@ -10,6 +10,7 @@ class btBrain;
 class btTreeModel;
 class btNode;
 class TreeSelectorDialog;
+class btPropertyWidget;
 
 class bteditor : public QMainWindow, private Ui::BtEditor
 {
@@ -35,10 +36,11 @@ private:
     btNodeTypesModel* nodeTypes;
     btTreeModel *m_currentBehaviorTree;
     TreeSelectorDialog *treeSelectDialog;
+    btPropertyWidget *propertyWidget;
 
 private slots:
-    void on_actionSave_As_triggered();
-    void on_actionOpen_triggered();
+    void on_actionSave_As_triggered ();
+    void on_actionOpen_triggered ();
 };
 
 #endif // bteditor_H

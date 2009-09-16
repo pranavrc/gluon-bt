@@ -10,10 +10,13 @@
 #include "modeltest.h"
 #include "treeselectordialog.h"
 #include "projectparser.h"
+#include "btpropertywidget.h"
 
 bteditor::bteditor(QWidget *parent)
 {
     setupUi(this);
+    propertyWidget = new btPropertyWidget(this);
+    propertyScrollArea->setWidget(propertyWidget);
     setupActions();
 	
     m_brain = new btBrain(this);
@@ -66,7 +69,7 @@ void bteditor::editorSelectionChanged(const QItemSelection& selected, const QIte
 
 void bteditor::showPropertiesFor(btNode* showFor)
 {
-    QMessageBox::about(0, "blab", showFor->name());
+    propertyWidget->setNode(showFor);
 }
 
 void bteditor::createNewBehaviorTree()
