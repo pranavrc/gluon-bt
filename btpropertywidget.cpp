@@ -79,7 +79,7 @@ void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 
     QLabel * titleLabel = new QLabel(this);
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
-    layout->addWidget(titleLabel, row, 0, 2, 1);
+    layout->addWidget(titleLabel, row, 0, 1, 2);
  
     // Add a new property line for each property in the object's metaobject...
     QObject *object = node;
@@ -93,7 +93,7 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
     QLabel * titleLabel = new QLabel(this);
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
-    layout->addWidget(titleLabel, row, 0, 2, 1);
+    layout->addWidget(titleLabel, row, 0, 1, 2);
     
     // Add a new property line for each property in the object's metaobject...
     QObject *object = node;
@@ -117,7 +117,15 @@ void btPropertyWidget::setupPropertyView()
     // Finally, add the node's nodeType
     appendComponentToPropertyView(propertyLayout, row, node()->type());
     
-    this->setLayout(propertyLayout);
+    // Add spacery type stuffs...
+    QWidget * containerWidget = new QWidget(this);
+    containerWidget->setLayout(propertyLayout);
+    
+    QVBoxLayout * containerLayout = new QVBoxLayout(this);
+    containerLayout->addWidget(containerWidget);
+    containerLayout->addStretch();
+    
+    this->setLayout(containerLayout);
 }
 
 btNode * btPropertyWidget::node() const { return m_node; }
