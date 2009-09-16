@@ -20,12 +20,13 @@
 #include <QBoxLayout>
 #include <QVariant>
 #include <QLabel>
+#include <QLineEdit>
+#include <QDoubleSpinBox>
 #include <QGridLayout>
 #include <QtCore/QMetaClassInfo>
 
 #include "btpropertywidget.h"
 #include "btnode.h"
-#include <qlineedit.h>
 
 btPropertyWidget::btPropertyWidget(QObject * parent)
 {
@@ -44,14 +45,23 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, 
     nameLabel->setToolTip(description);
     layout->addWidget(nameLabel, row, 0);
     
+    QWidget * editWidget;
     switch(value.type())
     {
         case QVariant::String:
-            QLineEdit * editWidget = new QLineEdit(this);
-            editWidget->setText(value.toString());
-            layout->addWidget(editWidget, row, 1);
+            editWidget = new QLineEdit(this);
+            qobject_cast<QLineEdit*>(editWidget)->setText(value.toString());
+            break;
+        case QVariant::Int:
+            editWidget = new QSpinBox(this);
+            qobject_cast<QSpinBox*>(editWidget)->setValue(value.toInt());
+            break;
+        case QVariant::Double:
+            editWidget = new QDoubleSpinBox(this);
+            qobject_cast<QDoubleSpinBox*>(editWidget)->setValue(value.toDouble());
             break;
     }
+    layout->addWidget(editWidget, row, 1);
 }
 
 void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object)
@@ -69,6 +79,13 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
         if(propertyName == "objectName")
             continue;
         propertyValue = object->property(propertyName.toUtf8());
+        appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
+    }
+    
+    foreach(QByteArray name, object->dynamicPropertyNames())
+    {
+        propertyName = QString(name);
+        propertyValue = object->property(name);
         appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
     }
 }
@@ -102,6 +119,12 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
 
 void btPropertyWidget::setupPropertyView()
 {
+    if(layout())
+    {
+        qDeleteAll(layout()->children());
+        delete(layout());
+    }
+    
     QGridLayout * propertyLayout = new QGridLayout(this);
     
     qint32 row = 0;
