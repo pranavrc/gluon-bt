@@ -60,6 +60,10 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, 
             editWidget = new QDoubleSpinBox(this);
             qobject_cast<QDoubleSpinBox*>(editWidget)->setValue(value.toDouble());
             break;
+        default:
+            editWidget = new QLabel(this);
+            qobject_cast<QLabel*>(editWidget)->setText(tr("Unknown type (%1)").arg(value.toString()));
+            break;
     }
     layout->addWidget(editWidget, row, 1);
 }
