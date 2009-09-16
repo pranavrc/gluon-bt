@@ -14,7 +14,7 @@ btNodeEditWidget::btNodeEditWidget()
     classnameedit   = new QLineEdit();
     discriptionedit = new QLineEdit();
 
-    propertyList    = new QListView();
+    propertyList    = new QTableView();
 
     editLayout->addWidget(name,0,0);
     editLayout->addWidget(nameedit,0,1);

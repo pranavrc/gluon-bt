@@ -6,7 +6,8 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QGridLayout>
-#include <QListView>
+#include <QTableView>
+#include "btNodeTypesModel.h"
 
 class btNodeEditWidget : public QWidget
 {
@@ -23,7 +24,7 @@ private:
     QLineEdit       *nameedit;
     QLineEdit       *classnameedit;
     QLineEdit       *discriptionedit;
-    QListView       *propertyList;
+    QTableView      *propertyList;
 
 };
 
