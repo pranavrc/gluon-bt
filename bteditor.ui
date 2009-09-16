@@ -29,9 +29,6 @@
       <attribute name="headerDefaultSectionSize">
        <number>150</number>
       </attribute>
-      <attribute name="headerDefaultSectionSize">
-       <number>150</number>
-      </attribute>
      </widget>
     </item>
     <item row="0" column="0">
@@ -63,7 +60,7 @@
      <x>0</x>
      <y>0</y>
      <width>917</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -87,6 +84,7 @@
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
     <addaction name="actionMake_Selection_Into_Tree"/>
+    <addaction name="actionEdit_Node"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -104,7 +102,7 @@
    <property name="minimumSize">
     <size>
      <width>200</width>
-     <height>85</height>
+     <height>91</height>
     </size>
    </property>
    <property name="features">
@@ -146,8 +144,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>229</width>
-          <height>519</height>
+          <width>200</width>
+          <height>522</height>
          </rect>
         </property>
        </widget>
@@ -299,6 +297,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionEdit_Node">
+   <property name="text">
+    <string>Edit Node...</string>
    </property>
   </action>
  </widget>

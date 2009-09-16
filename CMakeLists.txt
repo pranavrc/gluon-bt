@@ -10,6 +10,7 @@ set(bteditor_SRCS
     projectparser.cpp
     nodetypefactory.cpp
     btpropertywidget.cpp
+    btnodeeditwidget.cpp
 
     btbrain.cpp
     bteditor.cpp

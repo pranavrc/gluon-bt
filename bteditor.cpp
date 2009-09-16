@@ -11,6 +11,7 @@
 #include "treeselectordialog.h"
 #include "projectparser.h"
 #include "btpropertywidget.h"
+#include "btnodeeditwidget.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -96,7 +97,7 @@ void bteditor::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                  "",
                                                  tr("Behavior Trees (*.glbt *.xml)"));
-    QFile file("../xmlData.xml");
+    QFile file(fileName);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QByteArray byteArray = file.readAll();
     QString fileContents(byteArray.data());
@@ -139,6 +140,15 @@ void bteditor::replaceBrain(){
         this, SLOT(newBehaviorTreeAdded(btTreeModel*))
         );
     this->availableNodes->setModel(nodeTypes);
+}
+
+
+
+void bteditor::on_actionEdit_Node_triggered()
+{
+    //just for testing
+    btNodeEditWidget* editWidget = new btNodeEditWidget();
+    editWidget->show();
 }
 
 #include "bteditor.moc"
