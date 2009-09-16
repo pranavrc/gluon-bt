@@ -1,4 +1,5 @@
 #include "btnodeeditwidget.h"
+#include "btnodemodel.h"
 
 btNodeEditWidget::btNodeEditWidget()
 {
@@ -26,5 +27,10 @@ btNodeEditWidget::btNodeEditWidget()
     mainLayout->addLayout(editLayout);
     mainLayout->addWidget(properties);
     mainLayout->addWidget(propertyList);
+
+}
+
+void btNodeEditWidget::setModel(btnodemodel* btmodel)
+{
 
 }

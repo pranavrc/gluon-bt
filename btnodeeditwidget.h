@@ -7,12 +7,15 @@
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QTableView>
-#include "btNodeTypesModel.h"
+
+class btnodemodel;
+
 
 class btNodeEditWidget : public QWidget
 {
 public:
     btNodeEditWidget();
+    void setModel(btnodemodel* btmodel);
 private:
     QVBoxLayout     *mainLayout;
     QHBoxLayout     *buttonLayout;

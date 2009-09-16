@@ -1,13 +1,15 @@
 #include "btnodemodel.h"
+#include "btnodetypesmodel.h"
 
-btnodemodel::btnodemodel(btNodeType* nodetypes,QObject *parent)
+btnodemodel::btnodemodel(QList<btNodeType *> nodetypes,QObject *parent)
         :QAbstractTableModel(parent)
 {
+    nodeList = nodetypes;
 }
 
 int btnodemodel::rowCount(const QModelIndex &parent) const
 {
-    return stringList.count();
+    return nodeList.count();
 }
 
 QVariant btnodemodel::data(const QModelIndex &index, int role) const
@@ -15,11 +17,11 @@ QVariant btnodemodel::data(const QModelIndex &index, int role) const
      if (!index.isValid())
          return QVariant();
 
-     if (index.row() >= stringList.size())
+     if (index.row() >= nodeList.size())
          return QVariant();
 
      if (role == Qt::DisplayRole)
-         return stringList.at(index.row());
+         return nodeList.at(index.row())->name();
      else
          return QVariant();
  }
