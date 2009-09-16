@@ -34,7 +34,7 @@ btPropertyWidget::~btPropertyWidget()
 {
 }
 
-void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 row, QString name, QString description, QVariant value, QVariant options)
+void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, QString name, QString description, QVariant value, QVariant options)
 {
     ++row;
     
@@ -48,7 +48,7 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 row, Q
     }
 }
 
-void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qint32 row, QObject * object)
+void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object)
 {
     QString propertyName, propertyDescription;
     QVariant propertyValue;
@@ -65,7 +65,7 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
     }
 }
 
-void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 row, btNode * node)
+void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btNode * node)
 {
     ++row;
     QLabel * titleLabel = new QLabel(this);
@@ -79,7 +79,7 @@ void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 
     
 }
 
-void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint32 row, btNodeType * node)
+void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint32 &row, btNodeType * node)
 {
     ++row;
     QLabel * titleLabel = new QLabel(this);

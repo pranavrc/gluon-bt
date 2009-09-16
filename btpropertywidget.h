@@ -43,10 +43,10 @@ private:
     QWidget * createComponentPropertyView();
     
     void setupPropertyView();
-    void appendToPropertyView (QGridLayout *layout, qint32 row, QString name, QString descrition, QVariant value, QVariant options = 0);
-    void appendObjectToPropertyView (QGridLayout * layout, qint32 row, btNode * node);
-    void appendComponentToPropertyView (QGridLayout *layout, qint32 row, btNodeType * node);
-    void appendMetaObjectToPropertyView (QGridLayout * layout, qint32 row, QObject * object);
+    void appendToPropertyView (QGridLayout *layout, qint32 &row, QString name, QString descrition, QVariant value, QVariant options = 0);
+    void appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btNode * node);
+    void appendComponentToPropertyView (QGridLayout *layout, qint32 &row, btNodeType * node);
+    void appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object);
 };
 
 #endif // BTPROPERTYWIDGET_H
