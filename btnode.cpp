@@ -15,7 +15,7 @@ btNode::~btNode()
 {
     qDeleteAll(m_children);
     qDeleteAll(m_decorators);
-    delete(m_type);
+    //delete(m_type);
 }
 
 bool btNode::runBehavior()

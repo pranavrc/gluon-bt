@@ -5,6 +5,7 @@
 #include "ui_bteditor.h"
 #include "treeselectordialog.h"
 
+class btNodeTypesModel;
 class btBrain;
 class btTreeModel;
 class btNode;
@@ -26,11 +27,12 @@ public Q_SLOTS:
     void newBehaviorTreeAdded(btTreeModel* newTree);
     void showBehaviorTreeListCicked();
     void setBehaviorTree(int index);
-    
+    void replaceBrain();
     void editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
     
 private:
     btBrain *m_brain;
+    btNodeTypesModel* nodeTypes;
     btTreeModel *m_currentBehaviorTree;
     TreeSelectorDialog *treeSelectDialog;
 

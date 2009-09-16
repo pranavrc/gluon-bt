@@ -16,20 +16,13 @@ bteditor::bteditor(QWidget *parent)
     setupUi(this);
     setupActions();
 	
-
     m_brain = new btBrain(this);
+    nodeTypes = new btNodeTypesModel(m_brain, this);
 
-    btNodeTypesModel *nodeTypes = new btNodeTypesModel(m_brain, this);
+    replaceBrain();
+
     treeSelectDialog = new TreeSelectorDialog(this);
-    connect(
-        m_brain, SIGNAL(nodeTypeAdded(btNodeType*)),
-        nodeTypes, SLOT(newBehaviorTreeTypeAdded(btNodeType*))
-        );
-    connect(
-        m_brain, SIGNAL(behaviorTreeAdded(btTreeModel*)),
-        this, SLOT(newBehaviorTreeAdded(btTreeModel*))
-        );
-    this->availableNodes->setModel(nodeTypes);
+
     m_brain->newBehaviorTree();
 }
 
@@ -106,8 +99,14 @@ void bteditor::on_actionOpen_triggered()
     QString fileContents(byteArray.data());
     file.close();
 
+    delete m_brain;
+    delete nodeTypes;
+
     m_brain = projectParser::instance()->parseProject(fileContents);
-    //showBehaviorTree(m_brain->behaviorTrees[0]);
+    m_brain->setParent(this);
+    nodeTypes = new btNodeTypesModel(m_brain, this);
+    replaceBrain();
+    showBehaviorTree(m_brain->behaviorTrees[0]);
 
 }
 
@@ -118,12 +117,25 @@ void bteditor::on_actionSave_As_triggered()
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
      // call kims code
-}
+
+ }
 
 void bteditor::setBehaviorTree(int index)
 {
     // missing sanity check
     showBehaviorTree(m_brain->behaviorTrees[index]);
+}
+
+void bteditor::replaceBrain(){
+    connect(
+        m_brain, SIGNAL(nodeTypeAdded(btNodeType*)),
+        nodeTypes, SLOT(newBehaviorTreeTypeAdded(btNodeType*))
+        );
+    connect(
+        m_brain, SIGNAL(behaviorTreeAdded(btTreeModel*)),
+        this, SLOT(newBehaviorTreeAdded(btTreeModel*))
+        );
+    this->availableNodes->setModel(nodeTypes);
 }
 
 #include "bteditor.moc"
