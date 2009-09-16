@@ -16,17 +16,9 @@ bteditor::bteditor(QWidget *parent)
     setupUi(this);
     setupActions();
 	
-//////////
-	//remove this and use the menu items for loading :D
-    QFile file("xmlData.xml");
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
-	QByteArray byteArray = file.readAll();
-	QString fileContents(byteArray.data());	
-	file.close();
-///////////
-	
-    m_brain = projectParser::instance()->parseProject(fileContents); //new btBrain(this);
-    showBehaviorTree(m_brain->behaviorTrees[0]);
+
+    m_brain = new btBrain(this);
+
     btNodeTypesModel *nodeTypes = new btNodeTypesModel(m_brain, this);
     treeSelectDialog = new TreeSelectorDialog(this);
     connect(
@@ -38,7 +30,7 @@ bteditor::bteditor(QWidget *parent)
         this, SLOT(newBehaviorTreeAdded(btTreeModel*))
         );
     this->availableNodes->setModel(nodeTypes);
-//    m_brain->newBehaviorTree();
+    m_brain->newBehaviorTree();
 }
 
 bteditor::~bteditor()
@@ -108,7 +100,15 @@ void bteditor::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                  "",
                                                  tr("Behavior Trees (*.glbt *.xml)"));
-    QMessageBox::about(this, this->windowTitle(),fileName);
+    QFile file("../xmlData.xml");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray byteArray = file.readAll();
+    QString fileContents(byteArray.data());
+    file.close();
+
+    m_brain = projectParser::instance()->parseProject(fileContents);
+    //showBehaviorTree(m_brain->behaviorTrees[0]);
+
 }
 
 void bteditor::on_actionSave_As_triggered()

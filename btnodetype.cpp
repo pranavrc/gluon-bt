@@ -57,4 +57,9 @@ QString btNodeType::className() const
     return m_className;
 }
 
+QString btNodeType::toXml()
+{
+    return "Hello";
+}
+
 #include "btnodetype.moc"

@@ -20,6 +20,7 @@ class TreeSelectorDialog : public QDialog
     Q_OBJECT
 public:
     TreeSelectorDialog(bteditor* bte);
+    ~TreeSelectorDialog();
     void updateModel(QList<btTreeModel *> behaviortrees);
     void updateModel(btTreeModel * behaviortree);
     void setupActions();

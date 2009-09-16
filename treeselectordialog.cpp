@@ -24,9 +24,14 @@ TreeSelectorDialog::TreeSelectorDialog(bteditor* bte)
     setupActions();
 
     list = new QStringList();
-    model = new QStringListModel();
+    model = new QStringListModel(this);
     model->setStringList(*list);
     treelist->setModel(model);
+}
+
+TreeSelectorDialog::~TreeSelectorDialog(){
+    list->clear();
+    delete list;
 }
 
 void TreeSelectorDialog::setupActions(){

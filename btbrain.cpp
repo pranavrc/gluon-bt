@@ -9,7 +9,7 @@
 
 btBrain::btBrain(QObject *parent)
 {
-    /*btCompositeNode *compositeNode = new btCompositeNode();
+    btCompositeNode *compositeNode = new btCompositeNode();
     compositeNode->setName("Sequence");
     compositeNode->setDescription("A sequence of behaviors, launched in order (fails if one fails)");
     nodeTypes.append(compositeNode);
@@ -37,7 +37,7 @@ btBrain::btBrain(QObject *parent)
     btDecoratorNode * decoratorNode = new btDecoratorNode();
     decoratorNode->setName("Resource Guard");
     decoratorNode->setDescription("Make sure that a specific resource is available before accepting traversal into the associated node");
-    nodeTypes.append(decoratorNode);*/
+    nodeTypes.append(decoratorNode);
 }
 
 btBrain::~btBrain()
