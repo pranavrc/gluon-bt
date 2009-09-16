@@ -25,6 +25,7 @@
 
 #include "btpropertywidget.h"
 #include "btnode.h"
+#include <qlineedit.h>
 
 btPropertyWidget::btPropertyWidget(QObject * parent)
 {
@@ -45,6 +46,11 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, 
     
     switch(value.type())
     {
+        case QVariant::String:
+            QLineEdit * editWidget = new QLineEdit(this);
+            editWidget->setText(value.toString());
+            layout->addWidget(editWidget, row, 1);
+            break;
     }
 }
 
@@ -60,6 +66,8 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
     {
         QMetaProperty metaproperty = metaobject->property(i);
         propertyName = metaproperty.name();
+        if(propertyName == "objectName")
+            continue;
         propertyValue = object->property(propertyName.toUtf8());
         appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
     }
@@ -71,7 +79,7 @@ void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 
     QLabel * titleLabel = new QLabel(this);
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
-    layout->addWidget(titleLabel, 0, row, 2, 0);
+    layout->addWidget(titleLabel, row, 0, 2, 1);
  
     // Add a new property line for each property in the object's metaobject...
     QObject *object = node;
@@ -85,7 +93,7 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
     QLabel * titleLabel = new QLabel(this);
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
-    layout->addWidget(titleLabel, 0, row, 2, 0);
+    layout->addWidget(titleLabel, row, 0, 2, 1);
     
     // Add a new property line for each property in the object's metaobject...
     QObject *object = node;
