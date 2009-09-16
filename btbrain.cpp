@@ -6,6 +6,7 @@
 #include "btcompositenode.h"
 #include "btconditionnode.h"
 #include <QtCore/qtextstream.h>
+#include "btreferencenode.h"
 
 btBrain::btBrain(QObject *parent)
 {
@@ -18,26 +19,6 @@ btBrain::btBrain(QObject *parent)
     compositeNode->setName("Selector");
     compositeNode->setDescription("A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)");
     nodeTypes.append(compositeNode);
-
-    compositeNode = new btCompositeNode();
-    compositeNode->setName("Parallel");
-    compositeNode->setDescription("A collection of behaviors which are launched at the same time");
-    nodeTypes.append(compositeNode);
-
-    compositeNode = new btCompositeNode();
-    compositeNode->setName("Random");
-    compositeNode->setDescription("A collection of behaviors from which is selected one to be launched");
-    nodeTypes.append(compositeNode);
-
-    btConditionNode * conditionNode = new btConditionNode();
-    conditionNode->setName("InBehavior");
-    conditionNode->setDescription("Check whether you are in a specified behavior");
-    nodeTypes.append(conditionNode);
-    
-    btDecoratorNode * decoratorNode = new btDecoratorNode();
-    decoratorNode->setName("Resource Guard");
-    decoratorNode->setDescription("Make sure that a specific resource is available before accepting traversal into the associated node");
-    nodeTypes.append(decoratorNode);
 }
 
 btBrain::~btBrain()
@@ -63,14 +44,14 @@ btTreeModel *btBrain::newBehaviorTree()
     // We set the root node to be a sequence, as this is the fastest to choose that it should simply run the first child node (no selection, just runs children in sequence)
     btNode *btRootNode = new btNode(this->findNodeTypeByName("Sequence"));
     newTree->setRootNode(btRootNode);
+    btRootNode->setParent(newTree);
     
     // Add a real top level node, which should be a selector as per Alex' defintion of behavior trees
-    btNode *topNode = new btNode(this->findNodeTypeByName("Selector"));
+    btNode *topNode = new btNode(this->findNodeTypeByName("Selector"), btRootNode);
     topNode->setName(tr("Top Beavior"));
-    btRootNode->appendChild(topNode);
     
     // Then add it to the list of referenced NodeTypes...
-    btNodeType *newType = new btNodeType(this);
+    btReferenceNode *newType = new btReferenceNode();
     newType->setName(newTree->name());
     newType->setDescription(tr("A reference to the behavior tree named %1").arg(newTree->name()));
     newType->setNodeType(btNodeType::ReferenceNodeType);

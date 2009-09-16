@@ -48,7 +48,7 @@ private:
 	btNodeType *m_type;
 	
 	btNode *parentNode;
-	QList<btNode *> children;
+    QList<btNode *> m_children;
 	
 	QString m_name;
     QString m_description;

@@ -3,7 +3,7 @@
 #include "btnode.h"
 #include "btnodetype.h"
 
-btNode::btNode(btNodeType *type, btNode *parent)
+btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
 {
 	this->m_type = type;
 	this->parentNode = parent;
@@ -13,7 +13,8 @@ btNode::btNode(btNodeType *type, btNode *parent)
 
 btNode::~btNode()
 {
-    qDeleteAll(children);
+    qDeleteAll(m_children);
+    qDeleteAll(m_decorators);
     delete(m_type);
 }
 
@@ -26,17 +27,17 @@ bool btNode::runBehavior()
 
 void btNode::appendChild(btNode *node)
 {
-	children.append(node);
+    m_children.append(node);
 }
 
 btNode *btNode::child(int row)
 {
-	return children.value(row);
+    return m_children.value(row);
 }
 
 int btNode::childCount() const
 {
-	return children.count();
+    return m_children.count();
 }
 
 int btNode::columnCount() const
@@ -47,7 +48,7 @@ int btNode::columnCount() const
 int btNode::row() const
 {
 	if(parentNode)
-		return parentNode->children.indexOf(const_cast<btNode *>(this));
+        return parentNode->m_children.indexOf(const_cast<btNode *>(this));
 	
 	return 0;
 }
@@ -118,6 +119,7 @@ void btNode::setParentNode(btNode* node)
 {
     delete(parentNode);
     parentNode = node;
+    this->setParent(node);
 }
 
 #include "btnode.moc"

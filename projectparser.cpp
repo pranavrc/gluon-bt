@@ -60,6 +60,8 @@ btBrain* projectParser::parseProject(QString xmlData)
                 btTreeModel* newTreeModel = new btTreeModel(brain, brain);
                 newTreeModel->setRootNode(newBTNode);
 
+                newBTNode->setParent(newTreeModel);
+
                 newTreeModel->setName(nodeAttributes.namedItem("name").nodeValue());
                 newTreeModel->setDescription(nodeAttributes.namedItem("description").nodeValue());
 
@@ -124,6 +126,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
         {
             btNode* rootNode = behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()]->rootNode();
             btNode* copyNode = new btNode( rootNode->type()->copy());
+            copyNode->setParent(behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()]);
             copyNode->setName(rootNode->name());
             copyNode->setDescription(rootNode->description());
 
