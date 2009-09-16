@@ -1,11 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <project name="testingBrain">
     <nodetypes>
             <nodetype name="selector" description=":D" category="composite" classname="selectorClass">
                 <property name="dd" description="property" datatype="QString"/>          
             </nodetype>
             <nodetype name="sequence" description=":D" category="composite" classname="sequenceClass">
-                <property name="prop" description="property" datartype="QString"/>          
+                <property name="prop" description="property" datatype="QString"/>          
             </nodetype>
             <nodetype name="run" description=":D" category="action" classname="runClass">
             </nodetype>
@@ -15,10 +15,10 @@
     <behaviortrees>
         <behaviortree name="test tree" description="testing snask" uid="1">
             <behaviornode name="lalala" description="blabla" nodetype="sequenceClass">
+                <property name="prop" value="sdfdfsdfs"/> 
                 <decorator name="sss" description="dssd" nodetype="blockerClass">
                 </decorator>
                 <behaviornode name="running" description="hope it runs" nodetype="runClass">
-                    <property name="prop" value="sdfdfsdfs"/> 
                 </behaviornode>
                 <behaviornode name="link thingy" description="asdfsdafasd" nodetype="[reference]">
                     <property name="reference" value="2"/>

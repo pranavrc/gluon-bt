@@ -100,7 +100,7 @@ void bteditor::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                  "",
                                                  tr("Behavior Trees (*.glbt *.xml)"));
-    QFile file("../xmlData.xml");
+    QFile file(fileName);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QByteArray byteArray = file.readAll();
     QString fileContents(byteArray.data());
@@ -117,7 +117,7 @@ void bteditor::on_actionSave_As_triggered()
      QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
-     // call kims code
+     QString fileContents = projectParser::instance()->serializeProject(this->m_brain);
 }
 
 void bteditor::setBehaviorTree(int index)

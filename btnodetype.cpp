@@ -39,9 +39,20 @@ btNodeType * btNodeType::copy()
     for(int i = 0; i < mo->propertyCount(); i++)
     {
         QMetaProperty moProperty = mo->property(i);
+        QString propertyName = moProperty.name();
+
+        if(propertyName == "objectName")
         {
-            copyNode->setProperty(moProperty.name(), this->property(moProperty.name()));
+            continue;
         }
+
+        copyNode->setProperty(propertyName.toUtf8(), this->property(moProperty.name()));
+    }
+
+    for(int i = 0; i < this->dynamicPropertyNames().count(); i++)
+    {
+        QString propertyName(this->dynamicPropertyNames().at(i));
+        copyNode->setProperty(propertyName.toUtf8(), this->property(propertyName.toUtf8()));
     }
 
     return copyNode;

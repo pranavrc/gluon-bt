@@ -78,6 +78,9 @@ btNodeType * nodeTypeFactory::newObject(btNodeType::nodeType type)
     case btNodeType::ReferenceNodeType:
         newNode = new btReferenceNode();
         break;
+    default:
+        newNode = new btUnusableNode();
+        break;
     }
 
     return newNode;
