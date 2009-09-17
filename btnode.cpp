@@ -2,6 +2,8 @@
 #include <QVariant>
 #include "btnode.h"
 #include "btnodetype.h"
+#include "btreferencenode.h"
+#include "bttreemodel.h"
 
 btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
 {
@@ -120,6 +122,86 @@ void btNode::setParentNode(btNode* node)
     delete(parentNode);
     parentNode = node;
     this->setParent(node);
+}
+
+QString btNode::toXml(QList<btTreeModel *> behaviorTrees) const
+{
+	QString startTag = "<behaviornode ";
+    QString endTag = "</behaviornode>";
+    QString properties = "";
+    QString children = "";
+    btNodeType * nodeType = this->type();
+    const QMetaObject * mo = nodeType->metaObject();
+    
+    for(int i = 0; i < mo->propertyCount(); i++)
+    {
+        QMetaProperty moProperty = mo->property(i);
+        QString propertyName = moProperty.name();
+        
+        if(propertyName == "objectName")
+        {
+            continue;
+        }
+        
+        if(propertyName == "name")
+        {
+            startTag += "name=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
+        }
+        else if(propertyName == "description")
+        {
+            startTag += "description=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
+        }
+        else if(propertyName == "className")
+        {
+            if(nodeType->type() == btNodeType::ReferenceNodeType)
+            {
+                startTag += "nodetype=\"[reference]\" ";
+            }
+            else
+            {
+                startTag += "nodetype=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
+            }
+        }
+    }
+    
+    startTag += ">";
+    
+    
+    if(nodeType->type() == btNodeType::ReferenceNodeType)
+    {
+        btReferenceNode * btRefNode = qobject_cast<btReferenceNode*>(nodeType);
+        properties = "<property name=\"reference\" value=\"";
+        
+        for(int i = 0; i < behaviorTrees.count(); i ++)
+        {
+            if(btRefNode->referenceBehaviorTree() == behaviorTrees.at(i))
+            {
+                properties += QVariant(i).toString() +"\" />";
+            }
+        }
+    }
+    else
+    {
+        for(int i = 0; i < nodeType->dynamicPropertyNames().count(); i++)
+        {
+            QString propertyName(nodeType->dynamicPropertyNames().at(i));
+            properties += "<property name=\"" + propertyName + "\" value=\"";
+            properties +=  nodeType->property(propertyName.toUtf8()).toString();
+            properties += "\" />";
+        }
+    }
+    
+    for(int i = 0; i < this->m_decorators.count(); i++)
+    {
+        children += this->decorators().at(i)->toDataXml();
+    }
+    
+    for(int i = 0; i < this->childCount(); i++)
+    {
+        children += m_children[i]->toXml(behaviorTrees);
+    }
+    
+    return startTag + properties + children + endTag;
 }
 
 #include "btnode.moc"

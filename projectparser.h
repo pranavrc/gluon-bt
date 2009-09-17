@@ -29,12 +29,6 @@ private:
 
     void parseNodeTypes(QDomNode xNode, btBrain * brain);
     void parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * brain);
-
-    QString serializeNodeTypes(QList<btNodeType *> nodeTypes) const;
-    QString serializeBehaviorTree(QList<btTreeModel *> behaviorTrees) const;
-    QString serializeNodeTypeProperties(btNodeType * nodetype) const;
-    QString serializeBehaviorTreeNode(btNode* node, QList<btTreeModel *> behaviorTrees) const;
-    QString serializeBehaviorTreeDecorator(btNodeType * decorator) const;
 };
 
 #endif
