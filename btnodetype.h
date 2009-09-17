@@ -40,7 +40,9 @@ public:
     btNodeType * copy();
     QString className() const;
     void setClassName(QString className);
-    QString toXml();
+    
+    const QString toNodeTypeXml();
+    virtual const QString toDataXml();
 
 protected:
     QString m_name;

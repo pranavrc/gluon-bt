@@ -12,6 +12,7 @@
 #include "projectparser.h"
 #include "btpropertywidget.h"
 #include "btnodeeditwidget.h"
+#include "btnodemodel.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -123,7 +124,17 @@ void bteditor::on_actionSave_As_triggered()
      QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
+    
+    if(!fileName.endsWith(".xml", Qt::CaseInsensitive))
+        fileName += ".xml";
+    
      QString fileContents = projectParser::instance()->serializeProject(this->m_brain);
+    
+    QFile file(fileName);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QByteArray byteFileContents(fileContents.toUtf8());
+    file.write(byteFileContents);
+    file.close();
 }
 
 void bteditor::setBehaviorTree(int index)
@@ -149,8 +160,12 @@ void bteditor::replaceBrain(){
 void bteditor::on_actionEdit_Node_triggered()
 {
     //just for testing
+    if(m_brain->nodeTypes.count() >= 3){
+    btnodemodel* btm = new btnodemodel(m_brain->nodeTypes.at(2),this);
     btNodeEditWidget* editWidget = new btNodeEditWidget();
+    editWidget->setModel(btm);
     editWidget->show();
+    }
 }
 
 #include "bteditor.moc"

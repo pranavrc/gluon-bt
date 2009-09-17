@@ -13,7 +13,6 @@ set(bteditor_SRCS
     btpropertywidgetitem.cpp
     btnodeeditwidget.cpp
     btnodemodel.cpp
-
     btbrain.cpp
     bteditor.cpp
     btnode.cpp

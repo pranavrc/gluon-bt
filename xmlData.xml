@@ -2,7 +2,8 @@
 <project name="testingBrain">
     <nodetypes>
             <nodetype name="selector" description=":D" category="composite" classname="selectorClass">
-                <property name="dd" description="property" datatype="QString"/>          
+				<property name="dd" description="property" datatype="QString"/>     
+				<property name="fisk" description="hejkim" datatype="QString"/>      
             </nodetype>
             <nodetype name="sequence" description=":D" category="composite" classname="sequenceClass">
                 <property name="prop" description="property" datatype="QString"/>          

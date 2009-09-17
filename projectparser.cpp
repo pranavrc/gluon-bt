@@ -12,6 +12,7 @@
 
 projectParser::projectParser()
 {
+    m_indentCount = 0;
 }
 
 projectParser* projectParser::instance()
@@ -33,6 +34,10 @@ btBrain* projectParser::parseProject(QString xmlData)
     if(xmlDocument.setContent(xmlData))
     {
         QDomElement rootNode = xmlDocument.documentElement();
+        QDomNamedNodeMap rootNodeAttributes = rootNode.attributes();
+        
+        brain->setName(rootNodeAttributes.namedItem("name").nodeValue());
+        
         QDomNode nodeTypes = rootNode.namedItem("nodetypes");
         QDomNode behaviorTrees = rootNode.namedItem("behaviortrees");
 
@@ -189,235 +194,62 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
     }
 }
 
-QString projectParser::serializeProject(btBrain * brain) const
+const QString projectParser::serializeProject(btBrain * brain)
 {
     QString xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 
-    xmlData += "<nodetypes>";
-    xmlData += serializeNodeTypes(brain->nodeTypes);
-    xmlData += "</nodetypes>";
+    xmlData += "\n<project name=\""+ brain->name() + "\">";
+    increaseIndents();
+    
+    xmlData += writeIndents() + "<nodetypes>";
+    increaseIndents();
+    for(int i = 2; i < brain->nodeTypes.count(); i++)
+    {
+        xmlData += brain->nodeTypes[i]->toNodeTypeXml();
+    }
+    decreaseIndents();
+    xmlData += writeIndents() + "</nodetypes>";
 
-    xmlData += "<behaviortrees>";
-    xmlData += serializeBehaviorTree(brain->behaviorTrees);
-    xmlData += "</behaviortrees>";
+    xmlData += writeIndents() +"<behaviortrees>";
+    increaseIndents();
+    for(int i = 0; i < brain->behaviorTrees.count(); i++)
+    {
+        xmlData += writeIndents()+ "<behaviortree name=\""+ brain->behaviorTrees[i]->name() +"\" description=\"" + brain->behaviorTrees[i]->description() + "\" uid=\"" + QVariant(i).toString() + "\" />";
+        
+        increaseIndents();        
+        xmlData += brain->behaviorTrees[i]->rootNode()->child(0)->toXml(brain->behaviorTrees);
+        decreaseIndents();
+        
+        xmlData += writeIndents()+"</behaviortree>";
+    }
+    decreaseIndents();
+    xmlData += writeIndents() + "</behaviortrees> ";
 
+    decreaseIndents();
+    xmlData += "\n</project>";
+    
     return xmlData;
 }
 
-QString projectParser::serializeNodeTypes(QList<btNodeType *> nodeTypes) const
+void projectParser::increaseIndents()
 {
-    QString xmlData = "";
-
-    for(int i = 2; i < nodeTypes.count(); i++)
-    {
-        if(nodeTypes[i]->type() != btNodeType::ReferenceNodeType)
-        {
-            xmlData += "<nodetype ";
-            xmlData += serializeNodeTypeProperties(nodeTypes[i]);
-            xmlData += "</nodetype>";
-        }
-    }
-
-    return xmlData;
+    m_indentCount++;
 }
 
-QString projectParser::serializeBehaviorTree(QList<btTreeModel *> behaviorTrees) const
+void projectParser::decreaseIndents()
 {
-    QString xmlData = "";
-
-    for(int i = 0; i < behaviorTrees.count(); i++)
-    {
-        xmlData += "<behaviortree name=\""+ behaviorTrees[i]->name() +"\" description=\"" + behaviorTrees[i]->description() + "\" uid=\"" + QVariant(i).toString() + "\" />";
-        xmlData += serializeBehaviorTreeNode(behaviorTrees[i]->rootNode()->child(0), behaviorTrees);
-        xmlData += "</behaviortree>";
-    }
-
-    return xmlData;
+    m_indentCount--;
 }
 
-QString projectParser::serializeNodeTypeProperties(btNodeType * nodeType) const
+const QString projectParser::writeIndents()
 {
-    QString nodeTypeAttributes = "";
-    QString properties = "";
-
-    const QMetaObject * mo = nodeType->metaObject();
-
-    for(int i = 0; i < mo->propertyCount(); i++)
+    QString indents = "\n";
+    for (int i = 0; i < m_indentCount; i++) 
     {
-        QMetaProperty moProperty = mo->property(i);
-        QString propertyName = moProperty.name();
-
-        if(propertyName == "objectName")
-        {
-            continue;
-        }
-
-        if(propertyName == "name")
-        {
-            nodeTypeAttributes += "name=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
-        }
-        else if(propertyName == "description")
-        {
-            nodeTypeAttributes += "description=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
-        }
-        else if(propertyName == "className")
-        {
-            nodeTypeAttributes += "classname=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
-        }
+        indents += "\t";
     }
-
-    switch(nodeType->type())
-    {
-    case btNodeType::ActionNodeType:
-        nodeTypeAttributes += "category=\"action\">";
-        break;
-    case btNodeType::CompositeNodeType:
-        nodeTypeAttributes += "category=\"composite\">";
-        break;
-    case btNodeType::ConditionNodeType:
-        nodeTypeAttributes += "category=\"condition\">";
-        break;
-    case btNodeType::DecoratorNodeType:
-        nodeTypeAttributes += "category=\"decorator\">";
-        break;
-    case btNodeType::UnusableNodeType:
-        nodeTypeAttributes += "category=\"unusable\">";
-        break;
-    }
-
-    for(int i = 0; i < nodeType->dynamicPropertyNames().count(); i++)
-    {
-        QString propertyName(nodeType->dynamicPropertyNames().at(i));
-        properties += "<property name=\"" + propertyName + "\" description=\"\" datatype=\"";
-        properties +=  nodeType->property(propertyName.toUtf8()).toString();
-        properties += "\" />";
-    }
-
-    return nodeTypeAttributes + properties;
-}
-
-QString projectParser::serializeBehaviorTreeNode(btNode * node, QList<btTreeModel *> behaviorTrees) const
-{
-    QString startTag = "<behaviornode ";
-    QString endTag = "</behaviornode>";
-    QString properties = "";
-    QString children = "";
-    btNodeType * nodeType = node->type();
-    const QMetaObject * mo = nodeType->metaObject();
-
-    for(int i = 0; i < mo->propertyCount(); i++)
-    {
-        QMetaProperty moProperty = mo->property(i);
-        QString propertyName = moProperty.name();
-
-        if(propertyName == "objectName")
-        {
-            continue;
-        }
-
-        if(propertyName == "name")
-        {
-            startTag += "name=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
-        }
-        else if(propertyName == "description")
-        {
-            startTag += "description=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
-        }
-        else if(propertyName == "className")
-        {
-            if(nodeType->type() == btNodeType::ReferenceNodeType)
-            {
-                startTag += "nodetype=\"[reference]\" ";
-            }
-            else
-            {
-                startTag += "nodetype=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
-            }
-        }
-    }
-
-    startTag += ">";
-
-
-    if(nodeType->type() == btNodeType::ReferenceNodeType)
-    {
-        btReferenceNode * btRefNode = qobject_cast<btReferenceNode*>(nodeType);
-        properties = "<property name=\"reference\" value=\"";
-
-        for(int i = 0; i < behaviorTrees.count(); i ++)
-        {
-            if(btRefNode->referenceBehaviorTree() == behaviorTrees.at(i))
-            {
-                properties += QVariant(i).toString() +"\" />";
-            }
-        }
-    }
-    else
-    {
-        for(int i = 0; i < nodeType->dynamicPropertyNames().count(); i++)
-        {
-            QString propertyName(nodeType->dynamicPropertyNames().at(i));
-            properties += "<property name=\"" + propertyName + "\" value=\"";
-            properties +=  nodeType->property(propertyName.toUtf8()).toString();
-            properties += "\" />";
-        }
-    }
-
-    for(int i = 0; i < node->decoratorCount(); i++)
-    {
-        children += serializeBehaviorTreeDecorator(node->decorators().at(i));
-    }
-
-    for(int i = 0; i < node->childCount(); i++)
-    {
-        children += serializeBehaviorTreeNode(node->child(i), behaviorTrees);
-    }
-
-    return startTag + properties + children + endTag;
-}
-
-
-QString projectParser::serializeBehaviorTreeDecorator(btNodeType * decorator) const
-{
-    QString startTag = "<decorator ";
-    QString endTag = "</decorator>";
-    QString properties = "";
-
-    const QMetaObject * mo = decorator->metaObject();
-
-    for(int i = 0; i < mo->propertyCount(); i++)
-    {
-        QMetaProperty moProperty = mo->property(i);
-        QString propertyName = moProperty.name();
-
-        if(propertyName == "objectName")
-        {
-            continue;
-        }
-
-        if(propertyName == "name")
-        {
-            startTag += "name=\"" + decorator->property(moProperty.name()).toString() + "\" ";
-        }
-        else if(propertyName == "description")
-        {
-            startTag += "description=\"" + decorator->property(moProperty.name()).toString() + "\" ";
-        }
-        else if(propertyName == "className")
-        {
-            startTag += "classname=\"" + decorator->property(moProperty.name()).toString() + "\" ";
-        }
-    }
-
-    for(int i = 0; i < decorator->dynamicPropertyNames().count(); i++)
-    {
-        QString propertyName(decorator->dynamicPropertyNames().at(i));
-        properties += "<property name=\"" + propertyName + "\" value=\"";
-        properties +=  decorator->property(propertyName.toUtf8()).toString();
-        properties += "\" />";
-    }
-
-    return startTag + properties + endTag;
+    
+    return indents;
 }
 
 #include "projectparser.moc"
