@@ -12,6 +12,7 @@
 #include "projectparser.h"
 #include "btpropertywidget.h"
 #include "btnodeeditwidget.h"
+#include "btnodemodel.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -159,8 +160,12 @@ void bteditor::replaceBrain(){
 void bteditor::on_actionEdit_Node_triggered()
 {
     //just for testing
+    if(m_brain->nodeTypes.count() >= 3){
+    btnodemodel* btm = new btnodemodel(m_brain->nodeTypes.at(2),this);
     btNodeEditWidget* editWidget = new btNodeEditWidget();
+    editWidget->setModel(btm);
     editWidget->show();
+    }
 }
 
 #include "bteditor.moc"

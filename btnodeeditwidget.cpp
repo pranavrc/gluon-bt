@@ -32,5 +32,5 @@ btNodeEditWidget::btNodeEditWidget()
 
 void btNodeEditWidget::setModel(btnodemodel* btmodel)
 {
-
+    propertyList->setModel(btmodel);
 }
