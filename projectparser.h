@@ -20,11 +20,16 @@ public:
     //parsing the xmldata, which is a QString which is contents of the xml file
     btBrain* parseProject(QString xmlData);
     //returning the btBrain serialized to a xml formatted QString
-    QString serializeProject(btBrain * brain) const;
+    const QString serializeProject(btBrain * brain);
+    
+    void increaseIndents();
+    void decreaseIndents();
+    const QString writeIndents();
 
 private:
     projectParser();
 
+    int m_indentCount;
     QHash<int, btTreeModel*> behaviorTreesList;
 
     void parseNodeTypes(QDomNode xNode, btBrain * brain);

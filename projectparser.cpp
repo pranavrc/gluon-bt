@@ -12,6 +12,7 @@
 
 projectParser::projectParser()
 {
+    m_indentCount = 0;
 }
 
 projectParser* projectParser::instance()
@@ -33,6 +34,10 @@ btBrain* projectParser::parseProject(QString xmlData)
     if(xmlDocument.setContent(xmlData))
     {
         QDomElement rootNode = xmlDocument.documentElement();
+        QDomNamedNodeMap rootNodeAttributes = rootNode.attributes();
+        
+        brain->setName(rootNodeAttributes.namedItem("name").nodeValue());
+        
         QDomNode nodeTypes = rootNode.namedItem("nodetypes");
         QDomNode behaviorTrees = rootNode.namedItem("behaviortrees");
 
@@ -189,28 +194,62 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
     }
 }
 
-QString projectParser::serializeProject(btBrain * brain) const
+const QString projectParser::serializeProject(btBrain * brain)
 {
     QString xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 
-    xmlData += "<nodetypes>";
+    xmlData += "\n<project name=\""+ brain->name() + "\">";
+    increaseIndents();
+    
+    xmlData += writeIndents() + "<nodetypes>";
+    increaseIndents();
     for(int i = 2; i < brain->nodeTypes.count(); i++)
     {
         xmlData += brain->nodeTypes[i]->toNodeTypeXml();
     }
-    xmlData += "</nodetypes>";
+    decreaseIndents();
+    xmlData += writeIndents() + "</nodetypes>";
 
-    xmlData += "<behaviortrees>";
+    xmlData += writeIndents() +"<behaviortrees>";
+    increaseIndents();
     for(int i = 0; i < brain->behaviorTrees.count(); i++)
     {
-        xmlData += "<behaviortree name=\""+ brain->behaviorTrees[i]->name() +"\" description=\"" + brain->behaviorTrees[i]->description() + "\" uid=\"" + QVariant(i).toString() + "\" />";
+        xmlData += writeIndents()+ "<behaviortree name=\""+ brain->behaviorTrees[i]->name() +"\" description=\"" + brain->behaviorTrees[i]->description() + "\" uid=\"" + QVariant(i).toString() + "\" />";
+        
+        increaseIndents();        
         xmlData += brain->behaviorTrees[i]->rootNode()->child(0)->toXml(brain->behaviorTrees);
-        xmlData += "</behaviortree>";
+        decreaseIndents();
+        
+        xmlData += writeIndents()+"</behaviortree>";
     }
-		qDebug() << xmlData;
-    xmlData += "</behaviortrees>";
+    decreaseIndents();
+    xmlData += writeIndents() + "</behaviortrees> ";
 
+    decreaseIndents();
+    xmlData += "\n</project>";
+    
     return xmlData;
+}
+
+void projectParser::increaseIndents()
+{
+    m_indentCount++;
+}
+
+void projectParser::decreaseIndents()
+{
+    m_indentCount--;
+}
+
+const QString projectParser::writeIndents()
+{
+    QString indents = "\n";
+    for (int i = 0; i < m_indentCount; i++) 
+    {
+        indents += "\t";
+    }
+    
+    return indents;
 }
 
 #include "projectparser.moc"

@@ -1,6 +1,7 @@
 #include "btnodetype.h"
 
 #include "nodetypefactory.h"
+#include "projectparser.h"
 
 btNodeType::btNodeType(QObject * parent)
 {
@@ -68,13 +69,13 @@ QString btNodeType::className() const
     return m_className;
 }
 
-QString btNodeType::toNodeTypeXml() const
+const QString btNodeType::toNodeTypeXml()
 {
 	if(this->type() == btNodeType::ReferenceNodeType)
 		return "";
 	
-    QString startTag = "<nodetype ";
-    QString endTag = "</nodetype>";
+    QString startTag = projectParser::instance()->writeIndents() +  "<nodetype ";
+    QString endTag = projectParser::instance()->writeIndents() + "</nodetype>";
 
     const QMetaObject * mo = this->metaObject();
 
@@ -123,18 +124,21 @@ QString btNodeType::toNodeTypeXml() const
 
     QString properties = "";
 
+    projectParser::instance()->increaseIndents();
     for(int i = 0; i < this->dynamicPropertyNames().count(); i++)
     {
         QString propertyName(this->dynamicPropertyNames().at(i));
+        properties += projectParser::instance()->writeIndents();
         properties += "<property name=\"" + propertyName + "\" description=\"\" datatype=\"";
         properties +=  this->property(propertyName.toUtf8()).toString();
         properties += "\" />";
     }
+    projectParser::instance()->decreaseIndents();
 
     return startTag + properties + endTag;
 }
 
-QString btNodeType::toDataXml() const
+const QString btNodeType::toDataXml()
 {
     return "";
 }

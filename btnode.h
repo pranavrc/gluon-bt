@@ -45,7 +45,7 @@ public:
     int decoratorCount();
     QList<btDecoratorNode*> decorators() const;
 
-    QString toXml(QList<btTreeModel *> behaviorTrees) const;
+    const QString toXml(QList<btTreeModel *> behaviorTrees);
 
 private:
 	btNodeType *m_type;

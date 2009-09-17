@@ -1,4 +1,5 @@
 #include "btdecoratornode.h"
+#include "projectparser.h"
 
 btDecoratorNode::btDecoratorNode()
 {
@@ -16,8 +17,8 @@ bool btDecoratorNode::run()
 
 QString btDecoratorNode::toDataXml() const
 {
-    QString startTag = "<decorator ";
-    QString endTag = "</decorator>";
+    QString startTag = projectParser::instance()->writeIndents() + "<decorator ";
+    QString endTag = projectParser::instance()->writeIndents() + "</decorator>";
     QString properties = "";
     
     const QMetaObject * mo = this->metaObject();
@@ -48,13 +49,16 @@ QString btDecoratorNode::toDataXml() const
     
     startTag += ">";
     
+    projectParser::instance()->increaseIndents();
     for(int i = 0; i < this->dynamicPropertyNames().count(); i++)
     {
         QString propertyName(this->dynamicPropertyNames().at(i));
+        properties += projectParser::instance()->writeIndents();
         properties += "<property name=\"" + propertyName + "\" value=\"";
         properties +=  this->property(propertyName.toUtf8()).toString();
         properties += "\" />";
     }
+    projectParser::instance()->decreaseIndents();
     
     return startTag + properties + endTag;
 }
