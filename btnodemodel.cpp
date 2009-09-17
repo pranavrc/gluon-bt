@@ -64,6 +64,32 @@ QVariant btnodemodel::headerData(int section, Qt::Orientation orientation,
      }
  }
 
+Qt::ItemFlags btnodemodel::flags(const QModelIndex &index) const
+{
+    if(!index.isValid()){
+        return Qt::ItemIsEnabled;
+    }
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}
+
+bool btnodemodel::setData(const QModelIndex &index,
+                          const QVariant &value,int role)
+{
+    if(index.isValid() && role == Qt::EditRole){
+        if(index.column() == 0){
+            QString string = value.toString();
+            node->setProperty(string.toUtf8(),"something");
+            emit dataChanged(index,index);
+            return true;
+        }
+        //node->setProperty("dd",QVariant::Invalid); remove property
+        //create new node and point to that
+        //node->dynamicPropertyNames().at(index.row())
+        //index.row()
+    }
+    return false;
+}
+
 QString btnodemodel::name() const
 {
     return node->name();
