@@ -8,6 +8,7 @@
 class QString;
 class QVariant;
 class btNodeType;
+class btTreeModel;
 
 class btNode : public QObject
 {
@@ -43,6 +44,8 @@ public:
     void removeDecorator(btDecoratorNode* decorator);
     int decoratorCount();
     QList<btDecoratorNode*> decorators() const;
+
+    QString toXml(QList<btTreeModel *> behaviorTrees) const;
 
 private:
 	btNodeType *m_type;

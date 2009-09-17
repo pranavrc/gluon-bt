@@ -12,6 +12,8 @@ public:
 	~btDecoratorNode();
 	
 	bool run();
+    
+    QString toDataXml() const;
 };
 
 #endif
