@@ -4,6 +4,7 @@
 #include "btnodetype.h"
 #include "btreferencenode.h"
 #include "bttreemodel.h"
+#include "projectparser.h"
 
 btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
 {
@@ -124,10 +125,10 @@ void btNode::setParentNode(btNode* node)
     this->setParent(node);
 }
 
-QString btNode::toXml(QList<btTreeModel *> behaviorTrees) const
+const QString btNode::toXml(QList<btTreeModel *> behaviorTrees)
 {
-	QString startTag = "<behaviornode ";
-    QString endTag = "</behaviornode>";
+	QString startTag = projectParser::instance()->writeIndents() + "<behaviornode ";
+    QString endTag = projectParser::instance()->writeIndents()+ "</behaviornode>";
     QString properties = "";
     QString children = "";
     btNodeType * nodeType = this->type();
@@ -166,11 +167,11 @@ QString btNode::toXml(QList<btTreeModel *> behaviorTrees) const
     
     startTag += ">";
     
-    
+    projectParser::instance()->increaseIndents();
     if(nodeType->type() == btNodeType::ReferenceNodeType)
     {
         btReferenceNode * btRefNode = qobject_cast<btReferenceNode*>(nodeType);
-        properties = "<property name=\"reference\" value=\"";
+        properties = projectParser::instance()->writeIndents() + "<property name=\"reference\" value=\"";
         
         for(int i = 0; i < behaviorTrees.count(); i ++)
         {
@@ -185,6 +186,7 @@ QString btNode::toXml(QList<btTreeModel *> behaviorTrees) const
         for(int i = 0; i < nodeType->dynamicPropertyNames().count(); i++)
         {
             QString propertyName(nodeType->dynamicPropertyNames().at(i));
+            properties += projectParser::instance()->writeIndents();
             properties += "<property name=\"" + propertyName + "\" value=\"";
             properties +=  nodeType->property(propertyName.toUtf8()).toString();
             properties += "\" />";
@@ -200,6 +202,7 @@ QString btNode::toXml(QList<btTreeModel *> behaviorTrees) const
     {
         children += m_children[i]->toXml(behaviorTrees);
     }
+    projectParser::instance()->decreaseIndents();
     
     return startTag + properties + children + endTag;
 }

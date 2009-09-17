@@ -41,8 +41,8 @@ public:
     QString className() const;
     void setClassName(QString className);
     
-    QString toNodeTypeXml() const;
-    virtual QString toDataXml() const;
+    const QString toNodeTypeXml();
+    virtual const QString toDataXml();
 
 protected:
     QString m_name;
