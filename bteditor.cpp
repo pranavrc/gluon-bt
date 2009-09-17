@@ -13,6 +13,7 @@
 #include "btpropertywidget.h"
 #include "btnodeeditwidget.h"
 #include "btnodemodel.h"
+#include "btnodetypesmodelnode.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -160,12 +161,25 @@ void bteditor::replaceBrain(){
 void bteditor::on_actionEdit_Node_triggered()
 {
     //just for testing
-    if(m_brain->nodeTypes.count() >= 3){
+    /*if(m_brain->nodeTypes.count() >= 3){
     btnodemodel* btm = new btnodemodel(m_brain->nodeTypes.at(2),this);
     btNodeEditWidget* editWidget = new btNodeEditWidget();
     editWidget->setModel(btm);
     editWidget->show();
-    }
+    }*/
+}
+
+
+
+void bteditor::on_availableNodes_activated(QModelIndex index)
+{
+    //skal fixes for memstuff, tjekker ikke om det er en valid node
+    //btNode* selectedNode = static_cast<btNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(index.internalPointer());
+    btnodemodel* btm =  new btnodemodel(selectedNode->nodeType());
+    btNodeEditWidget* editWidget = new btNodeEditWidget();
+    editWidget->setModel(btm);
+    editWidget->show();
 }
 
 #include "bteditor.moc"

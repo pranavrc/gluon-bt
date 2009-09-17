@@ -39,6 +39,7 @@ private:
     btPropertyWidget *propertyWidget;
 
 private slots:
+    void on_availableNodes_activated(QModelIndex index);
     void on_actionEdit_Node_triggered();
     void on_actionSave_As_triggered ();
     void on_actionOpen_triggered ();
