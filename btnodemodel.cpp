@@ -1,10 +1,10 @@
 #include "btnodemodel.h"
 #include "btnodetypesmodel.h"
 
-btnodemodel::btnodemodel(btNodeType * nodetypes,QObject *parent)
+btnodemodel::btnodemodel(btNodeType * nodetype,QObject *parent)
         :QAbstractTableModel(parent)
 {
-    node = nodetypes;
+    node = nodetype;
 }
 
 int btnodemodel::rowCount(const QModelIndex &parent) const
@@ -63,3 +63,35 @@ QVariant btnodemodel::headerData(int section, Qt::Orientation orientation,
          return QString("Prop %1").arg(section);
      }
  }
+
+QString btnodemodel::name() const
+{
+    return node->name();
+}
+
+void btnodemodel::setName(QString name)
+{
+    node->setName(name);
+}
+
+QString btnodemodel::description() const
+{
+    return node->description();
+}
+
+void btnodemodel::setDescription(QString description)
+{
+    node->setDescription(description);
+}
+
+QString btnodemodel::classname() const
+{
+    return node->className();
+}
+
+void btnodemodel::setClassname(QString classname)
+{
+    node->setClassName(classname);
+}
+
+#include "btnodemodel.moc"

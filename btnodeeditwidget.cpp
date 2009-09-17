@@ -33,4 +33,7 @@ btNodeEditWidget::btNodeEditWidget()
 void btNodeEditWidget::setModel(btnodemodel* btmodel)
 {
     propertyList->setModel(btmodel);
+    nameedit->setText(btmodel->name());
+    classnameedit->setText(btmodel->classname());
+    discriptionedit->setText(btmodel->description());
 }
