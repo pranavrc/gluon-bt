@@ -123,12 +123,6 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
 
 void btPropertyWidget::setupPropertyView()
 {
-    if(layout())
-    {
-        qDeleteAll(layout()->children());
-        delete(layout());
-    }
-    
     QGridLayout * propertyLayout = new QGridLayout(this);
     
     qint32 row = 0;

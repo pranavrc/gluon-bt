@@ -71,6 +71,9 @@ void bteditor::editorSelectionChanged(const QItemSelection& selected, const QIte
 
 void bteditor::showPropertiesFor(btNode* showFor)
 {
+    delete propertyWidget;
+    propertyWidget = new btPropertyWidget(this);
+    propertyScrollArea->setWidget(propertyWidget);
     propertyWidget->setNode(showFor);
 }
 
