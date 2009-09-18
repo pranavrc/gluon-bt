@@ -1,9 +1,9 @@
 #ifndef _BTDECORATORNODE_H_
 #define _BTDECORATORNODE_H_
 
-#include "btnodetype.h"
+#include "bteditornodetype.h"
 
-class btDecoratorNode : public btNodeType
+class btDecoratorNode : public btEditorNodeType
 {
 	Q_OBJECT
 	

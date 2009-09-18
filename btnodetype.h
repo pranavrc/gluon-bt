@@ -29,20 +29,17 @@ public:
     btNodeType(QObject* parent = 0);
     ~btNodeType();
 
-    void setName(QString name);
-    QString name() const;
-    void setDescription(QString description);
-    QString description() const;
-    nodeType type() const;
+    virtual void setName(QString name);
+    virtual QString name() const;
+    virtual void setDescription(QString description);
+    virtual QString description() const;
+    virtual nodeType type() const;
 
-    void setNodeType(nodeType type);
+    virtual void setNodeType(nodeType type);
     virtual bool run();
-    btNodeType * copy();
-    QString className() const;
-    void setClassName(QString className);
-    
-    const QString toNodeTypeXml();
-    virtual const QString toDataXml();
+    virtual btNodeType * copy();
+    virtual QString className() const;
+    virtual void setClassName(QString className);
 
 protected:
     QString m_name;

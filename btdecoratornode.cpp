@@ -43,7 +43,7 @@ QString btDecoratorNode::toDataXml() const
         }
         else if(propertyName == "className")
         {
-            startTag += "classname=\"" + this->property(moProperty.name()).toString() + "\" ";
+            startTag += "nodetype=\"" + this->property(moProperty.name()).toString() + "\" ";
         }
     }
     

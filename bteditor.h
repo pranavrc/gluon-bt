@@ -8,7 +8,7 @@
 class btNodeTypesModel;
 class btBrain;
 class btTreeModel;
-class btNode;
+class btEditorNode;
 class TreeSelectorDialog;
 class btPropertyWidget;
 
@@ -21,7 +21,7 @@ public:
     void setupActions();
     
     void showBehaviorTree(btTreeModel* showThis);
-    void showPropertiesFor(btNode* showFor);
+    void showPropertiesFor(btEditorNode* showFor);
     
 public Q_SLOTS:
     void createNewBehaviorTree();

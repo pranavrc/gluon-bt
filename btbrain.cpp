@@ -1,8 +1,8 @@
 #include "btbrain.h"
 #include "bttreemodel.h"
 #include "btnodetypesmodel.h"
-#include "btnodetype.h"
-#include "btnode.h"
+#include "bteditornodetype.h"
+#include "bteditornode.h"
 #include "btcompositenode.h"
 #include "btconditionnode.h"
 #include <QtCore/qtextstream.h>
@@ -27,11 +27,11 @@ btBrain::~btBrain()
     qDeleteAll(behaviorTrees);
 }
 
-btNodeType *btBrain::findNodeTypeByName(QString name)
+btEditorNodeType *btBrain::findNodeTypeByName(QString name)
 {
     foreach(btNodeType *nodeType, nodeTypes)
         if(nodeType->name() == name)
-            return nodeType;
+            return qobject_cast<btEditorNodeType*>(nodeType);
     return 0;
 }
 
@@ -42,12 +42,12 @@ btTreeModel *btBrain::newBehaviorTree()
     this->behaviorTrees.append(newTree);
     newTree->setName(tr("New Tree"));
     // We set the root node to be a sequence, as this is the fastest to choose that it should simply run the first child node (no selection, just runs children in sequence)
-    btNode *btRootNode = new btNode(this->findNodeTypeByName("Sequence"));
+    btEditorNode *btRootNode = new btEditorNode(this->findNodeTypeByName("Sequence"));
     newTree->setRootNode(btRootNode);
     btRootNode->setParent(newTree);
     
     // Add a real top level node, which should be a selector as per Alex' defintion of behavior trees
-    btNode *topNode = new btNode(this->findNodeTypeByName("Selector"), btRootNode);
+    btEditorNode *topNode = new btEditorNode(this->findNodeTypeByName("Selector"), btRootNode);
     topNode->setName(tr("Top Beavior"));
     
     // Then add it to the list of referenced NodeTypes...
@@ -77,7 +77,7 @@ void btBrain::addBehaviorTree(btTreeModel* newTree)
     emit behaviorTreeAdded(newTree);
 }
 
-void btBrain::addNodeType(btNodeType* newNodeType)
+void btBrain::addNodeType(btEditorNodeType* newNodeType)
 {
     nodeTypes.append(newNodeType);
     emit nodeTypeAdded(newNodeType);

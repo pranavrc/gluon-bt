@@ -4,12 +4,12 @@
 #include <QVariant>
 #include <QList>
 #include <QString>
-class btNodeType;
+class btEditorNodeType;
 
 class btNodeTypesModelNode
 {
 public:
-    btNodeTypesModelNode(btNodeType *data = 0, btNodeTypesModelNode *parent = 0);
+    btNodeTypesModelNode(btEditorNodeType *data = 0, btNodeTypesModelNode *parent = 0);
     ~btNodeTypesModelNode();
 
     void appendChild(btNodeTypesModelNode *child);
@@ -20,15 +20,15 @@ public:
     int row() const;
     btNodeTypesModelNode *parent();
 
-    btNodeType *nodeType() const;
-    void setNodeType(btNodeType *nodeType);
+    btEditorNodeType *nodeType() const;
+    void setNodeType(btEditorNodeType *nodeType);
 
     void setName(QString name);
     QString name() const;
     
 private:
     QString m_name;
-    btNodeType *nodeData;
+    btEditorNodeType *nodeData;
     QList<btNodeTypesModelNode *> children;
     btNodeTypesModelNode *parentNode;
 };

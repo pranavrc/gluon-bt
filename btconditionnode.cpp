@@ -1,5 +1,4 @@
 #include "btconditionnode.h"
-#include "btnode.h"
 
 btConditionNode::btConditionNode()
 {

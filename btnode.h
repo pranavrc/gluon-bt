@@ -8,7 +8,6 @@
 class QString;
 class QVariant;
 class btNodeType;
-class btTreeModel;
 
 class btNode : public QObject
 {
@@ -22,30 +21,29 @@ public:
     
     bool runBehavior();
 
-	void appendChild(btNode *);
+	virtual void appendChild(btNode *);
 	
-	btNode *child(int row);
-	int childCount() const;
-	int columnCount() const;
-	int row() const;
-	btNode *parent();
-    void setParentNode(btNode * node);
-	QVariant data(int column) const;
-    QVariant headerData(int column) const;
+	virtual btNode *child(int row);
+	virtual int childCount() const;
+	virtual int columnCount() const;
+	virtual int row() const;
+	virtual btNode *parent();
+    virtual void setParentNode(btNode * node);
+	virtual QVariant data(int column) const;
+    virtual QVariant headerData(int column) const;
 	
-    void setName(QString name);
-    QString name() const;
-    void setDescription(QString description);
-    QString description() const;
-	void setType(btNodeType *newType);
-    btNodeType* type() const;
+    virtual void setName(QString name);
+    virtual QString name() const;
+    virtual void setDescription(QString description);
+    virtual QString description() const;
+	virtual void setType(btNodeType *newType);
+    virtual btNodeType* type() const;
 
-    void addDecorator(btDecoratorNode* decorator);
-    void removeDecorator(btDecoratorNode* decorator);
-    int decoratorCount();
+    virtual void addDecorator(btDecoratorNode* decorator);
+    virtual void removeDecorator(btDecoratorNode* decorator);
+    virtual int decoratorCount();
     QList<btDecoratorNode*> decorators() const;
 
-    const QString toXml(QList<btTreeModel *> behaviorTrees);
 
 private:
 	btNodeType *m_type;

@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class btNodeType;
+class btEditorNodeType;
 class btTreeModel;
 
 class btBrain : public QObject
@@ -17,19 +17,19 @@ public:
     
     btTreeModel *newBehaviorTree();
     void deleteBehaviorTree(btTreeModel *behaviorTree);
-    btNodeType *findNodeTypeByName(QString name);
+    btEditorNodeType *findNodeTypeByName(QString name);
     
-    QList<btNodeType *> nodeTypes;
+    QList<btEditorNodeType *> nodeTypes;
     QList<btTreeModel *> behaviorTrees;
     
     void setName(QString name);
     QString name() const;
 
     void addBehaviorTree(btTreeModel * newTree);
-    void addNodeType(btNodeType * newNodeType);
+    void addNodeType(btEditorNodeType * newNodeType);
 Q_SIGNALS:
     void behaviorTreeAdded(btTreeModel* newTree);
-    void nodeTypeAdded(btNodeType* newNodeType);
+    void nodeTypeAdded(btEditorNodeType* newNodeType);
 
 private:
     QString m_name;

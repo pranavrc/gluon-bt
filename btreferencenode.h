@@ -1,10 +1,10 @@
 #ifndef _BTREFERENCENODE_H_
 #define _BTREFERENCENODE_H_
 
-#include "btnodetype.h"
+#include "bteditornodetype.h"
 #include "bttreemodel.h"
 
-class btReferenceNode :public btNodeType
+class btReferenceNode :public btEditorNodeType
 {
     Q_OBJECT
 
