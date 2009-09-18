@@ -44,8 +44,8 @@ private:
     
     void setupPropertyView();
     void appendToPropertyView (QGridLayout *layout, qint32 & row, QObject * name, QString description, QString value, QVariant options = 0);
-    void appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btNode * node);
-    void appendComponentToPropertyView (QGridLayout *layout, qint32 &row, btNodeType * node);
+    void appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btEditorNode * node);
+    void appendComponentToPropertyView (QGridLayout *layout, qint32 &row, btEditorNodeType * node);
     void appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object);
 };
 
