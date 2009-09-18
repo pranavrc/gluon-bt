@@ -16,8 +16,8 @@ set(bteditor_SRCS
     btbrain.cpp
     bteditor.cpp
     bteditornode.cpp
-    btnode.cpp
-    btnodetype.cpp
+    ../gluon-bt-common/btnode.cpp
+    ../gluon-bt-common/btnodetype.cpp
     bteditornodetype.cpp
     btnodetypesmodel.cpp
     btnodetypesmodelnode.cpp

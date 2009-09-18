@@ -2,11 +2,11 @@ project(btlib)
 cmake_minimum_required(VERSION 2.6)
 find_package(Qt4 REQUIRED)
 
-include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR}  ${PROJECT_SOURCE_DIR}/../..)
+include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR})
 
 set(btlib_SRCS
-    ../../btnodetype.cpp
-    ../../btnode.cpp
+    ../gluon-bt-common/btnodetype.cpp
+    ../gluon-bt-common/btnode.cpp
     btabstractfactory.cpp
     btbrain.cpp
     

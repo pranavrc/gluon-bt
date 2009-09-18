@@ -4,7 +4,7 @@
 #include <QObject>
 
 class btEditorNodeType;
-#include "btnodetype.h"
+#include "../gluon-bt-common/btnodetype.h"
 
 class nodeTypeFactory: public QObject
 {
