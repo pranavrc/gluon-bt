@@ -1,9 +1,9 @@
 #ifndef _BTACTIONNODE_H_
 #define _BTACTIONNODE_H_
 
-#include "btnodetype.h"
+#include "bteditornodetype.h"
 
-class btActionNode : public btNodeType
+class btActionNode : public btEditorNodeType
 {
 	Q_OBJECT
 	

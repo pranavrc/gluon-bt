@@ -21,8 +21,8 @@
 #include <QMimeData>
 #include <QtGui/qevent.h>
 #include "btavailablenodestreeview.h"
-#include "btnodetype.h"
-#include "btnode.h"
+#include "bteditornodetype.h"
+#include "bteditornode.h"
 #include <QMessageBox>
 
 btAvailableNodesTreeView::btAvailableNodesTreeView(QWidget* parent)

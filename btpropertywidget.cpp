@@ -26,7 +26,7 @@
 #include <QtCore/QMetaClassInfo>
 
 #include "btpropertywidget.h"
-#include "btnode.h"
+#include "bteditornode.h"
 
 btPropertyWidget::btPropertyWidget(QObject * parent)
 {
@@ -94,7 +94,7 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
     }
 }
 
-void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btNode * node)
+void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btEditorNode * node)
 {
     ++row;
     QLabel * titleLabel = new QLabel(this);
@@ -108,7 +108,7 @@ void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 
     
 }
 
-void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint32 &row, btNodeType * node)
+void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint32 &row, btEditorNodeType * node)
 {
     ++row;
     QLabel * titleLabel = new QLabel(this);
@@ -136,7 +136,7 @@ void btPropertyWidget::setupPropertyView()
         appendComponentToPropertyView(propertyLayout, row, decorator);
     
     // Finally, add the node's nodeType
-    appendComponentToPropertyView(propertyLayout, row, node()->type());
+    appendComponentToPropertyView(propertyLayout, row, qobject_cast<btEditorNodeType*>(node()->type()));
     
     // Add spacery type stuffs...
     QWidget * containerWidget = new QWidget(this);
@@ -149,7 +149,7 @@ void btPropertyWidget::setupPropertyView()
     this->setLayout(containerLayout);
 }
 
-btNode * btPropertyWidget::node() const { return m_node; }
-void btPropertyWidget::setNode(btNode * node) { m_node = node; setupPropertyView(); }
+btEditorNode * btPropertyWidget::node() const { return m_node; }
+void btPropertyWidget::setNode(btEditorNode * node) { m_node = node; setupPropertyView(); }
 
 #include "btpropertywidget.moc"

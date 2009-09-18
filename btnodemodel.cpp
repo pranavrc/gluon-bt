@@ -1,8 +1,8 @@
 #include "btnodemodel.h"
 #include "btnodetypesmodel.h"
-#include <QDebug>
+#include "bteditornodetype.h"
 
-btnodemodel::btnodemodel(btNodeType * nodetype,QObject *parent)
+btnodemodel::btnodemodel(btEditorNodeType * nodetype,QObject *parent)
         :QAbstractTableModel(parent)
 {
     node = nodetype;

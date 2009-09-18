@@ -1,7 +1,7 @@
 #include "btnodetypesmodelnode.h"
-#include "btnodetype.h"
+#include "bteditornodetype.h"
 
-btNodeTypesModelNode::btNodeTypesModelNode(btNodeType *data, btNodeTypesModelNode *parent)
+btNodeTypesModelNode::btNodeTypesModelNode(btEditorNodeType *data, btNodeTypesModelNode *parent)
 {
     this->nodeData = data;
     this->parentNode = parent;
@@ -63,8 +63,8 @@ btNodeTypesModelNode *btNodeTypesModelNode::parent()
     return parentNode;
 }
 
-btNodeType *btNodeTypesModelNode::nodeType() const { return nodeData; }
-void btNodeTypesModelNode::setNodeType(btNodeType *nodeType) { nodeData = nodeType; }
+btEditorNodeType *btNodeTypesModelNode::nodeType() const { return nodeData; }
+void btNodeTypesModelNode::setNodeType(btEditorNodeType *nodeType) { nodeData = nodeType; }
 
 void btNodeTypesModelNode::setName(QString name) { m_name = name; }
 QString btNodeTypesModelNode::name() const { return m_name; }

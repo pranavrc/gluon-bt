@@ -1,9 +1,9 @@
 #ifndef _BTUNUSABLENODE_H_
 #define _BTUNUSABLENODE_H_
 
-#include "btnodetype.h"
+#include "bteditornodetype.h"
 
-class btUnusableNode : public btNodeType
+class btUnusableNode : public btEditorNodeType
 {
 	Q_OBJECT
 		

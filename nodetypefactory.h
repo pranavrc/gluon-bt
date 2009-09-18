@@ -3,6 +3,7 @@
 
 #include <QObject>
 
+class btEditorNodeType;
 #include "btnodetype.h"
 
 class nodeTypeFactory: public QObject
@@ -12,8 +13,8 @@ class nodeTypeFactory: public QObject
 public:
 	static nodeTypeFactory * instance();
 	
-	btNodeType * newObject(QString typeCategory);
-    btNodeType * newObject(btNodeType::nodeType type);
+	btEditorNodeType * newObject(QString typeCategory);
+    btEditorNodeType * newObject(btNodeType::nodeType type);
 private:
 	nodeTypeFactory();
 };

@@ -1,5 +1,6 @@
 #include "nodetypefactory.h"
 
+#include "bteditornodetype.h"
 #include "btactionnode.h"
 #include "btcompositenode.h"
 #include "btconditionnode.h"
@@ -23,9 +24,9 @@ nodeTypeFactory* nodeTypeFactory::instance()
     return factoryInstance;
 }
 
-btNodeType * nodeTypeFactory::newObject(QString typeCategory)
+btEditorNodeType * nodeTypeFactory::newObject(QString typeCategory)
 {
-    btNodeType * newNode = 0;
+    btEditorNodeType * newNode = 0;
 
     if(typeCategory == "action")
     {
@@ -55,9 +56,9 @@ btNodeType * nodeTypeFactory::newObject(QString typeCategory)
     return newNode;
 }
 
-btNodeType * nodeTypeFactory::newObject(btNodeType::nodeType type)
+btEditorNodeType * nodeTypeFactory::newObject(btNodeType::nodeType type)
 {
-    btNodeType * newNode = 0;
+    btEditorNodeType * newNode = 0;
     switch(type)
     {
     case btNodeType::ActionNodeType:

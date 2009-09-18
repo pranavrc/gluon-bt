@@ -4,7 +4,7 @@
 #include <QAbstractListModel>
 #include <QList>
 class btBrain;
-class btNodeType;
+class btEditorNodeType;
 class btNodeTypesModelNode;
 
 class btNodeTypesModel : public QAbstractItemModel
@@ -29,10 +29,10 @@ public:
     int columnCount(const QModelIndex &index) const;
     
 public Q_SLOTS:
-    void newBehaviorTreeTypeAdded(btNodeType* newType);
+    void newBehaviorTreeTypeAdded(btEditorNodeType* newType);
 
 private:
-    btNodeType *nodeTypeFromIndex(const QModelIndex &index) const;
+    btEditorNodeType *nodeTypeFromIndex(const QModelIndex &index) const;
     btNodeTypesModelNode* rootNode;
     
     btNodeTypesModelNode *nodeAction;

@@ -6,7 +6,7 @@
 #include "btbrain.h"
 #include "bttreemodel.h"
 #include "btnodetypesmodel.h"
-#include "btnode.h"
+#include "bteditornode.h"
 #include "modeltest.h"
 #include "treeselectordialog.h"
 #include "projectparser.h"
@@ -68,10 +68,10 @@ void bteditor::showBehaviorTree(btTreeModel* showThis)
 void bteditor::editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     btNode* selectedNode = static_cast<btNode*>(btEditor->selectionModel()->currentIndex().internalPointer());
-    showPropertiesFor(selectedNode);
+    showPropertiesFor(qobject_cast<btEditorNode*>(selectedNode));
 }
 
-void bteditor::showPropertiesFor(btNode* showFor)
+void bteditor::showPropertiesFor(btEditorNode* showFor)
 {
     delete propertyWidget;
     propertyWidget = new btPropertyWidget(this);
@@ -147,8 +147,8 @@ void bteditor::setBehaviorTree(int index)
 
 void bteditor::replaceBrain(){
     connect(
-        m_brain, SIGNAL(nodeTypeAdded(btNodeType*)),
-        nodeTypes, SLOT(newBehaviorTreeTypeAdded(btNodeType*))
+        m_brain, SIGNAL(nodeTypeAdded(btEditorNodeType*)),
+        nodeTypes, SLOT(newBehaviorTreeTypeAdded(btEditorNodeType*))
         );
     connect(
         m_brain, SIGNAL(behaviorTreeAdded(btTreeModel*)),
@@ -176,9 +176,10 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
 {
     //skal fixes for memstuff, tjekker ikke om det er en valid node
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(index.internalPointer());
+
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
     if(selectedNode->parent() != 0){
-        btnodemodel* btm =  new btnodemodel(selectedNode->nodeType());
+        btnodemodel* btm =  new btnodemodel(qobject_cast<btEditorNodeType*>(selectedNode->nodeType()));
         editWidget->setModel(btm);
         if(editWidget->isHidden()){
         editWidget->show();
