@@ -28,6 +28,7 @@ bteditor::bteditor(QWidget *parent)
     replaceBrain();
 
     treeSelectDialog = new TreeSelectorDialog(this);
+    editWidget = new btNodeEditWidget(this);
 
     m_brain->newBehaviorTree();
 }
@@ -174,12 +175,17 @@ void bteditor::on_actionEdit_Node_triggered()
 void bteditor::on_availableNodes_activated(QModelIndex index)
 {
     //skal fixes for memstuff, tjekker ikke om det er en valid node
-    //btNode* selectedNode = static_cast<btNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(index.internalPointer());
-    btnodemodel* btm =  new btnodemodel(selectedNode->nodeType());
-    btNodeEditWidget* editWidget = new btNodeEditWidget();
-    editWidget->setModel(btm);
-    editWidget->show();
+    ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
+    if(selectedNode->parent() != 0){
+        btnodemodel* btm =  new btnodemodel(selectedNode->nodeType());
+        editWidget->setModel(btm);
+        if(editWidget->isHidden()){
+        editWidget->show();
+        }
+    }
+
+
 }
 
 #include "bteditor.moc"

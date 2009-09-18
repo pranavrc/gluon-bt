@@ -1,7 +1,7 @@
 #include "btnodeeditwidget.h"
 #include "btnodemodel.h"
 
-btNodeEditWidget::btNodeEditWidget()
+btNodeEditWidget::btNodeEditWidget(QObject * parent)
 {
     mainLayout  = new QVBoxLayout(this);
     editLayout  = new QGridLayout();
@@ -15,6 +15,10 @@ btNodeEditWidget::btNodeEditWidget()
     classnameedit   = new QLineEdit();
     discriptionedit = new QLineEdit();
 
+    connect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));
+    connect(classnameedit, SIGNAL(textChanged(QString)), this, SLOT(classnameEdited(QString)));
+    connect(discriptionedit, SIGNAL(textChanged(QString)), this, SLOT(descriptionEdited(QString)));
+
     propertyList    = new QTableView();
 
     editLayout->addWidget(name,0,0);
@@ -27,13 +31,29 @@ btNodeEditWidget::btNodeEditWidget()
     mainLayout->addLayout(editLayout);
     mainLayout->addWidget(properties);
     mainLayout->addWidget(propertyList);
-
 }
 
 void btNodeEditWidget::setModel(btnodemodel* btmodel)
 {
-    propertyList->setModel(btmodel);
-    nameedit->setText(btmodel->name());
-    classnameedit->setText(btmodel->classname());
-    discriptionedit->setText(btmodel->description());
+    delete model;
+    model = btmodel;
+
+    propertyList->setModel(model);
+    nameedit->setText(model->name());
+    classnameedit->setText(model->classname());
+    discriptionedit->setText(model->description());
 }
+
+void btNodeEditWidget::nameEdited(QString name){
+    model->setName(name);
+}
+
+void btNodeEditWidget::classnameEdited(QString classname){
+    model->setClassname(classname);
+}
+
+void btNodeEditWidget::descriptionEdited(QString description){
+    model->setDescription(description);
+}
+
+#include "btnodeeditwidget.moc"

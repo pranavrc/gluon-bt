@@ -11,6 +11,7 @@ class btTreeModel;
 class btNode;
 class TreeSelectorDialog;
 class btPropertyWidget;
+class btNodeEditWidget;
 
 class bteditor : public QMainWindow, private Ui::BtEditor
 {
@@ -36,6 +37,7 @@ private:
     btNodeTypesModel* nodeTypes;
     btTreeModel *m_currentBehaviorTree;
     TreeSelectorDialog *treeSelectDialog;
+    btNodeEditWidget* editWidget;
     btPropertyWidget *propertyWidget;
 
 private slots:
