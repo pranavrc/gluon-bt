@@ -26,6 +26,7 @@
 #include <QtCore/QMetaClassInfo>
 
 #include "btpropertywidget.h"
+#include "btpropertywidgetitem.h"
 #include "btnode.h"
 
 btPropertyWidget::btPropertyWidget(QObject * parent)
@@ -36,7 +37,7 @@ btPropertyWidget::~btPropertyWidget()
 {
 }
 
-void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, QString name, QString description, QVariant value, QVariant options)
+void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, QObject * object, QString name, QString description, QVariant options)
 {
     ++row;
     
@@ -45,26 +46,9 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, 
     nameLabel->setToolTip(description);
     layout->addWidget(nameLabel, row, 0);
     
-    QWidget * editWidget;
-    switch(value.type())
-    {
-        case QVariant::String:
-            editWidget = new QLineEdit(this);
-            qobject_cast<QLineEdit*>(editWidget)->setText(value.toString());
-            break;
-        case QVariant::Int:
-            editWidget = new QSpinBox(this);
-            qobject_cast<QSpinBox*>(editWidget)->setValue(value.toInt());
-            break;
-        case QVariant::Double:
-            editWidget = new QDoubleSpinBox(this);
-            qobject_cast<QDoubleSpinBox*>(editWidget)->setValue(value.toDouble());
-            break;
-        default:
-            editWidget = new QLabel(this);
-            qobject_cast<QLabel*>(editWidget)->setText(tr("Unknown type (%1)").arg(value.toString()));
-            break;
-    }
+    btPropertyWidgetItem * editWidget = new btPropertyWidgetItem(this);
+    editWidget->setEditObject(object);
+    editWidget->setEditProperty(name);
     layout->addWidget(editWidget, row, 1);
 }
 
@@ -83,14 +67,14 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
         if(propertyName == "objectName")
             continue;
         propertyValue = object->property(propertyName.toUtf8());
-        appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
+        appendToPropertyView(layout, row, object, propertyName, propertyDescription);
     }
     
     foreach(QByteArray name, object->dynamicPropertyNames())
     {
         propertyName = QString(name);
         propertyValue = object->property(name);
-        appendToPropertyView(layout, row, propertyName, propertyDescription, propertyValue);
+        appendToPropertyView(layout, row, object, propertyName, propertyDescription);
     }
 }
 
@@ -124,6 +108,8 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
 void btPropertyWidget::setupPropertyView()
 {
     QGridLayout * propertyLayout = new QGridLayout(this);
+    propertyLayout->setMargin(0);
+    propertyLayout->setSpacing(0);
     
     qint32 row = 0;
 
@@ -145,6 +131,8 @@ void btPropertyWidget::setupPropertyView()
     QVBoxLayout * containerLayout = new QVBoxLayout(this);
     containerLayout->addWidget(containerWidget);
     containerLayout->addStretch();
+    containerLayout->setSpacing(0);
+    containerLayout->setMargin(0);
     
     this->setLayout(containerLayout);
 }
