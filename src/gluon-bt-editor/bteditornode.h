@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "btnode.h"
+#include "../gluon-bt-common/btnode.h"
 
 class btTreeModel;
 

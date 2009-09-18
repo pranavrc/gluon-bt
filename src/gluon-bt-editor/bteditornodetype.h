@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "btnodetype.h"
+#include "../gluon-bt-common/btnodetype.h"
 
 class btEditorNodeType : public btNodeType
 {
