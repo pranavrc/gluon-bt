@@ -27,7 +27,7 @@
 
 #include "btpropertywidget.h"
 #include "btpropertywidgetitem.h"
-#include "btnode.h"
+#include "bteditornode.h"
 
 btPropertyWidget::btPropertyWidget(QObject * parent)
 {
