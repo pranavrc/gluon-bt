@@ -184,8 +184,6 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
         editWidget->show();
         }
     }
-
-
 }
 
 #include "bteditor.moc"
