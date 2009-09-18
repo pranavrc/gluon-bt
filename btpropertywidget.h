@@ -21,8 +21,8 @@
 #define BTPROPERTYWIDGET_H
 
 #include <QtGui/QWidget>
-class btNode;
-class btNodeType;
+class btEditorNode;
+class btEditorNodeType;
 class QGridLayout;
 class btDecoratorNode;
 
@@ -34,11 +34,11 @@ public:
     btPropertyWidget(QObject * parent = 0);
     ~btPropertyWidget();
     
-    btNode * node() const;
-    void setNode(btNode * theNode);
+    btEditorNode * node() const;
+    void setNode(btEditorNode * theNode);
     
 private:
-    btNode * m_node;
+    btEditorNode * m_node;
     
     QWidget * createComponentPropertyView();
     

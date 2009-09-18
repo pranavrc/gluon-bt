@@ -13,8 +13,9 @@ class btnodemodel;
 
 class btNodeEditWidget : public QWidget
 {
+    Q_OBJECT
 public:
-    btNodeEditWidget();
+    btNodeEditWidget(QObject * parent = 0);
     void setModel(btnodemodel* btmodel);
 private:
     QVBoxLayout     *mainLayout;
@@ -28,6 +29,12 @@ private:
     QLineEdit       *classnameedit;
     QLineEdit       *discriptionedit;
     QTableView      *propertyList;
+    btnodemodel     *model;
+
+public Q_SLOTS:
+    void nameEdited(QString name);
+    void classnameEdited(QString classname);
+    void descriptionEdited(QString description);
 
 };
 

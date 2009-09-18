@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QAbstractItemModel>
 #include <QString>
-class btNode;
+class btEditorNode;
 class btBrain;
 
 class btTreeModel : public QAbstractItemModel
@@ -17,8 +17,8 @@ public:
     btTreeModel(QObject *parent = 0, btBrain* containingBrain = 0);
     ~btTreeModel();
 
-    void setRootNode(btNode *newRoot);
-    btNode * rootNode() const;
+    void setRootNode(btEditorNode *newRoot);
+    btEditorNode * rootNode() const;
 
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QModelIndex parent(const QModelIndex &child) const;
@@ -42,9 +42,9 @@ private:
 	QString m_name;
     QString m_description;
 
-    btNode *nodeFromIndex(const QModelIndex &index) const;
+    btEditorNode *nodeFromIndex(const QModelIndex &index) const;
 
-    btNode *m_rootNode;
+    btEditorNode *m_rootNode;
     btBrain *brain;
 };
 

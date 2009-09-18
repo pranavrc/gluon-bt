@@ -1,9 +1,9 @@
 #ifndef _BTCOMPOSITNODE_H_
 #define _BTCOMPOSITNODE_H_
 
-#include "btnodetype.h"
+#include "bteditornodetype.h"
 
-class btCompositeNode : public btNodeType
+class btCompositeNode : public btEditorNodeType
 {
 	Q_OBJECT
 	

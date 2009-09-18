@@ -1,5 +1,5 @@
 #include <QMimeData>
-#include "btnodetype.h"
+#include "bteditornodetype.h"
 #include "btnodetypesmodelnode.h"
 #include "btnodetypesmodel.h"
 #include "btbrain.h"
@@ -38,23 +38,23 @@ btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
         {
             case btNodeType::ActionNodeType
 :
-                node = new btNodeTypesModelNode(nodeType, nodeAction);
+                node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeAction);
                 break;
             case btNodeType::ConditionNodeType
 :
-                node = new btNodeTypesModelNode(nodeType, nodeCondition);
+                node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeCondition);
                 break;
             case btNodeType::CompositeNodeType
 :
-                node = new btNodeTypesModelNode(nodeType, nodeComposite);
+                node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeComposite);
                 break;
             case btNodeType::DecoratorNodeType
 :
-                node = new btNodeTypesModelNode(nodeType, nodeDecorator);
+                node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeDecorator);
                 break;
             case btNodeType::ReferenceNodeType
 :
-                node = new btNodeTypesModelNode(nodeType, nodeReference);
+                node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeReference);
                 break;
             default:
                 break;
@@ -68,7 +68,7 @@ btNodeTypesModel::~btNodeTypesModel()
     delete(rootNode);
 }
 
-void btNodeTypesModel::newBehaviorTreeTypeAdded(btNodeType* newType)
+void btNodeTypesModel::newBehaviorTreeTypeAdded(btEditorNodeType* newType)
 {
     btNodeTypesModelNode *node;
     QModelIndex parent;
@@ -194,7 +194,7 @@ int btNodeTypesModel::columnCount(const QModelIndex &index) const
         return rootNode->columnCount();
 }
 
-btNodeType *btNodeTypesModel::nodeTypeFromIndex(const QModelIndex &index) const
+btEditorNodeType *btNodeTypesModel::nodeTypeFromIndex(const QModelIndex &index) const
 {
     /*if(index.isValid())
         return static_cast<btNodeType*>(nodeTypes.at(index.row()));

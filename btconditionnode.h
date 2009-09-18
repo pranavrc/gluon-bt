@@ -1,9 +1,9 @@
 #ifndef _BTCONDITIONNODE_H_
 #define _BTCONDITIONNODE_H_
 
-#include "btnodetype.h"
+#include "bteditornodetype.h"
 
-class btConditionNode : public btNodeType
+class btConditionNode : public btEditorNodeType
 {
 	Q_OBJECT
 		

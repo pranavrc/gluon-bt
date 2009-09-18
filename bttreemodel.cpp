@@ -1,7 +1,7 @@
 #include <QMimeData>
 #include "bttreemodel.h"
-#include "btnode.h"
-#include "btnodetype.h"
+#include "bteditornode.h"
+#include "bteditornodetype.h"
 #include <qmessagebox.h>
 #include "btbrain.h"
 #include "btdecoratornode.h"
@@ -9,7 +9,7 @@
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
 {
-    m_rootNode = new btNode();
+    m_rootNode = new btEditorNode();
     brain = containingBrain;
 }
 
@@ -18,14 +18,14 @@ btTreeModel::~btTreeModel()
     delete(m_rootNode);
 }
 
-void btTreeModel::setRootNode(btNode *newRoot)
+void btTreeModel::setRootNode(btEditorNode *newRoot)
 {
     delete(m_rootNode);
     m_rootNode = newRoot;
     reset();
 }
 
-btNode * btTreeModel::rootNode() const
+btEditorNode * btTreeModel::rootNode() const
 {
     return m_rootNode;
 }
@@ -40,7 +40,7 @@ QModelIndex btTreeModel::index(int row, int column, const QModelIndex &parent) c
     if(row < 0 ||column < 0)
         return QModelIndex();
     
-    btNode *parentNode = nodeFromIndex(parent);
+    btEditorNode *parentNode = nodeFromIndex(parent);
     
     // Don't allow for the creation of indexes for anything bigger than what exists
     if(row >= parentNode->childCount() || column >= parentNode->columnCount())
@@ -51,17 +51,17 @@ QModelIndex btTreeModel::index(int row, int column, const QModelIndex &parent) c
     //return createIndex(row, column, 0);
 }
 
-btNode *btTreeModel::nodeFromIndex(const QModelIndex &index) const
+btEditorNode *btTreeModel::nodeFromIndex(const QModelIndex &index) const
 {
     if(index.isValid())
-        return static_cast<btNode*>(index.internalPointer());
+        return static_cast<btEditorNode*>(index.internalPointer());
     else
         return m_rootNode;
 }
 
 int btTreeModel::rowCount(const QModelIndex &parent) const
 {
-    btNode *parentNode = nodeFromIndex(parent);
+    btEditorNode *parentNode = nodeFromIndex(parent);
     if(!parentNode)
         return 0;
     return parentNode->childCount();
@@ -75,11 +75,11 @@ int btTreeModel::columnCount(const QModelIndex &parent) const
 
 QModelIndex btTreeModel::parent(const QModelIndex &child) const
 {
-    btNode *node = nodeFromIndex(child);
+    btEditorNode *node = nodeFromIndex(child);
     if(!node)
         return QModelIndex();
 
-    btNode *parentNode = node->parent();
+    btEditorNode *parentNode = qobject_cast<btEditorNode*>(node->parent());
     if(!parentNode)
         return QModelIndex();
 
@@ -183,7 +183,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
         nodeTypes.insert(nodeType, btType);
     }
 
-    btNode* parentNode = static_cast<btNode*>(parent.internalPointer());
+    btEditorNode* parentNode = static_cast<btEditorNode*>(parent.internalPointer());
     int rows = 0;
     QList<btNodeType*> theNodeTypes;
     QHashIterator<QString, QString> i(nodeTypes);
@@ -210,7 +210,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
         }
         else
         {
-            btNode *newChild = new btNode(theNodeType, parentNode);
+            btEditorNode *newChild = new btEditorNode(theNodeType, parentNode);
             newChild->setName(tr("New %1").arg(theNodeType->name()));
         }
     }

@@ -4,7 +4,8 @@
 #include <QAbstractTableModel>
 #include <QVariant>
 #include <QModelIndex>
-#include "btnodetype.h"
+
+class btEditorNodeType;
 
 class btnodemodel : public QAbstractTableModel
 {
@@ -14,7 +15,7 @@ class btnodemodel : public QAbstractTableModel
     Q_PROPERTY(QString classname READ classname WRITE setClassname)
 
 public:
-    btnodemodel(btNodeType * nodetype,QObject *parent = 0);
+    btnodemodel(btEditorNodeType * nodetype,QObject *parent = 0);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -37,7 +38,7 @@ public:
     void setClassname(QString classname);
 
 private:
-    btNodeType *     node;
+    btEditorNodeType *     node;
 };
 
 #endif // BTNODEMODEL_H

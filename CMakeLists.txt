@@ -15,8 +15,10 @@ set(bteditor_SRCS
     btnodemodel.cpp
     btbrain.cpp
     bteditor.cpp
+    bteditornode.cpp
     btnode.cpp
     btnodetype.cpp
+    bteditornodetype.cpp
     btnodetypesmodel.cpp
     btnodetypesmodelnode.cpp
     bttreemodel.cpp
@@ -31,7 +33,6 @@ set(bteditor_SRCS
     modeltest.cpp
 )
 
- 
 set(bteditor_UIS
     bteditor.ui
 )

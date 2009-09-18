@@ -8,9 +8,10 @@
 class btNodeTypesModel;
 class btBrain;
 class btTreeModel;
-class btNode;
+class btEditorNode;
 class TreeSelectorDialog;
 class btPropertyWidget;
+class btNodeEditWidget;
 
 class bteditor : public QMainWindow, private Ui::BtEditor
 {
@@ -21,7 +22,7 @@ public:
     void setupActions();
     
     void showBehaviorTree(btTreeModel* showThis);
-    void showPropertiesFor(btNode* showFor);
+    void showPropertiesFor(btEditorNode* showFor);
     
 public Q_SLOTS:
     void createNewBehaviorTree();
@@ -36,6 +37,7 @@ private:
     btNodeTypesModel* nodeTypes;
     btTreeModel *m_currentBehaviorTree;
     TreeSelectorDialog *treeSelectDialog;
+    btNodeEditWidget* editWidget;
     btPropertyWidget *propertyWidget;
 
 private slots:

@@ -7,8 +7,8 @@
 class QDomNode;
 class btBrain;
 class btTreeModel;
-class btNode;
-class btNodeType;
+class btEditorNode;
+class btEditorNodeType;
 
 class projectParser : public QObject
 {
@@ -33,7 +33,7 @@ private:
     QHash<int, btTreeModel*> behaviorTreesList;
 
     void parseNodeTypes(QDomNode xNode, btBrain * brain);
-    void parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * brain);
+    void parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBrain * brain);
 };
 
 #endif

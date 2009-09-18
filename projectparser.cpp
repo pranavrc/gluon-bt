@@ -5,8 +5,8 @@
 #include "btbrain.h"
 #include "btcompositenode.h"
 #include "nodetypefactory.h"
-#include "btnodetype.h"
-#include "btnode.h"
+#include "bteditornodetype.h"
+#include "bteditornode.h"
 #include "bttreemodel.h"
 #include "btreferencenode.h"
 
@@ -54,7 +54,7 @@ btBrain* projectParser::parseProject(QString xmlData)
                 QDomNode currentNode = behaviorTrees.childNodes().at(i);
                 QDomNamedNodeMap nodeAttributes = currentNode.attributes();
 
-                btNode * newBTNode = new btNode();
+                btEditorNode * newBTNode = new btEditorNode();
 
                 newBTNode->setType(nodeTypeFactory::instance()->newObject("composite"));
 
@@ -105,11 +105,11 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
             newNode->setProperty(propertyAttributes.namedItem("name").nodeValue().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());
         }
 
-        brain->addNodeType(newNode);
+        brain->addNodeType(qobject_cast<btEditorNodeType*>(newNode));
     }
 }
 
-void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * brain)
+void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBrain * brain)
 {
     for(int i = 0; i < xNode.childNodes().count(); i++)
     {
@@ -118,8 +118,8 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
 
         if(!nodeAttributes.namedItem("uid").isNull())
         {
-            btNode* rootNode = behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()]->rootNode();
-            btNode* copyNode = new btNode( rootNode->type()->copy());
+            btEditorNode* rootNode = behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()]->rootNode();
+            btEditorNode* copyNode = new btEditorNode( rootNode->type()->copy());
             copyNode->setParent(behaviorTreesList[nodeAttributes.namedItem("uid").nodeValue().toInt()]);
             copyNode->setName(rootNode->name());
             copyNode->setDescription(rootNode->description());
@@ -144,8 +144,10 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
                 continue;
             }
 
-            btNode *  newBTNode = new btNode();
+            btEditorNode *  newBTNode = new btEditorNode();
 
+            qDebug() << nodeAttributes.count();
+            
             for(int j = 0; j < nodeAttributes.count(); j++)
             {
                 QDomNode currentAttribute = nodeAttributes.item(j);
@@ -167,7 +169,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
                 }
                 else
                 {
-                    btNodeType * btType =  newBTNode->type()->copy();
+                    btEditorNodeType * btType = qobject_cast<btEditorNodeType*>(newBTNode->type())->copy();
                     btType->setProperty(currentAttribute.nodeName().toUtf8(), currentAttribute.nodeValue());
                     newBTNode->setType(btType);
                 }
@@ -175,13 +177,15 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btNode * node ,btBrain * 
 
             newBTNode->setName(newBTNode->type()->name());
             newBTNode->setDescription(newBTNode->type()->description());
+            qDebug() << newBTNode->name();
+            qDebug() << newBTNode->description();
 
             if(currentNode.hasChildNodes())
             {
                 parseBehaviorTrees(currentNode, newBTNode, brain);
             }
 
-            if(newBTNode->type()->type() == btNodeType::DecoratorNodeType)
+            if(newBTNode->type()->type() == btEditorNodeType::DecoratorNodeType)
             {
                 node->addDecorator(qobject_cast<btDecoratorNode*>(newBTNode->type()));
             }
@@ -214,10 +218,10 @@ const QString projectParser::serializeProject(btBrain * brain)
     increaseIndents();
     for(int i = 0; i < brain->behaviorTrees.count(); i++)
     {
-        xmlData += writeIndents()+ "<behaviortree name=\""+ brain->behaviorTrees[i]->name() +"\" description=\"" + brain->behaviorTrees[i]->description() + "\" uid=\"" + QVariant(i).toString() + "\" />";
+        xmlData += writeIndents()+ "<behaviortree name=\""+ brain->behaviorTrees[i]->name() +"\" description=\"" + brain->behaviorTrees[i]->description() + "\" uid=\"" + QVariant(i).toString() + "\">";
         
         increaseIndents();        
-        xmlData += brain->behaviorTrees[i]->rootNode()->child(0)->toXml(brain->behaviorTrees);
+        xmlData +=  qobject_cast<btEditorNode*>(brain->behaviorTrees[i]->rootNode()->child(0))->toXml(brain->behaviorTrees);
         decreaseIndents();
         
         xmlData += writeIndents()+"</behaviortree>";

@@ -1,7 +1,8 @@
 #include "btnodemodel.h"
 #include "btnodetypesmodel.h"
+#include "bteditornodetype.h"
 
-btnodemodel::btnodemodel(btNodeType * nodetype,QObject *parent)
+btnodemodel::btnodemodel(btEditorNodeType * nodetype,QObject *parent)
         :QAbstractTableModel(parent)
 {
     node = nodetype;
@@ -76,16 +77,18 @@ bool btnodemodel::setData(const QModelIndex &index,
                           const QVariant &value,int role)
 {
     if(index.isValid() && role == Qt::EditRole){
-        if(index.column() == 0){
-            QString string = value.toString();
-            node->setProperty(string.toUtf8(),"something");
+        QString newName = value.toString();
+        QString oldName = node->dynamicPropertyNames().at(index.row());
+        if(newName != ""){
+            if(index.column() == 0){
+                node->setProperty(newName.toUtf8(),node->property(oldName.toUtf8()));
+                node->setProperty(oldName.toUtf8(),QVariant::Invalid);
+            }else if(index.column() == 1){
+                node->setProperty(oldName.toUtf8(),newName);
+            }
             emit dataChanged(index,index);
             return true;
         }
-        //node->setProperty("dd",QVariant::Invalid); remove property
-        //create new node and point to that
-        //node->dynamicPropertyNames().at(index.row())
-        //index.row()
     }
     return false;
 }
