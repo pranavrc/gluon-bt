@@ -1,7 +1,7 @@
 #include "btnodeeditwidget.h"
 #include "btnodemodel.h"
 
-btNodeEditWidget::btNodeEditWidget(QObject * parent)
+btNodeEditWidget::btNodeEditWidget(QWidget * parent)
 {
     mainLayout  = new QVBoxLayout(this);
     editLayout  = new QGridLayout();

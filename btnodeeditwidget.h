@@ -15,7 +15,7 @@ class btNodeEditWidget : public QWidget
 {
     Q_OBJECT
 public:
-    btNodeEditWidget(QObject * parent = 0);
+    btNodeEditWidget(QWidget * parent);
     void setModel(btnodemodel* btmodel);
 private:
     QVBoxLayout     *mainLayout;
