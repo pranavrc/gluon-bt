@@ -3,21 +3,22 @@
 
 btNodeEditWidget::btNodeEditWidget(QWidget * parent)
 {
-    mainLayout  = new QVBoxLayout(this);
-    editLayout  = new QGridLayout();
+    model = 0;
+    mainLayout      = new QVBoxLayout(this);
+    buttonLayout    = new QHBoxLayout();
+    editLayout      = new QGridLayout();
 
-    name        = new QLabel(tr("Name"));
-    classname   = new QLabel(tr("Classname"));
-    discription = new QLabel(tr("Discription"));
-    properties  = new QLabel(tr("Properties"));
+    name            = new QLabel(tr("Name"));
+    classname       = new QLabel(tr("Classname"));
+    discription     = new QLabel(tr("Discription"));
+    properties      = new QLabel(tr("Properties"));
 
     nameedit        = new QLineEdit();
     classnameedit   = new QLineEdit();
     discriptionedit = new QLineEdit();
 
-    connect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));
-    connect(classnameedit, SIGNAL(textChanged(QString)), this, SLOT(classnameEdited(QString)));
-    connect(discriptionedit, SIGNAL(textChanged(QString)), this, SLOT(descriptionEdited(QString)));
+    add_button      = new QPushButton(tr("Add Property"));
+    remove_button   = new QPushButton(tr("Remove Property"));
 
     propertyList    = new QTableView();
 
@@ -28,9 +29,20 @@ btNodeEditWidget::btNodeEditWidget(QWidget * parent)
     editLayout->addWidget(discription,1,0);
     editLayout->addWidget(discriptionedit,1,1,1,3);
 
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(add_button);
+    buttonLayout->addWidget(remove_button);
+
     mainLayout->addLayout(editLayout);
     mainLayout->addWidget(properties);
     mainLayout->addWidget(propertyList);
+    mainLayout->addLayout(buttonLayout);
+
+    connect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));
+    connect(classnameedit, SIGNAL(textChanged(QString)), this, SLOT(classnameEdited(QString)));
+    connect(discriptionedit, SIGNAL(textChanged(QString)), this, SLOT(descriptionEdited(QString)));
+    connect(add_button,SIGNAL(clicked()),this,SLOT(add_button_clicked()));
+    connect(remove_button,SIGNAL(clicked()),this,SLOT(remove_button_clicked()));
 }
 
 void btNodeEditWidget::setModel(btnodemodel* btmodel)
@@ -54,6 +66,20 @@ void btNodeEditWidget::classnameEdited(QString classname){
 
 void btNodeEditWidget::descriptionEdited(QString description){
     model->setDescription(description);
+}
+
+void btNodeEditWidget::add_button_clicked()
+{
+    model->insertRows(model->rowCount(),1);
+}
+
+void btNodeEditWidget::remove_button_clicked()
+{
+    if(propertyList->currentIndex().isValid()){
+        model->removeRows(propertyList->currentIndex().row(),1);
+    }
+
+
 }
 
 #include "btnodeeditwidget.moc"
