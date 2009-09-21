@@ -33,6 +33,7 @@ set(bteditor_SRCS
     modeltest.cpp
 )
 
+
 set(bteditor_UIS
     bteditor.ui
 )

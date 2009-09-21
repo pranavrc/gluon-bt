@@ -14,6 +14,8 @@
 #include "btnodeeditwidget.h"
 #include "btnodemodel.h"
 #include "btnodetypesmodelnode.h"
+#include "../gluon-bt-common/btnode.h"
+#include "../gluon-bt-common/btnodetype.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -29,6 +31,15 @@ bteditor::bteditor(QWidget *parent)
 
     treeSelectDialog = new TreeSelectorDialog(this);
     editWidget = new btNodeEditWidget(this);
+    availableNodes->setContextMenuPolicy(Qt::CustomContextMenu);
+    treeContextMenu = new QMenu(this);
+    ///fixme move out
+    QAction* menuNewNode = treeContextMenu->addAction(tr("New Node Type"));
+
+    connect(
+            menuNewNode,SIGNAL(triggered(bool)),
+            this,SLOT(menuNewNodeTriggered())
+            );
 
     m_brain->newBehaviorTree();
 }
@@ -185,6 +196,29 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
         editWidget->show();
         }
     }
+}
+
+void bteditor::on_availableNodes_customContextMenuRequested(QPoint pos)
+{
+    treeContextMenu->exec(availableNodes->viewport()->mapToGlobal(pos));
+}
+
+void bteditor::menuNewNodeTriggered()
+{
+    ///fixme code duplication refactor
+    qDebug("menu new node triggered");
+    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+
+    if(selectedNode->parent() == 0){
+        //btnodemodel* btm =  new btnodemodel(qobject_cast<btEditorNodeType*>(selectedNode->nodeType()));
+
+        btEditorNodeType* nt = qobject_cast<btEditorNodeType*>(selectedNode->nodeType());
+        //nt->type();
+        /*if(nt->type() == btNodeType::CompositeNodeType){
+            qDebug("compositeType");
+        }*/
+
+       }
 }
 
 #include "bteditor.moc"

@@ -45,6 +45,11 @@ btNodeEditWidget::btNodeEditWidget(QWidget * parent)
     connect(remove_button,SIGNAL(clicked()),this,SLOT(remove_button_clicked()));
 }
 
+btNodeEditWidget::~btNodeEditWidget()
+{
+    delete model; // qDelete ?
+}
+
 void btNodeEditWidget::setModel(btnodemodel* btmodel)
 {
     delete model;

@@ -13,10 +13,16 @@ btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
 
     nodeAction = new btNodeTypesModelNode();
     nodeAction->setName(tr("Action"));
+    btEditorNodeType* nodeActionType = new btEditorNodeType();
+    nodeActionType->setChildTypes(btNodeType::ActionNodeType);
+    nodeAction->setNodeType(nodeActionType);
     rootNode->appendChild(nodeAction);
 
     nodeCondition = new btNodeTypesModelNode();
     nodeCondition->setName(tr("Condition"));
+    btEditorNodeType* nodeConditionType = new btEditorNodeType();
+    nodeConditionType->setChildTypes(btNodeType::ConditionNodeType);
+    nodeCondition->setNodeType(nodeConditionType);
     rootNode->appendChild(nodeCondition);
 
     nodeComposite = new btNodeTypesModelNode();
