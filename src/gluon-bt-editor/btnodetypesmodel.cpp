@@ -27,14 +27,23 @@ btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
 
     nodeComposite = new btNodeTypesModelNode();
     nodeComposite->setName(tr("Composite"));
+    btEditorNodeType* nodeCompositeType = new btEditorNodeType();
+    nodeCompositeType->setChildTypes(btNodeType::CompositeNodeType);
+    nodeComposite->setNodeType(nodeCompositeType);
     rootNode->appendChild(nodeComposite);
-
+    ///fixme delete these new btEditorNodeTypes
     nodeDecorator = new btNodeTypesModelNode();
     nodeDecorator->setName(tr("Decorator"));
+    btEditorNodeType* nodeDecoratorType = new btEditorNodeType();
+    nodeDecoratorType->setChildTypes(btNodeType::DecoratorNodeType);
+    nodeDecorator->setNodeType(nodeDecoratorType);
     rootNode->appendChild(nodeDecorator);
 
     nodeReference = new btNodeTypesModelNode();
     nodeReference->setName(tr("Reference"));
+    btEditorNodeType* nodeReferenceType = new btEditorNodeType();
+    nodeReferenceType->setChildTypes(btNodeType::ReferenceNodeType);
+    nodeReference->setNodeType(nodeReferenceType);
     rootNode->appendChild(nodeReference);
 
     btNodeTypesModelNode *node;

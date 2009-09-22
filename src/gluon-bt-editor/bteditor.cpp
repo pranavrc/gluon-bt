@@ -210,15 +210,36 @@ void bteditor::menuNewNodeTriggered()
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
 
     if(selectedNode->parent() == 0){
-        //btnodemodel* btm =  new btnodemodel(qobject_cast<btEditorNodeType*>(selectedNode->nodeType()));
+        QString nodeTypeName = "";
+        switch(selectedNode->nodeType()->childTypes()){
+            case btNodeType::ActionNodeType:
+                nodeTypeName = tr("New Action Node");
+                break;
+            case btNodeType::CompositeNodeType:
+                nodeTypeName = tr("New Composite Node");
+                break;
+            case btNodeType::ConditionNodeType:
+                nodeTypeName = tr("New Condition Node");
+                break;
+            case btNodeType::DecoratorNodeType:
+                nodeTypeName = tr("New Decorator Node");
+                break;
+            case btNodeType::ReferenceNodeType:
+                nodeTypeName = tr("New Reference Node");
+                break;
+            case btNodeType::UnusableNodeType:
+                qDebug("UnusableNodeType");
+                break;
+            default:
+                break;
+        }
+            btEditorNodeType* insertedNode = new btEditorNodeType();
+            insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
+            insertedNode->setName(nodeTypeName);
+            m_brain->addNodeType(insertedNode);
+            ///fixme missing update of view
 
-        btEditorNodeType* nt = qobject_cast<btEditorNodeType*>(selectedNode->nodeType());
-        //nt->type();
-        /*if(nt->type() == btNodeType::CompositeNodeType){
-            qDebug("compositeType");
-        }*/
-
-       }
+      }
 }
 
 #include "bteditor.moc"
