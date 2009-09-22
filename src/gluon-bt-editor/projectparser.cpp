@@ -9,6 +9,7 @@
 #include "bteditornode.h"
 #include "bttreemodel.h"
 #include "btreferencenode.h"
+#include "btdecoratornode.h"
 
 projectParser::projectParser()
 {
