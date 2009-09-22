@@ -41,8 +41,10 @@ private:
     btNodeEditWidget* editWidget;
     btPropertyWidget *propertyWidget;
     QMenu   *treeContextMenu;
+    QString fileName;
 
 private slots:
+    void on_actionSave_triggered();
     void on_availableNodes_customContextMenuRequested(QPoint pos);
     void on_availableNodes_activated(QModelIndex index);
     void menuNewNodeTriggered();

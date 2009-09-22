@@ -24,6 +24,8 @@ bteditor::bteditor(QWidget *parent)
     propertyScrollArea->setWidget(propertyWidget);
     setupActions();
 	
+    fileName = "";
+
     m_brain = new btBrain(this);
     nodeTypes = new btNodeTypesModel(m_brain, this);
 
@@ -111,14 +113,18 @@ void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
 
 void bteditor::on_actionOpen_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+    fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                  "",
                                                  tr("Behavior Trees (*.glbt *.xml)"));
+
     QFile file(fileName);
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        return;
+    }
     QByteArray byteArray = file.readAll();
     QString fileContents(byteArray.data());
     file.close();
+
 
     delete m_brain;
     delete nodeTypes;
@@ -134,14 +140,14 @@ void bteditor::on_actionOpen_triggered()
 void bteditor::on_actionSave_As_triggered()
 {
     // get name of tree, use when saving
-     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+     fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
-    
+
     if(!fileName.endsWith(".xml", Qt::CaseInsensitive))
         fileName += ".xml";
     
-     QString fileContents = projectParser::instance()->serializeProject(this->m_brain);
+    QString fileContents = projectParser::instance()->serializeProject(this->m_brain);
     
     QFile file(fileName);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -149,6 +155,23 @@ void bteditor::on_actionSave_As_triggered()
     file.write(byteFileContents);
     file.close();
 }
+
+void bteditor::on_actionSave_triggered()
+{
+    ///fixme fileName set to invalid name
+    if(fileName == ""){
+        on_actionSave_As_triggered();
+    }else{
+        QString fileContents = projectParser::instance()->serializeProject(this->m_brain);
+
+        QFile file(fileName);
+        file.open(QIODevice::WriteOnly | QIODevice::Text);
+        QByteArray byteFileContents(fileContents.toUtf8());
+        file.write(byteFileContents);
+        file.close();
+    }
+}
+
 
 void bteditor::setBehaviorTree(int index)
 {
@@ -206,7 +229,6 @@ void bteditor::on_availableNodes_customContextMenuRequested(QPoint pos)
 void bteditor::menuNewNodeTriggered()
 {
     ///fixme code duplication refactor
-    qDebug("menu new node triggered");
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
 
     if(selectedNode->parent() == 0){
@@ -233,6 +255,7 @@ void bteditor::menuNewNodeTriggered()
             default:
                 break;
         }
+            ///fixme memory, is it deleted in brain ?
             btEditorNodeType* insertedNode = new btEditorNodeType();
             insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
             insertedNode->setName(nodeTypeName);
@@ -243,3 +266,4 @@ void bteditor::menuNewNodeTriggered()
 }
 
 #include "bteditor.moc"
+
