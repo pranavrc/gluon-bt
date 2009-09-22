@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QString>
-#include "btAbstractFactory.h"
+#include "btfactory.h"
 #include "btselectornode.h"
 
 class btNodeTypeFactory : public QObject, public btAbstractFactory {

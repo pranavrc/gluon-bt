@@ -5,6 +5,8 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 
+class btNode;
+
 class btNodeType : public QObject
 {
     Q_OBJECT
@@ -40,11 +42,15 @@ public:
     virtual btNodeType * copy();
     virtual QString className() const;
     virtual void setClassName(QString className);
+    
+    virtual void setParentNode(btNode* node);
+    virtual btNode* parentNode();
 
 protected:
     QString m_name;
     QString m_description;
     QString m_className;
+    btNode* m_parent;
     nodeType m_type;
 };
 

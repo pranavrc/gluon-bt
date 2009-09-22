@@ -78,7 +78,7 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
     
     for(int i = 0; i < this->decoratorCount(); i++)
     {
-        children += this->decorators().at(i)->toDataXml();
+        children += qobject_cast<btEditorNodeType*>( this->decorators().at(i))->toDataXml();
     }
     
     for(int i = 0; i < this->childCount(); i++)

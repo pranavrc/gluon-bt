@@ -14,8 +14,9 @@
 #include "btnodeeditwidget.h"
 #include "btnodemodel.h"
 #include "btnodetypesmodelnode.h"
-#include "../gluon-bt-common/btnode.h"
-#include "../gluon-bt-common/btnodetype.h"
+#include "btnode.h"
+#include "btnodetype.h"
+#include "bteditornodetype.h";
 
 bteditor::bteditor(QWidget *parent)
 {

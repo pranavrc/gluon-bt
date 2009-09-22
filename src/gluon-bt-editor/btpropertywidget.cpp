@@ -28,6 +28,7 @@
 #include "btpropertywidget.h"
 #include "btpropertywidgetitem.h"
 #include "bteditornode.h"
+#include "bteditornodetype.h"
 
 btPropertyWidget::btPropertyWidget(QObject * parent)
 {
@@ -114,12 +115,13 @@ void btPropertyWidget::setupPropertyView()
     qint32 row = 0;
 
     // First add yourself...
-    appendObjectToPropertyView(propertyLayout, row, node());
+    appendObjectToPropertyView(propertyLayout, row, this->node());
     
     // Then add all the decorators...
-    btDecoratorNode * decorator;
-    foreach(decorator, node()->decorators())
-        appendComponentToPropertyView(propertyLayout, row, decorator);
+    for(int i = 0; i < this->node()->decoratorCount(); i++)
+    {
+        appendComponentToPropertyView(propertyLayout, row, qobject_cast<btEditorNodeType*>(this->node()->decorators()[i]));
+    }
     
     // Finally, add the node's nodeType
     appendComponentToPropertyView(propertyLayout, row, qobject_cast<btEditorNodeType*>(node()->type()));

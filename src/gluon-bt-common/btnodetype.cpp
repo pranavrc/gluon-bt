@@ -1,4 +1,5 @@
 #include "btnodetype.h"
+#include "btnode.h"
 
 btNodeType::btNodeType(QObject * parent)
 {
@@ -41,6 +42,17 @@ void btNodeType::setClassName(QString className)
 QString btNodeType::className() const
 {
     return m_className;
+}
+
+void btNodeType::setParentNode(btNode* node)
+{
+    m_parent = node;
+    this->setParent(node);
+}
+
+btNode* btNodeType::parentNode()
+{
+    return m_parent;
 }
 
 #include "btnodetype.moc"

@@ -108,8 +108,12 @@ QVariant btTreeModel::data(const QModelIndex &index, int role) const
         tip = "<html>";
         tip += tr("Decorators: %1").arg(node->decoratorCount());
         tip += "<table>";
-        foreach(btDecoratorNode* theNode, node->decorators())
-            tip += "<tr><td>" + theNode->name() + "</td><td>" + theNode->description() + "</td></tr>";
+        
+        for(int i = 0; i < node->decoratorCount(); i++)
+        {
+            tip += "<tr><td>" + node->decorators().at(i)->name() + "</td><td>" + node->decorators().at(i)->description() + "</td></tr>";
+        }
+            
         tip += "</table>";
         tip += "</html>";
         return tip;

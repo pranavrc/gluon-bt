@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QList>
-#include "btdecoratornode.h"
 
 class QString;
 class QVariant;
@@ -39,10 +38,10 @@ public:
 	virtual void setType(btNodeType *newType);
     virtual btNodeType* type() const;
 
-    virtual void addDecorator(btDecoratorNode* decorator);
-    virtual void removeDecorator(btDecoratorNode* decorator);
+    virtual void addDecorator(btNodeType* decorator);
+    virtual void removeDecorator(btNodeType* decorator);
     virtual int decoratorCount();
-    QList<btDecoratorNode*> decorators() const;
+    QList<btNodeType*> decorators() const;
 
 
 private:
@@ -54,7 +53,7 @@ private:
 	QString m_name;
     QString m_description;
 	QList<QVariant> nodeData;
-    QList<btDecoratorNode*> m_decorators;
+    QList<btNodeType*> m_decorators;
 };
 
 #endif // BTNODE_H

@@ -15,14 +15,27 @@ btNode::~btNode()
 {
     qDeleteAll(m_children);
     qDeleteAll(m_decorators);
-    //delete(m_type);
 }
 
 bool btNode::runBehavior()
-{
-    // First run all the decorators, and bail out if even one of them fails
+{    
+    for (int i = 0; i < m_decorators.count(); i++)
+    {
+        if (!m_decorators[i]->run()) 
+        {
+            return false;
+        }
+    }
     
-    // Then run the behavior itself (that is, the btNodeType's run function)
+    if(m_type)
+    {
+        if(!m_type->run())
+        {
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 void btNode::appendChild(btNode *node)
@@ -110,10 +123,10 @@ void btNode::setType(btNodeType *type)
 }
 btNodeType *btNode::type() const { return m_type; }
 
-void btNode::addDecorator(btDecoratorNode* decorator) { m_decorators.append(decorator); }
-void btNode::removeDecorator(btDecoratorNode* decorator) { m_decorators.removeAll(decorator); }
+void btNode::addDecorator(btNodeType* decorator) { m_decorators.append(decorator); }
+void btNode::removeDecorator(btNodeType* decorator) { m_decorators.removeAll(decorator); }
 int btNode::decoratorCount() { return m_decorators.count(); }
-QList<btDecoratorNode*> btNode::decorators() const { return m_decorators; }
+QList<btNodeType*> btNode::decorators() const { return m_decorators; }
 
 void btNode::setParentNode(btNode* node)
 {
