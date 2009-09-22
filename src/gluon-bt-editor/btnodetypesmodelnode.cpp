@@ -63,6 +63,12 @@ btNodeTypesModelNode *btNodeTypesModelNode::parent()
     return parentNode;
 }
 
+void btNodeTypesModelNode::deleteChild(int row)
+{
+    children.removeAt(row);
+    qDebug("btNodeTypesModelNode::deleteChild");
+}
+
 btEditorNodeType *btNodeTypesModelNode::nodeType() const { return nodeData; }
 void btNodeTypesModelNode::setNodeType(btEditorNodeType *nodeType) { nodeData = nodeType; }
 

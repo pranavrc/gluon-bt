@@ -22,6 +22,7 @@ public:
     virtual const QString toDataXml();
 private:
     btNodeType::nodeType m_type;
+    btNodeType::nodeType m_childtype;
 };
 
 #endif

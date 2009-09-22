@@ -37,10 +37,16 @@ bteditor::bteditor(QWidget *parent)
     treeContextMenu = new QMenu(this);
     ///fixme move out
     QAction* menuNewNode = treeContextMenu->addAction(tr("New Node Type"));
+    QAction* menuDeleteNode = treeContextMenu->addAction(tr("Delete Node Type"));
 
     connect(
             menuNewNode,SIGNAL(triggered(bool)),
             this,SLOT(menuNewNodeTriggered())
+            );
+
+    connect(
+            menuDeleteNode,SIGNAL(triggered(bool)),
+            this,SLOT(menuDeleteNodeTriggered())
             );
 
     m_brain->newBehaviorTree();
@@ -131,6 +137,7 @@ void bteditor::on_actionOpen_triggered()
 
     m_brain = projectParser::instance()->parseProject(fileContents);
     m_brain->setParent(this);
+    ///fixme does this get deleted when bteditor is deleted?
     nodeTypes = new btNodeTypesModel(m_brain, this);
     replaceBrain();
     showBehaviorTree(m_brain->behaviorTrees[0]);
@@ -139,10 +146,11 @@ void bteditor::on_actionOpen_triggered()
 
 void bteditor::on_actionSave_As_triggered()
 {
-    // get name of tree, use when saving
+    // get name of tree, use when saving, what to do when cancel ?
      fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
+     
 
     if(!fileName.endsWith(".xml", Qt::CaseInsensitive))
         fileName += ".xml";
@@ -158,7 +166,6 @@ void bteditor::on_actionSave_As_triggered()
 
 void bteditor::on_actionSave_triggered()
 {
-    ///fixme fileName set to invalid name
     if(fileName == ""){
         on_actionSave_As_triggered();
     }else{
@@ -188,6 +195,11 @@ void bteditor::replaceBrain(){
         m_brain, SIGNAL(behaviorTreeAdded(btTreeModel*)),
         this, SLOT(newBehaviorTreeAdded(btTreeModel*))
         );
+    connect(
+        m_brain,SIGNAL(nodeTypeDeleted(int)),
+        this,SLOT(nodeTypeDeleted(int))
+        );
+    ///fixme add connection between nodeTypeDeleted and this
     this->availableNodes->setModel(nodeTypes);
 }
 
@@ -226,10 +238,23 @@ void bteditor::on_availableNodes_customContextMenuRequested(QPoint pos)
     treeContextMenu->exec(availableNodes->viewport()->mapToGlobal(pos));
 }
 
+void bteditor::menuDeleteNodeTriggered()
+{
+    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+    ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
+    if(selectedNode->parent() != 0){
+
+        m_brain->removeNodeType(selectedNode->row());
+    }
+
+
+}
+
 void bteditor::menuNewNodeTriggered()
 {
     ///fixme code duplication refactor
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+    ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
 
     if(selectedNode->parent() == 0){
         QString nodeTypeName = "";
@@ -263,6 +288,11 @@ void bteditor::menuNewNodeTriggered()
             ///fixme missing update of view
 
       }
+}
+
+void bteditor::nodeTypeDeleted(int row)
+{
+    qDebug() << "delete Node Type";
 }
 
 #include "bteditor.moc"

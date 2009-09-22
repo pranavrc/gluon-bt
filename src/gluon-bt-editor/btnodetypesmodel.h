@@ -27,9 +27,12 @@ public:
 
     int rowCount(const QModelIndex &index) const;
     int columnCount(const QModelIndex &index) const;
+
+    bool removeRows ( int row, int count, const QModelIndex &index = QModelIndex() );
     
 public Q_SLOTS:
     void newBehaviorTreeTypeAdded(btEditorNodeType* newType);
+
 
 private:
     btEditorNodeType *nodeTypeFromIndex(const QModelIndex &index) const;

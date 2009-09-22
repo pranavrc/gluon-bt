@@ -32,6 +32,7 @@ public Q_SLOTS:
     void setBehaviorTree(int index);
     void replaceBrain();
     void editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
+    void nodeTypeDeleted(int row);
     
 private:
     btBrain *m_brain;
@@ -48,6 +49,7 @@ private slots:
     void on_availableNodes_customContextMenuRequested(QPoint pos);
     void on_availableNodes_activated(QModelIndex index);
     void menuNewNodeTriggered();
+    void menuDeleteNodeTriggered();
     void on_actionEdit_Node_triggered();
     void on_actionSave_As_triggered ();
     void on_actionOpen_triggered ();

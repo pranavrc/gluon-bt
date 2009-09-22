@@ -27,9 +27,11 @@ public:
 
     void addBehaviorTree(btTreeModel * newTree);
     void addNodeType(btEditorNodeType * newNodeType);
+    void removeNodeType(int row);
 Q_SIGNALS:
     void behaviorTreeAdded(btTreeModel* newTree);
     void nodeTypeAdded(btEditorNodeType* newNodeType);
+    void nodeTypeDeleted(int row);
 
 private:
     QString m_name;

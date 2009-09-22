@@ -25,6 +25,8 @@ public:
 
     void setName(QString name);
     QString name() const;
+
+    void deleteChild(int row);
     
 private:
     QString m_name;

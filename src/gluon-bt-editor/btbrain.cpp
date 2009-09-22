@@ -82,4 +82,12 @@ void btBrain::addNodeType(btEditorNodeType* newNodeType)
     nodeTypes.append(newNodeType);
     emit nodeTypeAdded(newNodeType);
 }
+
+void btBrain::removeNodeType(int row)
+{
+    nodeTypes.removeAt(row);
+    emit nodeTypeDeleted(row);
+    ///TODO: signal view
+}
+
 #include "btbrain.moc"

@@ -45,30 +45,24 @@ btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
     nodeReferenceType->setChildTypes(btNodeType::ReferenceNodeType);
     nodeReference->setNodeType(nodeReferenceType);
     rootNode->appendChild(nodeReference);
-
     btNodeTypesModelNode *node;
     foreach(btNodeType *nodeType, brain->nodeTypes)
     {
         switch(nodeType->type())
         {
-            case btNodeType::ActionNodeType
-:
+            case btNodeType::ActionNodeType:
                 node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeAction);
                 break;
-            case btNodeType::ConditionNodeType
-:
+            case btNodeType::ConditionNodeType:
                 node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeCondition);
                 break;
-            case btNodeType::CompositeNodeType
-:
+            case btNodeType::CompositeNodeType:
                 node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeComposite);
                 break;
-            case btNodeType::DecoratorNodeType
-:
+            case btNodeType::DecoratorNodeType:
                 node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeDecorator);
                 break;
-            case btNodeType::ReferenceNodeType
-:
+            case btNodeType::ReferenceNodeType:
                 node = new btNodeTypesModelNode(qobject_cast<btEditorNodeType*>(nodeType), nodeReference);
                 break;
             default:
@@ -131,7 +125,6 @@ QVariant btNodeTypesModel::data(const QModelIndex &index, int role) const
 
     if (role != Qt::DisplayRole)
         return QVariant();
-
     btNodeTypesModelNode *node = static_cast<btNodeTypesModelNode*>(index.internalPointer());
 
     return node->data(index.column());
@@ -249,6 +242,14 @@ QMimeData* btNodeTypesModel::mimeData(const QModelIndexList &indexes) const
     }
     mimeData->setData("application/bt.nodetype", encodedData);
     return mimeData;
+}
+
+bool btNodeTypesModel::removeRows ( int row, int count, const QModelIndex &index)
+{
+    beginInsertRows(QModelIndex(), row, row+count-1);
+
+    endInsertRows();
+    return true;
 }
 
 #include "btnodetypesmodel.moc"

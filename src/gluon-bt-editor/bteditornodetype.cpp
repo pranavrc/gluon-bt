@@ -7,15 +7,16 @@ btEditorNodeType::btEditorNodeType()
 {
 }
 
-void btEditorNodeType::setChildTypes(nodeType type){m_type = type;}
+void btEditorNodeType::setChildTypes(nodeType type){m_childtype = type;}
 
 btNodeType::nodeType btEditorNodeType::childTypes() const
 {
-    if(m_type)
-        return m_type;
+    if(m_childtype)
+        return m_childtype;
     else
         return UnusableNodeType;
 }
+
 
 btEditorNodeType * btEditorNodeType::copy()
 {
