@@ -145,27 +145,30 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
             }
 
             btEditorNode *  newBTNode = new btEditorNode();
-
-            qDebug() << nodeAttributes.count();
+            
+            if(!nodeAttributes.namedItem("nodetype").isNull())
+            {
+                for(int k = 0; k < brain->nodeTypes.count(); k++)
+                {
+                    if(brain->nodeTypes[k]->className() == nodeAttributes.namedItem("nodetype").nodeValue())
+                    {
+                        newBTNode->setType(brain->nodeTypes[k]->copy());
+                        break;
+                    }
+                    else if(nodeAttributes.namedItem("nodetype").nodeValue() == "[reference]")
+                    {
+                        newBTNode->setType(new btReferenceNode());
+                        break;
+                    }
+                }
+            }
             
             for(int j = 0; j < nodeAttributes.count(); j++)
             {
                 QDomNode currentAttribute = nodeAttributes.item(j);
                 if(currentAttribute.nodeName() == "nodetype")
                 {
-                    for(int k = 0; k < brain->nodeTypes.count(); k++)
-                    {
-                        if(brain->nodeTypes[k]->className() == nodeAttributes.namedItem("nodetype").nodeValue())
-                        {
-                            newBTNode->setType(brain->nodeTypes[k]->copy());
-                            break;
-                        }
-                        else if(nodeAttributes.namedItem("nodetype").nodeValue() == "[reference]")
-                        {
-                            newBTNode->setType(new btReferenceNode());
-                            break;
-                        }
-                    }
+                    continue;
                 }
                 else
                 {
@@ -177,9 +180,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
 
             newBTNode->setName(newBTNode->type()->name());
             newBTNode->setDescription(newBTNode->type()->description());
-            qDebug() << newBTNode->name();
-            qDebug() << newBTNode->description();
-
+            
             if(currentNode.hasChildNodes())
             {
                 parseBehaviorTrees(currentNode, newBTNode, brain);
@@ -188,11 +189,11 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
             if(newBTNode->type()->type() == btEditorNodeType::DecoratorNodeType)
             {
                 node->addDecorator(qobject_cast<btDecoratorNode*>(newBTNode->type()));
+                delete newBTNode;
+                return;
             }
-            else
-            {
-                node->appendChild(newBTNode);
-            }
+            
+            node->appendChild(newBTNode);
             newBTNode->setParentNode(node);
         }
     }
