@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QTableView>
+#include <QPushButton>
 
 class btnodemodel;
 
@@ -14,8 +15,11 @@ class btnodemodel;
 class btNodeEditWidget : public QWidget
 {
     Q_OBJECT
+
+
 public:
     btNodeEditWidget(QWidget * parent);
+    ~btNodeEditWidget();
     void setModel(btnodemodel* btmodel);
 private:
     QVBoxLayout     *mainLayout;
@@ -29,12 +33,16 @@ private:
     QLineEdit       *classnameedit;
     QLineEdit       *discriptionedit;
     QTableView      *propertyList;
+    QPushButton     *remove_button;
+    QPushButton     *add_button;
     btnodemodel     *model;
 
 public Q_SLOTS:
     void nameEdited(QString name);
     void classnameEdited(QString classname);
     void descriptionEdited(QString description);
+    void add_button_clicked();
+    void remove_button_clicked();
 
 };
 

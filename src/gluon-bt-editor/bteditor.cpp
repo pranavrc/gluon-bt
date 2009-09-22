@@ -14,6 +14,8 @@
 #include "btnodeeditwidget.h"
 #include "btnodemodel.h"
 #include "btnodetypesmodelnode.h"
+#include "../gluon-bt-common/btnode.h"
+#include "../gluon-bt-common/btnodetype.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -29,6 +31,15 @@ bteditor::bteditor(QWidget *parent)
 
     treeSelectDialog = new TreeSelectorDialog(this);
     editWidget = new btNodeEditWidget(this);
+    availableNodes->setContextMenuPolicy(Qt::CustomContextMenu);
+    treeContextMenu = new QMenu(this);
+    ///fixme move out
+    QAction* menuNewNode = treeContextMenu->addAction(tr("New Node Type"));
+
+    connect(
+            menuNewNode,SIGNAL(triggered(bool)),
+            this,SLOT(menuNewNodeTriggered())
+            );
 
     m_brain->newBehaviorTree();
 }
@@ -185,6 +196,50 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
         editWidget->show();
         }
     }
+}
+
+void bteditor::on_availableNodes_customContextMenuRequested(QPoint pos)
+{
+    treeContextMenu->exec(availableNodes->viewport()->mapToGlobal(pos));
+}
+
+void bteditor::menuNewNodeTriggered()
+{
+    ///fixme code duplication refactor
+    qDebug("menu new node triggered");
+    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+
+    if(selectedNode->parent() == 0){
+        QString nodeTypeName = "";
+        switch(selectedNode->nodeType()->childTypes()){
+            case btNodeType::ActionNodeType:
+                nodeTypeName = tr("New Action Node");
+                break;
+            case btNodeType::CompositeNodeType:
+                nodeTypeName = tr("New Composite Node");
+                break;
+            case btNodeType::ConditionNodeType:
+                nodeTypeName = tr("New Condition Node");
+                break;
+            case btNodeType::DecoratorNodeType:
+                nodeTypeName = tr("New Decorator Node");
+                break;
+            case btNodeType::ReferenceNodeType:
+                nodeTypeName = tr("New Reference Node");
+                break;
+            case btNodeType::UnusableNodeType:
+                qDebug("UnusableNodeType");
+                break;
+            default:
+                break;
+        }
+            btEditorNodeType* insertedNode = new btEditorNodeType();
+            insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
+            insertedNode->setName(nodeTypeName);
+            m_brain->addNodeType(insertedNode);
+            ///fixme missing update of view
+
+      }
 }
 
 #include "bteditor.moc"

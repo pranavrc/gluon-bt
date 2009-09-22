@@ -2,6 +2,7 @@
 #define bteditor_H
 
 #include <QtGui/QMainWindow>
+#include <QMenu>
 #include "ui_bteditor.h"
 #include "treeselectordialog.h"
 
@@ -39,9 +40,12 @@ private:
     TreeSelectorDialog *treeSelectDialog;
     btNodeEditWidget* editWidget;
     btPropertyWidget *propertyWidget;
+    QMenu   *treeContextMenu;
 
 private slots:
+    void on_availableNodes_customContextMenuRequested(QPoint pos);
     void on_availableNodes_activated(QModelIndex index);
+    void menuNewNodeTriggered();
     void on_actionEdit_Node_triggered();
     void on_actionSave_As_triggered ();
     void on_actionOpen_triggered ();

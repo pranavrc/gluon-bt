@@ -1,6 +1,7 @@
 #include "btnodemodel.h"
 #include "btnodetypesmodel.h"
 #include "bteditornodetype.h"
+#include <QDebug>
 
 btnodemodel::btnodemodel(btEditorNodeType * nodetype,QObject *parent)
         :QAbstractTableModel(parent)
@@ -92,6 +93,40 @@ bool btnodemodel::setData(const QModelIndex &index,
     }
     return false;
 }
+
+bool btnodemodel::insertRows(int position, int rows, const QModelIndex &parent)
+{
+    beginInsertRows(QModelIndex(), position, position+rows-1);
+
+    int propertyCount = node->dynamicPropertyNames().count();
+
+    for(int i = 0; i < propertyCount; i++){
+        if(node->property((tr("newProperty") + QString::number(i + position)).toUtf8()) != QVariant::Invalid){
+            continue;
+        }else{
+            position = position + i;
+            break;
+        }
+    }
+
+    node->setProperty((tr("newProperty") + QString::number(position)).toUtf8(),"QString");
+
+    endInsertRows();
+    return true;
+}
+
+ bool btnodemodel::removeRows(int position, int rows, const QModelIndex &parent)
+ {
+     beginRemoveRows(QModelIndex(), position, position+rows-1);
+
+    if(node->dynamicPropertyNames().count() > position){
+        QString propertyName = node->dynamicPropertyNames().at(position);
+        node->setProperty(propertyName.toUtf8(),QVariant::Invalid);
+    }
+
+     endRemoveRows();
+     return true;
+ }
 
 QString btnodemodel::name() const
 {

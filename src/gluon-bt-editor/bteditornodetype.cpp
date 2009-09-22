@@ -7,6 +7,16 @@ btEditorNodeType::btEditorNodeType()
 {
 }
 
+void btEditorNodeType::setChildTypes(nodeType type){m_type = type;}
+
+btNodeType::nodeType btEditorNodeType::childTypes() const
+{
+    if(m_type)
+        return m_type;
+    else
+        return UnusableNodeType;
+}
+
 btEditorNodeType * btEditorNodeType::copy()
 {
     btEditorNodeType * copyNode = nodeTypeFactory::instance()->newObject(this->type());
