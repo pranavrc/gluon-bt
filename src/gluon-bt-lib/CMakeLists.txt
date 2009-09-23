@@ -9,6 +9,8 @@ set(btlib_SRCS
     ../gluon-bt-common/btnode.cpp
     btfactory.cpp
     btbrain.cpp
+    btselectornode.cpp
+    btsequencenode.cpp
 )
 
 
