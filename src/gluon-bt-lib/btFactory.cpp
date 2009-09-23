@@ -3,10 +3,13 @@
 #include "btnode.h"
 #include "btnodetype.h"
 #include "btbrain.h"
+#include "btselectornode.h"
+#include "btsequencenode.h"
 
 btFactory::btFactory()
 {
-    
+    m_nodeTypes["[selector]"] = new btSelectorNode();
+    m_nodeTypes["[sequence]"] = new btSequenceNode();
 }
 
 btFactory* btFactory::instance()
@@ -23,28 +26,33 @@ btFactory* btFactory::instance()
 
 btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brain)
 {
+    if(xmlNode.attributes().namedItem("nodetype").nodeValue() == "[reference]")
+    {
+        this->addProperty(parentNode, xmlNode.childNodes().at(0), brain);
+        return NULL;
+    }
+    
     btNode* newBTNode = new btNode();
     
-    if(!xmlNode.attributes().namedItem("nodetype").isNull() && !xmlNode.attributes().namedItem("nodetype").nodeValue().startsWith("["))
+    
+    newBTNode->setType((btNodeType*)m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()]->metaObject()->newInstance());
+    newBTNode->type()->setParent(newBTNode);
+    
+    for(int i = 0; i < xmlNode.attributes().count(); i++)
     {
-        newBTNode->setType((btNodeType*)m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()]->metaObject()->newInstance());
-        newBTNode->type()->setParent(newBTNode);
-        
-        for(int i = 0; i < xmlNode.attributes().count(); i++)
+        QDomNode currentAttribute = xmlNode.attributes().item(i);
+        if(currentAttribute.nodeName() == "nodetype")
         {
-            QDomNode currentAttribute = xmlNode.attributes().item(i);
-            if(currentAttribute.nodeName() == "nodetype")
-            {
-                continue;
-            }
-         
-            btNodeType * btType = newBTNode->type();
-            btType->setProperty(currentAttribute.nodeName().toUtf8(), currentAttribute.nodeValue());
+            continue;
         }
         
-        newBTNode->setName(newBTNode->type()->name());
-        newBTNode->setDescription(newBTNode->type()->description());
+        btNodeType * btType = newBTNode->type();
+        btType->setProperty(currentAttribute.nodeName().toUtf8(), currentAttribute.nodeValue());
     }
+    
+    newBTNode->setName(newBTNode->type()->name());
+    newBTNode->setDescription(newBTNode->type()->description());
+    
     
     if(xmlNode.nodeName() == "decorator")
     {
@@ -115,6 +123,18 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
     btNodeType* nodeType = node->type();
     nodeType->setProperty(xNode.attributes().namedItem("name").nodeValue().toUtf8(), xNode.attributes().namedItem("value").nodeValue());
     
+}
+
+btNode* btFactory::createRootNode(QDomNode xmlNode, btBrain* brain)
+{
+    btNode* newRootNode = new btNode();
+    newRootNode->setType(this->m_nodeTypes["[sequence]"]);
+    newRootNode->setParent(brain);
+    
+    newRootNode->setName(xmlNode.attributes().namedItem("name").nodeValue());
+    newRootNode->setDescription(xmlNode.attributes().namedItem("description").nodeValue());
+    
+    return newRootNode;
 }
 
 #include "btfactory.moc"
