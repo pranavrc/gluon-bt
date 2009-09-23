@@ -117,7 +117,7 @@ bool btnodemodel::insertRows(int position, int rows, const QModelIndex &parent)
 
  bool btnodemodel::removeRows(int position, int rows, const QModelIndex &parent)
  {
-     beginRemoveRows(QModelIndex(), position, position+rows-1);
+     beginRemoveRows(parent, position, position+rows-1);
 
     if(node->dynamicPropertyNames().count() > position){
         QString propertyName = node->dynamicPropertyNames().at(position);

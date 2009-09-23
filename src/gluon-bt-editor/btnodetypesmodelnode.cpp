@@ -66,6 +66,7 @@ btNodeTypesModelNode *btNodeTypesModelNode::parent()
 void btNodeTypesModelNode::deleteChild(int row)
 {
     children.removeAt(row);
+    //children.at(row);
     qDebug("btNodeTypesModelNode::deleteChild");
 }
 

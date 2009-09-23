@@ -28,6 +28,8 @@ public:
     int rowCount(const QModelIndex &index) const;
     int columnCount(const QModelIndex &index) const;
 
+    btNodeTypesModelNode* nodeFromIndex(const QModelIndex &index) const;
+
     bool removeRows ( int row, int count, const QModelIndex &index = QModelIndex() );
     
 public Q_SLOTS:

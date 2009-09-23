@@ -1,38 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="testingBrain">
-    <nodetypes>
-            <nodetype name="selector" description=":D" category="composite" classname="selectorClass">
-				<property name="dd" description="property" datatype="QString"/>     
-				<property name="fisk" description="hejkim" datatype="QString"/>      
-            </nodetype>
-            <nodetype name="sequence" description=":D" category="composite" classname="sequenceClass">
-                <property name="prop" description="property" datatype="QString"/>          
-            </nodetype>
-            <nodetype name="run" description=":D" category="action" classname="runClass">
-            </nodetype>
-            <nodetype name="blocker" description="blocks things" category="decorator" classname="blockerClass">
-            </nodetype>
-    </nodetypes>
-    <behaviortrees>
-        <behaviortree name="test tree" description="testing snask" uid="1">
-            <behaviornode name="lalala" description="blabla" nodetype="sequenceClass">
-                <property name="prop" value="sdfdfsdfs"/> 
-                <decorator name="sss" description="dssd" nodetype="blockerClass">
-                </decorator>
-                <behaviornode name="running" description="hope it runs" nodetype="runClass">
-                </behaviornode>
-                <behaviornode name="link thingy" description="asdfsdafasd" nodetype="[reference]">
-                    <property name="reference" value="2"/>
-                </behaviornode>
-            </behaviornode>
-        </behaviortree>
-        
-        <behaviortree name="testing" description="testing snask" uid="2">
-            <behaviornode name="sdfs" description="asdfsd" nodetype="sequenceClass">
-                <property name="prop" value="sdfdfsdfs"/> 
-                <behaviornode name="blabla" description="lalala" nodetype="runClass">
-                </behaviornode>
-            </behaviornode>
-        </behaviortree>
-    </behaviortrees>
+	<nodetypes>
+		<nodetype name="selector" description=":D" classname="selectorClass" category="composite">
+			<property name="dd" description="" datatype="QString" />
+			<property name="fisk" description="" datatype="QString" />
+		</nodetype>
+		<nodetype name="sequence" description=":D" classname="sequenceClass" category="composite">
+			<property name="prop" description="" datatype="QString" />
+		</nodetype>
+		<nodetype name="run" description=":D" classname="runClass" category="action">
+		</nodetype>
+		<nodetype name="blocker" description="blocks things" classname="blockerClass" category="decorator">
+		</nodetype>
+	</nodetypes>
+	<behaviortrees>
+		<behaviortree name="test tree" description="testing snask" uid="0">
+			<behaviornode name="lalala" description="blabla" nodetype="sequenceClass" >
+				<property name="prop" value="sdfdfsdfs" />
+			</behaviornode>
+		</behaviortree>
+		<behaviortree name="testing" description="testing snask" uid="1">
+			<behaviornode name="sdfs" description="asdfsd" nodetype="sequenceClass" >
+				<property name="prop" value="sdfdfsdfs" />
+				<behaviornode name="blabla" description="lalala" nodetype="runClass" >
+				</behaviornode>
+			</behaviornode>
+		</behaviortree>
+	</behaviortrees> 
 </project>

@@ -149,7 +149,7 @@ Qt::ItemFlags btNodeTypesModel::flags(const QModelIndex &index) const
     return thisIndexFlags;
 }
 
-QModelIndex btNodeTypesModel::index(int row, int column, const QModelIndex &parent) const
+/*QModelIndex btNodeTypesModel::index(int row, int column, const QModelIndex &parent) const
 {
     btNodeTypesModelNode *parentNode;
     
@@ -163,7 +163,40 @@ QModelIndex btNodeTypesModel::index(int row, int column, const QModelIndex &pare
         return createIndex(row, column, childNode);
     else
         return QModelIndex();
+}*/
+
+// new index taken from bttreemodel
+
+btNodeTypesModelNode *btNodeTypesModel::nodeFromIndex(const QModelIndex &index) const
+{
+    if(index.isValid())
+        return static_cast<btNodeTypesModelNode*>(index.internalPointer());
+    else
+        return rootNode;
 }
+
+QModelIndex btNodeTypesModel::index(int row, int column, const QModelIndex &parent) const
+{
+    // If we don't have a root node, we need to return an empty QModelIndex
+    if(!rootNode)
+        return QModelIndex();
+
+    // We shouldn't allow for less-than-zero values for row and column...
+    if(row < 0 ||column < 0)
+        return QModelIndex();
+
+    btNodeTypesModelNode *parentNode = nodeFromIndex(parent);
+
+    // Don't allow for the creation of indexes for anything bigger than what exists
+    if(row >= parentNode->childCount() || column >= parentNode->columnCount())
+        return QModelIndex();
+    //if(column == 0)
+        return createIndex(row, column, parentNode->child(row));
+
+    //return createIndex(row, column, 0);
+}
+
+// new index taken from bttreemodel
 
 QModelIndex btNodeTypesModel::parent(const QModelIndex &child) const
 {
@@ -246,9 +279,11 @@ QMimeData* btNodeTypesModel::mimeData(const QModelIndexList &indexes) const
 
 bool btNodeTypesModel::removeRows ( int row, int count, const QModelIndex &index)
 {
-    beginInsertRows(QModelIndex(), row, row+count-1);
 
-    endInsertRows();
+    beginRemoveRows(index, row, row+count-1);
+    //nodeAction->deleteChild(row);
+    rootNode->child(index.row())->deleteChild(row);
+    endRemoveRows();
     return true;
 }
 
