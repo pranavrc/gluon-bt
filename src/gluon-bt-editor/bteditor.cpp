@@ -16,7 +16,7 @@
 #include "btnodetypesmodelnode.h"
 #include "btnode.h"
 #include "btnodetype.h"
-#include "bteditornodetype.h";
+#include "bteditornodetype.h"
 
 bteditor::bteditor(QWidget *parent)
 {
