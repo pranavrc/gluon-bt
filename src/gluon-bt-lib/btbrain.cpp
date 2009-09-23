@@ -25,12 +25,7 @@ btBrain::btBrain(QString data)
             QDomNode currentNode = behaviorTrees.childNodes().at(i);
             QDomNamedNodeMap nodeAttributes = currentNode.attributes();
             
-            btNode * newRootNode = new btNode();
-            newRootNode->setParent(this);
-            
-            newRootNode->setName(nodeAttributes.namedItem("name").nodeValue());
-            newRootNode->setDescription(nodeAttributes.namedItem("description").nodeValue());
-            
+            btNode * newRootNode = btFactory::instance()->createRootNode(currentNode, this);            
             m_behaviorTrees[nodeAttributes.namedItem("uid").nodeValue().toInt()] = newRootNode;
         }
         
@@ -118,3 +113,4 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)
 }
 
 #include "btbrain.moc"
+

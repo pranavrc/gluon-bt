@@ -19,6 +19,8 @@ public:
     btNode* newObject(QString className);
     btNode* newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brain);
     
+    btNode* createRootNode(QDomNode xmlNode, btBrain* brain);
+    
     void addProperty(btNode* node, QDomNode xNode, btBrain* brain);
     void initNodeType(QDomNode xmlNode);
     

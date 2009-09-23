@@ -13,11 +13,13 @@ btBrain::btBrain(QObject *parent)
     btCompositeNode *compositeNode = new btCompositeNode();
     compositeNode->setName("Sequence");
     compositeNode->setDescription("A sequence of behaviors, launched in order (fails if one fails)");
+    compositeNode->setClassName("[sequence]");
     nodeTypes.append(compositeNode);
 
     compositeNode = new btCompositeNode();
     compositeNode->setName("Selector");
     compositeNode->setDescription("A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)");
+    compositeNode->setClassName("[selector]");
     nodeTypes.append(compositeNode);
 }
 

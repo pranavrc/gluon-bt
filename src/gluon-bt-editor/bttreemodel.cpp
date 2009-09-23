@@ -204,7 +204,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
 
     // Yes, this is kinda nasty - but we may well be dropping decorators, which are not true children
     if(rows > 0)
-        beginInsertRows(parent, parentNode->childCount(), rows);
+        beginInsertRows(parent, parentNode->childCount(), parentNode->childCount() + rows - 1);
     foreach(btNodeType* theNodeType, theNodeTypes)
     {
         // Figure out whether the dropped item is a special case (decorators are added to the parent item directly, rather than added as children)
