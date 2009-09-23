@@ -279,11 +279,14 @@ QMimeData* btNodeTypesModel::mimeData(const QModelIndexList &indexes) const
 
 bool btNodeTypesModel::removeRows ( int row, int count, const QModelIndex &index)
 {
+    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(index.internalPointer());
+    btNodeTypesModelNode* parentNode = selectedNode->parent();
 
     beginRemoveRows(index, row, row+count-1);
-    //nodeAction->deleteChild(row);
-    rootNode->child(index.row())->deleteChild(row);
+    parentNode->deleteChild(row);
+
     endRemoveRows();
+    emit dataChanged(index,index);
     return true;
 }
 

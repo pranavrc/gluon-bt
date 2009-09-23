@@ -16,7 +16,7 @@
 #include "btnodetypesmodelnode.h"
 #include "btnode.h"
 #include "btnodetype.h"
-#include "bteditornodetype.h";
+#include "bteditornodetype.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -295,10 +295,13 @@ void bteditor::nodeTypeDeleted(int row)
 {
     ///fixme this add all the delete code should be fixed, it's shite
     //nodeTypes->removeRows(row,1,availableNodes->currentIndex());
-    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
-    //nodeTypes->removeRows(row,1,availableNodes->selectionModel()->currentIndex());
-    btNodeTypesModelNode* parentNode = selectedNode->parent();
-    parentNode->deleteChild(row);
+
+    //btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+    nodeTypes->removeRows(row,1,availableNodes->selectionModel()->currentIndex());
+
+    //btNodeTypesModelNode* parentNode = selectedNode->parent();
+
+    //parentNode->deleteChild(row);
     //selectedNode->nodeType()->
     qDebug() << "delete Node Type";
 }
