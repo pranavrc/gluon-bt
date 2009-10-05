@@ -43,6 +43,11 @@ void btNode::appendChild(btNode *node)
     m_children.append(node);
 }
 
+void btNode::removeChild(int row)
+{
+    m_children.removeAt(row);
+}
+
 btNode *btNode::child(int row)
 {
     return m_children.value(row);

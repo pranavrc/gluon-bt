@@ -21,6 +21,7 @@ public:
     bool runBehavior();
 
 	virtual void appendChild(btNode *);
+    virtual void removeChild(int row);
 	
 	virtual btNode *child(int row);
 	virtual int childCount() const;

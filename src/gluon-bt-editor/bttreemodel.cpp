@@ -5,6 +5,7 @@
 #include <qmessagebox.h>
 #include "btbrain.h"
 #include "btdecoratornode.h"
+#include <QDebug>
 
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
@@ -225,6 +226,17 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
 
     return true;
 }
+
+bool btTreeModel::removeRows(int position, int rows, const QModelIndex &parent)
+ {
+    beginRemoveRows(parent, position, position+rows-1);
+
+    btEditorNode* parentNode = static_cast<btEditorNode*>(parent.internalPointer());
+    parentNode->removeChild(position);
+
+    endRemoveRows();
+    return true;
+ }
 
 void btTreeModel::setName(QString name) { m_name = name; }
 QString btTreeModel::name() const { return m_name; }

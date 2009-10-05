@@ -34,6 +34,7 @@ set(bteditor_SRCS
 )
 
 
+
 set(bteditor_UIS
     bteditor.ui
 )

@@ -30,7 +30,8 @@ public:
 
     btNodeTypesModelNode* nodeFromIndex(const QModelIndex &index) const;
 
-    bool removeRows ( int row, int count, const QModelIndex &index = QModelIndex() );
+    bool removeRows(int row, int count, const QModelIndex &index = QModelIndex() );
+    bool insertRows(int row, int count, const QModelIndex &parent);
     
 public Q_SLOTS:
     void newBehaviorTreeTypeAdded(btEditorNodeType* newType);

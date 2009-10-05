@@ -35,10 +35,14 @@ bteditor::bteditor(QWidget *parent)
     treeSelectDialog = new TreeSelectorDialog(this);
     editWidget = new btNodeEditWidget(this);
     availableNodes->setContextMenuPolicy(Qt::CustomContextMenu);
+    btEditor->setContextMenuPolicy(Qt::CustomContextMenu);
     treeContextMenu = new QMenu(this);
+    btEditorContextMenu = new QMenu(this);
     ///fixme move out
     QAction* menuNewNode = treeContextMenu->addAction(tr("New Node Type"));
     QAction* menuDeleteNode = treeContextMenu->addAction(tr("Delete Node Type"));
+
+    QAction* bteditDeleteNode = btEditorContextMenu->addAction(tr("Delete Node"));
 
     connect(
             menuNewNode,SIGNAL(triggered(bool)),
@@ -48,6 +52,11 @@ bteditor::bteditor(QWidget *parent)
     connect(
             menuDeleteNode,SIGNAL(triggered(bool)),
             this,SLOT(menuDeleteNodeTriggered())
+            );
+
+    connect(
+            bteditDeleteNode,SIGNAL(triggered(bool)),
+            this,SLOT(bteditDeleteNodeTriggered())
             );
 
     m_brain->newBehaviorTree();
@@ -82,6 +91,7 @@ void bteditor::showBehaviorTree(btTreeModel* showThis)
         this, SLOT(editorSelectionChanged(QItemSelection,QItemSelection))
         );
     this->currentBTNameLabel->setText(showThis->name());
+    m_currentBehaviorTree = showThis; // keep track of behaviortree
     //new ModelTest(showThis, this);
 }
 
@@ -112,6 +122,7 @@ void bteditor::showBehaviorTreeListCicked()
 
 void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
 {
+    m_currentBehaviorTree = newTree;    // keep track of behaviortree
     showBehaviorTree(newTree);
     treeSelectDialog->updateModel(newTree);
 }
@@ -147,7 +158,6 @@ void bteditor::on_actionOpen_triggered()
 
 void bteditor::on_actionSave_As_triggered()
 {
-    // get name of tree, use when saving, what to do when cancel ?
      fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
@@ -237,7 +247,9 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
 
 void bteditor::on_availableNodes_customContextMenuRequested(QPoint pos)
 {
-    treeContextMenu->exec(availableNodes->viewport()->mapToGlobal(pos));
+    if(availableNodes->indexAt(pos).isValid()){
+        treeContextMenu->exec(availableNodes->viewport()->mapToGlobal(pos));
+    }
 }
 
 void bteditor::menuDeleteNodeTriggered()
@@ -282,6 +294,7 @@ void bteditor::menuNewNodeTriggered()
                 break;
         }
             ///fixme memory, is it deleted in brain ?
+
             btEditorNodeType* insertedNode = new btEditorNodeType();
             insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
             insertedNode->setName(nodeTypeName);
@@ -293,18 +306,28 @@ void bteditor::menuNewNodeTriggered()
 
 void bteditor::nodeTypeDeleted(int row)
 {
-    ///fixme this add all the delete code should be fixed, it's shite
-    //nodeTypes->removeRows(row,1,availableNodes->currentIndex());
-
-    //btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+    ///fixme update and check for parent
     nodeTypes->removeRows(row,1,availableNodes->selectionModel()->currentIndex());
+}
 
-    //btNodeTypesModelNode* parentNode = selectedNode->parent();
 
-    //parentNode->deleteChild(row);
-    //selectedNode->nodeType()->
-    qDebug() << "delete Node Type";
+void bteditor::on_btEditor_customContextMenuRequested(QPoint pos)
+{
+    if(btEditor->indexAt(pos).isValid()){
+        btNode* selectedNode = static_cast<btNode*>(btEditor->indexAt(pos).internalPointer());
+        if(selectedNode->parent()->parent() != 0){
+            btEditorContextMenu->exec(btEditor->viewport()->mapToGlobal(pos));
+        }
+    }
+}
+
+void bteditor::bteditDeleteNodeTriggered()
+{
+    btNode* selectedNode = static_cast<btNode*>(btEditor->selectionModel()->currentIndex().internalPointer());
+    if(selectedNode->parent()->parent() != 0){
+        ///fixme check if memory is deallocated when removed from list ?
+        m_currentBehaviorTree->removeRows(selectedNode->row(),1,btEditor->selectionModel()->currentIndex().parent());
+    }
 }
 
 #include "bteditor.moc"
-

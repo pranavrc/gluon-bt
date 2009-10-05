@@ -96,7 +96,8 @@ bool btnodemodel::setData(const QModelIndex &index,
 
 bool btnodemodel::insertRows(int position, int rows, const QModelIndex &parent)
 {
-    beginInsertRows(QModelIndex(), position, position+rows-1);
+    beginInsertRows(parent, position, position+rows-1);
+
 
     int propertyCount = node->dynamicPropertyNames().count();
 
@@ -112,6 +113,8 @@ bool btnodemodel::insertRows(int position, int rows, const QModelIndex &parent)
     node->setProperty((tr("newProperty") + QString::number(position)).toUtf8(),"QString");
 
     endInsertRows();
+    emit dataChanged(parent,parent);
+
     return true;
 }
 

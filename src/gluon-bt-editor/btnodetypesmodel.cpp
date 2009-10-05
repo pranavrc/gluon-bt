@@ -107,7 +107,7 @@ void btNodeTypesModel::newBehaviorTreeTypeAdded(btEditorNodeType* newType)
             break;
     }
     node->setName(newType->name());
-    dataChanged(parent, parent);
+    emit dataChanged(parent, parent);
 }
 
 QVariant btNodeTypesModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -275,6 +275,16 @@ QMimeData* btNodeTypesModel::mimeData(const QModelIndexList &indexes) const
     }
     mimeData->setData("application/bt.nodetype", encodedData);
     return mimeData;
+}
+
+bool btNodeTypesModel::insertRows(int row, int count, const QModelIndex &parent)
+{
+    beginInsertRows(parent, row, row+count-1);
+
+    ///fixme insert nodetype
+
+    endInsertRows();
+    return true;
 }
 
 bool btNodeTypesModel::removeRows ( int row, int count, const QModelIndex &index)

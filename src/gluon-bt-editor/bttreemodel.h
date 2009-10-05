@@ -33,6 +33,8 @@ public:
     QStringList mimeTypes() const;
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
+    bool removeRows(int position, int rows, const QModelIndex &parent);
+
     QString name() const;
     void setName(QString name);
 

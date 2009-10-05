@@ -17,6 +17,15 @@
 		<behaviortree name="test tree" description="testing snask" uid="0">
 			<behaviornode name="lalala" description="blabla" nodetype="sequenceClass" >
 				<property name="prop" value="sdfdfsdfs" />
+				<behaviornode name="Selector" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				</behaviornode>
+				<behaviornode name="selector" description=":D" nodetype="selectorClass" >
+					<property name="dd" value="QString" />
+					<property name="fisk" value="QString" />
+				</behaviornode>
+				<behaviornode name="sequence" description=":D" nodetype="sequenceClass" >
+					<property name="prop" value="QString" />
+				</behaviornode>
 			</behaviornode>
 		</behaviortree>
 		<behaviortree name="testing" description="testing snask" uid="1">

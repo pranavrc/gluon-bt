@@ -27,7 +27,6 @@
 
 btAvailableNodesTreeView::btAvailableNodesTreeView(QWidget* parent)
 {
-    setAcceptDrops(true);
     setDragEnabled(true);
 }
 

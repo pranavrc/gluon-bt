@@ -36,20 +36,23 @@ public Q_SLOTS:
     
 private:
     btBrain *m_brain;
-    btNodeTypesModel* nodeTypes;
+    btNodeTypesModel *nodeTypes;
     btTreeModel *m_currentBehaviorTree;
     TreeSelectorDialog *treeSelectDialog;
-    btNodeEditWidget* editWidget;
+    btNodeEditWidget *editWidget;
     btPropertyWidget *propertyWidget;
     QMenu   *treeContextMenu;
+    QMenu   *btEditorContextMenu;
     QString fileName;
 
 private slots:
+    void on_btEditor_customContextMenuRequested(QPoint pos);
     void on_actionSave_triggered();
     void on_availableNodes_customContextMenuRequested(QPoint pos);
     void on_availableNodes_activated(QModelIndex index);
     void menuNewNodeTriggered();
     void menuDeleteNodeTriggered();
+    void bteditDeleteNodeTriggered();
     void on_actionEdit_Node_triggered();
     void on_actionSave_As_triggered ();
     void on_actionOpen_triggered ();

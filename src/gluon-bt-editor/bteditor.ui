@@ -171,6 +171,9 @@
      </property>
      <item row="0" column="0">
       <widget class="btAvailableNodesTreeView" name="availableNodes">
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
        </property>
