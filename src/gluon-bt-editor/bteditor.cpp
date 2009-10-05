@@ -122,7 +122,6 @@ void bteditor::showBehaviorTreeListCicked()
 
 void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
 {
-    m_currentBehaviorTree = newTree;    // keep track of behaviortree
     showBehaviorTree(newTree);
     treeSelectDialog->updateModel(newTree);
 }
@@ -239,6 +238,7 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
     if(selectedNode->parent() != 0){
         btnodemodel* btm =  new btnodemodel(qobject_cast<btEditorNodeType*>(selectedNode->nodeType()));
         editWidget->setModel(btm);
+        editWidget->setSelectedNode(selectedNode);
         if(editWidget->isHidden()){
         editWidget->show();
         }

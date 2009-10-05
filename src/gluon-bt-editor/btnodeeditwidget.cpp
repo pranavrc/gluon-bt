@@ -1,9 +1,12 @@
 #include "btnodeeditwidget.h"
 #include "btnodemodel.h"
+#include "btnodetypesmodelnode.h"
+#include <QDebug>
 
 btNodeEditWidget::btNodeEditWidget(QWidget * parent)
 {
     model = 0;
+    m_selectedNode = 0;
     mainLayout      = new QVBoxLayout(this);
     buttonLayout    = new QHBoxLayout();
     editLayout      = new QGridLayout();
@@ -47,7 +50,7 @@ btNodeEditWidget::btNodeEditWidget(QWidget * parent)
 
 btNodeEditWidget::~btNodeEditWidget()
 {
-    delete model; // qDelete ?
+    delete model; // qDelete
 }
 
 void btNodeEditWidget::setModel(btnodemodel* btmodel)
@@ -61,8 +64,16 @@ void btNodeEditWidget::setModel(btnodemodel* btmodel)
     discriptionedit->setText(model->description());
 }
 
+void btNodeEditWidget::setSelectedNode(btNodeTypesModelNode* selectedNode)
+{
+    m_selectedNode = selectedNode;
+}
+
 void btNodeEditWidget::nameEdited(QString name){
     model->setName(name);
+    if(m_selectedNode){
+        m_selectedNode->setName(name);
+    }
 }
 
 void btNodeEditWidget::classnameEdited(QString classname){

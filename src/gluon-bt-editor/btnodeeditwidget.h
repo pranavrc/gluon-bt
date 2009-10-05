@@ -10,6 +10,7 @@
 #include <QPushButton>
 
 class btnodemodel;
+class btNodeTypesModelNode;
 
 
 class btNodeEditWidget : public QWidget
@@ -21,6 +22,7 @@ public:
     btNodeEditWidget(QWidget * parent);
     ~btNodeEditWidget();
     void setModel(btnodemodel* btmodel);
+    void setSelectedNode(btNodeTypesModelNode* selectedNode);
 private:
     QVBoxLayout     *mainLayout;
     QHBoxLayout     *buttonLayout;
@@ -36,6 +38,7 @@ private:
     QPushButton     *remove_button;
     QPushButton     *add_button;
     btnodemodel     *model;
+    btNodeTypesModelNode* m_selectedNode;
 
 public Q_SLOTS:
     void nameEdited(QString name);
