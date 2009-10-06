@@ -16,6 +16,7 @@ public:
     ~btBrain();
     
     btTreeModel *newBehaviorTree();
+    btTreeModel *newBehaviorTree(QString treeName);
     void deleteBehaviorTree(btTreeModel *behaviorTree);
     btEditorNodeType *findNodeTypeByName(QString name);
     

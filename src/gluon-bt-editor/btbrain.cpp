@@ -37,12 +37,12 @@ btEditorNodeType *btBrain::findNodeTypeByName(QString name)
     return 0;
 }
 
-btTreeModel *btBrain::newBehaviorTree()
+btTreeModel *btBrain::newBehaviorTree(QString treeName)
 {
     // First create the new BT
     btTreeModel *newTree = new btTreeModel(this, this);
     this->behaviorTrees.append(newTree);
-    newTree->setName(tr("New Tree"));
+    newTree->setName(treeName);
     // We set the root node to be a sequence, as this is the fastest to choose that it should simply run the first child node (no selection, just runs children in sequence)
     btEditorNode *btRootNode = new btEditorNode(this->findNodeTypeByName("Sequence"));
     newTree->setRootNode(btRootNode);
@@ -63,6 +63,10 @@ btTreeModel *btBrain::newBehaviorTree()
     emit nodeTypeAdded(newType);
     
     return newTree;
+}
+
+btTreeModel *btBrain::newBehaviorTree(){
+    newBehaviorTree(tr("New Tree"));
 }
 
 void btBrain::deleteBehaviorTree(btTreeModel *behaviorTree)

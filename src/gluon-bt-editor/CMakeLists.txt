@@ -28,6 +28,7 @@ set(bteditor_SRCS
 	btdecoratornode.cpp
 	btreferencenode.cpp
 	btunusablenode.cpp
+    btnewtreewizard.cpp
     treeselectordialog.cpp
 	main.cpp
     modeltest.cpp

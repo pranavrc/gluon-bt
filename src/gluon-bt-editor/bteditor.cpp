@@ -17,6 +17,7 @@
 #include "btnode.h"
 #include "btnodetype.h"
 #include "bteditornodetype.h"
+#include "btnewtreewizard.h"
 
 bteditor::bteditor(QWidget *parent)
 {
@@ -34,6 +35,7 @@ bteditor::bteditor(QWidget *parent)
 
     treeSelectDialog = new TreeSelectorDialog(this);
     editWidget = new btNodeEditWidget(this);
+    wizard = new NewTreeWizard(this);
     availableNodes->setContextMenuPolicy(Qt::CustomContextMenu);
     btEditor->setContextMenuPolicy(Qt::CustomContextMenu);
     treeContextMenu = new QMenu(this);
@@ -111,7 +113,11 @@ void bteditor::showPropertiesFor(btEditorNode* showFor)
 
 void bteditor::createNewBehaviorTree()
 {
-    m_brain->newBehaviorTree();
+    wizard->show();
+}
+
+void bteditor::newBehaviorTreeCreated(QString name){
+    m_brain->newBehaviorTree(name);
 }
 
 void bteditor::showBehaviorTreeListCicked()
@@ -264,8 +270,6 @@ void bteditor::menuDeleteNodeTriggered()
     if(selectedNode->parent() != 0){
         m_brain->removeNodeType(selectedNode->row());
     }
-
-
 }
 
 void bteditor::menuNewNodeTriggered()

@@ -13,6 +13,7 @@ class btEditorNode;
 class TreeSelectorDialog;
 class btPropertyWidget;
 class btNodeEditWidget;
+class NewTreeWizard;
 
 class bteditor : public QMainWindow, private Ui::BtEditor
 {
@@ -28,6 +29,7 @@ public:
 public Q_SLOTS:
     void createNewBehaviorTree();
     void newBehaviorTreeAdded(btTreeModel* newTree);
+    void newBehaviorTreeCreated(QString name);
     void showBehaviorTreeListCicked();
     void setBehaviorTree(int index);
     void replaceBrain();
@@ -41,6 +43,7 @@ private:
     TreeSelectorDialog *treeSelectDialog;
     btNodeEditWidget *editWidget;
     btPropertyWidget *propertyWidget;
+    NewTreeWizard *wizard;
     QMenu   *treeContextMenu;
     QMenu   *btEditorContextMenu;
     QString fileName;
