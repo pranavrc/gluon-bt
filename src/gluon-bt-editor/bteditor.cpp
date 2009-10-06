@@ -242,7 +242,10 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
         editWidget->setSelectedNode(selectedNode);
         editWidget->connectSignals();
         if(editWidget->isHidden()){
-        editWidget->show();
+            editWidget->show();
+        }else{
+            // bring to front, make active
+            editWidget->activateWindow();
         }
     }
 }
