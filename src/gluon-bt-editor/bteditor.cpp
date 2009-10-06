@@ -237,8 +237,10 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
     if(selectedNode->parent() != 0){
         btnodemodel* btm =  new btnodemodel(qobject_cast<btEditorNodeType*>(selectedNode->nodeType()));
+        editWidget->disconnectSignals();
         editWidget->setModel(btm);
         editWidget->setSelectedNode(selectedNode);
+        editWidget->connectSignals();
         if(editWidget->isHidden()){
         editWidget->show();
         }

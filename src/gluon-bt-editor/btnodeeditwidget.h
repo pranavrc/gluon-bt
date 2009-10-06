@@ -23,6 +23,8 @@ public:
     ~btNodeEditWidget();
     void setModel(btnodemodel* btmodel);
     void setSelectedNode(btNodeTypesModelNode* selectedNode);
+    void connectSignals();
+    void disconnectSignals();
 private:
     QVBoxLayout     *mainLayout;
     QHBoxLayout     *buttonLayout;

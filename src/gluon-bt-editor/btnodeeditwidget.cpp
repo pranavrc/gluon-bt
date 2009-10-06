@@ -41,11 +41,22 @@ btNodeEditWidget::btNodeEditWidget(QWidget * parent)
     mainLayout->addWidget(propertyList);
     mainLayout->addLayout(buttonLayout);
 
-    connect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));
+    connectSignals();
+
     connect(classnameedit, SIGNAL(textChanged(QString)), this, SLOT(classnameEdited(QString)));
     connect(discriptionedit, SIGNAL(textChanged(QString)), this, SLOT(descriptionEdited(QString)));
     connect(add_button,SIGNAL(clicked()),this,SLOT(add_button_clicked()));
     connect(remove_button,SIGNAL(clicked()),this,SLOT(remove_button_clicked()));
+}
+
+void btNodeEditWidget::connectSignals()
+{
+    connect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));
+}
+
+void btNodeEditWidget::disconnectSignals()
+{
+    disconnect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));
 }
 
 btNodeEditWidget::~btNodeEditWidget()
