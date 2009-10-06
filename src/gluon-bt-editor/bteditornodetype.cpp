@@ -5,6 +5,7 @@
 
 btEditorNodeType::btEditorNodeType()
 {
+    setNodeType(btNodeType::UnusableNodeType);
 }
 
 void btEditorNodeType::setChildTypes(nodeType type){m_childtype = type;}

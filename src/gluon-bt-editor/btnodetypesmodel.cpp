@@ -138,7 +138,7 @@ Qt::ItemFlags btNodeTypesModel::flags(const QModelIndex &index) const
     if (index.isValid())
     {
         btNodeTypesModelNode *node = static_cast<btNodeTypesModelNode*>(index.internalPointer());
-        if(node->nodeType())
+        if(node->nodeType()->type() != btNodeType::UnusableNodeType)
             thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags;
         else
             thisIndexFlags = Qt::ItemIsEnabled | Qt::ItemIsDropEnabled | defaultFlags;
