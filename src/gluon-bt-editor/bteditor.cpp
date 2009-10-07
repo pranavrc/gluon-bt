@@ -25,7 +25,7 @@ bteditor::bteditor(QWidget *parent)
     propertyWidget = new btPropertyWidget(this);
     propertyScrollArea->setWidget(propertyWidget);
     setupActions();
-	
+
     fileName = "";
 
     m_brain = new btBrain(this);
@@ -166,13 +166,13 @@ void bteditor::on_actionSave_As_triggered()
      fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
-     
+
 
     if(!fileName.endsWith(".xml", Qt::CaseInsensitive))
         fileName += ".xml";
-    
+
     QString fileContents = projectParser::instance()->serializeProject(this->m_brain);
-    
+
     QFile file(fileName);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QByteArray byteFileContents(fileContents.toUtf8());
@@ -274,43 +274,10 @@ void bteditor::menuDeleteNodeTriggered()
 
 void bteditor::menuNewNodeTriggered()
 {
-    ///fixme code duplication refactor
-    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
+    ///fixme memory, is it deleted in brain ?
+    nodeTypes->insertRows(0,1,availableNodes->selectionModel()->currentIndex());
 
-    if(selectedNode->parent() == 0){
-        QString nodeTypeName = "";
-        switch(selectedNode->nodeType()->childTypes()){
-            case btNodeType::ActionNodeType:
-                nodeTypeName = tr("New Action Node");
-                break;
-            case btNodeType::CompositeNodeType:
-                nodeTypeName = tr("New Composite Node");
-                break;
-            case btNodeType::ConditionNodeType:
-                nodeTypeName = tr("New Condition Node");
-                break;
-            case btNodeType::DecoratorNodeType:
-                nodeTypeName = tr("New Decorator Node");
-                break;
-            case btNodeType::ReferenceNodeType:
-                nodeTypeName = tr("New Reference Node");
-                break;
-            case btNodeType::UnusableNodeType:
-                qDebug("UnusableNodeType");
-                break;
-            default:
-                break;
-        }
-            ///fixme memory, is it deleted in brain ?
-
-            btEditorNodeType* insertedNode = new btEditorNodeType();
-            insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
-            insertedNode->setName(nodeTypeName);
-            m_brain->addNodeType(insertedNode);
-            ///fixme missing update of view
-
-      }
 }
 
 void bteditor::nodeTypeDeleted(int row)

@@ -1,5 +1,6 @@
 #include "btnodetypesmodelnode.h"
 #include "bteditornodetype.h"
+#include <QDebug>
 
 btNodeTypesModelNode::btNodeTypesModelNode(btEditorNodeType *data, btNodeTypesModelNode *parent)
 {
@@ -65,8 +66,8 @@ btNodeTypesModelNode *btNodeTypesModelNode::parent()
 
 void btNodeTypesModelNode::deleteChild(int row)
 {
+    qDebug() << children.at(row)->name();
     children.removeAt(row);
-    //children.at(row);
     qDebug("btNodeTypesModelNode::deleteChild");
 }
 

@@ -4,6 +4,7 @@
 #include "btnodetypesmodel.h"
 #include "btbrain.h"
 #include <qmessagebox.h>
+#include <QDebug>
 
 btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
         :QAbstractItemModel(parent)
@@ -279,12 +280,49 @@ QMimeData* btNodeTypesModel::mimeData(const QModelIndexList &indexes) const
 
 bool btNodeTypesModel::insertRows(int row, int count, const QModelIndex &parent)
 {
-    beginInsertRows(parent, row, row+count-1);
+    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(parent.internalPointer());
 
-    ///fixme insert nodetype
+    if(selectedNode->parent() == 0){
+        QString nodeTypeName = "";
+        switch(selectedNode->nodeType()->childTypes()){
+        case btNodeType::ActionNodeType:
+            nodeTypeName = tr("New Action Node");
+            break;
+        case btNodeType::CompositeNodeType:
+            nodeTypeName = tr("New Composite Node");
+            break;
+        case btNodeType::ConditionNodeType:
+            nodeTypeName = tr("New Condition Node");
+            break;
+        case btNodeType::DecoratorNodeType:
+            nodeTypeName = tr("New Decorator Node");
+            break;
+        case btNodeType::ReferenceNodeType:
+            nodeTypeName = tr("New Reference Node");
+            break;
+        case btNodeType::UnusableNodeType:
+            qDebug("UnusableNodeType");
+            break;
+        default:
+            break;
+        }
 
-    endInsertRows();
-    return true;
+        beginInsertRows(parent, row, row);
+        ///fixme check memory
+        btEditorNodeType* insertedNode = new btEditorNodeType();
+        insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
+        insertedNode->setName(nodeTypeName);
+
+        // this also inserts the node insertedNode as a child of selectedNode
+        btNodeTypesModelNode* insertedModelNode = new btNodeTypesModelNode(insertedNode,selectedNode);
+
+        insertedModelNode->setName(nodeTypeName);
+
+        endInsertRows();
+        emit dataChanged(parent,parent);
+        return true;
+    }
+    return false;
 }
 
 bool btNodeTypesModel::removeRows ( int row, int count, const QModelIndex &index)
