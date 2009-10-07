@@ -5,6 +5,7 @@
 #include "btbrain.h"
 #include <qmessagebox.h>
 #include <QDebug>
+#include <QIcon>
 
 btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
         :QAbstractItemModel(parent)
@@ -124,9 +125,32 @@ QVariant btNodeTypesModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
+    btNodeTypesModelNode *node = static_cast<btNodeTypesModelNode*>(index.internalPointer());
+    if (role == Qt::DecorationRole){
+        btNodeType::nodeType type;
+        if(node->nodeType()->type() == btNodeType::UnusableNodeType){
+            type = node->nodeType()->childTypes();
+        }else{
+            type = node->nodeType()->type();
+        }
+        switch(type){
+            case btNodeType::ReferenceNodeType:
+                return QIcon("reference.png");
+            case btNodeType::CompositeNodeType:
+                return QIcon("sequence.png");
+            case btNodeType::DecoratorNodeType:
+                return QIcon("decorator.png");
+            case btNodeType::ActionNodeType:
+                return QIcon("behavior.png");
+            case btNodeType::ConditionNodeType:
+                return QIcon("selector.png");
+            default:
+                break;
+        }
+    }
+
     if (role != Qt::DisplayRole)
         return QVariant();
-    btNodeTypesModelNode *node = static_cast<btNodeTypesModelNode*>(index.internalPointer());
 
     return node->data(index.column());
 }
