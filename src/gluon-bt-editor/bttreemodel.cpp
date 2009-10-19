@@ -6,6 +6,7 @@
 #include "btbrain.h"
 #include "btdecoratornode.h"
 #include <QDebug>
+#include <QIcon>
 
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
@@ -99,6 +100,29 @@ QVariant btTreeModel::data(const QModelIndex &index, int role) const
     if(!node)
         return QVariant();
     
+    // icon stuff
+    if (role == Qt::DecorationRole){
+        if(index.column() == 0){
+            btNodeType::nodeType type;
+            type = node->type()->type();
+            switch(type){
+            case btNodeType::ReferenceNodeType:
+                return QIcon("reference.png");
+            case btNodeType::CompositeNodeType:
+                return QIcon("sequence.png");
+            case btNodeType::DecoratorNodeType:
+                return QIcon("decorator.png");
+            case btNodeType::ActionNodeType:
+                return QIcon("behavior.png");
+            case btNodeType::ConditionNodeType:
+                return QIcon("selector.png");
+            default:
+                break;
+            }
+        }
+    }
+    //icon stuff
+
     if(role == Qt::DisplayRole)
     {
         return node->data(index.column());

@@ -2,6 +2,7 @@
 #include "btnodetypesmodel.h"
 #include "bteditornodetype.h"
 #include <QDebug>
+#include <QIcon>
 
 btnodemodel::btnodemodel(btEditorNodeType * nodetype,QObject *parent)
         :QAbstractTableModel(parent)
