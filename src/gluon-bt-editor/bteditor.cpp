@@ -276,6 +276,7 @@ void bteditor::menuNewNodeTriggered()
 {
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
     ///fixme memory, is it deleted in brain ?
+    //m_brain->addNodeType();
     nodeTypes->insertRows(0,1,availableNodes->selectionModel()->currentIndex());
 
 }

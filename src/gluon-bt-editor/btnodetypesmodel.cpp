@@ -10,6 +10,7 @@
 btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
         :QAbstractItemModel(parent)
 {
+    m_brain = brain;
     rootNode = new btNodeTypesModelNode();
     rootNode->setName("Root node");
 
@@ -336,6 +337,8 @@ bool btNodeTypesModel::insertRows(int row, int count, const QModelIndex &parent)
         btEditorNodeType* insertedNode = new btEditorNodeType();
         insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
         insertedNode->setName(nodeTypeName);
+
+        m_brain->addNodeType(insertedNode);
 
         // this also inserts the node insertedNode as a child of selectedNode
         btNodeTypesModelNode* insertedModelNode = new btNodeTypesModelNode(insertedNode,selectedNode);

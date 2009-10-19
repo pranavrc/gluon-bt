@@ -86,7 +86,8 @@ void btBrain::addBehaviorTree(btTreeModel* newTree)
 void btBrain::addNodeType(btEditorNodeType* newNodeType)
 {
     nodeTypes.append(newNodeType);
-    emit nodeTypeAdded(newNodeType);
+    ///fixme: with this double entries are added
+    //emit nodeTypeAdded(newNodeType);
 }
 
 void btBrain::removeNodeType(int row)

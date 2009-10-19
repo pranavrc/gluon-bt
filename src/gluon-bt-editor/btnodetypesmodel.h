@@ -46,6 +46,7 @@ private:
     btNodeTypesModelNode *nodeComposite;
     btNodeTypesModelNode *nodeDecorator;
     btNodeTypesModelNode *nodeReference;
+    btBrain *m_brain;
 };
 
 #endif // BTNODETYPESMODEL_H
