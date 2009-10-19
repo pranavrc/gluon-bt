@@ -60,9 +60,10 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
         {
             if(btRefNode->referenceBehaviorTree() == behaviorTrees.at(i))
             {
-                properties += QVariant(i).toString() +"\" />";
+                properties += QVariant(i).toString();
             }
         }
+        properties += "\" />";
     }
     else
     {
