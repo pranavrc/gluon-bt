@@ -32,8 +32,8 @@ set(bteditor_SRCS
     treeselectordialog.cpp
 	main.cpp
     modeltest.cpp
+    images.cpp
 )
-
 
 
 set(bteditor_UIS

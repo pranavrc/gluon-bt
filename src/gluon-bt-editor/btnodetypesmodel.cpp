@@ -136,15 +136,15 @@ QVariant btNodeTypesModel::data(const QModelIndex &index, int role) const
         }
         switch(type){
             case btNodeType::ReferenceNodeType:
-                return QIcon("reference.png");
+            return QIcon(":/images/reference.png");
             case btNodeType::CompositeNodeType:
-                return QIcon("sequence.png");
+                return QIcon(":/images/sequence.png");
             case btNodeType::DecoratorNodeType:
-                return QIcon("decorator.png");
+                return QIcon(":/images/decorator.png");
             case btNodeType::ActionNodeType:
-                return QIcon("behavior.png");
+                return QIcon(":/images/behavior.png");
             case btNodeType::ConditionNodeType:
-                return QIcon("selector.png");
+                return QIcon(":/images/selector.png");
             default:
                 break;
         }

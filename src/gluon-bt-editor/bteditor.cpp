@@ -129,6 +129,7 @@ void bteditor::showBehaviorTreeListCicked()
 void bteditor::newBehaviorTreeAdded(btTreeModel* newTree)
 {
     showBehaviorTree(newTree);
+    treeSelectDialog->setWindowIcon(QIcon(":/images/reference.png"));
     treeSelectDialog->updateModel(newTree);
 }
 
@@ -247,6 +248,7 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
         editWidget->setModel(btm);
         editWidget->setSelectedNode(selectedNode);
         editWidget->connectSignals();
+        editWidget->setWindowIcon(QIcon(":/images/sequence.png"));
         if(editWidget->isHidden()){
             editWidget->show();
         }else{
