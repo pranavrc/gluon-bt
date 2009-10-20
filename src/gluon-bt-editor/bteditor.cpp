@@ -310,3 +310,8 @@ void bteditor::bteditDeleteNodeTriggered()
 }
 
 #include "bteditor.moc"
+
+void bteditor::on_actionNew_Tree_triggered()
+{
+
+}

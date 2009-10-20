@@ -25,6 +25,9 @@
 				</behaviornode>
 				<behaviornode name="sequence" description=":D" nodetype="sequenceClass" >
 					<property name="prop" value="QString" />
+					<behaviornode name="testing" description="A reference to the behavior tree named testing" nodetype="[reference]" >
+						<property name="reference" value="" />
+					</behaviornode>
 				</behaviornode>
 			</behaviornode>
 		</behaviortree>
