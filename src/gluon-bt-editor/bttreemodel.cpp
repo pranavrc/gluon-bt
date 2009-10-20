@@ -198,6 +198,15 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     // We only do the parent thing here - we accept no drops in empty space at all
     if(!parent.isValid())
         return false;
+
+    btEditorNode* parentNode = static_cast<btEditorNode*>(parent.internalPointer());
+
+    // We do not allow dropping on Actions and References
+    if( parentNode->type()->type() == btNodeType::ActionNodeType    ||
+        parentNode->type()->type() == btNodeType::ReferenceNodeType ||
+        parentNode->type()->type() == btNodeType::ConditionNodeType ){
+        return false;
+    }
     
     QByteArray encodedData = data->data("application/bt.nodetype");
     QDataStream stream(&encodedData, QIODevice::ReadOnly);
@@ -212,7 +221,6 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
         nodeTypes.insert(nodeType, btType);
     }
 
-    btEditorNode* parentNode = static_cast<btEditorNode*>(parent.internalPointer());
     int rows = 0;
     QList<btNodeType*> theNodeTypes;
     QHashIterator<QString, QString> i(nodeTypes);
