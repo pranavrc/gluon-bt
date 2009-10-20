@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="">
+	<nodetypes>
+		<nodetype name="s" description="dfjhdsfkgjdsfg" classname="fdjdfjh" category="composite">
+		</nodetype>
+	</nodetypes>
+	<behaviortrees>
+		<behaviortree name="New Tree" description="" uid="0">
+			<behaviornode name="Selector" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				<behaviornode name="s" description="dfjhdsfkgjdsfg" nodetype="fdjdfjh" >
+				</behaviornode>
+			</behaviornode>
+		</behaviortree>
+	</behaviortrees> 
+</project>
