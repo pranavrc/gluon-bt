@@ -23,6 +23,9 @@
       <property name="acceptDrops">
        <bool>true</bool>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="animated">
        <bool>true</bool>
       </property>
@@ -132,6 +135,9 @@
          <width>120</width>
          <height>0</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
        </property>
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>

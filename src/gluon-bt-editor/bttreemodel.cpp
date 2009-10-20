@@ -72,7 +72,7 @@ int btTreeModel::rowCount(const QModelIndex &parent) const
 int btTreeModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return 2;
+    return 3;
 }
 
 QModelIndex btTreeModel::parent(const QModelIndex &child) const
@@ -125,6 +125,9 @@ QVariant btTreeModel::data(const QModelIndex &index, int role) const
 
     if(role == Qt::DisplayRole)
     {
+        if(index.column() == 2){
+            return node->type()->description();
+        }
         return node->data(index.column());
     }
     else if(role == Qt::ToolTipRole)
