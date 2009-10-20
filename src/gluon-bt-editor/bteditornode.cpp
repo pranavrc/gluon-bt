@@ -14,6 +14,10 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
     QString endTag = projectParser::instance()->writeIndents()+ "</behaviornode>";
     QString properties = "";
     QString children = "";
+    
+    startTag += "name=\"" + this->name() + "\" ";
+    startTag += "description=\"" + this->description() + "\" ";
+    
     btNodeType * nodeType = this->type();
     const QMetaObject * mo = nodeType->metaObject();
     
@@ -27,15 +31,7 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
             continue;
         }
         
-        if(propertyName == "name")
-        {
-            startTag += "name=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
-        }
-        else if(propertyName == "description")
-        {
-            startTag += "description=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
-        }
-        else if(propertyName == "className")
+        if(propertyName == "className")
         {
             if(nodeType->type() == btNodeType::ReferenceNodeType)
             {
