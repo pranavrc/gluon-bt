@@ -1,40 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="testingBrain">
+<project name="">
 	<nodetypes>
-		<nodetype name="selector" description=":D" classname="selectorClass" category="composite">
-			<property name="dd" description="" datatype="QString" />
-			<property name="fisk" description="" datatype="QString" />
-		</nodetype>
-		<nodetype name="sequence" description=":D" classname="sequenceClass" category="composite">
-			<property name="prop" description="" datatype="QString" />
-		</nodetype>
-		<nodetype name="run" description=":D" classname="runClass" category="action">
-		</nodetype>
-		<nodetype name="blocker" description="blocks things" classname="blockerClass" category="decorator">
+		<nodetype name="s" description="dfjhdsfkgjdsfg" classname="fdjdfjh" category="composite">
 		</nodetype>
 	</nodetypes>
 	<behaviortrees>
-		<behaviortree name="test tree" description="testing snask" uid="0">
-			<behaviornode name="lalala" description="blabla" nodetype="sequenceClass" >
-				<property name="prop" value="sdfdfsdfs" />
-				<behaviornode name="Selector" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
-				</behaviornode>
-				<behaviornode name="selector" description=":D" nodetype="selectorClass" >
-					<property name="dd" value="QString" />
-					<property name="fisk" value="QString" />
-				</behaviornode>
-				<behaviornode name="sequence" description=":D" nodetype="sequenceClass" >
-					<property name="prop" value="QString" />
-					<behaviornode name="testing" description="A reference to the behavior tree named testing" nodetype="[reference]" >
-						<property name="reference" value="" />
-					</behaviornode>
-				</behaviornode>
-			</behaviornode>
-		</behaviortree>
-		<behaviortree name="testing" description="testing snask" uid="1">
-			<behaviornode name="sdfs" description="asdfsd" nodetype="sequenceClass" >
-				<property name="prop" value="sdfdfsdfs" />
-				<behaviornode name="blabla" description="lalala" nodetype="runClass" >
+		<behaviortree name="New Tree" description="" uid="0">
+			<behaviornode name="Selector" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				<behaviornode name="s" description="dfjhdsfkgjdsfg" nodetype="fdjdfjh" >
 				</behaviornode>
 			</behaviornode>
 		</behaviortree>

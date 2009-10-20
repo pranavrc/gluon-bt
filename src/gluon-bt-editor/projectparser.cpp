@@ -164,7 +164,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                 }
             }
             
-            for(int j = 0; j < nodeAttributes.count(); j++)
+            /*for(int j = 0; j < nodeAttributes.count(); j++)
             {
                 QDomNode currentAttribute = nodeAttributes.item(j);
                 if(currentAttribute.nodeName() == "nodetype")
@@ -177,10 +177,16 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                     btType->setProperty(currentAttribute.nodeName().toUtf8(), currentAttribute.nodeValue());
                     newBTNode->setType(btType);
                 }
-            }
+            }*/
 
-            newBTNode->setName(newBTNode->type()->name());
-            newBTNode->setDescription(newBTNode->type()->description());
+            if(!nodeAttributes.namedItem("name").isNull())
+            {
+                newBTNode->setName(nodeAttributes.namedItem("name").nodeValue());
+            }
+            if(!nodeAttributes.namedItem("description").isNull())
+            {
+                newBTNode->setDescription(nodeAttributes.namedItem("description").nodeValue());
+            }
             
             if(currentNode.hasChildNodes())
             {
