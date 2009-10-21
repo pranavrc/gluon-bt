@@ -118,6 +118,7 @@ void bteditor::createNewBehaviorTree()
 
 void bteditor::newBehaviorTreeCreated(QString name){
     m_brain->newBehaviorTree(name);
+    nodeTypes->insertRows(0,0,availableNodes->selectionModel()->currentIndex());
 }
 
 void bteditor::showBehaviorTreeListCicked()
@@ -276,10 +277,15 @@ void bteditor::menuDeleteNodeTriggered()
 
 void bteditor::menuNewNodeTriggered()
 {
+    btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+    if(selectedNode->nodeType()->childTypes() == btNodeType::ReferenceNodeType){
+        wizard->show();
+    }else{
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
     ///fixme memory, is it deleted in brain ?
     //m_brain->addNodeType();
-    nodeTypes->insertRows(0,1,availableNodes->selectionModel()->currentIndex());
+        nodeTypes->insertRows(0,1,availableNodes->selectionModel()->currentIndex());
+    }
 
 }
 

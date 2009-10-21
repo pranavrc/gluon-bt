@@ -334,16 +334,19 @@ bool btNodeTypesModel::insertRows(int row, int count, const QModelIndex &parent)
 
         beginInsertRows(parent, row, row);
         ///fixme check memory
-        btEditorNodeType* insertedNode = new btEditorNodeType();
-        insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
-        insertedNode->setName(nodeTypeName);
+        ///fixme change this HACK to something useful
+        if(count == 1){ ///ugly hack never do this, change when up to it
+            btEditorNodeType* insertedNode = new btEditorNodeType();
+            insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
+            insertedNode->setName(nodeTypeName);
 
-        m_brain->addNodeType(insertedNode);
+            m_brain->addNodeType(insertedNode);
 
-        // this also inserts the node insertedNode as a child of selectedNode
-        btNodeTypesModelNode* insertedModelNode = new btNodeTypesModelNode(insertedNode,selectedNode);
+            // this also inserts the node insertedNode as a child of selectedNode
+            btNodeTypesModelNode* insertedModelNode = new btNodeTypesModelNode(insertedNode,selectedNode);
 
-        insertedModelNode->setName(nodeTypeName);
+            insertedModelNode->setName(nodeTypeName);
+        }
 
         endInsertRows();
         emit dataChanged(parent,parent);
