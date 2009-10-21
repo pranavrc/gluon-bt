@@ -165,6 +165,7 @@ void bteditor::on_actionOpen_triggered()
 
 void bteditor::on_actionSave_As_triggered()
 {
+    ///fixme does not return if it actually saved
      fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                             "untitled.glbt",
                             tr("Behavior Trees (*.glbt *.xml)"));
@@ -315,9 +316,40 @@ void bteditor::bteditDeleteNodeTriggered()
     }
 }
 
-#include "bteditor.moc"
+void bteditor::on_actionNew_triggered()
+{
+    int result = QMessageBox::question(this,
+                                       tr("Save Project?"),
+                                       tr("Do you want to save the current project?"),QMessageBox::Save,QMessageBox::Discard,QMessageBox::Cancel);
+
+    if(result == QMessageBox::Cancel){
+        return;
+    }
+
+    if(result == QMessageBox::Save){
+        emit on_actionSave_triggered();
+    }
+
+    delete m_brain;
+    delete nodeTypes;
+
+    m_brain = new btBrain(this);
+    m_brain->setParent(this);
+
+    ///fixme does this get deleted when bteditor is deleted?
+    nodeTypes = new btNodeTypesModel(m_brain, this);
+    replaceBrain();
+    m_brain->newBehaviorTree();
+}
 
 void bteditor::on_actionNew_Tree_triggered()
 {
 
 }
+
+#include "bteditor.moc"
+
+
+
+
+

@@ -49,6 +49,7 @@ private:
     QString fileName;
 
 private slots:
+    void on_actionNew_triggered();
     void on_actionNew_Tree_triggered();
     void on_btEditor_customContextMenuRequested(QPoint pos);
     void on_actionSave_triggered();
