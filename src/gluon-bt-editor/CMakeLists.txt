@@ -32,6 +32,7 @@ set(bteditor_SRCS
     treeselectordialog.cpp
 	main.cpp
     modeltest.cpp
+    colorgen.cpp
     images.cpp
 )
 

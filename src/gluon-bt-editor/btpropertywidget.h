@@ -25,6 +25,7 @@ class btEditorNode;
 class btEditorNodeType;
 class QGridLayout;
 class btDecoratorNode;
+class ColorGen;
 
 class btPropertyWidget : public QWidget
 {
@@ -39,6 +40,7 @@ public:
     
 private:
     btEditorNode * m_node;
+    ColorGen * colorgen;
     
     QWidget * createComponentPropertyView();
     

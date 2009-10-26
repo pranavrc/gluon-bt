@@ -29,13 +29,16 @@
 #include "btpropertywidgetitem.h"
 #include "bteditornode.h"
 #include "bteditornodetype.h"
+#include "colorgen.h"
 
 btPropertyWidget::btPropertyWidget(QObject * parent)
 {
+    colorgen = new ColorGen(0,70,30);
 }
 
 btPropertyWidget::~btPropertyWidget()
 {
+    delete colorgen;
 }
 
 void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, QObject * object, QString name, QString description, QVariant options)
@@ -85,7 +88,7 @@ void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 
     QLabel * titleLabel = new QLabel(this);
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
-    titleLabel->setStyleSheet("background-color: rgb(178, 232, 255);");
+    titleLabel->setStyleSheet("background-color: " + colorgen->nextColor().name());
     layout->addWidget(titleLabel, row, 0, 1, 2);
  
     // Add a new property line for each property in the object's metaobject...
@@ -100,7 +103,7 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
     QLabel * titleLabel = new QLabel(this);
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
-    titleLabel->setStyleSheet("background-color: rgb(255, 220, 220);");
+    titleLabel->setStyleSheet("background-color: " + colorgen->nextColor().name());
     layout->addWidget(titleLabel, row, 0, 1, 2);
     
     // Add a new property line for each property in the object's metaobject...
