@@ -41,10 +41,14 @@ bool btNode::runBehavior()
 void btNode::appendChild(btNode *node)
 {
     m_children.append(node);
+    //has to be in the list, before this function is called
+    m_type->appendingChild(m_children.count()-1);
 }
 
 void btNode::removeChild(int row)
 {
+    //has to be removed from the list before it is removed from the m_children list
+    m_type->removingChild(row);
     m_children.removeAt(row);
 }
 
@@ -84,6 +88,8 @@ QVariant btNode::headerData(int column) const
         return tr("Description");
     else if(column == 2)
         return tr("Type");
+    
+    return QVariant();
 }
 
 QVariant btNode::data(int column) const

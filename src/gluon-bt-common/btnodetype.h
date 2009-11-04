@@ -31,6 +31,8 @@ public:
     btNodeType(QObject* parent = 0);
     ~btNodeType();
 
+    virtual void appendingChild(int index){};
+    virtual void removingChild(int index){};
     virtual void setName(QString name);
     virtual QString name() const;
     virtual void setDescription(QString description);
@@ -43,10 +45,14 @@ public:
     virtual QString className() const;
     virtual void setClassName(QString className);
     
-    virtual void setParentNode(btNode* node);
-    virtual btNode* parentNode();
+    void setParentNode(btNode* node);
+    /**
+     * ParentNode() returns the node which contains the list of childnodes relevant to you.
+     * @return the parent node
+     */
+    btNode* parentNode();
 
-protected:
+private:
     QString m_name;
     QString m_description;
     QString m_className;

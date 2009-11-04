@@ -2,7 +2,6 @@
 #define BTSELECTORNODE_H
 
 #include <QObject>
-#include <QDateTime>
 
 #include "btnodetype.h"
 #include "btfactory.h"
