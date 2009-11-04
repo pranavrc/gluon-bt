@@ -38,21 +38,14 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
     newBTNode->setType((btNodeType*)m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()]->metaObject()->newInstance());
     newBTNode->type()->setParent(newBTNode);
     
-    for(int i = 0; i < xmlNode.attributes().count(); i++)
+    if(!xmlNode.attributes().namedItem("name").isNull())
     {
-        QDomNode currentAttribute = xmlNode.attributes().item(i);
-        if(currentAttribute.nodeName() == "nodetype")
-        {
-            continue;
-        }
-        
-        btNodeType * btType = newBTNode->type();
-        btType->setProperty(currentAttribute.nodeName().toUtf8(), currentAttribute.nodeValue());
+        newBTNode->setName(xmlNode.attributes().namedItem("name").nodeValue());
     }
-    
-    newBTNode->setName(newBTNode->type()->name());
-    newBTNode->setDescription(newBTNode->type()->description());
-    
+    if(!xmlNode.attributes().namedItem("description").isNull())
+    {
+        newBTNode->setDescription(xmlNode.attributes().namedItem("description").nodeValue());
+    }
     
     if(xmlNode.nodeName() == "decorator")
     {

@@ -100,9 +100,6 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
         {
             QDomNode currentProperty = currentNodeType.childNodes().at(j);
             QDomNamedNodeMap propertyAttributes = currentProperty.attributes();
-            /*newNode->setProperty(propertyAttributes.namedItem("name").nodeName().toUtf8(), propertyAttributes.namedItem("name").nodeValue());
-            newNode->setProperty(propertyAttributes.namedItem("description").nodeName().toUtf8(), propertyAttributes.namedItem("description").nodeValue());
-            newNode->setProperty(propertyAttributes.namedItem("datatype").nodeName().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());*/
             newNode->setProperty(propertyAttributes.namedItem("name").nodeValue().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());
         }
 
@@ -163,21 +160,6 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                     }
                 }
             }
-            
-            /*for(int j = 0; j < nodeAttributes.count(); j++)
-            {
-                QDomNode currentAttribute = nodeAttributes.item(j);
-                if(currentAttribute.nodeName() == "nodetype")
-                {
-                    continue;
-                }
-                else
-                {
-                    btEditorNodeType * btType = qobject_cast<btEditorNodeType*>(newBTNode->type())->copy();
-                    btType->setProperty(currentAttribute.nodeName().toUtf8(), currentAttribute.nodeValue());
-                    newBTNode->setType(btType);
-                }
-            }*/
 
             if(!nodeAttributes.namedItem("name").isNull())
             {
