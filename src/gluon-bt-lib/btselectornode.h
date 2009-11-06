@@ -5,8 +5,9 @@
 
 #include "btnodetype.h"
 #include "btfactory.h"
+#include "btlib_export.h"
 
-class btSelectorNode : public btNodeType
+class BT_LIB_EXPORT btSelectorNode : public btNodeType
 {
     Q_OBJECT
     

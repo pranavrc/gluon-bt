@@ -3,13 +3,15 @@
 
 #include <QObject>
 #include <QHash>
-#include <QDomNode>
+#include <QtXml/QDomNode>
+
+#include "btlib_export.h"
 
 class btNodeType;
 class btNode;
 class btBrain;
 
-class btFactory : public QObject
+class BT_LIB_EXPORT btFactory : public QObject
 {
     Q_OBJECT
     
@@ -35,7 +37,7 @@ private:
 };
 
 template<class T>
-class Registration
+class BT_LIB_EXPORT Registration
 {
 
 public:
