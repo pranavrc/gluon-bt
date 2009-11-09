@@ -16,7 +16,6 @@ struct BT_LIB_EXPORT StatNode
     int fail;
     int visits;
     float old_p;
-
 };
 
 #endif // STATNODE_H
