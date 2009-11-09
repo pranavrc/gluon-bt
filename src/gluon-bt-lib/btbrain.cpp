@@ -106,6 +106,8 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)
                 {
                     parseBehaviorTrees(currentNode, newBTNode);
                 }
+                
+                newBTNode->doneParsingChildren();
             }
         }
     }

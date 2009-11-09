@@ -22,6 +22,7 @@ public:
 
 	virtual void appendChild(btNode *);
     virtual void removeChild(int row);
+    virtual void doneParsingChildren();
 	
 	virtual btNode *child(int row);
 	virtual int childCount() const;
