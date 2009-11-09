@@ -57,6 +57,7 @@ btTreeModel *btBrain::newBehaviorTree(QString treeName)
     newType->setName(newTree->name());
     newType->setDescription(tr("A reference to the behavior tree named %1").arg(newTree->name()));
     newType->setNodeType(btNodeType::ReferenceNodeType);
+    newType->setReferenceBehaviorTree(newTree);
     
     // add the new type to the brain
     addNodeType(newType);
