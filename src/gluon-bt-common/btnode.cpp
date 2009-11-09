@@ -146,4 +146,9 @@ void btNode::setParentNode(btNode* node)
     this->setParent(node);
 }
 
+void btNode::doneParsingChildren()
+{
+    m_type->childrenAdded();
+}
+
 #include "btnode.moc"
