@@ -7,10 +7,12 @@
 #include <QDomDocument>
 #include <QDomNode>
 
+#include "btlib_export.h"
+
 class btNode;
 class btNodeType;
 
-class btBrain : public QObject
+class BT_LIB_EXPORT btBrain : public QObject
 {
     Q_OBJECT
     

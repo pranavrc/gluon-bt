@@ -4,10 +4,11 @@
 #include <QObject>
 #include <QMetaObject>
 #include <QMetaProperty>
+#include "btnode.h"
 
-class btNode;
+#include "../gluon-bt-lib/btlib_export.h"
 
-class btNodeType : public QObject
+class BT_LIB_EXPORT btNodeType : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE setName)

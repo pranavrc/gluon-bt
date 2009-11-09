@@ -1,5 +1,4 @@
 #include "btnodetype.h"
-#include "btnode.h"
 
 btNodeType::btNodeType(QObject * parent)
 {

@@ -14,7 +14,13 @@ set(btlib_SRCS
 )
 
 
+add_definitions(-DMAKE_BT_LIB)
+
 qt4_automoc(${btlib_SRCS})
 add_library(btlib SHARED ${btlib_SRCS} ${btlib_UIS_H})
 
 target_link_libraries(btlib ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY})
+
+install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+#set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
+
