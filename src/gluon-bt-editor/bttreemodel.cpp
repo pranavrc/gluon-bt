@@ -7,6 +7,7 @@
 #include "btdecoratornode.h"
 #include <QDebug>
 #include <QIcon>
+#include "btreferencenode.h"
 
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
@@ -250,6 +251,13 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
         }
         else
         {
+            if(theNodeType->type() == btNodeType::ReferenceNodeType)
+            {
+                btReferenceNode * referenceNodeType = qobject_cast<btReferenceNode*>(brain->findNodeTypeByName(theNodeType->name()));
+                btReferenceNode * newRefNode = qobject_cast<btReferenceNode*>(theNodeType);
+                newRefNode->setReferenceBehaviorTree(referenceNodeType->referenceBehaviorTree());
+            }
+            
             btEditorNode *newChild = new btEditorNode(theNodeType, parentNode);
             newChild->setName(tr("New %1").arg(theNodeType->name()));
         }
