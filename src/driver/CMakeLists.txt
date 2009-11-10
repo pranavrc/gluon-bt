@@ -8,8 +8,8 @@ include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_
 set(driver_SRCS
     main.cpp
     driver.cpp
+    btprobabilisticselectornode.cpp
 )
- 
 
 qt4_automoc(${driver_SRCS})
 

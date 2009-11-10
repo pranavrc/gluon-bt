@@ -34,7 +34,7 @@ public:
 
     virtual void appendingChild(int index){};
     virtual void removingChild(int index){};
-    virtual void childrenAdded();
+    virtual void childrenAdded(){};
     
     virtual void setName(QString name);
     virtual QString name() const;

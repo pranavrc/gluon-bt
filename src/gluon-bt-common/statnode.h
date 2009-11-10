@@ -9,6 +9,7 @@ struct BT_LIB_EXPORT StatNode
         fail = 1;
         succes = 1;
         p = 0.5;
+        visits = 0;
     }
     float p;
     float wp;
@@ -16,6 +17,7 @@ struct BT_LIB_EXPORT StatNode
     int fail;
     int visits;
     float old_p;
+    bool visited;
 };
 
 #endif // STATNODE_H

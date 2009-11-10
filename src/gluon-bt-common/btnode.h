@@ -4,11 +4,13 @@
 #include <QObject>
 #include <QList>
 
+#include "../gluon-bt-lib/btlib_export.h"
+
 class QString;
 class QVariant;
 class btNodeType;
 
-class btNode : public QObject
+class BT_LIB_EXPORT btNode : public QObject
 {
 Q_OBJECT;
 Q_PROPERTY(QString name READ name WRITE setName);

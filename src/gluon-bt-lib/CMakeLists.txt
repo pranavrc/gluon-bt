@@ -11,7 +11,6 @@ set(btlib_SRCS
     btbrain.cpp
     btselectornode.cpp
     btsequencenode.cpp
-    btprobabilisticselectornode.cpp
 )
 
 
