@@ -36,7 +36,7 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
     
     
     newBTNode->setType((btNodeType*)m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()]->metaObject()->newInstance());
-    newBTNode->type()->setParent(newBTNode);
+    newBTNode->type()->setParentNode(newBTNode);
     
     if(!xmlNode.attributes().namedItem("name").isNull())
     {
@@ -70,7 +70,7 @@ btNode* btFactory::newObject(QString className)
 {
     btNode* newBTNode = new btNode();
     newBTNode->setType((btNodeType*)m_nodeTypes[className]->metaObject()->newInstance());
-    newBTNode->type()->setParent(newBTNode);
+    newBTNode->type()->setParentNode(newBTNode);
     return newBTNode;
 }
                                

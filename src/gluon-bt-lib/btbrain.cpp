@@ -40,8 +40,12 @@ btBrain::~btBrain()
 
 btNode* btBrain::getBehaviorTree(int index)
 {
-    return NULL;//m_behaviorTrees.at(index);
+    if(m_behaviorTrees.contains(index)){
+        return m_behaviorTrees[index];
+    }
+    return NULL;
 }
+
 
 int btBrain::behaviorTreesCount()
 {
