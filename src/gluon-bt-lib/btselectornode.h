@@ -12,7 +12,7 @@ class BT_LIB_EXPORT btSelectorNode : public btNodeType
     Q_OBJECT
     
 public:
-    btSelectorNode();
+    Q_INVOKABLE btSelectorNode();
     bool run();
 };
 

@@ -12,7 +12,7 @@ class btProbSelectorNode : public btNodeType
     Q_OBJECT
     
 public:
-    btProbSelectorNode();
+    Q_INVOKABLE btProbSelectorNode();
     bool run();
     void appendingChild(int index);
     void removingChild(int index);

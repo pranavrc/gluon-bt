@@ -88,8 +88,7 @@ btNodeType* btFactory::getRegisteredNodeType(QString className)
 void btFactory::initNodeType(QDomNode xmlNode)
 {
     QDomNamedNodeMap nodeTypeAttributes = xmlNode.attributes();
-    qDebug() << nodeTypeAttributes.count();
-    btNodeType* nodeType = btFactory::instance()->getRegisteredNodeType(nodeTypeAttributes.namedItem("className").nodeValue());
+    btNodeType* nodeType = btFactory::instance()->getRegisteredNodeType(nodeTypeAttributes.namedItem("classname").nodeValue());
     nodeType->setName(nodeTypeAttributes.namedItem("name").nodeValue());
     nodeType->setDescription(nodeTypeAttributes.namedItem("description").nodeValue());
     nodeType->setClassName(nodeTypeAttributes.namedItem("classname").nodeValue());

@@ -27,6 +27,7 @@ find_path(LIBBTPATH
     c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/
   )
 
+
 add_library(btlib SHARED IMPORTED)
 set_property(TARGET btlib PROPERTY IMPORTED_LOCATION ${LIBBTPATH})
 set_property(TARGET btlib PROPERTY IMPORTED_IMPLIB ${LIBBT})
@@ -35,4 +36,4 @@ set_property(TARGET btlib PROPERTY IMPORTED_IMPLIB ${LIBBT})
 add_executable(driver ${driver_SRCS})
  
 
-target_link_libraries(driver ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} btlib)
+target_link_libraries(driver ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${LIBBT})

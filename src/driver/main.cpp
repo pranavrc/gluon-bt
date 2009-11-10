@@ -27,12 +27,12 @@ int main(int argc, char** argv)
     QString fileContents(byteArray.data());
     file.close();
 
-   qDebug()  << fileContents;
+   //qDebug()  << fileContents;
 
     btBrain *brain = new btBrain(fileContents);
+    brain->getBehaviorTree(0)->runBehavior();
 
     //qDebug() << brain->children();
-
 
 
     return app.exec();

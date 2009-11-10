@@ -19,7 +19,7 @@ btNode::~btNode()
 
 bool btNode::runBehavior()
 {    
-    for (int i = 0; i < m_decorators.count(); i++)
+    for (int i = 0; i < m_decorators.size(); i++)
     {
         if (!m_decorators[i]->run()) 
         {

@@ -13,7 +13,7 @@ class BT_LIB_EXPORT btSequenceNode : public btNodeType
     Q_OBJECT
     
 public:
-    btSequenceNode();
+    Q_INVOKABLE btSequenceNode();
     bool run();
 };
 

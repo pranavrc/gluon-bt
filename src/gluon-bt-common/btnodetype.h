@@ -29,7 +29,7 @@ public:
         DecoratorNodeType
     };
 
-    btNodeType(QObject* parent = 0);
+    Q_INVOKABLE btNodeType(QObject* parent = 0);
     ~btNodeType();
 
     virtual void appendingChild(int index){};
