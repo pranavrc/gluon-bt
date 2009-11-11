@@ -8,6 +8,7 @@ REGISTER_NODETYPE(btProbSelectorNode)
 btProbSelectorNode::btProbSelectorNode()
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
+    qrand();
 }
 
 bool btProbSelectorNode::run()
@@ -19,24 +20,23 @@ bool btProbSelectorNode::run()
 
     for(int i = 0; i < probStats.count(); i++){
         randNum = ((float)qrand()/RAND_MAX) * scale;
-        foreach(StatNode node, probStats)
+        qDebug() << "RandNum: " << randNum;
+        foreach(StatNode *node, probStats)
         {
-
-            if(node.visited == false){
-                if(intStart < randNum && randNum <= (node.wp + intStart)){
-                   qDebug() << intStart << " < " << randNum << " <= " << node.wp + intStart << " YES";
+            if(node->visited == false){
+                if(intStart < randNum && randNum <= (node->wp + intStart)){
+                   qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
                     if(parentNode()->child(inc)->runBehavior()){
-                        foreach(StatNode node, probStats){
-                            node.visited = false;
+                        foreach(StatNode *node, probStats){
+                            node->visited = false;
                         }
                         return true;
                     }else{
-                        node.visited = true;
-                        scale -= node.wp;
+                        node->visited = true;
+                        scale -= node->wp;
                     }
                 }
-               qDebug() << intStart << " < " << randNum << " <= " << node.wp + intStart << " NO";
-                 intStart += node.wp;
+                 intStart += node->wp;
             }
             inc += 1;
         }
@@ -44,8 +44,8 @@ bool btProbSelectorNode::run()
         inc = 0;
     }
 
-    foreach(StatNode node, probStats){
-        node.visited = 0;
+    foreach(StatNode *node, probStats){
+        node->visited = 0;
     }
 
     return false;
@@ -53,7 +53,7 @@ bool btProbSelectorNode::run()
 
 void btProbSelectorNode::appendingChild(int index)
 {
-    StatNode newNode;
+    StatNode *newNode = new StatNode();
     probStats.insert(index,newNode);
 }
 
@@ -67,8 +67,9 @@ void btProbSelectorNode::childrenAdded()
     ///fixme skal læses fra xml
     int count = probStats.count();
     if(count > 0){
-        foreach(StatNode node, probStats){
-            node.p = (1.0 / count);
+        foreach(StatNode *node, probStats){
+            node->p = (1.0 / count);
+            node->wp = (1.0 / count);
         }
     }
 }

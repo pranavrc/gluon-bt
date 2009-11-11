@@ -19,7 +19,7 @@ public:
     void childrenAdded();
 
 private:
-    QList<StatNode> probStats;
+    QList<StatNode*> probStats;
 };
 
 #endif //BTPROBSELECTORNODE_H

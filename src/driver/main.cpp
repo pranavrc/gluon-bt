@@ -1,7 +1,6 @@
 #include <QtGui/QApplication>
 #include "driver.h"
 #include "../gluon-bt-lib/btlib.h"
-#include "btprobabilisticselectornode.h"
 #include <QDebug>
 #include <QFile>
 
@@ -9,15 +8,7 @@ int main(int argc, char** argv)
 {
     QCoreApplication app(argc, argv);
 
-    btSelectorNode *sel = new btSelectorNode();
-    sel->setClassName("sel");
-    qDebug() << sel->className();
-
-    btProbSelectorNode *probSel = new btProbSelectorNode();
-    probSel->setClassName("probSel");
-    qDebug() << probSel->className();
-
-    QString fileName = "stuff.xml";
+    QString fileName = "debug2.xml";
 
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -30,7 +21,12 @@ int main(int argc, char** argv)
    //qDebug()  << fileContents;
 
     btBrain *brain = new btBrain(fileContents);
+    for(int i = 0; i < 10; i++){
+
     brain->getBehaviorTree(0)->runBehavior();
+    qDebug()  << "------------";
+}
+
 
     //qDebug() << brain->children();
 

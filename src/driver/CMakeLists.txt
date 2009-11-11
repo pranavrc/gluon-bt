@@ -9,6 +9,8 @@ set(driver_SRCS
     main.cpp
     driver.cpp
     btprobabilisticselectornode.cpp
+    btdebug1node.cpp
+    btdebug2node.cpp
 )
 
 qt4_automoc(${driver_SRCS})

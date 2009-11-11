@@ -10,6 +10,8 @@ struct BT_LIB_EXPORT StatNode
         succes = 1;
         p = 0.5;
         visits = 0;
+        wp = 0.5;
+        visited = false;
     }
     float p;
     float wp;
