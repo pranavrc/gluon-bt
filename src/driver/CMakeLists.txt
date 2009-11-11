@@ -13,25 +13,27 @@ set(driver_SRCS
 
 qt4_automoc(${driver_SRCS})
 
+if(APPLE)
+
+find_library(LIBBT
+    NAMES
+      libbtlib.dylib
+    PATHS
+    /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build/Debug/
+    
+  )
+ 
+elseif()
+
 find_library(LIBBT
     NAMES
       libbtlib
     PATHS
     c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/
+    
   )
 
-find_path(LIBBTPATH
-    NAMES
-      libbtlib
-    PATHS
-    c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/
-  )
-
-
-add_library(btlib SHARED IMPORTED)
-set_property(TARGET btlib PROPERTY IMPORTED_LOCATION ${LIBBTPATH})
-set_property(TARGET btlib PROPERTY IMPORTED_IMPLIB ${LIBBT})
-
+endif()
 
 add_executable(driver ${driver_SRCS})
  

@@ -97,9 +97,6 @@ void btFactory::initNodeType(QDomNode xmlNode)
     {
         QDomNode currentProperty = xmlNode.childNodes().at(j);
         QDomNamedNodeMap propertyAttributes = currentProperty.attributes();
-        /*newNode->setProperty(propertyAttributes.namedItem("name").nodeName().toUtf8(), propertyAttributes.namedItem("name").nodeValue());
-         newNode->setProperty(propertyAttributes.namedItem("description").nodeName().toUtf8(), propertyAttributes.namedItem("description").nodeValue());
-         newNode->setProperty(propertyAttributes.namedItem("datatype").nodeName().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());*/
         nodeType->setProperty(propertyAttributes.namedItem("name").nodeValue().toUtf8(), propertyAttributes.namedItem("datatype").nodeValue());
     }    
     
@@ -121,7 +118,8 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
 btNode* btFactory::createRootNode(QDomNode xmlNode, btBrain* brain)
 {
     btNode* newRootNode = new btNode();
-    newRootNode->setType(this->m_nodeTypes["[sequence]"]);
+    newRootNode->setType((btNodeType*)this->m_nodeTypes["[sequence]"]->metaObject()->newInstance());
+    newRootNode->type()->setParentNode(newRootNode);
     newRootNode->setParent(brain);
     
     newRootNode->setName(xmlNode.attributes().namedItem("name").nodeValue());
