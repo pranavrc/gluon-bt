@@ -8,9 +8,9 @@ btEditorNodeType::btEditorNodeType()
     setNodeType(btNodeType::UnusableNodeType);
 }
 
-void btEditorNodeType::setChildTypes(nodeType type){m_childtype = type;}
+void btEditorNodeType::setChildType(nodeType type){m_childtype = type;}
 
-btNodeType::nodeType btEditorNodeType::childTypes() const
+btNodeType::nodeType btEditorNodeType::childType() const
 {
     if(m_childtype)
         return m_childtype;

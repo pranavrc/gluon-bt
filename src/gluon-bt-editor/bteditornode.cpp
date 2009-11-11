@@ -3,6 +3,7 @@
 #include "bttreemodel.h"
 #include "projectparser.h"
 #include "btreferencenode.h"
+#include <QtCore/QDebug>
 
 btEditorNode::btEditorNode(btNodeType *type, btNode *parent) : btNode(type, parent)
 {
@@ -76,6 +77,7 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
     for(int i = 0; i < this->decoratorCount(); i++)
     {
         children += qobject_cast<btEditorNodeType*>( this->decorators().at(i))->toDataXml();
+        qDebug() << children;
     }
     
     for(int i = 0; i < this->childCount(); i++)

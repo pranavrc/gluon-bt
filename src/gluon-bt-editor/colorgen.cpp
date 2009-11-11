@@ -30,7 +30,6 @@ QColor ColorGen::nextColor()
 
 QColor ColorGen::randomColor()
 {
-    int oldv = v;
     v = 255 * qrand();
 
     QColor color(0,0,0,0);

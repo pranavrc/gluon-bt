@@ -81,7 +81,7 @@ bool btnodemodel::setData(const QModelIndex &index,
     if(index.isValid() && role == Qt::EditRole){
         QString newName = value.toString();
         QString oldName = node->dynamicPropertyNames().at(index.row());
-        if(newName != ""){
+        if(newName != "" && newName != oldName){
             if(index.column() == 0){
                 node->setProperty(newName.toUtf8(),node->property(oldName.toUtf8()));
                 node->setProperty(oldName.toUtf8(),QVariant::Invalid);

@@ -243,6 +243,13 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
     //skal fixes for memstuff, tjekker ikke om det er en valid node
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(index.internalPointer());
 
+    if(selectedNode->nodeType()->className() == "[selector]" 
+       || selectedNode->nodeType()->className() == "[sequence]"
+       || selectedNode->nodeType()->className() == "[reference]")
+    {
+        return;
+    }
+    
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
     if(selectedNode->parent() != 0){
         btnodemodel* btm =  new btnodemodel(qobject_cast<btEditorNodeType*>(selectedNode->nodeType()));
@@ -279,7 +286,7 @@ void bteditor::menuDeleteNodeTriggered()
 void bteditor::menuNewNodeTriggered()
 {
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
-    if(selectedNode->nodeType()->childTypes() == btNodeType::ReferenceNodeType){
+    if(selectedNode->nodeType()->childType() == btNodeType::ReferenceNodeType){
         wizard->show();
     }else{
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash

@@ -8,15 +8,15 @@
 class btEditorNodeType : public btNodeType
 {
     Q_OBJECT
-    Q_PROPERTY(btNodeType::nodeType childTypes READ childTypes WRITE setChildTypes)
+    Q_PROPERTY(btNodeType::nodeType childType READ childType WRITE setChildType)
 public:
 
 
     btEditorNodeType();
     
     btEditorNodeType * copy();
-    btNodeType::nodeType childTypes() const;
-    void setChildTypes(btNodeType::nodeType);
+    btNodeType::nodeType childType() const;
+    void setChildType(btNodeType::nodeType);
     
     const QString toNodeTypeXml();
     virtual const QString toDataXml();

@@ -17,35 +17,35 @@ btNodeTypesModel::btNodeTypesModel(btBrain *brain, QObject* parent)
     nodeAction = new btNodeTypesModelNode();
     nodeAction->setName(tr("Action"));
     btEditorNodeType* nodeActionType = new btEditorNodeType();
-    nodeActionType->setChildTypes(btNodeType::ActionNodeType);
+    nodeActionType->setChildType(btNodeType::ActionNodeType);
     nodeAction->setNodeType(nodeActionType);
     rootNode->appendChild(nodeAction);
 
     nodeCondition = new btNodeTypesModelNode();
     nodeCondition->setName(tr("Condition"));
     btEditorNodeType* nodeConditionType = new btEditorNodeType();
-    nodeConditionType->setChildTypes(btNodeType::ConditionNodeType);
+    nodeConditionType->setChildType(btNodeType::ConditionNodeType);
     nodeCondition->setNodeType(nodeConditionType);
     rootNode->appendChild(nodeCondition);
 
     nodeComposite = new btNodeTypesModelNode();
     nodeComposite->setName(tr("Composite"));
     btEditorNodeType* nodeCompositeType = new btEditorNodeType();
-    nodeCompositeType->setChildTypes(btNodeType::CompositeNodeType);
+    nodeCompositeType->setChildType(btNodeType::CompositeNodeType);
     nodeComposite->setNodeType(nodeCompositeType);
     rootNode->appendChild(nodeComposite);
     ///fixme delete these new btEditorNodeTypes
     nodeDecorator = new btNodeTypesModelNode();
     nodeDecorator->setName(tr("Decorator"));
     btEditorNodeType* nodeDecoratorType = new btEditorNodeType();
-    nodeDecoratorType->setChildTypes(btNodeType::DecoratorNodeType);
+    nodeDecoratorType->setChildType(btNodeType::DecoratorNodeType);
     nodeDecorator->setNodeType(nodeDecoratorType);
     rootNode->appendChild(nodeDecorator);
 
     nodeReference = new btNodeTypesModelNode();
     nodeReference->setName(tr("Reference"));
     btEditorNodeType* nodeReferenceType = new btEditorNodeType();
-    nodeReferenceType->setChildTypes(btNodeType::ReferenceNodeType);
+    nodeReferenceType->setChildType(btNodeType::ReferenceNodeType);
     nodeReference->setNodeType(nodeReferenceType);
     rootNode->appendChild(nodeReference);
     btNodeTypesModelNode *node;
@@ -130,7 +130,7 @@ QVariant btNodeTypesModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DecorationRole){
         btNodeType::nodeType type;
         if(node->nodeType()->type() == btNodeType::UnusableNodeType){
-            type = node->nodeType()->childTypes();
+            type = node->nodeType()->childType();
         }else{
             type = node->nodeType()->type();
         }
@@ -309,7 +309,7 @@ bool btNodeTypesModel::insertRows(int row, int count, const QModelIndex &parent)
 
     if(selectedNode->parent() == 0){
         QString nodeTypeName = "";
-        switch(selectedNode->nodeType()->childTypes()){
+        switch(selectedNode->nodeType()->childType()){
         case btNodeType::ActionNodeType:
             nodeTypeName = tr("New Action Node");
             break;
@@ -337,7 +337,7 @@ bool btNodeTypesModel::insertRows(int row, int count, const QModelIndex &parent)
         ///fixme change this HACK to something useful
         if(count == 1){ ///ugly hack never do this, change when up to it
             btEditorNodeType* insertedNode = new btEditorNodeType();
-            insertedNode->setNodeType(selectedNode->nodeType()->childTypes());
+            insertedNode->setNodeType(selectedNode->nodeType()->childType());
             insertedNode->setName(nodeTypeName);
 
             m_brain->addNodeType(insertedNode);

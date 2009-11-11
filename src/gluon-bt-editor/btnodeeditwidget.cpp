@@ -2,6 +2,7 @@
 #include "btnodemodel.h"
 #include "btnodetypesmodelnode.h"
 #include <QDebug>
+#include <QtGui/QValidator>
 
 btNodeEditWidget::btNodeEditWidget(QWidget * parent)
 {
@@ -16,8 +17,11 @@ btNodeEditWidget::btNodeEditWidget(QWidget * parent)
     discription     = new QLabel(tr("Discription"));
     properties      = new QLabel(tr("Properties"));
 
+    QRegExp re("[A-Za-z]{1,1}[A-Za-z0-9_]{0,}");
+    QRegExpValidator* v = new QRegExpValidator(re, this);
     nameedit        = new QLineEdit();
     classnameedit   = new QLineEdit();
+    classnameedit->setValidator(v);
     discriptionedit = new QLineEdit();
 
     add_button      = new QPushButton(tr("Add Property"));
