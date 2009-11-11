@@ -2,7 +2,7 @@
 #include <QVariant>
 #include "btnode.h"
 #include "btnodetype.h"
-
+#include <QtCore/QDebug>
 btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
 {
 	this->m_type = type;
@@ -21,6 +21,7 @@ bool btNode::runBehavior()
 {    
     for (int i = 0; i < m_decorators.size(); i++)
     {
+        qDebug() << m_decorators[i]->className();
         if (!m_decorators[i]->run()) 
         {
             return false;
@@ -43,6 +44,7 @@ void btNode::appendChild(btNode *node)
     m_children.append(node);
     //has to be in the list, before this function is called
     m_type->appendingChild(m_children.count()-1);
+    node->setParentNode(this);
 }
 
 void btNode::removeChild(int row)
@@ -134,14 +136,17 @@ void btNode::setType(btNodeType *type)
 }
 btNodeType *btNode::type() const { return m_type; }
 
-void btNode::addDecorator(btNodeType* decorator) { m_decorators.append(decorator); }
+void btNode::addDecorator(btNodeType* decorator) 
+{
+    m_decorators.append(decorator); 
+    decorator->setParentNode(this);
+}
 void btNode::removeDecorator(btNodeType* decorator) { m_decorators.removeAll(decorator); }
 int btNode::decoratorCount() { return m_decorators.count(); }
 QList<btNodeType*> btNode::decorators() const { return m_decorators; }
 
 void btNode::setParentNode(btNode* node)
 {
-    delete(parentNode);
     parentNode = node;
     this->setParent(node);
 }

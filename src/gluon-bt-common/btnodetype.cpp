@@ -2,6 +2,7 @@
 
 btNodeType::btNodeType(QObject * parent)
 {
+    m_name = "";
 }
 
 btNodeType::~btNodeType()
@@ -52,6 +53,40 @@ void btNodeType::setParentNode(btNode* node)
 btNode* btNodeType::parentNode()
 {
     return m_parent;
+}
+
+void btNodeType::setNodeProperty(QString propertyName, QString value)
+{
+    if(m_properties.contains(propertyName))
+    {
+        m_properties[propertyName].value = value;
+    }
+    else 
+    {
+#warning fix setting the description
+        m_properties[propertyName].value = value;
+        m_properties[propertyName].description = "";
+    }
+}
+
+void btNodeType::removeNodeProperty(QString propertyName)
+{
+    m_properties.remove(propertyName);
+}
+
+QVariant btNodeType::getNodePropertyValue(QString propertyName)
+{
+    return m_properties[propertyName].value;
+}
+
+QString btNodeType::getNodePropertyDescription(QString propertyName)
+{
+    return m_properties[propertyName].description;
+}
+
+int btNodeType::nodePropertyCount()
+{
+    return m_properties.count();
 }
 
 #include "btnodetype.moc"

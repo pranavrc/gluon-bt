@@ -6,6 +6,8 @@
 #include "btselectornode.h"
 #include "btsequencenode.h"
 
+#include <QtCore/QDebug>
+
 btFactory::btFactory()
 {
     m_nodeTypes["[selector]"] = new btSelectorNode();
