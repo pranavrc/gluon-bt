@@ -111,6 +111,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
 {
     for(int i = 0; i < xNode.childNodes().count(); i++)
     {
+        qDebug() << xNode.childNodes().count() << " " << i;
         QDomNode currentNode = xNode.childNodes().at(i);
         QDomNamedNodeMap nodeAttributes = currentNode.attributes();
 
@@ -164,6 +165,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
             if(!nodeAttributes.namedItem("name").isNull())
             {
                 newBTNode->setName(nodeAttributes.namedItem("name").nodeValue());
+                qDebug() << newBTNode->name();
             }
             if(!nodeAttributes.namedItem("description").isNull())
             {
@@ -179,7 +181,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
             {
                 node->addDecorator(qobject_cast<btDecoratorNode*>(newBTNode->type()));
                 delete newBTNode;
-                return;
+                continue;
             }
             
             node->appendChild(newBTNode);
