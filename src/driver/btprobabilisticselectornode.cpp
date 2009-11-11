@@ -1,6 +1,6 @@
 #include "btprobabilisticselectornode.h"
 
-//REGISTER_NODETYPE(btProbSelectorNode)
+REGISTER_NODETYPE(btProbSelectorNode)
 
 #include <QDebug>
 #include <QDateTime>
