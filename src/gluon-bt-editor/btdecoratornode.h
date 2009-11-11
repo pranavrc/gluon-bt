@@ -13,7 +13,7 @@ public:
 	
 	bool run();
     
-    QString toDataXml() const;
+    const QString toDataXml();
 };
 
 #endif

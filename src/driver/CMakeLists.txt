@@ -11,7 +11,9 @@ set(driver_SRCS
     btprobabilisticselectornode.cpp
     btdebug1node.cpp
     btdebug2node.cpp
+    btblockernode.cpp
 )
+
 
 qt4_automoc(${driver_SRCS})
 
@@ -24,6 +26,7 @@ find_library(LIBBT
     /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build/Debug/
     
   )
+
  
 elseif()
 

@@ -15,7 +15,7 @@ bool btDecoratorNode::run()
 	return false;
 }
 
-QString btDecoratorNode::toDataXml() const
+const QString btDecoratorNode::toDataXml()
 {
     QString startTag = projectParser::instance()->writeIndents() + "<decorator ";
     QString endTag = projectParser::instance()->writeIndents() + "</decorator>";
