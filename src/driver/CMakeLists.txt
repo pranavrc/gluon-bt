@@ -28,9 +28,8 @@ find_library(LIBBT
     /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build/Debug/
     
   )
-
  
-elseif()
+elseif(WIN32)
 
 find_library(LIBBT
     NAMES
@@ -40,7 +39,18 @@ find_library(LIBBT
     
   )
 
+else()
+
+find_library(LIBBT
+    NAMES
+        libbtlib.so
+    PATHS
+        c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/ 
+        /usr/lib
+)
+
 endif()
+message("-- Found libbt:" ${LIBBT})
 
 add_executable(driver ${driver_SRCS})
  
