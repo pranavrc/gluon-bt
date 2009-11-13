@@ -11,3 +11,9 @@ Game::Game()
     marker->setPos(10.0,10.0);
     this->addItem(marker);
 }
+
+Game::drawItems(){
+    marker = new GameItem();
+    marker->setPos(10.0,10.0);
+    this->addItem(marker);
+}
