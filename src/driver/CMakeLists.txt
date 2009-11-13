@@ -11,9 +11,11 @@ set(driver_SRCS
     btprobabilisticselectornode.cpp
     btdebug1node.cpp
     btdebug2node.cpp
+    btdebug3node.cpp
     btblockernode.cpp
+    btparallelnode.cpp
+    worker.cpp
 )
-
 
 qt4_automoc(${driver_SRCS})
 
@@ -43,4 +45,4 @@ endif()
 add_executable(driver ${driver_SRCS})
  
 
-target_link_libraries(driver ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${LIBBT})
+target_link_libraries(driver ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTTEST_LIBRARY} ${LIBBT})

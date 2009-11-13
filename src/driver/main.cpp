@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 {
     QCoreApplication app(argc, argv);
 
-    QString fileName = "debug2.xml";
+    QString fileName = "parallel.xml";
 
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -21,7 +21,7 @@ int main(int argc, char** argv)
    //qDebug()  << fileContents;
 
     btBrain *brain = new btBrain(fileContents);
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 1; i++){
 
     brain->getBehaviorTree(0)->runBehavior();
     qDebug()  << "------------";
