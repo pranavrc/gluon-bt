@@ -18,40 +18,23 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     Game *scene =  static_cast<Game*>(ui->graphicsView->scene());
-    QPointF pos = scene->marker->pos();
-    if(pos.x() < 280){
-        pos += QPointF(20.0,0.0);
-        scene->marker->setPos(pos);
-    }
+    scene->marker->goRight();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
     Game *scene =  static_cast<Game*>(ui->graphicsView->scene());
-    QPointF pos = scene->marker->pos();
-    if(pos.y() < 280){
-        pos += QPointF(0.0,20.0);
-        scene->marker->setPos(pos);
-    }
+    scene->marker->goDown();
 }
 
 void MainWindow::on_pushButton_4_clicked()
 {
     Game *scene =  static_cast<Game*>(ui->graphicsView->scene());
-    QPointF pos = scene->marker->pos();
-     if(pos.x() > 20){
-        pos += QPointF(-20.0,0.0);
-        scene->marker->setPos(pos);
-    }
+    scene->marker->goLeft();
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
     Game *scene =  static_cast<Game*>(ui->graphicsView->scene());
-    QPointF pos = scene->marker->pos();
-
-    if(pos.y() > 20){
-        pos += QPointF(0.0,-20.0);
-        scene->marker->setPos(pos);
-    }
+    scene->marker->goUp();
 }
