@@ -3,6 +3,12 @@
 #include "btnodetypesmodelnode.h"
 #include <QDebug>
 #include <QtGui/QValidator>
+#include <QtGui/QItemEditorFactory>
+
+#include <QtGui/QLineEdit>
+#include "btqlistdelegate.h"
+
+#include <QtGui/QSpinBox>
 
 btNodeEditWidget::btNodeEditWidget(QWidget * parent)
 {
@@ -41,7 +47,7 @@ btNodeEditWidget::btNodeEditWidget(QWidget * parent)
     buttonLayout->addWidget(remove_button);
 
     mainLayout->addLayout(editLayout);
-    mainLayout->addWidget(properties);
+    mainLayout->addWidget(properties);  
     mainLayout->addWidget(propertyList);
     mainLayout->addLayout(buttonLayout);
 
@@ -51,6 +57,9 @@ btNodeEditWidget::btNodeEditWidget(QWidget * parent)
     connect(discriptionedit, SIGNAL(textChanged(QString)), this, SLOT(descriptionEdited(QString)));
     connect(add_button,SIGNAL(clicked()),this,SLOT(add_button_clicked()));
     connect(remove_button,SIGNAL(clicked()),this,SLOT(remove_button_clicked()));
+    
+    delegate = new btQListDeletgate(this);
+    propertyList->setItemDelegateForColumn(1, delegate);
 }
 
 void btNodeEditWidget::connectSignals()
@@ -66,6 +75,7 @@ void btNodeEditWidget::disconnectSignals()
 btNodeEditWidget::~btNodeEditWidget()
 {
     delete model; // qDelete
+    delete delegate;
 }
 
 void btNodeEditWidget::setModel(btnodemodel* btmodel)
@@ -74,6 +84,7 @@ void btNodeEditWidget::setModel(btnodemodel* btmodel)
     model = btmodel;
 
     propertyList->setModel(model);
+
     nameedit->setText(model->name());
     classnameedit->setText(model->classname());
     discriptionedit->setText(model->description());
@@ -109,8 +120,6 @@ void btNodeEditWidget::remove_button_clicked()
     if(propertyList->currentIndex().isValid()){
         model->removeRows(propertyList->currentIndex().row(),1);
     }
-
-
 }
 
 #include "btnodeeditwidget.moc"

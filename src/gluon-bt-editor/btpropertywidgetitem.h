@@ -53,8 +53,11 @@ private:
     QWidget *createLineEdit (QVariant value);
     QWidget *createSpinBox (QVariant value);
     QWidget *createDoubleSpinBox (QVariant value);
+    QWidget *createList(QVariant value);
     
     QWidget * editWidget;
+    
+    const QString getPropertyType(QString propertyName);
 };
 
 #endif // BTPROPERTYWIDGETITEM_H

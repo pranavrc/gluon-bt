@@ -1,8 +1,9 @@
 #include "btnodetype.h"
 
+#include <QtCore/QDebug>
+
 btNodeType::btNodeType(QObject * parent)
 {
-    m_name = "";
 }
 
 btNodeType::~btNodeType()
@@ -55,38 +56,29 @@ btNode* btNodeType::parentNode()
     return m_parent;
 }
 
-void btNodeType::setNodeProperty(QString propertyName, QString value)
+void btNodeType::setPropertyDescription(QString propertyName, QString description)
 {
-    if(m_properties.contains(propertyName))
-    {
-        m_properties[propertyName].value = value;
-    }
-    else 
-    {
-#warning fix setting the description
-        m_properties[propertyName].value = value;
-        m_properties[propertyName].description = "";
-    }
+    m_propertiesDescriptions[propertyName] = description;
 }
 
-void btNodeType::removeNodeProperty(QString propertyName)
+QString btNodeType::getPropertyDescription(QString propertyName)
 {
-    m_properties.remove(propertyName);
+    if(m_propertiesDescriptions.contains(propertyName))
+        return m_propertiesDescriptions[propertyName];
+    
+    return "";
 }
 
-QVariant btNodeType::getNodePropertyValue(QString propertyName)
+void btNodeType::setPropertyDescription(QString newPropertyName, QString oldPropertyName, QString description)
 {
-    return m_properties[propertyName].value;
+    m_propertiesDescriptions[newPropertyName] = description;
+    removePropertyDescription(oldPropertyName);
 }
 
-QString btNodeType::getNodePropertyDescription(QString propertyName)
+void btNodeType::removePropertyDescription(QString propertyName)
 {
-    return m_properties[propertyName].description;
-}
-
-int btNodeType::nodePropertyCount()
-{
-    return m_properties.count();
+    if(m_propertiesDescriptions.contains(propertyName))
+        m_propertiesDescriptions.remove(propertyName);
 }
 
 #include "btnodetype.moc"

@@ -49,6 +49,7 @@ private:
     void appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btEditorNode * node);
     void appendComponentToPropertyView (QGridLayout *layout, qint32 &row, btEditorNodeType * node);
     void appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object);
+    QString getPropertyDescription(QObject *object, QString propertyName);
 };
 
 #endif // BTPROPERTYWIDGET_H

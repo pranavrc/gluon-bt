@@ -3,6 +3,8 @@
 #include "projectparser.h"
 #include "nodetypefactory.h"
 
+#include <QtCore/QDebug>
+
 btEditorNodeType::btEditorNodeType()
 {
     setNodeType(btNodeType::UnusableNodeType);
@@ -34,7 +36,6 @@ btEditorNodeType * btEditorNodeType::copy()
         {
             continue;
         }
-        
         copyNode->setProperty(propertyName.toUtf8(), this->property(moProperty.name()));
     }
     
@@ -108,8 +109,9 @@ const QString btEditorNodeType::toNodeTypeXml()
     {
         QString propertyName(this->dynamicPropertyNames().at(i));
         properties += projectParser::instance()->writeIndents();
-        properties += "<property name=\"" + propertyName + "\" description=\"\" datatype=\"";
-        properties +=  this->property(propertyName.toUtf8()).toString();
+        properties += "<property name=\"" + propertyName + "\" ";
+        properties += "description=\""+ this->getPropertyDescription(propertyName) + "\" ";
+        properties += "datatype=\"" +this->property(propertyName.toUtf8()).toString();
         properties += "\" />";
     }
     projectParser::instance()->decreaseIndents();

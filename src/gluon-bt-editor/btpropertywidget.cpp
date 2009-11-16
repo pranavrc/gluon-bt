@@ -71,6 +71,7 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
         if(propertyName == "objectName")
             continue;
         propertyValue = object->property(propertyName.toUtf8());
+        propertyDescription = getPropertyDescription(object, propertyName);
         appendToPropertyView(layout, row, object, propertyName, propertyDescription);
     }
     
@@ -78,6 +79,7 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
     {
         propertyName = QString(name);
         propertyValue = object->property(name);
+        propertyDescription = getPropertyDescription(object, propertyName);;
         appendToPropertyView(layout, row, object, propertyName, propertyDescription);
     }
 }
@@ -146,5 +148,15 @@ void btPropertyWidget::setupPropertyView()
 
 btEditorNode * btPropertyWidget::node() const { return m_node; }
 void btPropertyWidget::setNode(btEditorNode * node) { m_node = node; setupPropertyView(); }
+
+QString btPropertyWidget::getPropertyDescription(QObject *object, QString propertyName)
+{
+    btEditorNodeType * node = qobject_cast<btEditorNodeType*>(object);
+    
+    if(node == NULL)
+        return "";
+    
+    return node->getPropertyDescription(propertyName);
+}
 
 #include "btpropertywidget.moc"

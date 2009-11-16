@@ -48,11 +48,11 @@ public:
     virtual QString className() const;
     virtual void setClassName(QString className);
     
-    void setNodeProperty(QString propertyName, QString value);
-    void removeNodeProperty(QString propertyName);
-    QVariant getNodePropertyValue(QString propertyName);
-    QString getNodePropertyDescription(QString propertyName);    
-    int nodePropertyCount();
+    void setPropertyDescription(QString propertyName, QString description);
+    void setPropertyDescription(QString newPropertyName, QString oldPropertyName, QString description);
+    void removePropertyDescription(QString propertyName);
+    QString getPropertyDescription(QString propertyName);
+    
     void setParentNode(btNode* node);
     /**
      * ParentNode() returns the node which contains the list of childnodes relevant to you.
@@ -68,14 +68,7 @@ private:
     btNode* m_parent;
     nodeType m_type;
     
-    struct nodeTypePropInfo 
-    {
-    public:
-        QString value;
-        QString description;
-    };
-    
-    QHash<QString, nodeTypePropInfo> m_properties;
+    QHash<QString, QString> m_propertiesDescriptions;
 };
 
 #endif // BTNODETYPE_H
