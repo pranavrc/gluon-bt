@@ -11,3 +11,4 @@ HEADERS += mainwindow.h \
     game.h \
     gameitem.h
 FORMS += mainwindow.ui
+

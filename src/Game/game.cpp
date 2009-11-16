@@ -2,6 +2,7 @@
 #include "gameitem.h"
 
 #include <QDebug>
+#include <QPushButton>
 
 Game::Game()
 {
@@ -31,18 +32,23 @@ Game::Game()
             }else{
                 board[j][i] = new GameItem(j,i,this);
                 board[j][i]->setBlocks(false);
+                QPolygonF myPolygon;
+                myPolygon << QPointF(-5, 0) << QPointF(0, 5)
+                        << QPointF(5, 0) << QPointF(0, -5)
+                        << QPointF(-5, 0);
+                board[j][i]->setPolygon(myPolygon);
             }
             this->addItem(board[j][i]);
         }
     }
 
     for(int i = 0; i < 16; ++i){
-        this->addLine((float)(i * 20),0.0,(float)(i * 20),300.0,QPen());
-        this->addLine(0.0,(float)(i * 20),300.0,(float)(i * 20),QPen());
+        this->addLine((float)(i * 20),0.0,(float)(i * 20),300.0,QPen(QColor(Qt::gray)));
+        this->addLine(0.0,(float)(i * 20),300.0,(float)(i * 20),QPen(QColor(Qt::gray)));
     }
     marker = new GameItem(this);
     marker->setPos(10.0,10.0);
-    marker->setBrush(Qt::cyan);
+    marker->setBrush(Qt::yellow);
     this->addItem(marker);
 }
 
