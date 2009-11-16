@@ -5,7 +5,7 @@ find_package(Qt4 REQUIRED)
 add_definitions(-DMAKE_BT_LIB)
  
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/../gluon-bt-common/)
- 
+
 set(bteditor_SRCS
     btavailablenodestreeview.cpp
     bttreeeditor.cpp
@@ -36,6 +36,7 @@ set(bteditor_SRCS
     modeltest.cpp
     colorgen.cpp
     images.cpp
+	btqlistdelegate.cpp
 )
 
 

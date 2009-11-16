@@ -48,8 +48,11 @@ void btPropertyWidgetItem::setupPropertyWidget()
 {
     if(!editedObject)
         return;
-    
+    qDebug() <<  propertyName;
     QVariant value = editedObject->property(propertyName.toUtf8());
+    qDebug() << value;
+    int typeId = QMetaType::type(this->property(propertyName.toUtf8()).toString().toUtf8());
+    QVariant dataType((QVariant::Type)typeId);
     switch(value.type())
     {
         case QVariant::String:
@@ -60,6 +63,9 @@ void btPropertyWidgetItem::setupPropertyWidget()
             break;
         case QVariant::Double:
             editWidget = createDoubleSpinBox(value);
+            break;
+        case QVariant::List:
+            editWidget = createList(value);
             break;
         default:
             editWidget = new QLabel(this);
@@ -103,6 +109,19 @@ QWidget * btPropertyWidgetItem::createDoubleSpinBox(QVariant value)
     widget->setValue(value.toDouble());
     connect(widget, SIGNAL(valueChanged(double)), this, SLOT(propertyChanged(double)));
     return widget;
+}
+
+QWidget * btPropertyWidgetItem::createList(QVariant value)
+{
+    QListWidget * widget = new QListWidget(this);
+    widget->setResizeMode(QListView::Adjust);
+    connect(widget, SIGNAL(valueChanged(double)), this, SLOT(propertyChanged(double)));
+    return widget;
+}
+
+const QString btPropertyWidgetItem::getPropertyType(QString propertyName)
+{
+    return "";
 }
 
 #include "btpropertywidgetitem.moc"

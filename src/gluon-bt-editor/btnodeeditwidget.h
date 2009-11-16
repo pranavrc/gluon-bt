@@ -11,6 +11,7 @@
 
 class btnodemodel;
 class btNodeTypesModelNode;
+class btQListDeletgate;
 
 
 class btNodeEditWidget : public QWidget
@@ -41,6 +42,7 @@ private:
     QPushButton     *add_button;
     btnodemodel     *model;
     btNodeTypesModelNode* m_selectedNode;
+    btQListDeletgate* delegate;
 
 public Q_SLOTS:
     void nameEdited(QString name);

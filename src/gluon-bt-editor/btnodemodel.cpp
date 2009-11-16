@@ -5,7 +5,7 @@
 #include <QIcon>
 
 btnodemodel::btnodemodel(btEditorNodeType * nodetype,QObject *parent)
-        :QAbstractTableModel(parent)
+: QAbstractTableModel(parent)
 {
     node = nodetype;
 }
@@ -21,51 +21,70 @@ int btnodemodel::columnCount(const QModelIndex &parent) const
 }
 
 QVariant btnodemodel::data(const QModelIndex &index, int role) const
- {
-     if (!index.isValid())
-         return QVariant();
-
-     if (index.row() >= node->dynamicPropertyNames().count())
-         return QVariant();
-
-     if (role == Qt::DisplayRole){
-         switch(index.column()){
-             case 0:
-                return node->dynamicPropertyNames().at(index.row());
-             case 1:
+{    
+    if (!index.isValid())
+        return QVariant();
+    
+    if (index.row() >= node->dynamicPropertyNames().count())
+        return QVariant();
+    
+    if (role == Qt::DisplayRole)
+    {
+        switch(index.column())
+        {
+            case 0:
+               return node->dynamicPropertyNames().at(index.row());
+            case 1:
                 return node->property(node->dynamicPropertyNames().at(index.row()));
-             case 2:
-                    return "";
-             default:
+            case 2:
+                return node->getPropertyDescription(node->dynamicPropertyNames().at(index.row()));
+            default:
                 return QVariant();
-         }
-     }else{
-         return QVariant();
-     }
- }
+        }
+    }
+    else if(role == Qt::EditRole)
+    {
+        switch(index.column())
+        {
+            case 0:
+                return node->dynamicPropertyNames().at(index.row());
+            case 1:
+                return node->property(node->dynamicPropertyNames().at(index.row()));
+            case 2:
+                return node->getPropertyDescription(node->dynamicPropertyNames().at(index.row()));
+            default:
+                return QVariant();
+        }
+        
+    }
+    else
+    {
+        return QVariant();
+    }
+}
 
 QVariant btnodemodel::headerData(int section, Qt::Orientation orientation,
-                                      int role) const
- {
-     if (role != Qt::DisplayRole)
-         return QVariant();
-
-     if (orientation == Qt::Horizontal){
-         switch(section){
-             case 0:
+                                 int role) const
+{
+    if (role != Qt::DisplayRole)
+        return QVariant();
+    
+    if (orientation == Qt::Horizontal){
+        switch(section){
+            case 0:
                 return QString("Name");
-             case 1:
+            case 1:
                 return QString("Datatype");
-             case 2:
-                return QString("Discription");
-             default:
+            case 2:
+                return QString("Description");
+            default:
                 return QString("Column %1").arg(section);
-         }
-
-     }else{
-         return QString("Prop %1").arg(section);
-     }
- }
+        }
+        
+    }else{
+        return QString("Prop %1").arg(section);
+    }
+}
 
 Qt::ItemFlags btnodemodel::flags(const QModelIndex &index) const
 {
@@ -75,18 +94,27 @@ Qt::ItemFlags btnodemodel::flags(const QModelIndex &index) const
     return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-bool btnodemodel::setData(const QModelIndex &index,
-                          const QVariant &value,int role)
+bool btnodemodel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if(index.isValid() && role == Qt::EditRole){
         QString newName = value.toString();
         QString oldName = node->dynamicPropertyNames().at(index.row());
-        if(newName != "" && newName != oldName){
-            if(index.column() == 0){
-                node->setProperty(newName.toUtf8(),node->property(oldName.toUtf8()));
-                node->setProperty(oldName.toUtf8(),QVariant::Invalid);
-            }else if(index.column() == 1){
-                node->setProperty(oldName.toUtf8(),newName);
+        
+        if(newName != "" && newName != oldName)
+        {
+            switch (index.column()) 
+            {
+                case 0:
+                    node->setProperty(newName.toUtf8(),node->property(oldName.toUtf8()));
+                    node->setPropertyDescription(newName, oldName, node->getPropertyDescription(oldName));
+                    node->setProperty(oldName.toUtf8(),QVariant::Invalid);
+                    break;
+                case 1:
+                    node->setProperty(oldName.toUtf8(),newName);
+                    break;
+                case 2:
+                    node->setPropertyDescription(oldName, newName);
+                    break;
             }
             emit dataChanged(index,index);
             return true;
@@ -98,10 +126,10 @@ bool btnodemodel::setData(const QModelIndex &index,
 bool btnodemodel::insertRows(int position, int rows, const QModelIndex &parent)
 {
     beginInsertRows(parent, position, position+rows-1);
-
-
+    
+    
     int propertyCount = node->dynamicPropertyNames().count();
-
+    		
     for(int i = 0; i < propertyCount; i++){
         if(node->property((tr("newProperty") + QString::number(i + position)).toUtf8()) != QVariant::Invalid){
             continue;
@@ -110,27 +138,27 @@ bool btnodemodel::insertRows(int position, int rows, const QModelIndex &parent)
             break;
         }
     }
-
-    node->setProperty((tr("newProperty") + QString::number(position)).toUtf8(),"QString");
-
+    
+    node->setProperty((tr("newProperty") + QString::number(position)).toUtf8(), "QString");
+    
     endInsertRows();
     emit dataChanged(parent,parent);
-
+    
     return true;
 }
 
- bool btnodemodel::removeRows(int position, int rows, const QModelIndex &parent)
- {
-     beginRemoveRows(parent, position, position+rows-1);
-
+bool btnodemodel::removeRows(int position, int rows, const QModelIndex &parent)
+{
+    beginRemoveRows(parent, position, position+rows-1);
+    
     if(node->dynamicPropertyNames().count() > position){
         QString propertyName = node->dynamicPropertyNames().at(position);
         node->setProperty(propertyName.toUtf8(),QVariant::Invalid);
     }
-
-     endRemoveRows();
-     return true;
- }
+    
+    endRemoveRows();
+    return true;
+}
 
 QString btnodemodel::name() const
 {
