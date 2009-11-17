@@ -37,3 +37,9 @@ void MainWindow::on_pushButton_3_clicked()
     Game *scene =  static_cast<Game*>(ui->graphicsView->scene());
     scene->marker->goUp();
 }
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    Game *scene =  static_cast<Game*>(ui->graphicsView->scene());
+    scene->reset();
+}

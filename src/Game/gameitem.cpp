@@ -65,14 +65,19 @@ void GameItem::animationDone()
     }
 }
 
+GameItem::GameItem()
+{
+
+}
+
 GameItem::GameItem(Game* game)
 {
     myPolygon << QPointF(-10, 0) << QPointF(0, 10)
-                      << QPointF(10, 0) << QPointF(0, -10)
-                      << QPointF(-10, 0);
+            << QPointF(10, 0) << QPointF(0, -10)
+            << QPointF(-10, 0);
     this->setPolygon(myPolygon);
-      setFlag(QGraphicsItem::ItemIsMovable, true);
-   setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
     setSquare(0,0);
     this->game = game;
     setupAnimation();

@@ -14,6 +14,7 @@ public:
     GameItem *marker;
     void drawItems();
     GameItem* board[16][16];
+    void reset();
     void keyPressEvent(QKeyEvent *event){
        qDebug() << event->key();
        switch(event->key()){

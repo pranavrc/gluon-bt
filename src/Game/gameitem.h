@@ -12,10 +12,11 @@ class GameItem : public QObject, public QGraphicsPolygonItem
     Q_OBJECT
     Q_ENUMS(Direction)
 public:
+    GameItem();
     GameItem(Game* game);
     GameItem(int x,int y,Game* game);
     enum Direction { Up = 0, Down, Left, Right};
-    void setSquare(int x,int y);
+    virtual void setSquare(int x,int y);
     bool goUp();
     bool goDown();
     bool goLeft();
@@ -26,12 +27,12 @@ public:
     void setAnimationStep(QPoint from, QPoint to,Direction dir);
     QTimeLine *timer;
     void setDirection(Direction direction);
-     Direction direction() const;
+    Direction direction() const;
     bool move(Direction dir);
-private:
-    QPolygonF myPolygon;
+    GameItem* occupant;
     QPoint square;
-    Game* game;
+protected:
+    QPolygonF myPolygon;
     bool blocking;
     QGraphicsItemAnimation *animation;
     Direction dir;
@@ -39,6 +40,7 @@ public Q_SLOTS:
     void animationDone();
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    Game* game;
 };
 
 #endif // GAMEITEM_H

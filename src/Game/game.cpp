@@ -1,11 +1,15 @@
 #include "game.h"
 #include "gameitem.h"
+#include "agent.h"
 
 #include <QDebug>
 #include <QPushButton>
+#include <QDateTime>
 
 Game::Game()
 {
+
+        qsrand(QDateTime::currentDateTime().toTime_t());
     int locations[15][15] =    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                                 0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,
                                 0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,
@@ -38,6 +42,7 @@ Game::Game()
                         << QPointF(-5, 0);
                 board[j][i]->setPolygon(myPolygon);
             }
+            board[j][i]->occupant = NULL;
             this->addItem(board[j][i]);
         }
     }
@@ -50,6 +55,20 @@ Game::Game()
     marker->setPos(10.0,10.0);
     marker->setBrush(Qt::yellow);
     this->addItem(marker);
+    Agent *agent = new Agent(this);
+    Agent *agent2 = new Agent(this);
+}
+
+void Game::reset()
+{
+    for(int i = 0; i < 15; ++i){
+        for(int j = 0;j < 15; ++j){
+            board[i][j]->setVisible(true);
+            if(board[i][j]->occupant != NULL){
+                board[i][j]->occupant->setSquare(0,0);
+            }
+        }
+    }
 }
 
 void Game::drawItems(){
