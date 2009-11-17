@@ -124,4 +124,32 @@ const QString btEditorNodeType::toDataXml()
     return "";
 }
 
+void btEditorNodeType::initProperties()
+{
+    foreach(const QString &name, this->dynamicPropertyNames())
+    {
+        int typeId = QMetaType::type(this->property(name.toUtf8()).toString().toUtf8());
+        QVariant dataType;
+        switch (typeId) 
+        {
+            case QVariant::Int:
+                dataType = 0;
+                break;
+            case QVariant::Double:
+                dataType = 0.00;
+                break;
+            case QVariant::String:
+                dataType = "";
+                break;
+            case QVariant::List:
+                dataType = QVariant(QVariant::List);
+                break;
+            default:
+                dataType = QVariant(QVariant::Invalid);
+                break;
+        }
+        this->setProperty(name.toUtf8(), dataType);
+    }
+}
+
 #include "bteditornodetype.moc"

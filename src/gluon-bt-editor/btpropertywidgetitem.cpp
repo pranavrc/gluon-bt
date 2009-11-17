@@ -20,6 +20,8 @@
 #include "btpropertywidgetitem.h"
 #include <QtGui>
 
+#include "btqvariantlistwidget.h"
+
 btPropertyWidgetItem::btPropertyWidgetItem(QObject * parent, Qt::WindowFlags f)
 {
     QGridLayout * layout = new QGridLayout(this);
@@ -48,11 +50,9 @@ void btPropertyWidgetItem::setupPropertyWidget()
 {
     if(!editedObject)
         return;
-    qDebug() <<  propertyName;
+    
     QVariant value = editedObject->property(propertyName.toUtf8());
-    qDebug() << value;
-    int typeId = QMetaType::type(this->property(propertyName.toUtf8()).toString().toUtf8());
-    QVariant dataType((QVariant::Type)typeId);
+    
     switch(value.type())
     {
         case QVariant::String:
@@ -87,6 +87,83 @@ void btPropertyWidgetItem::propertyChanged(QVariant value)
     editedObject->setProperty(propertyName.toUtf8(), value);
 }
 
+void btPropertyWidgetItem::QVariantListItemRemoved(QListWidgetItem * item, int index)
+{
+    if(!editedObject || !item)
+        return;
+    
+    QVariant value = editedObject->property(propertyName.toUtf8());
+    int typeId = QMetaType::type(editedObject->property(propertyName.toUtf8()).toString().toUtf8());
+    
+    QVariantList list;
+    
+    if(!typeId)
+    {
+        typeId = value.type();
+        list = qvariant_cast<QVariantList>(value);
+    }
+    else 
+    {
+        list = qvariant_cast<QVariantList>(QVariant((QVariant::Type)typeId));
+    }
+    
+    if(list.contains(item->text()))
+    {
+        delete item;
+        list.removeAt(index);
+    }
+    
+    editedObject->setProperty(propertyName.toUtf8(), list);
+}
+
+void btPropertyWidgetItem::QVariantListItemAdded(QListWidgetItem * item)
+{
+    if(!editedObject)
+        return;
+    
+    QVariant value = editedObject->property(propertyName.toUtf8());
+    int typeId = QMetaType::type(editedObject->property(propertyName.toUtf8()).toString().toUtf8());
+    
+    QVariantList list;
+    
+    if(!typeId)
+    {
+        typeId = value.type();
+        list = qvariant_cast<QVariantList>(value);
+    }
+    else 
+    {
+        list = qvariant_cast<QVariantList>(QVariant((QVariant::Type)typeId));
+    }
+    list.append(item->text());
+    editedObject->setProperty(propertyName.toUtf8(), list);
+}
+
+void btPropertyWidgetItem::QVariantListItemChanged(QListWidgetItem * item, int index)
+{
+    if(!editedObject || index < 0)
+        return;
+    
+    QVariant value = editedObject->property(propertyName.toUtf8());
+    int typeId = QMetaType::type(editedObject->property(propertyName.toUtf8()).toString().toUtf8());
+    
+    QVariantList list;
+    
+    if(!typeId)
+    {
+        typeId = value.type();
+        list = qvariant_cast<QVariantList>(value);
+    }
+    else 
+    {
+        list = qvariant_cast<QVariantList>(QVariant((QVariant::Type)typeId));
+    }
+    
+    list.replace(index, item->text());
+    
+    editedObject->setProperty(propertyName.toUtf8(), list);
+}
+
 QWidget * btPropertyWidgetItem::createLineEdit(QVariant value)
 {
     QLineEdit * widget = new QLineEdit(this);
@@ -104,7 +181,7 @@ QWidget * btPropertyWidgetItem::createSpinBox(QVariant value)
 }
 
 QWidget * btPropertyWidgetItem::createDoubleSpinBox(QVariant value)
-{
+{    
     QDoubleSpinBox * widget = new QDoubleSpinBox(this);
     widget->setValue(value.toDouble());
     connect(widget, SIGNAL(valueChanged(double)), this, SLOT(propertyChanged(double)));
@@ -113,9 +190,20 @@ QWidget * btPropertyWidgetItem::createDoubleSpinBox(QVariant value)
 
 QWidget * btPropertyWidgetItem::createList(QVariant value)
 {
-    QListWidget * widget = new QListWidget(this);
-    widget->setResizeMode(QListView::Adjust);
-    connect(widget, SIGNAL(valueChanged(double)), this, SLOT(propertyChanged(double)));
+    btQVariantListWidget * widget = new btQVariantListWidget(this);
+    connect(widget, SIGNAL(itemRemoved(QListWidgetItem*, int)), this, SLOT(QVariantListItemRemoved(QListWidgetItem*, int)));
+    connect(widget, SIGNAL(itemAdded(QListWidgetItem*)), this, SLOT(QVariantListItemAdded(QListWidgetItem*)));
+    connect(widget, SIGNAL(itemChanged(QListWidgetItem*, int)), this, SLOT(QVariantListItemChanged(QListWidgetItem*, int)));
+    
+    QVariantList list = qvariant_cast<QVariantList>(value);
+    
+    for(int i = 0; i < list.count(); i++)
+    {
+        QListWidgetItem * item = new QListWidgetItem(list.at(i).toString());
+        item->setFlags(widget->returnItemFlags());
+        widget->addItem(item);
+    }
+    
     return widget;
 }
 

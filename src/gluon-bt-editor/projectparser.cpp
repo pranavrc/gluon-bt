@@ -137,26 +137,29 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                     btReferenceNode * btRefNode = qobject_cast<btReferenceNode*>(nodeType);
                     btRefNode->setReferenceBehaviorTree(behaviorTreesList[nodeAttributes.namedItem("value").nodeValue().toInt()]);
                 }
-
-                if(currentNode.hasChildNodes())
+                int typeId = QMetaType::type(nodeType->property(nodeAttributes.namedItem("name").nodeValue().toUtf8()).toString().toUtf8());
+                QVariant dataType;
+                
+                if(typeId == QVariant::List)
                 {
+                    QVariantList list =  qvariant_cast<QVariantList>(QVariant((QVariant::Type)typeId));
+                    
+                    for(int i = 0; i < currentNode.childNodes().count(); i++)
+                    {
+                        QDomNamedNodeMap attributes = currentNode.childNodes().at(i).attributes();
+                        if(!attributes.namedItem("value").isNull())
+                            list.append(attributes.namedItem("value").nodeValue());
+                    }
+                    
+                    dataType = list;
                 }
-                else
+                else 
                 {
-                    int typeId = QMetaType::type(nodeType->property(nodeAttributes.namedItem("name").nodeValue().toUtf8()).toString().toUtf8());
-                    QVariant dataType;
-                    if(typeId == QVariant::List)
-                    {
-                        dataType = QVariant((QVariant::Type)typeId);
-                    }
-                    else 
-                    {
-                        dataType = nodeAttributes.namedItem("value").nodeValue();
-                        dataType.convert((QVariant::Type)typeId);
-                    }
-
-                    nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue().toUtf8(), dataType);
+                    dataType = nodeAttributes.namedItem("value").nodeValue();
+                    dataType.convert((QVariant::Type)typeId);
                 }
+                
+                nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue().toUtf8(), dataType);
                 nodeType->setPropertyDescription(nodeAttributes.namedItem("name").nodeValue().toUtf8(), nodeAttributes.namedItem("description").nodeValue());
                 node->setType(nodeType);
                 continue;

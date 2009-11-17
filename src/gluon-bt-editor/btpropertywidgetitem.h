@@ -21,6 +21,7 @@
 #define BTPROPERTYWIDGETITEM_H
 
 #include <QtGui/QWidget>
+#include <QtGui/QListWidgetItem>
 
 /**
  * The Property Widget Item is a class which will take an object and the name
@@ -43,6 +44,10 @@ private Q_SLOTS:
     void propertyChanged(int value);
     void propertyChanged(double value);
     void propertyChanged(QString value);
+    
+    void QVariantListItemRemoved(QListWidgetItem * item, int index);
+    void QVariantListItemAdded(QListWidgetItem * item);
+    void QVariantListItemChanged(QListWidgetItem * item, int index);
     
 private:
     void setupPropertyWidget();

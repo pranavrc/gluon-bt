@@ -37,6 +37,7 @@ set(bteditor_SRCS
     colorgen.cpp
     images.cpp
 	btqlistdelegate.cpp
+	btqvariantlistwidget.cpp
 )
 
 

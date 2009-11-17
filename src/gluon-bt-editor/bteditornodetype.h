@@ -20,6 +20,8 @@ public:
     
     const QString toNodeTypeXml();
     virtual const QString toDataXml();
+    
+    void initProperties();
 private:
     btNodeType::nodeType m_type;
     btNodeType::nodeType m_childtype;

@@ -232,6 +232,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     {
         i.next();
         btNodeType *theNodeType = brain->findNodeTypeByName(i.value())->copy();
+        ((btEditorNodeType*)theNodeType)->initProperties();
         theNodeType->setName(i.key());
         theNodeType->setParent(this);
         theNodeTypes.append(theNodeType);

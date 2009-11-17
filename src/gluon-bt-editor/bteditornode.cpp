@@ -69,8 +69,30 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
             QString propertyName(nodeType->dynamicPropertyNames().at(i));
             properties += projectParser::instance()->writeIndents();
             properties += "<property name=\"" + propertyName + "\" value=\"";
-            properties +=  nodeType->property(propertyName.toUtf8()).toString();
-            properties += "\" />";
+            
+            QVariant value = nodeType->property(propertyName.toUtf8());
+            
+            if(value.type() == QVariant::List)
+            {
+                properties += "\">";
+                
+                QVariantList list = qvariant_cast<QVariantList>(value);
+                
+                projectParser::instance()->increaseIndents();
+                foreach(const QVariant &v, list)
+                {
+                    properties += projectParser::instance()->writeIndents() + "<item value=\"" + v.toString() + "\"/>";
+                }
+                projectParser::instance()->decreaseIndents();
+                
+                properties += projectParser::instance()->writeIndents() + "</property>";
+            }
+            else 
+            {
+                qDebug() << value;
+                properties +=  value.toString();
+                properties += "\" />";
+            }
         }
     }
     
