@@ -55,8 +55,10 @@ Game::Game()
     marker->setPos(10.0,10.0);
     marker->setBrush(Qt::yellow);
     this->addItem(marker);
-    Agent *agent = new Agent(this);
-    Agent *agent2 = new Agent(this);
+    Agent *agent = new Agent(this,QPoint(14,14));
+    Agent *agent2 = new Agent(this,QPoint(0,0));
+    Agent *agent3 = new Agent(this,QPoint(0,14));
+    Agent *agent4 = new Agent(this,QPoint(14,0));
 }
 
 void Game::reset()
