@@ -13,7 +13,7 @@ void GameItem::setupAnimation(){
      animation->setTimeLine(timer);
      animation->setItem(this);
      timer->setCurveShape(QTimeLine::LinearCurve);
-     qDebug() << "setup animation";
+     //qDebug() << "setup animation";
      QObject::connect(timer, SIGNAL(finished()),
                       this, SLOT(animationDone()));
 }
@@ -37,13 +37,12 @@ void GameItem::setAnimationStep(QPoint from,QPoint to, Direction dir){
     }
 
     game->board[square.x()][square.y()]->setVisible(false);
-
     timer->start();
 }
 
 void GameItem::animationDone()
 {
-    qDebug() << "animation done";
+    //qDebug() << "animation done";
     animation->clear();
     switch(dir){
         case Up:
@@ -60,7 +59,7 @@ void GameItem::animationDone()
             break;
     }
     if(move(dir)){
-        qDebug() << "y: " << square.y();
+        //qDebug() << "y: " << square.y();
         setAnimationStep(square,QPoint(square.x(),square.y()),this->dir);
     }
 }
@@ -95,9 +94,9 @@ GameItem::GameItem(int x,int y,Game* game){
 }
 
 void GameItem::setSquare(int x,int y){
-    qDebug() << "setSquare";
-    qDebug() << x;
-    qDebug() << y;
+    //qDebug() << "setSquare";
+    //qDebug() << x;
+    //qDebug() << y;
     square.setX(x);
     square.setY(y);
     setPos((x * 20)+ 10,(y * 20) +10);
@@ -135,7 +134,7 @@ bool GameItem::move(Direction dir)
 
 bool GameItem::goUp()
 {
-    qDebug("going up");
+    //qDebug("going up");
     if(move(Up)){
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Up);
         return true;
@@ -145,9 +144,9 @@ bool GameItem::goUp()
 
 bool GameItem::goDown()
 {
-    qDebug("going down");
+    //qDebug("going down");
     if(move(Down)){
-        qDebug("going down 2");
+        //qDebug("going down 2");
 
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Down);
         return true;
@@ -157,7 +156,7 @@ bool GameItem::goDown()
 
 bool GameItem::goLeft()
 {
-    qDebug("going left");
+    //qDebug("going left");
     if(move(Left)){
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Left);
         return true;
@@ -167,7 +166,7 @@ bool GameItem::goLeft()
 
 bool GameItem::goRight()
 {
-    qDebug("going right");
+    //qDebug("going right");
     if(move(Right)){
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Right);
         return true;

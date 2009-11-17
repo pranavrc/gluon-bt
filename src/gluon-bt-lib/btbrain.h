@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QList>
 #include <QHash>
-#include <QDomDocument>
-#include <QDomNode>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomNode>
 
 #include "btlib_export.h"
 

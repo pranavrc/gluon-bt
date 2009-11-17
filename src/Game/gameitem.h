@@ -36,6 +36,7 @@ protected:
     bool blocking;
     QGraphicsItemAnimation *animation;
     Direction dir;
+    int delay;
 public Q_SLOTS:
     void animationDone();
 protected:

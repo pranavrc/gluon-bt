@@ -33,6 +33,7 @@ Game::Game()
                 board[j][i] = new GameItem(j,i,this);
                 board[j][i]->setBrush(Qt::red);
                 board[j][i]->setBlocks(true);
+                board[j][i]->setZValue(10);
             }else{
                 board[j][i] = new GameItem(j,i,this);
                 board[j][i]->setBlocks(false);
@@ -41,6 +42,7 @@ Game::Game()
                         << QPointF(5, 0) << QPointF(0, -5)
                         << QPointF(-5, 0);
                 board[j][i]->setPolygon(myPolygon);
+                board[j][i]->setZValue(0);
             }
             board[j][i]->occupant = NULL;
             this->addItem(board[j][i]);
@@ -54,11 +56,12 @@ Game::Game()
     marker = new GameItem(this);
     marker->setPos(10.0,10.0);
     marker->setBrush(Qt::yellow);
+    marker->setZValue(5);
     this->addItem(marker);
     Agent *agent = new Agent(this,QPoint(14,14));
-    Agent *agent2 = new Agent(this,QPoint(0,0));
-    Agent *agent3 = new Agent(this,QPoint(0,14));
-    Agent *agent4 = new Agent(this,QPoint(14,0));
+    //Agent *agent2 = new Agent(this,QPoint(0,0));
+    //Agent *agent3 = new Agent(this,QPoint(0,14));
+    //Agent *agent4 = new Agent(this,QPoint(14,0));
 }
 
 void Game::reset()
