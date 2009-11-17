@@ -5,7 +5,6 @@
 #include <QModelIndex>
 #include <QObject>
 
-//! [0]
 class btQListDeletgate : public QItemDelegate
 {
     Q_OBJECT
@@ -13,16 +12,13 @@ class btQListDeletgate : public QItemDelegate
 public:
     btQListDeletgate(QObject *parent = 0);
     
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-                          const QModelIndex &index) const;
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
     void setModelData(QWidget *editor, QAbstractItemModel *model,
                       const QModelIndex &index) const;
     
-    void updateEditorGeometry(QWidget *editor,
-                              const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
-//! [0]
 
 #endif
