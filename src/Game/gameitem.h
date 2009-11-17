@@ -2,29 +2,45 @@
 #define GAMEITEM_H
 
 #include <QGraphicsPolygonItem>
-//#include "game.h"
 
 class Game;
+#include <QTimeLine>
+#include <QGraphicsItemAnimation>
 
-class GameItem : public QGraphicsPolygonItem
+class GameItem : public QObject, public QGraphicsPolygonItem
 {
+    Q_OBJECT
+    Q_ENUMS(Direction)
 public:
+    GameItem();
     GameItem(Game* game);
     GameItem(int x,int y,Game* game);
-    void setSquare(int x,int y);
+    enum Direction { Up = 0, Down, Left, Right};
+    virtual void setSquare(int x,int y);
     bool goUp();
     bool goDown();
     bool goLeft();
     bool goRight();
     bool blocks();
     void setBlocks(bool value);
-private:
-    QPolygonF myPolygon;
+    void setupAnimation();
+    void setAnimationStep(QPoint from, QPoint to,Direction dir);
+    QTimeLine *timer;
+    void setDirection(Direction direction);
+    Direction direction() const;
+    bool move(Direction dir);
+    GameItem* occupant;
     QPoint square;
-    Game* game;
+protected:
+    QPolygonF myPolygon;
     bool blocking;
+    QGraphicsItemAnimation *animation;
+    Direction dir;
+public Q_SLOTS:
+    void animationDone();
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    Game* game;
 };
 
 #endif // GAMEITEM_H

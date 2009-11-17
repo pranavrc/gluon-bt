@@ -6,8 +6,10 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     game.cpp \
-    gameitem.cpp
+    gameitem.cpp \
+    agent.cpp
 HEADERS += mainwindow.h \
     game.h \
-    gameitem.h
+    gameitem.h \
+    agent.h
 FORMS += mainwindow.ui

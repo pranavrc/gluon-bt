@@ -1,7 +1,6 @@
 #include <QtGui>
 
 #include "btqlistdelegate.h"
-//! [0]
 btQListDeletgate::btQListDeletgate(QObject *parent)
 : QItemDelegate(parent)
 {
