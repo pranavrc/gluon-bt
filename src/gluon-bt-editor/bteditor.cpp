@@ -93,8 +93,12 @@ void bteditor::showBehaviorTree(btTreeModel* showThis)
         this, SLOT(editorSelectionChanged(QItemSelection,QItemSelection))
         );
     this->currentBTNameLabel->setText(showThis->name());
+    
+    disconnect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
+    disconnect(propertyWidget, SIGNAL(treeModelUpdate()), m_currentBehaviorTree, SLOT(updateTreeModel()));
     m_currentBehaviorTree = showThis; // keep track of behaviortree
-    //new ModelTest(showThis, this);
+    connect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
+    connect(propertyWidget, SIGNAL(treeModelUpdate()), m_currentBehaviorTree, SLOT(updateTreeModel()));
 }
 
 void bteditor::editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
@@ -105,9 +109,12 @@ void bteditor::editorSelectionChanged(const QItemSelection& selected, const QIte
 
 void bteditor::showPropertiesFor(btEditorNode* showFor)
 {
-    delete propertyWidget;
-    propertyWidget = new btPropertyWidget(this);
-    propertyScrollArea->setWidget(propertyWidget);
+    if(propertyWidget == NULL)
+    {
+        propertyWidget = new btPropertyWidget(this);
+        propertyScrollArea->setWidget(propertyWidget);
+        connect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
+    }
     propertyWidget->setNode(showFor);
 }
 

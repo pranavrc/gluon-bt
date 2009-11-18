@@ -38,6 +38,15 @@ public:
     btEditorNode * node() const;
     void setNode(btEditorNode * theNode);
     
+public Q_SLOTS:
+    void removeActionTriggered();
+    void dragDropUpdate();
+    void updateTreeModel();
+    
+Q_SIGNALS:
+    void treeModelUpdate();
+    
+    
 private:
     btEditorNode * m_node;
     ColorGen * colorgen;

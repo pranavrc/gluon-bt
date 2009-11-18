@@ -266,7 +266,10 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     if(rows > 0)
         endInsertRows();
     else
+    {
         emit dataChanged(parent, parent);//Update the view for the parent node we have (likely) just added a decorator to
+        emit addRemoveBTNode(); //used for updateing the property widget
+    }
 
     return true;
 }
@@ -293,6 +296,11 @@ void btTreeModel::setDescription(QString description)
 QString btTreeModel::description() const
 {
     return m_description;
+}
+
+void btTreeModel::updateTreeModel()
+{
+    emit dataChanged(QModelIndex(),QModelIndex());
 }
 
 #include "bttreemodel.moc"

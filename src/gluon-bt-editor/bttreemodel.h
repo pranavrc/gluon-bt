@@ -40,6 +40,13 @@ public:
 
     QString description() const;
     void setDescription(QString description);
+    
+public Q_SLOTS:
+    void updateTreeModel();
+
+Q_SIGNALS:
+    void addRemoveBTNode();
+    
 private:
 	QString m_name;
     QString m_description;

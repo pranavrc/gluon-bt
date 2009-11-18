@@ -85,6 +85,8 @@ void btPropertyWidgetItem::propertyChanged(QVariant value)
         return;
     
     editedObject->setProperty(propertyName.toUtf8(), value);
+    
+    emit sendUpdateTreeModel();
 }
 
 void btPropertyWidgetItem::QVariantListItemRemoved(QListWidgetItem * item, int index)
