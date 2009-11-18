@@ -13,6 +13,6 @@ goRightNode::goRightNode()
 
 bool goRightNode::run()
 {
-    qDebug() << "right run";
-    return false;
+    qDebug() << "goRightNode::run()";
+    return self->goRight();
 }

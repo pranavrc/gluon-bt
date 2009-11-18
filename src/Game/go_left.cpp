@@ -13,7 +13,7 @@ goLeftNode::goLeftNode()
 
 bool goLeftNode::run()
 {
-    qDebug() << "left run";
-    return false;
+    qDebug() << "goLeftNode::run()";
+    return self->goLeft();
 }
 

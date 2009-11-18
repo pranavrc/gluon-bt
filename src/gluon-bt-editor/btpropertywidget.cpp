@@ -49,6 +49,7 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, 
     nameLabel->setText(name);
     nameLabel->setToolTip(description);
     layout->addWidget(nameLabel, row, 0);
+    nameLabel->setAlignment(Qt::AlignTop);
     
     btPropertyWidgetItem * editWidget = new btPropertyWidgetItem(this);
     editWidget->setEditObject(object);

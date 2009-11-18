@@ -5,6 +5,7 @@ btQVariantListWidget::btQVariantListWidget(QWidget * parent) : QWidget(parent)
     // layout
     mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(0);
+    mainLayout->setMargin(0);
     buttonLayout = new QHBoxLayout();
     buttonLayout->setSpacing(0);
     listWidget = new QListWidget();
