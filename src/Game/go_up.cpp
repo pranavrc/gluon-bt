@@ -14,6 +14,8 @@ goUpNode::goUpNode()
 bool goUpNode::run(btCharacter *self)
 {
     qDebug() << "goUpNode::run()";
+    ((Enemy*)self)->mutex.lock();
+    //((Enemy*)self)->finished.wait();
     return ((Enemy*)self)->goUp();
 }
 

@@ -2,6 +2,7 @@
 #include "gameitem.h"
 #include "agent.h"
 #include "enemy.h"
+#include "runner.h"
 
 #include <QDebug>
 #include <QPushButton>
@@ -74,9 +75,11 @@ Game::Game()
 
     btBrain *brain = new btBrain(fileContents);
     Agent *agent = new Agent(this,QPoint(14,14));
-    Enemy *enemy = new Enemy(agent);
+    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
 
-    brain->getBehaviorTree(0)->runBehavior(enemy);
+    Runner *runner = new Runner(enemy);
+    runner->start();
+    //brain->getBehaviorTree(0)->runBehavior(enemy);
 
     // -------------------------------------
     //Agent *agent2 = new Agent(this,QPoint(0,0));

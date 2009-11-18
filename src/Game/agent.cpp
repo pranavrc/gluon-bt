@@ -35,7 +35,7 @@ Agent::Agent(Game* game,QPoint pos)
 
 void Agent::sayHello()
 {
-    int count = 0;
+    /*int count = 0;
     QList<int> possibleMove;
     if(dir == Up || dir == Down){
         if(move(Right)){
@@ -100,7 +100,8 @@ void Agent::sayHello()
             break;
     }
 
-   //qDebug("Hello World");
+   //qDebug("Hello World");*/
+    mutex->unlock();
 }
 
 GameItem::Direction Agent::choose()
