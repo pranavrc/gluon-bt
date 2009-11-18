@@ -13,7 +13,7 @@ class btProbSelectorNode : public btNodeType
     
 public:
     Q_INVOKABLE btProbSelectorNode();
-    bool run();
+    bool run(btCharacter *self);
     void appendingChild(int index);
     void removingChild(int index);
     void childrenAdded();

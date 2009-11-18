@@ -11,7 +11,7 @@ btProbSelectorNode::btProbSelectorNode()
     qrand();
 }
 
-bool btProbSelectorNode::run()
+bool btProbSelectorNode::run(btCharacter* self)
 {
     float randNum;
     float intStart = 0.0;
@@ -26,7 +26,7 @@ bool btProbSelectorNode::run()
             if(node->visited == false){
                 if(intStart < randNum && randNum <= (node->wp + intStart)){
                    qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
-                    if(parentNode()->child(inc)->runBehavior()){
+                    if(parentNode()->child(inc)->runBehavior(self)){
                         foreach(StatNode *node, probStats){
                             node->visited = false;
                         }

@@ -23,7 +23,9 @@ int main(int argc, char** argv)
     btBrain *brain = new btBrain(fileContents);
     for(int i = 0; i < 1; i++){
 
-    brain->getBehaviorTree(0)->runBehavior();
+    btCharacter *self = new btCharacter();
+
+    brain->getBehaviorTree(0)->runBehavior(self);
     qDebug()  << "------------";
 }
 

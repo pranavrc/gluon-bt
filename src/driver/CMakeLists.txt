@@ -9,9 +9,7 @@ set(driver_SRCS
     main.cpp
     driver.cpp
     btprobabilisticselectornode.cpp
-    btdebug1node.cpp
-    btdebug2node.cpp
-    btdebug3node.cpp
+    btdebugnode.cpp
     btblockernode.cpp
     btparallelnode.cpp
     worker.cpp
