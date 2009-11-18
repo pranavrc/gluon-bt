@@ -13,7 +13,7 @@ goUpNode::goUpNode()
 
 bool goUpNode::run()
 {
-    qDebug() << "up run";
-    return false;
+    qDebug() << "goUpNode::run()";
+    return self->goUp();
 }
 

@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 {
     QCoreApplication app(argc, argv);
 
-    QString fileName = "parallel.xml";
+    QString fileName = "test.xml";
 
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){

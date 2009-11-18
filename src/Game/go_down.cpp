@@ -13,7 +13,6 @@ goDownNode::goDownNode()
 
 bool goDownNode::run()
 {
-
-    qDebug() << "down run";
-    return false;
+    qDebug() << "goDownNode::run()";
+    return self->goDown();
 }
