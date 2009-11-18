@@ -36,8 +36,14 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
     
     btNode* newBTNode = new btNode();
     
+    btNodeType* nodeType = m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()];
+    newBTNode->setType((btNodeType*)nodeType->metaObject()->newInstance());
     
-    newBTNode->setType((btNodeType*)m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()]->metaObject()->newInstance());
+    foreach(const QString &name ,nodeType->dynamicPropertyNames())
+    {
+        newBTNode->type()->setProperty(name.toUtf8(),nodeType->property(name.toUtf8()));
+    }
+    
     newBTNode->type()->setParentNode(newBTNode);
     
     if(!xmlNode.attributes().namedItem("name").isNull())
@@ -111,9 +117,33 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
         node->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
         return;
     }
-    
     btNodeType* nodeType = node->type();
-    nodeType->setProperty(xNode.attributes().namedItem("name").nodeValue().toUtf8(), xNode.attributes().namedItem("value").nodeValue());
+    
+    
+    int typeId = QMetaType::type(nodeType->property(xNode.attributes().namedItem("name").nodeValue().toUtf8()).toString().toUtf8());
+    QVariant dataType;
+    
+    if(typeId == QVariant::List)
+    {
+        QVariantList list =  qvariant_cast<QVariantList>(QVariant((QVariant::Type)typeId));
+        
+        for(int i = 0; i < xNode.childNodes().count(); i++)
+        {
+            QDomNamedNodeMap attributes = xNode.childNodes().at(i).attributes();
+            if(!attributes.namedItem("value").isNull())
+                list.append(attributes.namedItem("value").nodeValue());
+        }
+        
+        dataType = list;
+    }
+    else 
+    {
+        dataType = xNode.attributes().namedItem("value").nodeValue();
+        dataType.convert((QVariant::Type)typeId);
+    }
+    
+    
+    nodeType->setProperty(xNode.attributes().namedItem("name").nodeValue().toUtf8(), dataType);
     
 }
 
