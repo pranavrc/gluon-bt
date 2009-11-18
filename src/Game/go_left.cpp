@@ -2,7 +2,7 @@
 
 #include <QDebug>
 #include <QThread>
-#include <QtTest/QTest>
+#include "enemy.h"
 
 REGISTER_NODETYPE(goLeftNode)
 
@@ -11,9 +11,9 @@ goLeftNode::goLeftNode()
     // init variables
 }
 
-bool goLeftNode::run()
+bool goLeftNode::run(btCharacter *self)
 {
     qDebug() << "goLeftNode::run()";
-    return self->goLeft();
+    return ((Enemy*)self)->goLeft();
 }
 

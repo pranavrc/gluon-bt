@@ -5,13 +5,14 @@
 
 #include "../gluon-bt-lib/btlib.h"
 
+
 class goLeftNode : public btNodeType
 {
     Q_OBJECT
     
 public:
     Q_INVOKABLE goLeftNode();
-    bool run();
+    bool run(btCharacter *self);
 };
 
 

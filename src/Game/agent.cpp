@@ -15,7 +15,7 @@ Agent::Agent(Game* game)
     QObject::connect(timer, SIGNAL(finished()),
                      this, SLOT(sayHello()));
     this->setBrush(QBrush(QColor(Qt::green)));
-    this->goRight();
+   // this->goRight();
 }
 
 Agent::Agent(Game* game,QPoint pos)
