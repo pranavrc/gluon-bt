@@ -24,6 +24,9 @@
 #include <QDoubleSpinBox>
 #include <QGridLayout>
 #include <QtCore/QMetaClassInfo>
+#include <QToolButton>
+#include <QDebug>
+#include <QMenu>
 
 #include "btpropertywidget.h"
 #include "btpropertywidgetitem.h"
@@ -106,7 +109,21 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
     titleLabel->setStyleSheet("background-color: " + colorgen->nextColor().name());
-    layout->addWidget(titleLabel, row, 0, 1, 2);
+    
+    if(QString(node->metaObject()->className()) == "btDecoratorNode")
+    {
+        layout->addWidget(titleLabel, row, 0, 1, 1);
+        QToolButton * removeButton = new QToolButton(this);
+        QMenu * buttonMenu = new QMenu(this);
+        buttonMenu->addAction("lalala");
+        buttonMenu->addAction("lalala2");
+        removeButton->setMenu(buttonMenu);
+        layout->addWidget(removeButton, row, 1, 1, 1);
+    }
+    else
+    {
+        layout->addWidget(titleLabel, row, 0, 1, 2);
+    }
     
     // Add a new property line for each property in the object's metaobject...
     QObject *object = node;
