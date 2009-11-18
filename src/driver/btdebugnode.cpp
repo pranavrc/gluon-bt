@@ -13,6 +13,7 @@ btDebugNode::btDebugNode()
 
 bool btDebugNode::run(btCharacter *self)
 {
+    qDebug() << self->name();
     qDebug() << property("message").toString();
     return true;
 }
