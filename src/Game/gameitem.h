@@ -17,10 +17,13 @@ public:
     GameItem(int x,int y,Game* game);
     enum Direction { Up = 0, Down, Left, Right};
     virtual void setSquare(int x,int y);
+public Q_SLOTS:
     bool goUp();
     bool goDown();
     bool goLeft();
     bool goRight();
+
+public:
     bool blocks();
     void setBlocks(bool value);
     void setupAnimation();

@@ -18,7 +18,9 @@ public:
     GameItem::Direction choose();
     void setSquare(int x,int y);
     QMutex *mutex;
+    QWaitCondition *waitCond;
     void setMutex(QMutex *mutex){this->mutex = mutex;}
+    void setWaitCondition(QWaitCondition *waitCond){this->waitCond = waitCond;}
 public Q_SLOTS:
     void sayHello();
 };

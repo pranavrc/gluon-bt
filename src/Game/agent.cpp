@@ -98,10 +98,11 @@ void Agent::sayHello()
         case Right:
             goRight();
             break;
+    }*/
+    if(!move(dir)){
+        mutex->unlock();
+        waitCond->wakeAll();
     }
-
-   //qDebug("Hello World");*/
-    mutex->unlock();
 }
 
 GameItem::Direction Agent::choose()

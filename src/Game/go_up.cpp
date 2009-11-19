@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QtCore/QThread>
+#include <QtCore>
 #include "enemy.h"
 
 REGISTER_NODETYPE(goUpNode)
@@ -14,8 +15,9 @@ goUpNode::goUpNode()
 bool goUpNode::run(btCharacter *self)
 {
     qDebug() << "goUpNode::run()";
+    bool value = ((Enemy*)self)->goUp();
     ((Enemy*)self)->mutex.lock();
-    //((Enemy*)self)->finished.wait();
-    return ((Enemy*)self)->goUp();
+    ((Enemy*)self)->finished.wait(&(((Enemy*)self)->mutex));
+    return value;
 }
 

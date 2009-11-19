@@ -14,5 +14,8 @@ goDownNode::goDownNode()
 bool goDownNode::run(btCharacter *self)
 {
     qDebug() << "goDownNode::run()";
-    return ((Enemy*)self)->goDown();
+    bool value = ((Enemy*)self)->goDown();
+    ((Enemy*)self)->mutex.lock();
+    ((Enemy*)self)->finished.wait(&(((Enemy*)self)->mutex));
+    return value;
 }
