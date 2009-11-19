@@ -35,7 +35,7 @@ Agent::Agent(Game* game,QPoint pos)
 
 void Agent::sayHello()
 {
-    /*int count = 0;
+    int count = 0;
     QList<int> possibleMove;
     if(dir == Up || dir == Down){
         if(move(Right)){
@@ -57,13 +57,13 @@ void Agent::sayHello()
         }
     }
 
-    if(move(dir)){
+    /*if(move(dir)){
         possibleMove.append(dir);
         count++;
-    }
+    }*/
 
 
-    qrand();
+    /*qrand();
 
     int r = 0;
     if(count == 3){
@@ -75,9 +75,9 @@ void Agent::sayHello()
 
     if(count == 0){
         return;
-    }
+    }*/
 
-    //qDebug() << possibleMove;
+    /*//qDebug() << possibleMove;
 
     //qDebug() << "random: " << r;
 
@@ -99,7 +99,7 @@ void Agent::sayHello()
             goRight();
             break;
     }*/
-    if(!move(dir)){
+    if(count >= 1){
         mutex->unlock();
         waitCond->wakeAll();
     }

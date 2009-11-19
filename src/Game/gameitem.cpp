@@ -13,7 +13,6 @@ void GameItem::setupAnimation(){
      animation->setTimeLine(timer);
      animation->setItem(this);
      timer->setCurveShape(QTimeLine::LinearCurve);
-     //qDebug() << "setup animation";
      QObject::connect(timer, SIGNAL(finished()),
                       this, SLOT(animationDone()));
 }
@@ -42,7 +41,6 @@ void GameItem::setAnimationStep(QPoint from,QPoint to, Direction dir){
 
 void GameItem::animationDone()
 {
-    //qDebug() << "animation done";
     animation->clear();
     switch(dir){
         case Up:
@@ -59,7 +57,6 @@ void GameItem::animationDone()
             break;
     }
     if(move(dir)){
-        //qDebug() << "y: " << square.y();
         setAnimationStep(square,QPoint(square.x(),square.y()),this->dir);
     }
 }
@@ -94,9 +91,6 @@ GameItem::GameItem(int x,int y,Game* game){
 }
 
 void GameItem::setSquare(int x,int y){
-    //qDebug() << "setSquare";
-    //qDebug() << x;
-    //qDebug() << y;
     square.setX(x);
     square.setY(y);
     setPos((x * 20)+ 10,(y * 20) +10);
