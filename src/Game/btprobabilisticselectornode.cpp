@@ -13,7 +13,6 @@ btProbSelectorNode::btProbSelectorNode()
 
 bool btProbSelectorNode::run(btCharacter *self)
 {
-    qsrand(QDateTime::currentDateTime().toTime_t());
     qrand();
     float randNum;
     float intStart = 0.0;

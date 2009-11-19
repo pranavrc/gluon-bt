@@ -1,12 +1,15 @@
 #include "enemy.h"
 #include "agent.h"
 
+#include <QDateTime>
+
 Enemy::Enemy()
 {
 }
 
 Enemy::Enemy(Agent *target,btNode* tree)
 {
+    qsrand(QDateTime::currentDateTime().toTime_t());
     this->target = target;
     this->target->setMutex(&(this->mutex));
     this->target->setWaitCondition(&(this->finished));
