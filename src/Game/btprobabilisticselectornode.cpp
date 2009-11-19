@@ -8,11 +8,13 @@ REGISTER_NODETYPE(btProbSelectorNode)
 btProbSelectorNode::btProbSelectorNode()
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
-    qrand();
+    //qrand();
 }
 
 bool btProbSelectorNode::run(btCharacter *self)
 {
+    qsrand(QDateTime::currentDateTime().toTime_t());
+    qrand();
     float randNum;
     float intStart = 0.0;
     float scale = 1.0;

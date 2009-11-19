@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     btprobabilisticselectornode.cpp \
     enemy.cpp \
     btdebugnode.cpp \
-    runner.cpp
+    runner.cpp \
+    btloopnode.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -27,7 +28,8 @@ HEADERS += mainwindow.h \
     btprobabilisticselectornode.h \
     enemy.h \
     btdebugnode.h \
-    runner.h
+    runner.h \
+    btloopnode.h
 INCLUDEPATH += c:/repo/gluon-bt/src/gluon-bt-lib \
     c:/repo/gluon-bt/src/gluon-bt-common
 LIBS += c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/libbtlib.dll

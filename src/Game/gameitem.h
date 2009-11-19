@@ -22,7 +22,8 @@ public Q_SLOTS:
     bool goDown();
     bool goLeft();
     bool goRight();
-
+Q_SIGNALS:
+    void actionFailed();
 public:
     bool blocks();
     void setBlocks(bool value);

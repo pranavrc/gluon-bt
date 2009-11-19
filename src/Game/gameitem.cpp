@@ -133,6 +133,8 @@ bool GameItem::goUp()
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Up);
         return true;
     }
+    qDebug("action up failed");
+    emit actionFailed();
     return false;
 }
 
@@ -145,6 +147,8 @@ bool GameItem::goDown()
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Down);
         return true;
     }
+    qDebug("action down failed");
+    emit actionFailed();
     return false;
 }
 
@@ -155,6 +159,8 @@ bool GameItem::goLeft()
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Left);
         return true;
     }
+    qDebug("action left failed");
+    emit actionFailed();
     return false;
 }
 
@@ -165,6 +171,8 @@ bool GameItem::goRight()
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Right);
         return true;
     }
+    qDebug("action right failed");
+    emit actionFailed();
     return false;
 }
 

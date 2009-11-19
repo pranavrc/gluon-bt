@@ -23,6 +23,7 @@ public:
     void setWaitCondition(QWaitCondition *waitCond){this->waitCond = waitCond;}
 public Q_SLOTS:
     void sayHello();
+    void unlock();
 };
 
 #endif // AGENT_H
