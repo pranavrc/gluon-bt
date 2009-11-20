@@ -27,8 +27,8 @@ public:
     bool goRight();
     QWaitCondition finished;
     QMutex mutex;
-private:
     Agent* target;
+private:
     btNode* tree;
     btNode* current;
 };
