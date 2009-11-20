@@ -14,8 +14,5 @@ goRightNode::goRightNode()
 bool goRightNode::run(btCharacter *self)
 {
     qDebug() << "goRightNode::run()";
-    bool value = ((Enemy*)self)->goRight();
-    ((Enemy*)self)->mutex.lock();
-    ((Enemy*)self)->finished.wait(&(((Enemy*)self)->mutex));
-    return value;
+    return ((Enemy*)self)->goRight();
 }

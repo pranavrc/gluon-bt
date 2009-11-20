@@ -11,5 +11,6 @@ Runner::Runner(Enemy *target)
 
 void Runner::run()
 {
+    qsrand(QDateTime::currentDateTime().toTime_t());
     this->target->start();
 }

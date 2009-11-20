@@ -74,7 +74,7 @@ Game::Game()
     file.close();
 
     btBrain *brain = new btBrain(fileContents);
-    Agent *agent = new Agent(this,QPoint(14,14));
+    Agent *agent = new Agent(this,QPoint(10,10));
     Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
 
     Runner *runner = new Runner(enemy);
