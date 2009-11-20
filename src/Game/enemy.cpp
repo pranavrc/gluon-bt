@@ -27,21 +27,33 @@ Enemy::Enemy(Agent *target,btNode* tree)
 bool Enemy::goDown()
 {
     emit goDownSignal();
+    this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
 }
 
 bool Enemy::goUp()
 {
     emit goUpSignal();
+    this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
 }
 
 bool Enemy::goLeft()
 {
     emit goLeftSignal();
+    this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
 }
 
 bool Enemy::goRight()
 {
     emit goRightSignal();
+    this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
 }
 
 bool Enemy::start()

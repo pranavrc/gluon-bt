@@ -14,9 +14,6 @@ goLeftNode::goLeftNode()
 bool goLeftNode::run(btCharacter *self)
 {
     qDebug() << "goLeftNode::run()";
-    bool value = ((Enemy*)self)->goLeft();
-    ((Enemy*)self)->mutex.lock();
-    ((Enemy*)self)->finished.wait(&(((Enemy*)self)->mutex));
-    return value;
+    return ((Enemy*)self)->goLeft();
 }
 

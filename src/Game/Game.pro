@@ -16,7 +16,10 @@ SOURCES += main.cpp \
     enemy.cpp \
     btdebugnode.cpp \
     runner.cpp \
-    btloopnode.cpp
+    btloopnode.cpp \
+    btwonnode.cpp \
+    btparallelnode.cpp \
+    worker.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -29,7 +32,10 @@ HEADERS += mainwindow.h \
     enemy.h \
     btdebugnode.h \
     runner.h \
-    btloopnode.h
+    btloopnode.h \
+    btwonnode.h \
+    btparallelnode.h \
+    worker.h
 INCLUDEPATH += c:/repo/gluon-bt/src/gluon-bt-lib \
     c:/repo/gluon-bt/src/gluon-bt-common
 LIBS += c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/libbtlib.dll

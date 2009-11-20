@@ -14,7 +14,7 @@ public:
     Enemy();
     Enemy(Agent *target,btNode* tree);
 Q_SIGNALS:
-    void goUpSignal();
+    bool goUpSignal();
     void goDownSignal();
     void goLeftSignal();
     void goRightSignal();
@@ -27,8 +27,8 @@ public:
     bool goRight();
     QWaitCondition finished;
     QMutex mutex;
-private:
     Agent* target;
+private:
     btNode* tree;
     btNode* current;
 };

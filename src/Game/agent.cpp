@@ -30,6 +30,7 @@ Agent::Agent(Game* game,QPoint pos)
                      this, SLOT(unlock()));
     this->setBrush(QBrush(QColor(Qt::green)));
     this->setSquare(pos.x(),pos.y());
+    this->returnValue = true;
     /*if(move(Right)){
         this->goRight();
     }else{
@@ -39,6 +40,7 @@ Agent::Agent(Game* game,QPoint pos)
 
 void Agent::unlock()
 {
+    returnValue = false;
     qDebug() << "unlock";
     mutex->unlock();
     waitCond->wakeAll();
@@ -112,6 +114,7 @@ void Agent::sayHello()
     }*/
     qDebug() << "callback";
     if(count >= 1){
+        returnValue = true;
         mutex->unlock();
         waitCond->wakeAll();
     }

@@ -21,6 +21,7 @@ public:
     QWaitCondition *waitCond;
     void setMutex(QMutex *mutex){this->mutex = mutex;}
     void setWaitCondition(QWaitCondition *waitCond){this->waitCond = waitCond;}
+    bool returnValue;
 public Q_SLOTS:
     void sayHello();
     void unlock();
