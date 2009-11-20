@@ -8,11 +8,12 @@ REGISTER_NODETYPE(btProbSelectorNode)
 btProbSelectorNode::btProbSelectorNode()
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
-    qrand();
+    //qrand();
 }
 
-bool btProbSelectorNode::run()
+bool btProbSelectorNode::run(btCharacter *self)
 {
+    qrand();
     float randNum;
     float intStart = 0.0;
     float scale = 1.0;
@@ -26,7 +27,7 @@ bool btProbSelectorNode::run()
             if(node->visited == false){
                 if(intStart < randNum && randNum <= (node->wp + intStart)){
                    qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
-                    if(parentNode()->child(inc)->runBehavior()){
+                    if(parentNode()->child(inc)->runBehavior(self)){
                         foreach(StatNode *node, probStats){
                             node->visited = false;
                         }

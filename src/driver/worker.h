@@ -9,7 +9,7 @@ class Worker : public QThread
 public:
     Worker(btNode* node);
     Worker(){};
-    void run();
+    void run(btCharacter *self);
     bool value;
 private:
     btNode* node;

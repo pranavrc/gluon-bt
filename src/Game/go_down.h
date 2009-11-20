@@ -11,7 +11,7 @@ class goDownNode : public btNodeType
     
 public:
     Q_INVOKABLE goDownNode();
-    bool run();
+    bool run(btCharacter *self);
 };
 
 

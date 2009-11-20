@@ -13,7 +13,6 @@ void GameItem::setupAnimation(){
      animation->setTimeLine(timer);
      animation->setItem(this);
      timer->setCurveShape(QTimeLine::LinearCurve);
-     //qDebug() << "setup animation";
      QObject::connect(timer, SIGNAL(finished()),
                       this, SLOT(animationDone()));
 }
@@ -42,7 +41,6 @@ void GameItem::setAnimationStep(QPoint from,QPoint to, Direction dir){
 
 void GameItem::animationDone()
 {
-    //qDebug() << "animation done";
     animation->clear();
     switch(dir){
         case Up:
@@ -59,7 +57,6 @@ void GameItem::animationDone()
             break;
     }
     if(move(dir)){
-        //qDebug() << "y: " << square.y();
         setAnimationStep(square,QPoint(square.x(),square.y()),this->dir);
     }
 }
@@ -94,9 +91,6 @@ GameItem::GameItem(int x,int y,Game* game){
 }
 
 void GameItem::setSquare(int x,int y){
-    //qDebug() << "setSquare";
-    //qDebug() << x;
-    //qDebug() << y;
     square.setX(x);
     square.setY(y);
     setPos((x * 20)+ 10,(y * 20) +10);
@@ -139,6 +133,8 @@ bool GameItem::goUp()
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Up);
         return true;
     }
+    qDebug("action up failed");
+    emit actionFailed();
     return false;
 }
 
@@ -151,6 +147,8 @@ bool GameItem::goDown()
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Down);
         return true;
     }
+    qDebug("action down failed");
+    emit actionFailed();
     return false;
 }
 
@@ -161,6 +159,8 @@ bool GameItem::goLeft()
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Left);
         return true;
     }
+    qDebug("action left failed");
+    emit actionFailed();
     return false;
 }
 
@@ -171,6 +171,8 @@ bool GameItem::goRight()
         setAnimationStep(square,QPoint(square.x(),square.y() + 1), Right);
         return true;
     }
+    qDebug("action right failed");
+    emit actionFailed();
     return false;
 }
 

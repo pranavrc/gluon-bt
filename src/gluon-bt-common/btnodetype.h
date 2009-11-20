@@ -5,7 +5,7 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 #include "btnode.h"
-
+#include "btcharacter.h"
 #include "../gluon-bt-lib/btlib_export.h"
 
 class BT_LIB_EXPORT btNodeType : public QObject
@@ -43,7 +43,7 @@ public:
     virtual nodeType type() const;
 
     virtual void setNodeType(nodeType type);
-    virtual bool run();
+    virtual bool run(btCharacter *self);
     virtual btNodeType * copy();
     virtual QString className() const;
     virtual void setClassName(QString className);

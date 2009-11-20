@@ -23,7 +23,13 @@ int main(int argc, char** argv)
     btBrain *brain = new btBrain(fileContents);
     for(int i = 0; i < 1; i++){
 
-    brain->getBehaviorTree(0)->runBehavior();
+    btCharacter *agent1 = new btCharacter();
+    agent1->setName("Agent One");
+    btCharacter *agent2 = new btCharacter();
+    agent2->setName("Agent Two");
+
+    brain->getBehaviorTree(0)->runBehavior(agent1);
+    brain->getBehaviorTree(0)->runBehavior(agent2);
     qDebug()  << "------------";
 }
 

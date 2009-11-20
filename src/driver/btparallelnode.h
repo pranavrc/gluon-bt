@@ -15,7 +15,7 @@ class btParallelNode : public btNodeType
     
 public:
     Q_INVOKABLE btParallelNode();
-    bool run();
+    bool run(btCharacter *self);
     void appendingChild(int index);
     void removingChild(int index);
     void childrenAdded();

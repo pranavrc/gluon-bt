@@ -9,6 +9,7 @@
 class QString;
 class QVariant;
 class btNodeType;
+class btCharacter;
 
 class BT_LIB_EXPORT btNode : public QObject
 {
@@ -20,7 +21,7 @@ public:
     btNode(btNodeType *type = 0, btNode *parent = 0);
     ~btNode();
     
-    bool runBehavior();
+    bool runBehavior(btCharacter *self);
 
 	virtual void appendChild(btNode *);
     virtual void insertChild(int pos, btNode* child);

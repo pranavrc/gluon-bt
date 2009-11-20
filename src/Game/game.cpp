@@ -1,10 +1,13 @@
 #include "game.h"
 #include "gameitem.h"
 #include "agent.h"
+#include "enemy.h"
+#include "runner.h"
 
 #include <QDebug>
 #include <QPushButton>
 #include <QDateTime>
+#include <QFile>
 
 Game::Game()
 {
@@ -58,7 +61,27 @@ Game::Game()
     marker->setBrush(Qt::yellow);
     marker->setZValue(5);
     this->addItem(marker);
+
+    // --------------------------------------
+    QString fileName = "test.xml";
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        return;
+    }
+    QByteArray byteArray = file.readAll();
+    QString fileContents(byteArray.data());
+    file.close();
+
+    btBrain *brain = new btBrain(fileContents);
     Agent *agent = new Agent(this,QPoint(14,14));
+    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
+
+    Runner *runner = new Runner(enemy);
+    runner->start();
+    //brain->getBehaviorTree(0)->runBehavior(enemy);
+
+    // -------------------------------------
     //Agent *agent2 = new Agent(this,QPoint(0,0));
     //Agent *agent3 = new Agent(this,QPoint(0,14));
     //Agent *agent4 = new Agent(this,QPoint(14,0));

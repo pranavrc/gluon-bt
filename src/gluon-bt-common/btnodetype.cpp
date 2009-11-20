@@ -1,5 +1,5 @@
 #include "btnodetype.h"
-
+#include "btcharacter.h"
 #include <QtCore/QDebug>
 
 btNodeType::btNodeType(QObject * parent)
@@ -25,7 +25,7 @@ btNodeType::nodeType btNodeType::type() const
         return UnusableNodeType;
 }
 
-bool btNodeType::run()
+bool btNodeType::run(btCharacter *self)
 {
     return false;
 }

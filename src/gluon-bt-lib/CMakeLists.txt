@@ -7,6 +7,7 @@ include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_
 set(btlib_SRCS
     ../gluon-bt-common/btnodetype.cpp
     ../gluon-bt-common/btnode.cpp
+    ../gluon-bt-common/btcharacter.cpp
     btfactory.cpp
     btbrain.cpp
     btselectornode.cpp

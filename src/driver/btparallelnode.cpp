@@ -10,7 +10,7 @@ btParallelNode::btParallelNode()
     // init variables
 }
 
-bool btParallelNode::run()
+bool btParallelNode::run(btCharacter *self)
 {
     qDebug() << "Parallel Execution Started";
     foreach(Worker* w,workers){

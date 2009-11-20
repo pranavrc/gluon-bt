@@ -14,8 +14,10 @@ Agent::Agent(Game* game)
     this->game->addItem(this);
     QObject::connect(timer, SIGNAL(finished()),
                      this, SLOT(sayHello()));
+    QObject::connect(this, SIGNAL(actionFailed()),
+                     this, SLOT(unlock()));
+
     this->setBrush(QBrush(QColor(Qt::green)));
-    this->goRight();
 }
 
 Agent::Agent(Game* game,QPoint pos)
@@ -24,13 +26,22 @@ Agent::Agent(Game* game,QPoint pos)
     this->game->addItem(this);
     QObject::connect(timer, SIGNAL(finished()),
                      this, SLOT(sayHello()));
+        QObject::connect(this, SIGNAL(actionFailed()),
+                     this, SLOT(unlock()));
     this->setBrush(QBrush(QColor(Qt::green)));
     this->setSquare(pos.x(),pos.y());
-    if(move(Right)){
+    /*if(move(Right)){
         this->goRight();
     }else{
         this->goLeft();
-    }
+    }*/
+}
+
+void Agent::unlock()
+{
+    qDebug() << "unlock";
+    mutex->unlock();
+    waitCond->wakeAll();
 }
 
 void Agent::sayHello()
@@ -57,13 +68,13 @@ void Agent::sayHello()
         }
     }
 
-    if(move(dir)){
+    /*if(move(dir)){
         possibleMove.append(dir);
         count++;
-    }
+    }*/
 
 
-    qrand();
+    /*qrand();
 
     int r = 0;
     if(count == 3){
@@ -75,9 +86,9 @@ void Agent::sayHello()
 
     if(count == 0){
         return;
-    }
+    }*/
 
-    //qDebug() << possibleMove;
+    /*//qDebug() << possibleMove;
 
     //qDebug() << "random: " << r;
 
@@ -98,9 +109,12 @@ void Agent::sayHello()
         case Right:
             goRight();
             break;
+    }*/
+    qDebug() << "callback";
+    if(count >= 1){
+        mutex->unlock();
+        waitCond->wakeAll();
     }
-
-   //qDebug("Hello World");
 }
 
 GameItem::Direction Agent::choose()
