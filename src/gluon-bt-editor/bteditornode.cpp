@@ -4,6 +4,7 @@
 #include "projectparser.h"
 #include "btreferencenode.h"
 #include <QtCore/QDebug>
+#include "btdecoratornode.h"
 
 btEditorNode::btEditorNode(btNodeType *type, btNode *parent) : btNode(type, parent)
 {
@@ -60,7 +61,27 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
                 properties += QVariant(i).toString();
             }
         }
-        properties += "\" />";
+        
+        if(this->decoratorCount() > 0)
+        {
+            
+            properties += "\">";
+            projectParser::instance()->increaseIndents();
+            
+            foreach(btNodeType* node, this->decorators())
+            {
+                btDecoratorNode* decorator = qobject_cast<btDecoratorNode*>(node);
+                properties += decorator->toDataXml();
+            }
+            projectParser::instance()->decreaseIndents();
+            properties += projectParser::instance()->writeIndents() + "</property>";
+        }
+        else
+        {
+            properties += "\" />";
+        }
+        
+        return startTag + properties + children + endTag;
     }
     else
     {
@@ -101,7 +122,6 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
         children += qobject_cast<btEditorNodeType*>( this->decorators().at(i))->toDataXml();
         qDebug() << children;
     }
-    
     for(int i = 0; i < this->childCount(); i++)
     {
         children += qobject_cast<btEditorNode*>(this->child(i))->toXml(behaviorTrees);
@@ -109,6 +129,41 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
     projectParser::instance()->decreaseIndents();
     
     return startTag + properties + children + endTag;
+}
+
+QVariant btEditorNode::headerData(int column) const
+{
+    if(column == 0)
+        return tr("Name");
+    else if(column == 1)
+        return tr("Description");
+    else if(column == 2)
+        return tr("Type");
+    
+    return QVariant();
+}
+
+QVariant btEditorNode::data(int column) const
+{
+	switch(column)
+	{
+		case 0:
+            return name();
+			break;
+        case 1:
+            if( !this->decorators().isEmpty() )
+                return QString("%1 (%2)").arg(description()).arg(decoratorCount());
+            else
+                return description();
+			break;
+        case 2:
+            return type()->name();
+            break;
+		default:
+			return QVariant();
+			break;
+	}
+	return QVariant();
 }
 
 #include "bteditornode.moc"

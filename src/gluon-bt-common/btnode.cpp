@@ -64,57 +64,9 @@ int btNode::childCount() const
     return m_children.count();
 }
 
-int btNode::columnCount() const
-{
-	return 3;
-}
-
-int btNode::row() const
-{
-	if(parentNode)
-        return parentNode->m_children.indexOf(const_cast<btNode *>(this));
-	
-	return 0;
-}
-
 btNode *btNode::parent()
 {
 	return parentNode;
-}
-
-QVariant btNode::headerData(int column) const
-{
-    if(column == 0)
-        return tr("Name");
-    else if(column == 1)
-        return tr("Description");
-    else if(column == 2)
-        return tr("Type");
-    
-    return QVariant();
-}
-
-QVariant btNode::data(int column) const
-{
-	switch(column)
-	{
-		case 0:
-            return name();
-			break;
-        case 1:
-            if( !m_decorators.isEmpty() )
-                return QString("%1 (%2)").arg(description()).arg(m_decorators.count());
-            else
-                return description();
-			break;
-        case 2:
-            return type()->name();
-            break;
-		default:
-			return QVariant();
-			break;
-	}
-	return QVariant();
 }
 
 void btNode::setName(QString name) { m_name = name; }
@@ -142,11 +94,11 @@ void btNode::addDecorator(btNodeType* decorator)
     decorator->setParentNode(this);
 }
 void btNode::removeDecorator(btNodeType* decorator) { m_decorators.removeAll(decorator); }
-int btNode::decoratorCount() { return m_decorators.count(); }
+int btNode::decoratorCount() const { return m_decorators.count(); }
 QList<btNodeType*> btNode::decorators() const { return m_decorators; }
 
 void btNode::setParentNode(btNode* node)
-{
+{    
     parentNode = node;
     this->setParent(node);
 }
@@ -154,6 +106,36 @@ void btNode::setParentNode(btNode* node)
 void btNode::doneParsingChildren()
 {
     m_type->childrenAdded();
+}
+
+void btNode::removeChild(btNode* child)
+{
+    for (int i = 0; i < this->childCount(); i++) 
+    {
+        if(this->child(i) == child)
+        {
+            this->removeChild(i);
+            break;
+        }
+    }
+}
+
+int btNode::columnCount() const
+{
+    return 3;
+}
+
+int btNode::row() const
+{
+	if(parentNode)
+        return parentNode->m_children.indexOf(const_cast<btNode*>(this));
+	
+	return 0;
+}
+
+void btNode::insertChild(int pos, btNode* child)
+{
+    m_children.insert(pos, child);
 }
 
 #include "btnode.moc"

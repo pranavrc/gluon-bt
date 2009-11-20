@@ -27,6 +27,9 @@ btBrain::~btBrain()
 {
     qDeleteAll(nodeTypes);
     qDeleteAll(behaviorTrees);
+    
+    behaviorTrees.clear();
+    nodeTypes.clear();
 }
 
 btEditorNodeType *btBrain::findNodeTypeByName(QString name)

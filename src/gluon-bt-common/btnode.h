@@ -23,17 +23,19 @@ public:
     bool runBehavior();
 
 	virtual void appendChild(btNode *);
+    virtual void insertChild(int pos, btNode* child);
     virtual void removeChild(int row);
+    virtual void removeChild(btNode* child);
     virtual void doneParsingChildren();
 	
 	virtual btNode *child(int row);
 	virtual int childCount() const;
-	virtual int columnCount() const;
-	virtual int row() const;
 	virtual btNode *parent();
     virtual void setParentNode(btNode * node);
-	virtual QVariant data(int column) const;
-    virtual QVariant headerData(int column) const;
+    
+    
+    virtual int columnCount() const;
+    virtual int row() const;
 	
     virtual void setName(QString name);
     virtual QString name() const;
@@ -44,9 +46,8 @@ public:
 
     virtual void addDecorator(btNodeType* decorator);
     virtual void removeDecorator(btNodeType* decorator);
-    virtual int decoratorCount();
+    virtual int decoratorCount() const;
     QList<btNodeType*> decorators() const;
-
 
 private:
 	btNodeType *m_type;

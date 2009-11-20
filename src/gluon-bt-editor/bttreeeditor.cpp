@@ -19,7 +19,10 @@
 
 #include "bttreeeditor.h"
 
+#include <QDropEvent>
+
 btTreeEditor::btTreeEditor(QWidget *parent)
 {
     setAcceptDrops(true);
+    setDragEnabled(true);
 }

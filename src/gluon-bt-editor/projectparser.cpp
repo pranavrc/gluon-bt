@@ -136,7 +136,16 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                 {
                     btReferenceNode * btRefNode = qobject_cast<btReferenceNode*>(nodeType);
                     btRefNode->setReferenceBehaviorTree(behaviorTreesList[nodeAttributes.namedItem("value").nodeValue().toInt()]);
+                    
+                    if(currentNode.hasChildNodes())
+                    {
+                        for(int i = 0; i < currentNode.childNodes().count(); i++)
+                        {
+                            parseBehaviorTrees(currentNode, node, brain);
+                        }
+                    }
                 }
+                
                 int typeId = QMetaType::type(nodeType->property(nodeAttributes.namedItem("name").nodeValue().toUtf8()).toString().toUtf8());
                 QVariant dataType;
                 

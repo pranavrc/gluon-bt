@@ -94,8 +94,11 @@ void bteditor::showBehaviorTree(btTreeModel* showThis)
         );
     this->currentBTNameLabel->setText(showThis->name());
     
-    disconnect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
-    disconnect(propertyWidget, SIGNAL(treeModelUpdate()), m_currentBehaviorTree, SLOT(updateTreeModel()));
+    if(m_currentBehaviorTree)
+    {
+        disconnect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
+        disconnect(propertyWidget, SIGNAL(treeModelUpdate()), m_currentBehaviorTree, SLOT(updateTreeModel()));
+    }
     m_currentBehaviorTree = showThis; // keep track of behaviortree
     connect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
     connect(propertyWidget, SIGNAL(treeModelUpdate()), m_currentBehaviorTree, SLOT(updateTreeModel()));
@@ -103,7 +106,7 @@ void bteditor::showBehaviorTree(btTreeModel* showThis)
 
 void bteditor::editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-    btNode* selectedNode = static_cast<btNode*>(btEditor->selectionModel()->currentIndex().internalPointer());
+    btNode* selectedNode = static_cast<btNode*>(btEditor->selectionModel()->currentIndex().internalPointer());        
     showPropertiesFor(qobject_cast<btEditorNode*>(selectedNode));
 }
 
@@ -160,6 +163,7 @@ void bteditor::on_actionOpen_triggered()
 
     delete m_brain;
     delete nodeTypes;
+    m_currentBehaviorTree = NULL;
 
     m_brain = projectParser::instance()->parseProject(fileContents);
     m_brain->setParent(this);
@@ -329,7 +333,7 @@ void bteditor::bteditDeleteNodeTriggered()
         m_currentBehaviorTree->removeRows(selectedNode->row(),1,btEditor->selectionModel()->currentIndex().parent());
     }
 }
-
+	
 void bteditor::on_actionNew_triggered()
 {
     int result = QMessageBox::question(this,
