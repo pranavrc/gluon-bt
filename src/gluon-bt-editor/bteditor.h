@@ -35,6 +35,7 @@ public Q_SLOTS:
     void replaceBrain();
     void editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
     void nodeTypeDeleted(int row);
+    void updateView(const QModelIndex& one, const QModelIndex& two);
     
 private:
     btBrain *m_brain;

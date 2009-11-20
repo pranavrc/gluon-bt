@@ -115,6 +115,15 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
     if(xNode.attributes().namedItem("name").nodeValue() == "reference")
     {
         node->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
+        
+        if(xNode.hasChildNodes())
+        {
+            for (int i = 0; i < xNode.childNodes().count(); i++) 
+            {
+                btFactory::instance()->newObject(xNode.childNodes().at(i), node, brain);
+            }
+        }
+        
         return;
     }
     btNodeType* nodeType = node->type();

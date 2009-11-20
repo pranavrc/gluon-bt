@@ -98,10 +98,14 @@ void bteditor::showBehaviorTree(btTreeModel* showThis)
     {
         disconnect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
         disconnect(propertyWidget, SIGNAL(treeModelUpdate()), m_currentBehaviorTree, SLOT(updateTreeModel()));
+        disconnect(m_currentBehaviorTree, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(updateView(const QModelIndex&, const QModelIndex&)));
+        
     }
     m_currentBehaviorTree = showThis; // keep track of behaviortree
     connect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
     connect(propertyWidget, SIGNAL(treeModelUpdate()), m_currentBehaviorTree, SLOT(updateTreeModel()));
+    connect(m_currentBehaviorTree, SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(updateView(const QModelIndex&, const QModelIndex&)));
+
 }
 
 void bteditor::editorSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
@@ -363,6 +367,11 @@ void bteditor::on_actionNew_triggered()
 void bteditor::on_actionNew_Tree_triggered()
 {
 
+}
+
+void bteditor::updateView(const QModelIndex& one, const QModelIndex& two)
+{
+    this->btEditor->scrollTo(one);
 }
 
 #include "bteditor.moc"

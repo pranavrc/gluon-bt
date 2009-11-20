@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QIcon>
 #include "btreferencenode.h"
+#include <QTreeview>
 
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
@@ -249,7 +250,8 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
                 parentNode->insertChild(row, node);
             }
             
-            emit dataChanged(parent,parent);
+            this->reset();
+            emit dataChanged(parent, parent);
             
             return true;
         }
@@ -331,20 +333,20 @@ bool btTreeModel::removeRows(int position, int rows, const QModelIndex &parent)
      
      if(parentNode == NULL)
          return false;
-     
-    beginRemoveRows(parent, position, position+rows-1);
 
+     beginRemoveRows(parent, position, position+rows-1);
      if(!moving)
      {
          parentNode->removeChild(position);
+         endRemoveRows();
+         return true;
      }
      else 
      {
-         moving = false;   
+         moving = false;
+         endRemoveRows();
+         return false;
      }
-
-    endRemoveRows();
-    return true;
  }
 
 void btTreeModel::setName(QString name) { m_name = name; }
@@ -389,7 +391,7 @@ QMimeData* btTreeModel::mimeData(const QModelIndexList &indexes) const
                 nodeMemAdress = reinterpret_cast<int>(node->parent());
                 stream << nodeMemAdress;
             }
-        }
+        }        
     }
     mimeData->setData("application/bt.nodetype", encodedData);
     return mimeData;
