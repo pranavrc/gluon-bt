@@ -9,6 +9,7 @@ Enemy::Enemy()
 
 Enemy::Enemy(Agent *target,btNode* tree)
 {
+    qDebug("enemy constructor");
     qsrand(QDateTime::currentDateTime().toTime_t());
     this->target = target;
     this->target->setMutex(&(this->mutex));
@@ -26,6 +27,7 @@ Enemy::Enemy(Agent *target,btNode* tree)
 
 bool Enemy::goDown()
 {
+    qDebug("enemyDown");
     emit goDownSignal();
     this->mutex.lock();
     this->finished.wait(&(this->mutex));
@@ -34,6 +36,7 @@ bool Enemy::goDown()
 
 bool Enemy::goUp()
 {
+    qDebug("enemyUp");
     emit goUpSignal();
     this->mutex.lock();
     this->finished.wait(&(this->mutex));
@@ -42,6 +45,7 @@ bool Enemy::goUp()
 
 bool Enemy::goLeft()
 {
+    qDebug("enemyLeft");
     emit goLeftSignal();
     this->mutex.lock();
     this->finished.wait(&(this->mutex));
@@ -50,6 +54,7 @@ bool Enemy::goLeft()
 
 bool Enemy::goRight()
 {
+    qDebug("enemyRight");
     emit goRightSignal();
     this->mutex.lock();
     this->finished.wait(&(this->mutex));
@@ -59,4 +64,5 @@ bool Enemy::goRight()
 bool Enemy::start()
 {
     this->tree->runBehavior(this);
+    return true;
 }
