@@ -24,6 +24,10 @@
 #include <QDoubleSpinBox>
 #include <QGridLayout>
 #include <QtCore/QMetaClassInfo>
+#include <QToolButton>
+#include <QDebug>
+#include <QMenu>
+#include <QAction>
 
 #include "btpropertywidget.h"
 #include "btpropertywidgetitem.h"
@@ -33,7 +37,8 @@
 
 btPropertyWidget::btPropertyWidget(QObject * parent)
 {
-    colorgen = new ColorGen(0,70,30);
+    colorgen = NULL;
+    m_node = NULL;
 }
 
 btPropertyWidget::~btPropertyWidget()
@@ -52,6 +57,7 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, 
     nameLabel->setAlignment(Qt::AlignTop);
     
     btPropertyWidgetItem * editWidget = new btPropertyWidgetItem(this);
+    connect(editWidget,SIGNAL(sendUpdateTreeModel()), this, SLOT(updateTreeModel()));
     editWidget->setEditObject(object);
     editWidget->setEditProperty(name);
     layout->addWidget(editWidget, row, 1);
@@ -107,7 +113,30 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
     titleLabel->setText(node->name());
     titleLabel->setToolTip(node->description());
     titleLabel->setStyleSheet("background-color: " + colorgen->nextColor().name());
-    layout->addWidget(titleLabel, row, 0, 1, 2);
+    if(QString(node->metaObject()->className()) == "btDecoratorNode")
+    {
+        QHBoxLayout * hLayout = new QHBoxLayout(this);
+        hLayout->addWidget(titleLabel);
+        
+        QAction * removeAction = new QAction(node);
+        removeAction->setText("Remove");
+        connect(removeAction, SIGNAL(triggered()), this, SLOT(removeActionTriggered()));
+        
+        QMenu * buttonMenu = new QMenu(this);
+        buttonMenu->addAction(removeAction);
+        
+        QToolButton * showMenuButton = new QToolButton(this);
+        showMenuButton->setText("Menu");
+        showMenuButton->setMenu(buttonMenu);
+        showMenuButton->setPopupMode(QToolButton::InstantPopup);
+        
+        hLayout->addWidget(showMenuButton);
+        layout->addLayout(hLayout, row, 0,1,2);
+    }
+    else
+    {
+        layout->addWidget(titleLabel, row, 0, 1, 2);
+    }
     
     // Add a new property line for each property in the object's metaobject...
     QObject *object = node;
@@ -116,6 +145,9 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
 
 void btPropertyWidget::setupPropertyView()
 {
+    qDeleteAll(this->children());
+    colorgen = new ColorGen(0,70,30);
+    
     QGridLayout * propertyLayout = new QGridLayout(this);
     propertyLayout->setMargin(0);
     propertyLayout->setSpacing(0);
@@ -148,7 +180,11 @@ void btPropertyWidget::setupPropertyView()
 }
 
 btEditorNode * btPropertyWidget::node() const { return m_node; }
-void btPropertyWidget::setNode(btEditorNode * node) { m_node = node; setupPropertyView(); }
+void btPropertyWidget::setNode(btEditorNode * node)
+{ 
+    m_node = node; 
+    setupPropertyView(); 
+}
 
 QString btPropertyWidget::getPropertyDescription(QObject *object, QString propertyName)
 {
@@ -158,6 +194,24 @@ QString btPropertyWidget::getPropertyDescription(QObject *object, QString proper
         return "";
     
     return node->getPropertyDescription(propertyName);
+}
+
+void btPropertyWidget::removeActionTriggered()
+{
+    m_node->removeDecorator((btNodeType*)QObject::sender()->parent());
+    setupPropertyView();
+    emit treeModelUpdate();
+}
+
+void btPropertyWidget::dragDropUpdate()
+{
+    if(m_node != NULL)
+        setupPropertyView();
+}
+
+void btPropertyWidget::updateTreeModel()
+{
+    emit treeModelUpdate();
 }
 
 #include "btpropertywidget.moc"

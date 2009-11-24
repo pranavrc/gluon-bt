@@ -8,12 +8,15 @@
 #include <QDebug>
 #include <QIcon>
 #include "btreferencenode.h"
+#include <QTreeview>
 
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
 {
     m_rootNode = new btEditorNode();
     brain = containingBrain;
+    moving = false;
+    this->setSupportedDragActions(Qt::MoveAction);
 }
 
 btTreeModel::~btTreeModel()
@@ -97,14 +100,14 @@ QVariant btTreeModel::data(const QModelIndex &index, int role) const
     if(!index.isValid())
         return QVariant();
     
-    btNode *node = nodeFromIndex(index);
+    btEditorNode *node = nodeFromIndex(index);
     if(!node)
         return QVariant();
     
     // icon stuff
     if (role == Qt::DecorationRole){
         if(index.column() == 0){
-            btNodeType::nodeType type;
+            btEditorNodeType::nodeType type;
             type = node->type()->type();
             switch(type){
             case btNodeType::ReferenceNodeType:
@@ -193,6 +196,9 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     if(action == Qt::IgnoreAction)
         return true;
     
+    if(action == Qt::MoveAction)
+        moving = true;
+    
     if(!data->hasFormat("application/bt.nodetype"))
         return false;
     
@@ -202,14 +208,58 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     // We only do the parent thing here - we accept no drops in empty space at all
     if(!parent.isValid())
         return false;
-
+    
     btEditorNode* parentNode = static_cast<btEditorNode*>(parent.internalPointer());
-
+    
     // We do not allow dropping on Actions and References
     if( parentNode->type()->type() == btNodeType::ActionNodeType    ||
-        parentNode->type()->type() == btNodeType::ReferenceNodeType ||
-        parentNode->type()->type() == btNodeType::ConditionNodeType ){
+/*       parentNode->type()->type() == btNodeType::ReferenceNodeType ||*/
+       parentNode->type()->type() == btNodeType::ConditionNodeType ){
         return false;
+    }
+    
+    if(action == Qt::MoveAction)
+    {   
+        QByteArray encodedData = data->data("application/bt.nodetype");
+        QDataStream stream(&encodedData, QIODevice::ReadOnly);
+        btEditorNode * node = NULL;
+        btEditorNode* oldParentNode = NULL;
+        
+        while(!stream.atEnd())
+        {
+            int nodeMemAdress;
+            stream >> nodeMemAdress;
+            node =  reinterpret_cast<btEditorNode*>(nodeMemAdress);
+            stream >> nodeMemAdress;
+            oldParentNode = reinterpret_cast<btEditorNode*>(nodeMemAdress);
+        }
+        
+        if(node)
+        {
+            if(row == -1 && column  == -1)
+            {                                                
+                oldParentNode->removeChild(node);
+                
+                beginInsertRows(parent, parentNode->childCount(), parentNode->childCount());
+                parentNode->appendChild(node);
+                endInsertRows();
+            }
+            else 
+            {
+                parentNode->removeChild(node);
+                parentNode->insertChild(row, node);
+            }
+            
+            this->reset();
+            emit dataChanged(parent, parent);
+            
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
     }
     
     QByteArray encodedData = data->data("application/bt.nodetype");
@@ -224,7 +274,8 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
         stream >> btType;
         nodeTypes.insert(nodeType, btType);
     }
-
+    
+    
     int rows = 0;
     QList<btNodeType*> theNodeTypes;
     QHashIterator<QString, QString> i(nodeTypes);
@@ -243,6 +294,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     // Yes, this is kinda nasty - but we may well be dropping decorators, which are not true children
     if(rows > 0)
         beginInsertRows(parent, parentNode->childCount(), parentNode->childCount() + rows - 1);
+    
     foreach(btNodeType* theNodeType, theNodeTypes)
     {
         // Figure out whether the dropped item is a special case (decorators are added to the parent item directly, rather than added as children)
@@ -263,23 +315,38 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             newChild->setName(tr("New %1").arg(theNodeType->name()));
         }
     }
+    
     if(rows > 0)
         endInsertRows();
     else
+    {
         emit dataChanged(parent, parent);//Update the view for the parent node we have (likely) just added a decorator to
+        emit addRemoveBTNode(); //used for updateing the property widget
+    }
 
     return true;
 }
 
 bool btTreeModel::removeRows(int position, int rows, const QModelIndex &parent)
- {
-    beginRemoveRows(parent, position, position+rows-1);
+ {      
+     btEditorNode* parentNode = static_cast<btEditorNode*>(parent.internalPointer());
+     
+     if(parentNode == NULL)
+         return false;
 
-    btEditorNode* parentNode = static_cast<btEditorNode*>(parent.internalPointer());
-    parentNode->removeChild(position);
-
-    endRemoveRows();
-    return true;
+     beginRemoveRows(parent, position, position+rows-1);
+     if(!moving)
+     {
+         parentNode->removeChild(position);
+         endRemoveRows();
+         return true;
+     }
+     else 
+     {
+         moving = false;
+         endRemoveRows();
+         return false;
+     }
  }
 
 void btTreeModel::setName(QString name) { m_name = name; }
@@ -293,6 +360,41 @@ void btTreeModel::setDescription(QString description)
 QString btTreeModel::description() const
 {
     return m_description;
+}
+
+void btTreeModel::updateTreeModel()
+{
+    emit dataChanged(QModelIndex(),QModelIndex());
+}
+
+Qt::DropActions btTreeModel::supportedDropActions() const
+{
+    return Qt::MoveAction | Qt::CopyAction;
+}
+
+QMimeData* btTreeModel::mimeData(const QModelIndexList &indexes) const
+{
+    QMimeData *mimeData = new QMimeData();
+    QByteArray encodedData;
+    QDataStream stream(&encodedData, QIODevice::WriteOnly);
+    
+    foreach(QModelIndex index, indexes)
+    {
+        if (index.isValid())
+        {            
+            btEditorNode * node = nodeFromIndex(index);
+            if(node)
+            {       
+                int nodeMemAdress = reinterpret_cast<int>(node);
+                stream <<  nodeMemAdress;
+                
+                nodeMemAdress = reinterpret_cast<int>(node->parent());
+                stream << nodeMemAdress;
+            }
+        }        
+    }
+    mimeData->setData("application/bt.nodetype", encodedData);
+    return mimeData;
 }
 
 #include "bttreemodel.moc"

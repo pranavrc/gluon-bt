@@ -39,6 +39,10 @@ public:
     void setEditObject(QObject * editThis);
     void setEditProperty(QString propertyName);
     
+Q_SIGNALS:
+    void sendUpdateTreeModel();
+    
+    
 private Q_SLOTS:
     void propertyChanged(QVariant value);
     void propertyChanged(int value);
