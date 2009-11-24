@@ -34,6 +34,9 @@ public:
 
     QString classname() const;
     void setClassname(QString classname);
+    
+Q_SIGNALS:
+    void updatePropertyWidget();
 
 private:
     btEditorNodeType *     node;

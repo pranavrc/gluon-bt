@@ -4,6 +4,7 @@
 
 btNodeType::btNodeType(QObject * parent)
 {
+    m_parent = NULL;
 }
 
 btNodeType::~btNodeType()
@@ -58,7 +59,9 @@ btNode* btNodeType::parentNode()
 
 void btNodeType::setPropertyDescription(QString propertyName, QString description)
 {
+    qDebug() << m_propertiesDescriptions[propertyName];
     m_propertiesDescriptions[propertyName] = description;
+        qDebug() << m_propertiesDescriptions[propertyName];
 }
 
 QString btNodeType::getPropertyDescription(QString propertyName)
@@ -79,6 +82,11 @@ void btNodeType::removePropertyDescription(QString propertyName)
 {
     if(m_propertiesDescriptions.contains(propertyName))
         m_propertiesDescriptions.remove(propertyName);
+}
+
+QHash<QString, QString> btNodeType::getPropertyDescriptions()
+{
+    return m_propertiesDescriptions;
 }
 
 #include "btnodetype.moc"

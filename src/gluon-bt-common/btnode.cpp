@@ -6,10 +6,19 @@
 #include <QtCore/QDebug>
 btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
 {
-	this->m_type = type;
-	this->parentNode = parent;
-	if(parent)
+    
+    this->m_type = type;
+    
+    if(type)
+    {
+        m_type->setParentNode(this);
+    }
+    
+    this->parentNode = parent;
+    if(parent)
+    {
 		parent->appendChild(this);
+    }
 }
 
 btNode::~btNode()
@@ -77,7 +86,7 @@ void btNode::setDescription(QString description) { m_description = description; 
 QString btNode::description() const
 {
     if(m_description.isEmpty())
-        return type()->name();
+        return "";
     else
         return m_description;
 }
@@ -86,6 +95,7 @@ void btNode::setType(btNodeType *type)
 {
     delete(m_type);
     m_type = type;
+    m_type->setParentNode(this);
 }
 btNodeType *btNode::type() const { return m_type; }
 

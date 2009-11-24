@@ -268,7 +268,10 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
     if(selectedNode->parent() != 0){
         btnodemodel* btm =  new btnodemodel(qobject_cast<btEditorNodeType*>(selectedNode->nodeType()));
-        editWidget->disconnectSignals();
+        if(m_currentBehaviorTree)
+            connect(btm, SIGNAL(updatePropertyWidget()), m_currentBehaviorTree, SIGNAL(addRemoveBTNode()));
+        
+        editWidget->disconnectSignals(m_currentBehaviorTree);
         editWidget->setModel(btm);
         editWidget->setSelectedNode(selectedNode);
         editWidget->connectSignals();
@@ -354,6 +357,7 @@ void bteditor::on_actionNew_triggered()
 
     delete m_brain;
     delete nodeTypes;
+    m_currentBehaviorTree = NULL;
 
     m_brain = new btBrain(this);
     m_brain->setParent(this);

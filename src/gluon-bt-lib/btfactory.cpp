@@ -128,6 +128,8 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
     }
     btNodeType* nodeType = node->type();
     
+    if(xNode.attributes().namedItem("name").nodeValue() == "editorProbability")
+        return;
     
     int typeId = QMetaType::type(nodeType->property(xNode.attributes().namedItem("name").nodeValue().toUtf8()).toString().toUtf8());
     QVariant dataType;
@@ -145,7 +147,7 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
         
         dataType = list;
     }
-    else 
+    else
     {
         dataType = xNode.attributes().namedItem("value").nodeValue();
         dataType.convert((QVariant::Type)typeId);

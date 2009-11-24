@@ -63,27 +63,34 @@ void btPropertyWidget::appendToPropertyView (QGridLayout * layout, qint32 &row, 
     layout->addWidget(editWidget, row, 1);
 }
 
-void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object)
+void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object, bool appendingNodeType)
 {
     QString propertyName, propertyDescription;
     QVariant propertyValue;
     
     const QMetaObject *metaobject = object->metaObject();
     
-    int count = metaobject->propertyCount();
-    for (int i=0; i<count; ++i)
+    if(!appendingNodeType)
     {
-        QMetaProperty metaproperty = metaobject->property(i);
-        propertyName = metaproperty.name();
-        if(propertyName == "objectName")
-            continue;
-        propertyValue = object->property(propertyName.toUtf8());
-        propertyDescription = getPropertyDescription(object, propertyName);
-        appendToPropertyView(layout, row, object, propertyName, propertyDescription);
+        int count = metaobject->propertyCount();
+        for (int i=0; i<count; ++i)
+        {
+            QMetaProperty metaproperty = metaobject->property(i);
+            propertyName = metaproperty.name();
+            if(propertyName == "objectName")
+                continue;
+            
+            propertyValue = object->property(propertyName.toUtf8());
+            propertyDescription = getPropertyDescription(object, propertyName);
+            appendToPropertyView(layout, row, object, propertyName, propertyDescription);
+        }
     }
     
     foreach(QByteArray name, object->dynamicPropertyNames())
     {
+        if(name == "probability")
+            continue;
+        
         propertyName = QString(name);
         propertyValue = object->property(name);
         propertyDescription = getPropertyDescription(object, propertyName);;
@@ -102,7 +109,7 @@ void btPropertyWidget::appendObjectToPropertyView (QGridLayout * layout, qint32 
  
     // Add a new property line for each property in the object's metaobject...
     QObject *object = node;
-    appendMetaObjectToPropertyView(layout, row, object);
+    appendMetaObjectToPropertyView(layout, row, object, false);
     
 }
 
@@ -110,11 +117,13 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
 {
     ++row;
     QLabel * titleLabel = new QLabel(this);
-    titleLabel->setText(node->name());
-    titleLabel->setToolTip(node->description());
+
     titleLabel->setStyleSheet("background-color: " + colorgen->nextColor().name());
     if(QString(node->metaObject()->className()) == "btDecoratorNode")
     {
+        titleLabel->setText(node->name());
+        titleLabel->setToolTip(node->description());
+        
         QHBoxLayout * hLayout = new QHBoxLayout(this);
         hLayout->addWidget(titleLabel);
         
@@ -135,12 +144,13 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
     }
     else
     {
+        titleLabel->setText("Properties");
         layout->addWidget(titleLabel, row, 0, 1, 2);
     }
     
     // Add a new property line for each property in the object's metaobject...
     QObject *object = node;
-    appendMetaObjectToPropertyView(layout, row, object);
+    appendMetaObjectToPropertyView(layout, row, object, true);
 }
 
 void btPropertyWidget::setupPropertyView()

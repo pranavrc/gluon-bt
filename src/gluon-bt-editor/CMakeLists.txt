@@ -38,6 +38,7 @@ set(bteditor_SRCS
     images.cpp
 	btqlistdelegate.cpp
 	btqvariantlistwidget.cpp
+    btchildlistwidget.cpp
 )
 
 
