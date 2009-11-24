@@ -7,7 +7,7 @@ REGISTER_NODETYPE(btProbSelectorNode)
 
 btProbSelectorNode::btProbSelectorNode()
 {
-    //qsrand(QDateTime::currentDateTime().toTime_t());
+    qsrand(QDateTime::currentDateTime().toTime_t());
 
 }
 
@@ -20,7 +20,7 @@ bool btProbSelectorNode::run(btCharacter *self)
     int inc = 0;
 
     for(int i = 0; i < probStats.count(); i++){
-            qrand();
+        qDebug() << qrand();
         randNum = ((float)qrand()/RAND_MAX) * scale;
         qDebug() << "RandNum: " << randNum;
         foreach(StatNode *node, probStats)

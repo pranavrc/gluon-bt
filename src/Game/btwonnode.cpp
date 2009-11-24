@@ -14,11 +14,25 @@ btWonNode::btWonNode()
 
 bool btWonNode::run(btCharacter *self)
 { 
-    if(((Enemy*)self)->target->square.x() == property("x").toInt()){
+    //((Enemy*)self)->mutex.lock();
+    while(true){
+            qDebug() << "condition called";
+      //  ((Enemy*)self)->mutex.lock();
+        ((Enemy*)self)->finished.wait(&((Enemy*)self)->mutex,2000);
+          if(((Enemy*)self)->target->square.x() == property("x").toInt()){
         if(((Enemy*)self)->target->square.y() == property("y").toInt()){
+
             return true;
         }
     }
+
+    }
+    /*if(((Enemy*)self)->target->square.x() == property("x").toInt()){
+        if(((Enemy*)self)->target->square.y() == property("y").toInt()){
+            return true;
+        }
+    }*/
+    //qDebug() << "lol";
     return false;
 }
 

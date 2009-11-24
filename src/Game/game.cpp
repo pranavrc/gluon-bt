@@ -12,7 +12,7 @@
 Game::Game()
 {
 
-        qsrand(QDateTime::currentDateTime().toTime_t());
+    qsrand(QDateTime::currentDateTime().toTime_t());
     int locations[15][15] =    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                                 0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,
                                 0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,
@@ -76,6 +76,8 @@ Game::Game()
     btBrain *brain = new btBrain(fileContents);
     Agent *agent = new Agent(this,QPoint(14,14));
     Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
+
+   // brain->getBehaviorTree(0)->runBehavior(enemy);
 
    // Agent *agent2 = new Agent(this,QPoint(14,14));
    // Enemy *enemy2 = new Enemy(agent2,brain->getBehaviorTree(1));

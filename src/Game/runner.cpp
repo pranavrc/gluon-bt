@@ -11,6 +11,6 @@ Runner::Runner(Enemy *target)
 
 void Runner::run()
 {
-    qsrand(QDateTime::currentDateTime().toTime_t());
+    qsrand(QDateTime::currentDateTime().toTime_t() - (int)QThread::currentThreadId());
     this->target->start();
 }
