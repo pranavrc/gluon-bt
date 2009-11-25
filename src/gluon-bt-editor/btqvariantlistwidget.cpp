@@ -1,6 +1,6 @@
 #include "btqvariantlistwidget.h"
 
-btQVariantListWidget::btQVariantListWidget(QWidget * parent) : QWidget(parent)
+btQVariantListWidget::btQVariantListWidget(bool readOnly, QWidget * parent) : QWidget(parent)
 {
     // layout
     mainLayout = new QVBoxLayout(this);
@@ -14,6 +14,13 @@ btQVariantListWidget::btQVariantListWidget(QWidget * parent) : QWidget(parent)
     
     removeButton = new QPushButton(tr("-"));
     addButton = new QPushButton(tr("+"));
+    
+    if(readOnly)
+    {
+        removeButton->setEnabled(false);
+        addButton->setEnabled(false);
+    }
+    
     buttonLayout->addStretch();
     buttonLayout->addWidget(addButton);
     buttonLayout->addWidget(removeButton);
