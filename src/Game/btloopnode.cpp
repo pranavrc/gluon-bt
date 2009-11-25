@@ -8,9 +8,12 @@ REGISTER_NODETYPE(btLoopNode)
 
 bool btLoopNode::run(btCharacter *self)
 {
-    while(true){
+    while(!stopFlag()){
         for(int i = 0; i < parentNode()->childCount(); i++)
         {
+            if(stopFlag()){
+                return false;
+            }
             if(!parentNode()->child(i)->runBehavior(self))
             {
                 return false;

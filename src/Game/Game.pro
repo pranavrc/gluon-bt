@@ -1,6 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-11-13T00:31:17
 # -------------------------------------------------
+QT += testlib
 TARGET = Game
 TEMPLATE = app
 SOURCES += main.cpp \
@@ -19,7 +20,12 @@ SOURCES += main.cpp \
     btloopnode.cpp \
     btwonnode.cpp \
     btparallelnode.cpp \
-    worker.cpp
+    worker.cpp \
+    actions/stopmove.cpp \
+    actions/relativeright.cpp \
+    actions/relativeleft.cpp \
+    actions/relativeforward.cpp \
+    actions/relativeback.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -35,7 +41,12 @@ HEADERS += mainwindow.h \
     btloopnode.h \
     btwonnode.h \
     btparallelnode.h \
-    worker.h
+    worker.h \
+    actions/stopmove.h \
+    actions/relativeright.h \
+    actions/relativeleft.h \
+    actions/relativeforward.h \
+    actions/relativeback.h
 INCLUDEPATH += c:/repo/gluon-bt/src/gluon-bt-lib \
     c:/repo/gluon-bt/src/gluon-bt-common
 LIBS += c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/libbtlib.dll

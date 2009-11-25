@@ -15,7 +15,6 @@ public:
     Agent();
     Agent(Game* game);
     Agent(Game* game,QPoint pos);
-    GameItem::Direction choose();
     void setSquare(int x,int y);
     QMutex *mutex;
     QWaitCondition *waitCond;
@@ -25,6 +24,12 @@ public:
 public Q_SLOTS:
     void sayHello();
     void unlock();
+
+    bool relativeLeft();
+    bool relativeRight();
+    bool forward();
+    bool back();
+    bool stopMove();
 };
 
 #endif // AGENT_H

@@ -7,12 +7,13 @@
 class Worker : public QThread
 {
 public:
-    Worker(btNode* node);
+    Worker(btNode* node,btParallelNode* parent);
     Worker(){}
     void run();
     void setSelf(btCharacter *self);
     bool value;
 private:
+    btParallelNode *parent;
     btCharacter *self;
     btNode* node;
 };

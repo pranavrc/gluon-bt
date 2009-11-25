@@ -28,6 +28,9 @@ bool btProbSelectorNode::run(btCharacter *self)
             if(node->visited == false){
                 if(intStart < randNum && randNum <= (node->wp + intStart)){
                    qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
+                   if(stopFlag()){  // måske kan man gøre det til en del af runBehavior ?
+                       return false;
+                   }
                     if(parentNode()->child(inc)->runBehavior(self)){
                         foreach(StatNode *node, probStats){
                             node->visited = false;

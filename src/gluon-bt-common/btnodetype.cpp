@@ -4,6 +4,7 @@
 
 btNodeType::btNodeType(QObject * parent)
 {
+    setStopFlag(false);
 }
 
 btNodeType::~btNodeType()
@@ -15,6 +16,9 @@ QString btNodeType::name() const { return m_name; }
 
 void btNodeType::setDescription(QString description) { m_description = description; }
 QString btNodeType::description() const { return m_description; }
+
+void btNodeType::setStopFlag(bool stopFlag) { m_stopFlag = stopFlag; }
+bool btNodeType::stopFlag() const { return m_stopFlag; }
 
 void btNodeType::setNodeType(nodeType type){m_type = type;}
 btNodeType::nodeType btNodeType::type() const

@@ -11,6 +11,11 @@ btParallelNode::btParallelNode()
     // init variables
 }
 
+void btParallelNode::workerDone()
+{
+    qDebug("worker done");
+}
+
 bool btParallelNode::run(btCharacter *self)
 {
     qDebug() << "Parallel Execution Started";
@@ -18,20 +23,21 @@ bool btParallelNode::run(btCharacter *self)
         qDebug() << "First worker";
         w->setSelf(self);
         w->start();
-        //((Enemy*)self)->finished.wakeAll();
+
     }
+
     foreach(Worker* w,workers){
         w->wait();
         qDebug() << "thread stopped";
     }
-
+qDebug("parallel done");
     return decide();
 }
 
 void btParallelNode::appendingChild(int index)
 {
     qDebug() << "append worker";
-    Worker *w = new Worker(parentNode()->child(index));
+    Worker *w = new Worker(parentNode()->child(index),this);
     workers.insert(index,w);
 }
 
@@ -54,3 +60,4 @@ bool btParallelNode::decide()
     }
     return true;
 }
+

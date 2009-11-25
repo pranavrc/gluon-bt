@@ -23,6 +23,7 @@ Agent::Agent(Game* game)
 Agent::Agent(Game* game,QPoint pos)
         :GameItem(game)
 {
+    dir = Up;
     this->game->addItem(this);
     QObject::connect(timer, SIGNAL(finished()),
                      this, SLOT(sayHello()));
@@ -31,11 +32,6 @@ Agent::Agent(Game* game,QPoint pos)
     this->setBrush(QBrush(QColor(Qt::green)));
     this->setSquare(pos.x(),pos.y());
     this->returnValue = true;
-    /*if(move(Right)){
-        this->goRight();
-    }else{
-        this->goLeft();
-    }*/
 }
 
 void Agent::unlock()
@@ -70,49 +66,7 @@ void Agent::sayHello()
         }
     }
 
-    /*if(move(dir)){
-        possibleMove.append(dir);
-        count++;
-    }*/
-
-
-    /*qrand();
-
-    int r = 0;
-    if(count == 3){
-        r = qrand() % 3;
-    }
-    else if(count == 2){
-        r = qrand() % 2;
-    }
-
-    if(count == 0){
-        return;
-    }*/
-
-    /*//qDebug() << possibleMove;
-
-    //qDebug() << "random: " << r;
-
-    int c = possibleMove.at(r);
-    //qDebug() << "choose: " << c;
-    //int c = 0;
-
-    switch(c){
-        case Up:
-            goUp();
-            break;
-        case Down:
-            goDown();
-            break;
-        case Left:
-            goLeft();
-            break;
-        case Right:
-            goRight();
-            break;
-    }*/
-    qDebug() << "callback";
+    //qDebug() << "callback";
     if(count >= 1){
         returnValue = true;
         mutex->unlock();
@@ -120,15 +74,48 @@ void Agent::sayHello()
     }
 }
 
-GameItem::Direction Agent::choose()
-{
-    return Down;
-}
 
 void Agent::setSquare(int x,int y){
     square.setX(x);
     square.setY(y);
     setPos((x * 20)+ 10,(y * 20) +10);
     this->game->board[square.x()][square.y()]->occupant = this;
-    //this->goDown();
 }
+
+bool Agent::forward()
+{
+    if(dir == Up){ return goUp(); }
+    if(dir == Down){ return goDown(); }
+    if(dir == Left){ return goLeft(); }
+    if(dir == Right){ return goRight(); }
+}
+
+bool Agent::back()
+{
+    if(dir == Up){ return goDown(); }
+    if(dir == Down){ return goUp(); }
+    if(dir == Left){ return goRight(); }
+    if(dir == Right){ return goLeft(); }
+}
+
+bool Agent::relativeLeft()
+{
+    if(dir == Up){ return goLeft(); }
+    if(dir == Down){ return goRight(); }
+    if(dir == Left){ return goDown(); }
+    if(dir == Right){ return goUp(); }
+}
+
+bool Agent::relativeRight()
+{
+    if(dir == Up){ return goRight(); }
+    if(dir == Down){ return goLeft(); }
+    if(dir == Left){ return goUp(); }
+    if(dir == Right){ return goDown(); }
+}
+
+bool Agent::stopMove()
+{
+    animation->clear();
+}
+

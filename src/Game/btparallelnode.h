@@ -13,6 +13,8 @@ class btParallelNode : public btNodeType
 {
     Q_OBJECT
     
+public Q_SLOTS:
+    void workerDone();
 public:
     Q_INVOKABLE btParallelNode();
     bool run(btCharacter *self);
@@ -20,7 +22,6 @@ public:
     void removingChild(int index);
     void childrenAdded();
     virtual bool decide();
-private:
     QList<Worker*> workers;
 };
 

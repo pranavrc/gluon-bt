@@ -19,12 +19,25 @@ Q_SIGNALS:
     void goLeftSignal();
     void goRightSignal();
 
+    void stopMoveSignal();
+    void forwardSignal();
+    void backSignal();
+    void relativeLeftSignal();
+    void relativeRightSignal();
+
 public:
     bool start();
     bool goUp();
     bool goDown();
     bool goLeft();
     bool goRight();
+
+    bool forward();
+    bool back();
+    bool relativeLeft();
+    bool relativeRight();
+
+    bool stopMove();
     QWaitCondition finished;
     QMutex mutex;
     Agent* target;

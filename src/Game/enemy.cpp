@@ -23,6 +23,16 @@ Enemy::Enemy(Agent *target,btNode* tree)
                      this->target, SLOT(goLeft()));
     QObject::connect(this, SIGNAL(goRightSignal()),
                      this->target, SLOT(goRight()));
+        QObject::connect(this, SIGNAL(stopMoveSignal()),
+                     this->target, SLOT(stopMove()));
+    QObject::connect(this, SIGNAL(forwardSignal()),
+                     this->target, SLOT(forward()));
+    QObject::connect(this, SIGNAL(backSignal()),
+                     this->target, SLOT(back()));
+    QObject::connect(this, SIGNAL(relativeLeftSignal()),
+                     this->target, SLOT(relativeLeft()));
+    QObject::connect(this, SIGNAL(relativeRightSignal()),
+                     this->target, SLOT(relativeRight()));
 }
 
 bool Enemy::goDown()
@@ -61,8 +71,34 @@ bool Enemy::goRight()
     return this->target->returnValue;
 }
 
+bool Enemy::stopMove()
+{
+    qDebug("stopMove");
+    emit stopMoveSignal();
+    this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
+}
+
+bool Enemy::forward(){
+    emit forwardSignal();
+}
+
+bool Enemy::back(){
+    emit backSignal();
+}
+
+bool Enemy::relativeLeft(){
+    emit relativeLeftSignal();
+}
+
+bool Enemy::relativeRight(){
+    emit relativeRightSignal();
+}
+
 bool Enemy::start()
 {
     this->tree->runBehavior(this);
+    qDebug("exit enemy");
     return true;
 }

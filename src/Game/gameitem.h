@@ -30,8 +30,8 @@ public:
     void setupAnimation();
     void setAnimationStep(QPoint from, QPoint to,Direction dir);
     QTimeLine *timer;
-    void setDirection(Direction direction);
-    Direction direction() const;
+    void setDirection(Direction direction) { dir = direction; }
+    Direction direction() const { return dir; }
     bool move(Direction dir);
     GameItem* occupant;
     QPoint square;
