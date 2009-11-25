@@ -106,16 +106,24 @@ bool btnodemodel::setData(const QModelIndex &index, const QVariant &value, int r
             {
                 case 0:
                     node->setProperty(newName.toUtf8(),node->property(oldName.toUtf8()));
+                    emit node->emitPropertyChangedSignal(newName, node->property(oldName.toUtf8()));
+                    
                     node->setPropertyDescription(newName, oldName, node->getPropertyDescription(oldName));
+                    emit node->emitPropertyDescriptionChangedSignal(newName, oldName, newName);
+                    
                     node->setProperty(oldName.toUtf8(),QVariant::Invalid);
+                    emit node->emitPropertyChangedSignal(oldName, QVariant::Invalid);
                     break;
                 case 1:
                     node->setProperty(oldName.toUtf8(),newName);
+                    emit node->emitPropertyChangedSignal(oldName, newName);
                     break;
                 case 2:
                     node->setPropertyDescription(oldName, newName);
+                    emit node->emitPropertyDescriptionChangedSignal(oldName, "", newName);
                     break;
             }
+            emit updatePropertyWidget();
             emit dataChanged(index,index);
             return true;
         }
@@ -142,6 +150,9 @@ bool btnodemodel::insertRows(int position, int rows, const QModelIndex &parent)
     node->setProperty((tr("newProperty") + QString::number(position)).toUtf8(), "QString");
     
     endInsertRows();
+    
+    emit node->emitPropertyChangedSignal((tr("newProperty") + QString::number(position)).toUtf8(), "QString");
+    emit updatePropertyWidget();
     emit dataChanged(parent,parent);
     
     return true;
@@ -154,6 +165,10 @@ bool btnodemodel::removeRows(int position, int rows, const QModelIndex &parent)
     if(node->dynamicPropertyNames().count() > position){
         QString propertyName = node->dynamicPropertyNames().at(position);
         node->setProperty(propertyName.toUtf8(),QVariant::Invalid);
+        node->removePropertyDescription(propertyName);
+        emit node->emitPropertyDescriptionChangedSignal("", propertyName, "");
+        emit node->emitPropertyChangedSignal(propertyName, QVariant::Invalid);
+        emit updatePropertyWidget();
     }
     
     endRemoveRows();
@@ -168,6 +183,7 @@ QString btnodemodel::name() const
 void btnodemodel::setName(QString name)
 {
     node->setName(name);
+    node->emitPropertyChangedSignal("name", name);
 }
 
 QString btnodemodel::description() const
@@ -178,6 +194,7 @@ QString btnodemodel::description() const
 void btnodemodel::setDescription(QString description)
 {
     node->setDescription(description);
+    node->emitPropertyChangedSignal("description", description);
 }
 
 QString btnodemodel::classname() const
@@ -188,6 +205,7 @@ QString btnodemodel::classname() const
 void btnodemodel::setClassname(QString classname)
 {
     node->setClassName(classname);
+    node->emitPropertyChangedSignal("className", classname);
 }
 
 #include "btnodemodel.moc"

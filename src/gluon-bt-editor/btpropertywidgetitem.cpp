@@ -21,6 +21,7 @@
 #include <QtGui>
 
 #include "btqvariantlistwidget.h"
+#include "btchildlistwidget.h"
 
 btPropertyWidgetItem::btPropertyWidgetItem(QObject * parent, Qt::WindowFlags f)
 {
@@ -53,24 +54,31 @@ void btPropertyWidgetItem::setupPropertyWidget()
     
     QVariant value = editedObject->property(propertyName.toUtf8());
     
-    switch(value.type())
+    if(value.toString() == "[Child Weights]")
     {
-        case QVariant::String:
-            editWidget = createLineEdit(value);
-            break;
-        case QVariant::Int:
-            editWidget = createSpinBox(value);
-            break;
-        case QVariant::Double:
-            editWidget = createDoubleSpinBox(value);
-            break;
-        case QVariant::List:
-            editWidget = createList(value);
-            break;
-        default:
-            editWidget = new QLabel(this);
-            qobject_cast<QLabel*>(editWidget)->setText(tr("Unknown type (%1)").arg(value.toString()));
-            break;
+        editWidget = createChildProbabilitiesList();
+    }
+    else
+    {
+        switch(value.type())
+        {
+            case QVariant::String:
+                editWidget = createLineEdit(value);
+                break;
+            case QVariant::Int:
+                editWidget = createSpinBox(value);
+                break;
+            case QVariant::Double:
+                editWidget = createDoubleSpinBox(value);
+                break;
+            case QVariant::List:
+                editWidget = createList(value);
+                break;
+            default:
+                editWidget = new QLabel(this);
+                qobject_cast<QLabel*>(editWidget)->setText(tr("Unknown type (%1)").arg(value.toString()));
+                break;
+        }
     }
     
     layout()->addWidget(editWidget);
@@ -212,6 +220,15 @@ QWidget * btPropertyWidgetItem::createList(QVariant value)
 const QString btPropertyWidgetItem::getPropertyType(QString propertyName)
 {
     return "";
+}
+
+QWidget * btPropertyWidgetItem::createChildProbabilitiesList()
+{
+    btChildListWidget* widget = new btChildListWidget(this);
+    
+    widget->setChildProbabilites(editedObject);
+    
+    return widget;
 }
 
 #include "btpropertywidgetitem.moc"

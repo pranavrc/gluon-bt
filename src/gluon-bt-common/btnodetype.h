@@ -55,6 +55,7 @@ public:
     void setPropertyDescription(QString newPropertyName, QString oldPropertyName, QString description);
     void removePropertyDescription(QString propertyName);
     QString getPropertyDescription(QString propertyName);
+    QHash<QString, QString> getPropertyDescriptions();
     
     void setParentNode(btNode* node);
     /**

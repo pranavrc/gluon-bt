@@ -12,7 +12,10 @@ class btEditorNodeType : public btNodeType
 public:
 
 
-    btEditorNodeType();
+    btEditorNodeType(QObject * parent = NULL);
+    
+    void appendingChild(int index);
+    void removingChild(int index);
     
     btEditorNodeType * copy();
     btNodeType::nodeType childType() const;
@@ -22,9 +25,26 @@ public:
     virtual const QString toDataXml();
     
     void initProperties();
+    
+    void disconnectChangeProperty();
+    void connectChangeProperty(btEditorNodeType* sender);
+    
+    void emitPropertyChangedSignal(QString propertyName, QVariant value);
+    void emitPropertyDescriptionChangedSignal(QString propertyName, QString oldPropertyName , QString description);
+
+Q_SIGNALS:
+    void propertyChanged(QString propertyName, QVariant value);
+    void propertyDescriptionChanged(QString propertyName, QString oldPropertyName , QString description);
+    
+public Q_SLOTS:
+    void changeProbability(double value);
+    void changeProperty(QString propertyName, QVariant value);
+    void changePropertyDescription(QString propertyName, QString oldPropertyName , QString description);
+    
 private:
     btNodeType::nodeType m_type;
     btNodeType::nodeType m_childtype;
+    btEditorNodeType* m_sender;
 };
 
 #endif

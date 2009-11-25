@@ -165,16 +165,26 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                 else 
                 {
                     dataType = nodeAttributes.namedItem("value").nodeValue();
-                    dataType.convert((QVariant::Type)typeId);
+                    
+                    if(dataType != "[Child Weights]")
+                        dataType.convert((QVariant::Type)typeId);
                 }
                 
-                nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue().toUtf8(), dataType);
+                if(nodeAttributes.namedItem("name").nodeValue() == "editorProbability")
+                {
+                    nodeType->setProperty("probability", nodeAttributes.namedItem("value").nodeValue().toDouble());
+                }
+                else
+                {
+                    nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue().toUtf8(), dataType);
+                }
                 nodeType->setPropertyDescription(nodeAttributes.namedItem("name").nodeValue().toUtf8(), nodeAttributes.namedItem("description").nodeValue());
                 node->setType(nodeType);
                 continue;
             }
 
             btEditorNode *  newBTNode = new btEditorNode();
+            btEditorNodeType * brainNodeType = NULL;
             
             if(!nodeAttributes.namedItem("nodetype").isNull())
             {
@@ -183,6 +193,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                     if(brain->nodeTypes[k]->className() == nodeAttributes.namedItem("nodetype").nodeValue())
                     {
                         newBTNode->setType(brain->nodeTypes[k]->copy());
+                        brainNodeType = qobject_cast<btEditorNodeType*>(brain->nodeTypes[k]);
                         break;
                     }
                     else if(nodeAttributes.namedItem("nodetype").nodeValue() == "[reference]")
@@ -206,6 +217,8 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
             {
                 parseBehaviorTrees(currentNode, newBTNode, brain);
             }
+            
+            qobject_cast<btEditorNodeType*>(newBTNode->type())->connectChangeProperty(brainNodeType);
 
             if(newBTNode->type()->type() == btEditorNodeType::DecoratorNodeType)
             {
@@ -214,8 +227,8 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                 continue;
             }
             
-            node->appendChild(newBTNode);
             newBTNode->setParentNode(node);
+            node->appendChild(newBTNode);
         }
     }
 }

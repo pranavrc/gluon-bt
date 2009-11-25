@@ -13,6 +13,7 @@ QWidget *btQListDeletgate::createEditor(QWidget *parent, const QStyleOptionViewI
     comboBox->addItem("QString", QVariant("QString"));
     comboBox->addItem("double", QVariant("double"));
     comboBox->addItem("QVariantList", QVariant("QVariantList"));
+    comboBox->addItem("Child Weights", QVariant("Child Weights"));
     comboBox->setCurrentIndex(comboBox->findData(index.data()));
     return comboBox;
 }
@@ -27,8 +28,8 @@ void btQListDeletgate::setEditorData(QWidget *editor, const QModelIndex &index) 
 
 void btQListDeletgate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-    QComboBox *spinBox = static_cast<QComboBox*>(editor);
-    QString value = spinBox->currentText();
+    QComboBox *comboBox = static_cast<QComboBox*>(editor);
+    QString value = comboBox->currentText();
     model->setData(index, value, Qt::EditRole);
 }
 

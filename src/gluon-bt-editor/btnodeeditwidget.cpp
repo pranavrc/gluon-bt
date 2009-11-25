@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QtGui/QValidator>
 #include <QtGui/QItemEditorFactory>
+#include "bttreemodel.h"
 
 #include <QtGui/QLineEdit>
 #include "btqlistdelegate.h"
@@ -67,8 +68,11 @@ void btNodeEditWidget::connectSignals()
     connect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));
 }
 
-void btNodeEditWidget::disconnectSignals()
+void btNodeEditWidget::disconnectSignals(btTreeModel * currentBehaviorTree)
 {
+    if(currentBehaviorTree)
+        connect(model, SIGNAL(updatePropertyWidget()), currentBehaviorTree, SIGNAL(addRemoveBTNode()));
+    
     disconnect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));
 }
 

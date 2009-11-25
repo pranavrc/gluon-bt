@@ -130,7 +130,7 @@ QVariant btTreeModel::data(const QModelIndex &index, int role) const
     if(role == Qt::DisplayRole)
     {
         if(index.column() == 2){
-            return node->type()->description();
+            return node->type()->name();
         }
         return node->data(index.column());
     }
@@ -167,7 +167,8 @@ QVariant btTreeModel::headerData(int section, Qt::Orientation orientation, int r
 {
     Q_UNUSED(orientation);
     if(role == Qt::DisplayRole)
-        m_rootNode->headerData(section);
+        return m_rootNode->headerData(section);
+    
     return QVariant();
 }
 
@@ -282,8 +283,12 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     while (i.hasNext())
     {
         i.next();
-        btNodeType *theNodeType = brain->findNodeTypeByName(i.value())->copy();
+        btEditorNodeType* brainNodeType = qobject_cast<btEditorNodeType*>(brain->findNodeTypeByName(i.value()));
+        btNodeType *theNodeType = brainNodeType->copy();
+        
         ((btEditorNodeType*)theNodeType)->initProperties();
+        ((btEditorNodeType*)theNodeType)->connectChangeProperty(brainNodeType);
+        
         theNodeType->setName(i.key());
         theNodeType->setParent(this);
         theNodeTypes.append(theNodeType);
@@ -313,6 +318,15 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             
             btEditorNode *newChild = new btEditorNode(theNodeType, parentNode);
             newChild->setName(tr("New %1").arg(theNodeType->name()));
+            
+            foreach(const QString &name, parentNode->type()->dynamicPropertyNames())
+            {
+                if(parentNode->type()->property(name.toUtf8()) == "[Child Weights]")
+                {
+                    emit addRemoveBTNode();
+                    break;
+                }
+            }
         }
     }
     

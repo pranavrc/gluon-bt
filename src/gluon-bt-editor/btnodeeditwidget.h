@@ -12,6 +12,7 @@
 class btnodemodel;
 class btNodeTypesModelNode;
 class btQListDeletgate;
+class btTreeModel;
 
 
 class btNodeEditWidget : public QWidget
@@ -25,7 +26,7 @@ public:
     void setModel(btnodemodel* btmodel);
     void setSelectedNode(btNodeTypesModelNode* selectedNode);
     void connectSignals();
-    void disconnectSignals();
+    void disconnectSignals(btTreeModel * currentBehaviorTree);
 private:
     QVBoxLayout     *mainLayout;
     QHBoxLayout     *buttonLayout;

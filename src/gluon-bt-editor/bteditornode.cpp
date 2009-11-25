@@ -108,11 +108,28 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
                 
                 properties += projectParser::instance()->writeIndents() + "</property>";
             }
-            else 
+            else
             {
-                qDebug() << value;
+                if(value.toString() == "[Child Weights]")
+                {
+                    double totalProbability = 0.0;
+                    
+                    for(int i = 0; i < this->childCount(); i++)
+                    {
+                        totalProbability += this->child(i)->type()->property("probability").toDouble();
+                    }
+                    
+                    for(int i = 0; i < this->childCount(); i++)
+                    {
+                        double prob =  this->child(i)->type()->property("probability").toDouble();
+                        this->child(i)->type()->setProperty("probability", (prob/totalProbability));
+                        this->child(i)->type()->setProperty("editorProbability", prob);
+                    }
+                }
+                    
                 properties +=  value.toString();
                 properties += "\" />";
+                
             }
         }
     }
@@ -126,6 +143,7 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
     {
         children += qobject_cast<btEditorNode*>(this->child(i))->toXml(behaviorTrees);
     }
+    
     projectParser::instance()->decreaseIndents();
     
     return startTag + properties + children + endTag;
