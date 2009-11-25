@@ -289,8 +289,13 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
 
 void bteditor::on_availableNodes_customContextMenuRequested(QPoint pos)
 {
-    if(availableNodes->indexAt(pos).isValid()){
-        treeContextMenu->exec(availableNodes->viewport()->mapToGlobal(pos));
+    if(availableNodes->indexAt(pos).isValid())
+    {
+        btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
+        if(selectedNode->nodeType()->className() != "[selector]" && selectedNode->nodeType()->className() != "[sequence]")
+        {
+            treeContextMenu->exec(availableNodes->viewport()->mapToGlobal(pos));
+        }
     }
 }
 
@@ -298,8 +303,43 @@ void bteditor::menuDeleteNodeTriggered()
 {
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
-    if(selectedNode->parent() != 0){
-        m_brain->removeNodeType(selectedNode->row());
+    bool showOtherTree = false;
+    if(selectedNode->parent() != 0)
+    {
+        if(selectedNode->nodeType()->type() == btNodeType::ReferenceNodeType)
+        {
+            if(m_brain->behaviorTrees.count() > 1)
+            {
+                btEditorNodeType* refNode = m_brain->findNodeTypeByName(selectedNode->nodeType()->name());
+                for(int i = 0; i < m_brain->behaviorTrees.count(); i++)
+                {
+                    if(refNode->name() == m_brain->behaviorTrees[i]->name())
+                    {
+                        if(m_brain->behaviorTrees[i] == m_currentBehaviorTree)
+                        {
+                            if(i == 0)
+                            {
+                                showBehaviorTree(m_brain->behaviorTrees[1]);
+                            }
+                            else 
+                            {
+                                showBehaviorTree(m_brain->behaviorTrees[0]);
+                            }
+
+                        }
+                        
+                        m_brain->deleteBehaviorTree(m_brain->behaviorTrees[i]);
+                        break;
+                    }
+                }
+                
+                m_brain->removeNodeType(selectedNode->nodeType() ,selectedNode->row());
+            }
+        }
+        else 
+        {
+            m_brain->removeNodeType(selectedNode->nodeType() ,selectedNode->row());
+        }
     }
 }
 

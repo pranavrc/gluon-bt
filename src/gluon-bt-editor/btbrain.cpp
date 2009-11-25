@@ -81,6 +81,7 @@ btTreeModel *btBrain::newBehaviorTree(){
 void btBrain::deleteBehaviorTree(btTreeModel *behaviorTree)
 {
     behaviorTrees.removeAll(behaviorTree);
+    delete behaviorTree;
 }
 
 void btBrain::setName(QString name) { m_name = name; }
@@ -99,9 +100,9 @@ void btBrain::addNodeType(btEditorNodeType* newNodeType)
     //emit nodeTypeAdded(newNodeType);
 }
 
-void btBrain::removeNodeType(int row)
+void btBrain::removeNodeType(btEditorNodeType* nodeType, int row)
 {
-    nodeTypes.removeAt(row);
+    nodeTypes.removeAll(nodeType);
     emit nodeTypeDeleted(row);
 }
 
