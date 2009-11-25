@@ -2,11 +2,13 @@
 #define AGENT_H
 
 #include <QObject>
-#include "game.h"
+//#include "game.h"
 #include "gameitem.h"
 #include "btlib.h"
 #include <QThread>
 #include <QtCore>
+
+class Game;
 
 class Agent : public GameItem
 {

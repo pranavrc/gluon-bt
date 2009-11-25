@@ -35,6 +35,7 @@ public:
     bool move(Direction dir);
     GameItem* occupant;
     QPoint square;
+        Game* game;
 protected:
     QPolygonF myPolygon;
     bool blocking;
@@ -45,7 +46,7 @@ public Q_SLOTS:
     void animationDone();
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    Game* game;
+
 };
 
 #endif // GAMEITEM_H

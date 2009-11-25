@@ -1,4 +1,5 @@
 #include "agent.h"
+#include "game.h"
 #include <QDebug>
 #include <QDateTime>
 #include "btlib.h"

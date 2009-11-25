@@ -33,6 +33,8 @@ Enemy::Enemy(Agent *target,btNode* tree)
                      this->target, SLOT(relativeLeft()));
     QObject::connect(this, SIGNAL(relativeRightSignal()),
                      this->target, SLOT(relativeRight()));
+    QObject::connect(this, SIGNAL(moveCloserSignal()),
+                     this->target, SLOT(moveCloser()));
 }
 
 bool Enemy::goDown()
@@ -82,19 +84,32 @@ bool Enemy::stopMove()
 
 bool Enemy::forward(){
     emit forwardSignal();
+        this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
 }
 
 bool Enemy::back(){
     emit backSignal();
+        this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
 }
 
 bool Enemy::relativeLeft(){
     emit relativeLeftSignal();
+        this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
 }
 
 bool Enemy::relativeRight(){
     emit relativeRightSignal();
+        this->mutex.lock();
+    this->finished.wait(&(this->mutex));
+    return this->target->returnValue;
 }
+
 
 bool Enemy::start()
 {

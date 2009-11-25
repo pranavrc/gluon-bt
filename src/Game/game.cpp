@@ -56,8 +56,8 @@ Game::Game()
         this->addLine((float)(i * 20),0.0,(float)(i * 20),300.0,QPen(QColor(Qt::gray)));
         this->addLine(0.0,(float)(i * 20),300.0,(float)(i * 20),QPen(QColor(Qt::gray)));
     }
-    marker = new GameItem(this);
-    marker->setPos(10.0,10.0);
+    marker = new Agent(this,QPoint(0,14));//new GameItem(this);
+    //marker->setPos(10.0,10.0);
     marker->setBrush(Qt::yellow);
     marker->setZValue(5);
     this->addItem(marker);
@@ -74,18 +74,18 @@ Game::Game()
     file.close();
 
     btBrain *brain = new btBrain(fileContents);
-    Agent *agent = new Agent(this,QPoint(14,14));
+    agent = new Agent(this,QPoint(14,0));
     Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
 
    // brain->getBehaviorTree(0)->runBehavior(enemy);
 
-   // Agent *agent2 = new Agent(this,QPoint(14,14));
-   // Enemy *enemy2 = new Enemy(agent2,brain->getBehaviorTree(1));
+    //Agent *agent2 = new Agent(this,QPoint(14,14));
+    Enemy *enemy2 = new Enemy(marker,brain->getBehaviorTree(2));
 
     Runner *runner = new Runner(enemy);
     runner->start();
-   // Runner *runner2 = new Runner(enemy2);
-   // runner2->start();
+    Runner *runner2 = new Runner(enemy2);
+    runner2->start();
 }
 
 void Game::reset()
