@@ -21,6 +21,8 @@
 
 bteditor::bteditor(QWidget *parent)
 {
+    m_currentBehaviorTree = NULL;
+    
     setupUi(this);
     propertyWidget = new btPropertyWidget(this);
     propertyScrollArea->setWidget(propertyWidget);
