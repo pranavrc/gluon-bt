@@ -12,7 +12,7 @@ class btQVariantListWidget : public QWidget
 {
     Q_OBJECT
 public:
-    btQVariantListWidget(bool readOnly, QWidget * parent = 0);
+    btQVariantListWidget(bool enabled, QWidget * parent = 0);
     ~btQVariantListWidget();
     void setupActions();
     void addItem(QListWidgetItem * item);

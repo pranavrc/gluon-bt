@@ -16,7 +16,7 @@ btChildListWidget::~btChildListWidget()
 {
 }
 
-void btChildListWidget::setChildProbabilites(QObject* object, bool readOnly)
+void btChildListWidget::setChildProbabilites(QObject* object, bool enabled)
 {
     btEditorNodeType * nodeType = qobject_cast<btEditorNodeType*>(object);
     btNode* node = qobject_cast<btNode*>(nodeType->parentNode());
@@ -29,7 +29,7 @@ void btChildListWidget::setChildProbabilites(QObject* object, bool readOnly)
         QDoubleSpinBox * prob = new QDoubleSpinBox(this);
         prob->setRange(0.0, 1.0);
         prob->setSingleStep(0.01);
-        prob->setReadOnly(readOnly);
+        prob->setEnabled(enabled);
         
         if(!node->child(i)->type()->property("probability").isValid())
         {
