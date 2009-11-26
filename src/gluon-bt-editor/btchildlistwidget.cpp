@@ -21,6 +21,11 @@ void btChildListWidget::setChildProbabilites(QObject* object, bool enabled)
     btEditorNodeType * nodeType = qobject_cast<btEditorNodeType*>(object);
     btNode* node = qobject_cast<btNode*>(nodeType->parentNode());
     
+    if(!nodeType->property("probabilities").isValid())
+    {
+        nodeType->setProperty("probabilities", QVariant::List);
+    }
+    
     for (int i = 0; i < node->childCount(); i++) 
     {        
         QLabel * nodeName = new QLabel(this);
@@ -31,16 +36,19 @@ void btChildListWidget::setChildProbabilites(QObject* object, bool enabled)
         prob->setSingleStep(0.01);
         prob->setEnabled(enabled);
         
-        if(!node->child(i)->type()->property("probability").isValid())
+        QVariantList probList = nodeType->property("probabilities").toList();
+        if(i > probList.count()-1)
         {
-            node->child(i)->type()->setProperty("probability", 0.0);
+            probList.append(0.5);
+            nodeType->setProperty("probabilities", probList);
+            prob->setValue(0.5);
+        }
+        else
+        {
+            prob->setValue(probList[i].toDouble());
         }
         
-        prob->setValue(node->child(i)->type()->property("probability").toDouble());
-        
-        btEditorNodeType* editorNodeType = qobject_cast<btEditorNodeType*>(node->child(i)->type());
-        
-        connect(prob, SIGNAL(valueChanged(double)), editorNodeType, SLOT(changeProbability(double)));
+        connect(prob, SIGNAL(valueChanged(double)), node->child(i)->type(), SLOT(changeProbability(double)));
         
         childLayout->addWidget(nodeName);
         childLayout->addWidget(prob);

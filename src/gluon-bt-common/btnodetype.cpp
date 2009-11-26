@@ -63,9 +63,7 @@ btNode* btNodeType::parentNode()
 
 void btNodeType::setPropertyDescription(QString propertyName, QString description)
 {
-    qDebug() << m_propertiesDescriptions[propertyName];
     m_propertiesDescriptions[propertyName] = description;
-        qDebug() << m_propertiesDescriptions[propertyName];
 }
 
 QString btNodeType::getPropertyDescription(QString propertyName)

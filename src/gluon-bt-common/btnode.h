@@ -30,8 +30,9 @@ public:
     virtual void doneParsingChildren();
 	
 	virtual btNode *child(int row);
+    virtual QList<btNode*> children();
 	virtual int childCount() const;
-	virtual btNode *parent();
+	virtual btNode *parentNode();
     virtual void setParentNode(btNode * node);
     
     
@@ -53,7 +54,7 @@ public:
 private:
 	btNodeType *m_type;
 	
-	btNode *parentNode;
+	btNode *m_parent;
     QList<btNode *> m_children;
 	
 	QString m_name;

@@ -14,7 +14,7 @@ btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
         m_type->setParentNode(this);
     }
     
-    this->parentNode = parent;
+    this->m_parent = parent;
     if(parent)
     {
 		parent->appendChild(this);
@@ -31,7 +31,6 @@ bool btNode::runBehavior(btCharacter* self)
 {    
     for (int i = 0; i < m_decorators.size(); i++)
     {
-        qDebug() << m_decorators[i]->className();
         if (!m_decorators[i]->run(self))
         {
             return false;
@@ -74,9 +73,9 @@ int btNode::childCount() const
     return m_children.count();
 }
 
-btNode *btNode::parent()
+btNode *btNode::parentNode()
 {
-	return parentNode;
+	return m_parent;
 }
 
 void btNode::setName(QString name) { m_name = name; }
@@ -110,7 +109,7 @@ QList<btNodeType*> btNode::decorators() const { return m_decorators; }
 
 void btNode::setParentNode(btNode* node)
 {    
-    parentNode = node;
+    m_parent = node;
     this->setParent(node);
 }
 
@@ -138,8 +137,8 @@ int btNode::columnCount() const
 
 int btNode::row() const
 {
-	if(parentNode)
-        return parentNode->m_children.indexOf(const_cast<btNode*>(this));
+	if(m_parent)
+        return m_parent->m_children.indexOf(const_cast<btNode*>(this));
 	
 	return 0;
 }
@@ -147,7 +146,13 @@ int btNode::row() const
 void btNode::insertChild(int pos, btNode* child)
 {
     m_children.insert(pos, child);
+    m_type->appendingChild(pos);
     child->setParentNode(this);
+}
+
+QList<btNode*> btNode::children()
+{
+    return m_children;
 }
 
 #include "btnode.moc"

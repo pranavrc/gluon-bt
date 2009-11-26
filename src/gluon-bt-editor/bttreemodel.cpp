@@ -253,7 +253,20 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
                 }
                 else
                 {
+                    foreach(const QString &name, parentNode->type()->dynamicPropertyNames())
+                    {
+                        if(parentNode->type()->property(name.toUtf8()) == "[Child Weights]")
+                        {
+                            if(parentNode->children().indexOf(node) > -1)
+                            {
+                                QVariantList list = parentNode->type()->property("probabilities").toList();
+                                node->type()->setProperty("probability", list[parentNode->children().indexOf(node)].toDouble());
+                            }
+                            break;
+                        }
+                    }
                     parentNode->removeChild(node);
+                    
                 }
                 
                 parentNode->insertChild(row, node);
