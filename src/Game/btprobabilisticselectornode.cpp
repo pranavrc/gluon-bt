@@ -29,6 +29,7 @@ bool btProbSelectorNode::run(btCharacter *self)
                 if(intStart < randNum && randNum <= (node->wp + intStart)){
                    qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
                    if(stopFlag()){  // måske kan man gøre det til en del af runBehavior ?
+                       setStopFlag(false);
                        return false;
                    }
                     if(parentNode()->child(inc)->runBehavior(self)){
@@ -59,6 +60,7 @@ bool btProbSelectorNode::run(btCharacter *self)
 void btProbSelectorNode::appendingChild(int index)
 {
     StatNode *newNode = new StatNode();
+    //property(""
     probStats.insert(index,newNode);
 }
 

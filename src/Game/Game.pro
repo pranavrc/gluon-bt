@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     actions/movecloserupdown.cpp \
     actions/movecloserleftright.cpp \
     actions/moveawayupdown.cpp \
-    actions/moveawayleftright.cpp
+    actions/moveawayleftright.cpp \
+    actions/iscollided.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -55,7 +56,8 @@ HEADERS += mainwindow.h \
     actions/movecloserupdown.h \
     actions/movecloserleftright.h \
     actions/moveawayupdown.h \
-    actions/moveawayleftright.h
+    actions/moveawayleftright.h \
+    actions/iscollided.h
 INCLUDEPATH += c:/repo/gluon-bt/src/gluon-bt-lib \
     c:/repo/gluon-bt/src/gluon-bt-common
 LIBS += c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/libbtlib.dll
