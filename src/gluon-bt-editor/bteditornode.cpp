@@ -88,6 +88,10 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
         for(int i = 0; i < nodeType->dynamicPropertyNames().count(); i++)
         {
             QString propertyName(nodeType->dynamicPropertyNames().at(i));
+            
+            //if(propertyName == "probabilities")
+              //  continue;
+            
             properties += projectParser::instance()->writeIndents();
             properties += "<property name=\"" + propertyName + "\" value=\"";
             
@@ -96,37 +100,41 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
             if(value.type() == QVariant::List)
             {
                 properties += "\">";
-                
                 QVariantList list = qvariant_cast<QVariantList>(value);
-                
                 projectParser::instance()->increaseIndents();
-                foreach(const QVariant &v, list)
+                
+                if(propertyName == "probabilities")
                 {
-                    properties += projectParser::instance()->writeIndents() + "<item value=\"" + v.toString() + "\"/>";
+                    double totalProbability = 0.0;
+                    
+                    for(int i = 0; i < list.count(); i++)
+                    {
+                        totalProbability += list[i].toDouble();
+                    }
+                    
+                    for(int i = 0; i < list.count(); i++)
+                    {
+                        double prob =  list[i].toDouble();
+                        properties += projectParser::instance()->writeIndents() + "<item value=\"" + QVariant((prob/totalProbability)).toString() + "\" ";
+                        properties += "editorvalue=\"" + QVariant(prob).toString() +"\" />";
+                    }
+                }
+                else
+                {
+                
+                    foreach(const QVariant &v, list)
+                    {
+                        properties += projectParser::instance()->writeIndents() + "<item value=\"" + v.toString() + "\"/>";
+                    }
+                    
                 }
                 projectParser::instance()->decreaseIndents();
                 
                 properties += projectParser::instance()->writeIndents() + "</property>";
+                
             }
             else
-            {
-                if(value.toString() == "[Child Weights]")
-                {
-                    double totalProbability = 0.0;
-                    
-                    for(int i = 0; i < this->childCount(); i++)
-                    {
-                        totalProbability += this->child(i)->type()->property("probability").toDouble();
-                    }
-                    
-                    for(int i = 0; i < this->childCount(); i++)
-                    {
-                        double prob =  this->child(i)->type()->property("probability").toDouble();
-                        this->child(i)->type()->setProperty("probability", (prob/totalProbability));
-                        this->child(i)->type()->setProperty("editorProbability", prob);
-                    }
-                }
-                    
+            {                    
                 properties +=  value.toString();
                 properties += "\" />";
                 
@@ -137,7 +145,6 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
     for(int i = 0; i < this->decoratorCount(); i++)
     {
         children += qobject_cast<btEditorNodeType*>( this->decorators().at(i))->toDataXml();
-        qDebug() << children;
     }
     for(int i = 0; i < this->childCount(); i++)
     {

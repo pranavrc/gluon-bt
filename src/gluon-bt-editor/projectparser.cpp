@@ -130,7 +130,7 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
         else
         {
             if(currentNode.nodeName() == "property")
-            {
+            {                    
                 btNodeType* nodeType = node->type()->copy();
                 if(nodeAttributes.namedItem("name").nodeValue() == "reference")
                 {
@@ -150,34 +150,49 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                 QVariant dataType;
                 
                 if(typeId == QVariant::List)
-                {
+                {                    
                     QVariantList list =  qvariant_cast<QVariantList>(QVariant((QVariant::Type)typeId));
                     
                     for(int i = 0; i < currentNode.childNodes().count(); i++)
                     {
                         QDomNamedNodeMap attributes = currentNode.childNodes().at(i).attributes();
+                                                   
                         if(!attributes.namedItem("value").isNull())
-                            list.append(attributes.namedItem("value").nodeValue());
+                                list.append(attributes.namedItem("value").nodeValue());
                     }
                     
                     dataType = list;
                 }
                 else 
                 {
-                    dataType = nodeAttributes.namedItem("value").nodeValue();
-                    
-                    if(dataType != "[Child Weights]")
-                        dataType.convert((QVariant::Type)typeId);
+                    if(currentNode.attributes().namedItem("name").nodeValue() == "probabilities")
+                    {
+                        QVariantList list;
+                        
+                        if(currentNode.hasChildNodes())
+                        {
+                            for(int i = 0; i < currentNode.childNodes().count(); i++)
+                            {
+                                QDomNamedNodeMap attributes = currentNode.childNodes().at(i).attributes();
+                                
+                                if(!attributes.namedItem("editorvalue").isNull())
+                                    list.append(attributes.namedItem("editorvalue").nodeValue().toDouble());
+                            }
+                        }
+                        
+                        dataType = list;
+                    }
+                    else 
+                    {
+                        dataType = nodeAttributes.namedItem("value").nodeValue();
+                        
+                        if(dataType != "[Child Weights]")
+                            dataType.convert((QVariant::Type)typeId);
+                    }
                 }
                 
-                if(nodeAttributes.namedItem("name").nodeValue() == "editorProbability")
-                {
-                    nodeType->setProperty("probability", nodeAttributes.namedItem("value").nodeValue().toDouble());
-                }
-                else
-                {
-                    nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue().toUtf8(), dataType);
-                }
+                
+                nodeType->setProperty(nodeAttributes.namedItem("name").nodeValue().toUtf8(), dataType);
                 nodeType->setPropertyDescription(nodeAttributes.namedItem("name").nodeValue().toUtf8(), nodeAttributes.namedItem("description").nodeValue());
                 node->setType(nodeType);
                 continue;

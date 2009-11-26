@@ -23,7 +23,7 @@ void btQListDeletgate::setEditorData(QWidget *editor, const QModelIndex &index) 
     QString value = index.model()->data(index, Qt::EditRole).toString();
     
     QComboBox *comboBox = static_cast<QComboBox*>(editor);
-    comboBox->setCurrentIndex(comboBox->findData(value));
+    comboBox->setCurrentIndex(comboBox->findText(value));//comboBox->findData(value));
 }
 
 void btQListDeletgate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const

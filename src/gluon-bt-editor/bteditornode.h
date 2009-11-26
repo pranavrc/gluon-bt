@@ -15,7 +15,7 @@ public:
     
     btEditorNode(btNodeType *type = 0, btNode *parent = 0);
     
-    const QString toXml(QList<btTreeModel *> behaviorTrees);  
+    const QString toXml(QList<btTreeModel *> behaviorTrees);
     
     QVariant data(int column) const;
     QVariant headerData(int column) const;

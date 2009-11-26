@@ -166,30 +166,39 @@ void btEditorNodeType::initProperties()
 
 void btEditorNodeType::appendingChild(int index)
 {
-    if(!this->parentNode())
-        return;
-    
     foreach(const QString &name, this->dynamicPropertyNames())
     {
-        if(this->property(name.toUtf8()) == "[Child Weights]" && !this->parentNode()->child(index)->type()->property("probability").isValid())
+        if(this->property(name.toUtf8()) == "[Child Weights]" && this->parentNode()->child(index)->type()->property("probability").isValid())
         {
-            qDebug() << this->parentNode()->child(index)->type()->property("probability");
-            this->parentNode()->child(index)->type()->setProperty("probability", 0.5);
+            QVariantList list = this->property("probabilities").toList();
+            list.insert(index, this->parentNode()->child(index)->type()->property("probability").toDouble());
+            this->setProperty("probabilities", list);
+            this->parentNode()->child(index)->type()->setProperty("probability", QVariant::Invalid);
             break;
         }
     }
+    
+    this->parentNode()->child(index)->type()->setProperty("probability", QVariant::Invalid);
 }
 
 void btEditorNodeType::removingChild(int index)
 {
     btEditorNodeType * childNodeType = qobject_cast<btEditorNodeType*>(this->parentNode()->child(index)->type());
-    childNodeType->setProperty("probability", QVariant());
     childNodeType->disconnectChangeProperty();
+    
+    if(this->property("probabilities").isValid())
+    {
+        QVariantList list = this->property("probabilities").toList();
+        list.removeAt(index);
+        this->setProperty("probabilities", list);
+    }
 }
 
 void btEditorNodeType::changeProbability(double value)
 {
-    this->setProperty("probability", value);
+    QVariantList list = this->parentNode()->parentNode()->type()->property("probabilities").toList();
+    list[this->parentNode()->parentNode()->children().indexOf(this->parentNode())] = value;
+    this->parentNode()->parentNode()->type()->setProperty("probabilities", list);
 }
 
 void btEditorNodeType::changeProperty(QString propertyName, QVariant value)
@@ -211,7 +220,6 @@ void btEditorNodeType::changeProperty(QString propertyName, QVariant value)
             dataType = QVariant(QVariant::List);
             break;
         default:
-            qDebug() << value;
             if(value.toString() == "Child Weights")
             {
                 dataType = "[Child Weights]";
@@ -249,7 +257,6 @@ void btEditorNodeType::emitPropertyDescriptionChangedSignal(QString propertyName
 
 void btEditorNodeType::changePropertyDescription(QString propertyName, QString oldPropertyName , QString description)
 {
-    qDebug() << propertyName << " " << oldPropertyName << " " << description;
     if(propertyName == "" && description == "")
     {
         removePropertyDescription(oldPropertyName);

@@ -303,7 +303,6 @@ void bteditor::menuDeleteNodeTriggered()
 {
     btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
     ///fixme ->parent()->parent() should be NULL not ->parent() change when crash
-    bool showOtherTree = false;
     if(selectedNode->parent() != 0)
     {
         if(selectedNode->nodeType()->type() == btNodeType::ReferenceNodeType)

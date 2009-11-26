@@ -75,7 +75,7 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
     {
         QMetaProperty metaproperty = metaobject->property(i);
         propertyName = metaproperty.name();
-        if(propertyName == "objectName")
+        if(propertyName == "objectName" || propertyName == "stopFlag")
             continue;
         
         propertyValue = object->property(propertyName.toUtf8());
@@ -85,7 +85,7 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
     
     foreach(QByteArray name, object->dynamicPropertyNames())
     {
-        if(name == "probability")
+        if(name == "probabilities")
             continue;
         
         propertyName = QString(name);
