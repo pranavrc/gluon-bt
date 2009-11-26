@@ -5,6 +5,7 @@
 #include "btbrain.h"
 #include "btselectornode.h"
 #include "btsequencenode.h"
+#include "btglobal.h"
 
 #include <QtCore/QDebug>
 
@@ -112,6 +113,8 @@ void btFactory::initNodeType(QDomNode xmlNode)
 
 void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     if(xNode.attributes().namedItem("name").nodeValue() == "reference")
     {
         node->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
@@ -144,27 +147,24 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
         
         dataType = list;
     }
-    else
+    else if(typeId == QMetaType::type("btChildWeights"))
     {
-        if(xNode.attributes().namedItem("name").nodeValue() == "probabilities")
+        QVariantList list;
+        
+        for(int i = 0; i < xNode.childNodes().count(); i++)
         {
-            QVariantList list;
-            
-            for(int i = 0; i < xNode.childNodes().count(); i++)
-            {
-                QDomNamedNodeMap attributes = xNode.childNodes().at(i).attributes();
-                if(!attributes.namedItem("value").isNull())
-                    list.append(attributes.namedItem("value").nodeValue().toDouble());
-            }
-            
-            dataType = list;
+            QDomNamedNodeMap attributes = xNode.childNodes().at(i).attributes();
+            if(!attributes.namedItem("value").isNull())
+                list.append(attributes.namedItem("value").nodeValue().toDouble());
         }
-        else 
-        {
-            dataType = xNode.attributes().namedItem("value").nodeValue();
-            dataType.convert((QVariant::Type)typeId);
-        }
-    }    
+        
+        dataType = list;
+    }
+    else 
+    {
+        dataType = xNode.attributes().namedItem("value").nodeValue();
+        dataType.convert((QVariant::Type)typeId);
+    }
     
     nodeType->setProperty(xNode.attributes().namedItem("name").nodeValue().toUtf8(), dataType);
     

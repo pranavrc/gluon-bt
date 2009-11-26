@@ -12,7 +12,7 @@ public:
     btChildListWidget(QWidget * parent = 0);
     ~btChildListWidget();
     
-    void setChildProbabilites(QObject * object, bool enabled);
+    void setChildProbabilites(QString propertyName, QObject * object, bool enabled);
     
 private:
     QVBoxLayout*        childLayout;    

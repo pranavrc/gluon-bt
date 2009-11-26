@@ -5,6 +5,7 @@
 #include "btreferencenode.h"
 #include <QtCore/QDebug>
 #include "btdecoratornode.h"
+#include "btglobal.h"
 
 btEditorNode::btEditorNode(btNodeType *type, btNode *parent) : btNode(type, parent)
 {
@@ -12,6 +13,8 @@ btEditorNode::btEditorNode(btNodeType *type, btNode *parent) : btNode(type, pare
 
 const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
 	QString startTag = projectParser::instance()->writeIndents() + "<behaviornode ";
     QString endTag = projectParser::instance()->writeIndents()+ "</behaviornode>";
     QString properties = "";
@@ -89,9 +92,6 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
         {
             QString propertyName(nodeType->dynamicPropertyNames().at(i));
             
-            //if(propertyName == "probabilities")
-              //  continue;
-            
             properties += projectParser::instance()->writeIndents();
             properties += "<property name=\"" + propertyName + "\" value=\"";
             
@@ -103,35 +103,41 @@ const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
                 QVariantList list = qvariant_cast<QVariantList>(value);
                 projectParser::instance()->increaseIndents();
                 
-                if(propertyName == "probabilities")
+                foreach(const QVariant &v, list)
                 {
-                    double totalProbability = 0.0;
-                    
-                    for(int i = 0; i < list.count(); i++)
-                    {
-                        totalProbability += list[i].toDouble();
-                    }
-                    
-                    for(int i = 0; i < list.count(); i++)
-                    {
-                        double prob =  list[i].toDouble();
-                        properties += projectParser::instance()->writeIndents() + "<item value=\"" + QVariant((prob/totalProbability)).toString() + "\" ";
-                        properties += "editorvalue=\"" + QVariant(prob).toString() +"\" />";
-                    }
+                    properties += projectParser::instance()->writeIndents() + "<item value=\"" + v.toString() + "\"/>";
                 }
-                else
-                {
-                
-                    foreach(const QVariant &v, list)
-                    {
-                        properties += projectParser::instance()->writeIndents() + "<item value=\"" + v.toString() + "\"/>";
-                    }
                     
-                }
                 projectParser::instance()->decreaseIndents();
                 
                 properties += projectParser::instance()->writeIndents() + "</property>";
                 
+            }
+            else if(value.type() == QVariant::UserType)
+            {
+                properties += "\">";
+                
+                double totalProbability = 0.0;
+                
+                btChildWeights list = value.value<btChildWeights>();
+                
+                projectParser::instance()->increaseIndents();
+                
+                foreach(const QVariant &v, list.childWeightList)
+                {
+                    totalProbability += v.toDouble();
+                }
+                
+                foreach(const QVariant &v, list.childWeightList)
+                {
+                    QVariant prob = v.toDouble()/totalProbability;
+                    properties += projectParser::instance()->writeIndents() + "<item value=\"" + prob.toString() + "\"";
+                    properties += " editorvalue=\"" + v.toString()  + "\"/>";
+                }
+                
+                projectParser::instance()->decreaseIndents();
+                
+                properties += projectParser::instance()->writeIndents() + "</property>";
             }
             else
             {                    

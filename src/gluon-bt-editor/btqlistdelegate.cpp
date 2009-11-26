@@ -1,6 +1,9 @@
 #include <QtGui>
 
+#include "btglobal.h"
 #include "btqlistdelegate.h"
+//#include <QMetaType>
+
 btQListDeletgate::btQListDeletgate(QObject *parent)
 : QItemDelegate(parent)
 {
@@ -8,12 +11,14 @@ btQListDeletgate::btQListDeletgate(QObject *parent)
 
 QWidget *btQListDeletgate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     QComboBox *comboBox = new QComboBox(parent);
     comboBox->addItem("int", QVariant("int"));
     comboBox->addItem("QString", QVariant("QString"));
     comboBox->addItem("double", QVariant("double"));
     comboBox->addItem("QVariantList", QVariant("QVariantList"));
-    comboBox->addItem("Child Weights", QVariant("Child Weights"));
+    comboBox->addItem("btChildWeights", QVariant("btChildWeights"));
     comboBox->setCurrentIndex(comboBox->findData(index.data()));
     return comboBox;
 }

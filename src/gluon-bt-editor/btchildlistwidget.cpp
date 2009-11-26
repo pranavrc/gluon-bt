@@ -1,5 +1,6 @@
 #include "btchildlistwidget.h"
 
+#include "btglobal.h"
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QVariant>
@@ -16,16 +17,22 @@ btChildListWidget::~btChildListWidget()
 {
 }
 
-void btChildListWidget::setChildProbabilites(QObject* object, bool enabled)
+void btChildListWidget::setChildProbabilites(QString propertyName ,QObject* object, bool enabled)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     btEditorNodeType * nodeType = qobject_cast<btEditorNodeType*>(object);
     btNode* node = qobject_cast<btNode*>(nodeType->parentNode());
     
-    if(!nodeType->property("probabilities").isValid())
+    if(!nodeType->property(propertyName.toUtf8()).isValid())
     {
-        nodeType->setProperty("probabilities", QVariant::List);
+        btChildWeights cw;
+        QVariant v;
+        v.setValue(cw);
+        nodeType->setProperty(propertyName.toUtf8(), v);
     }
     
+    btChildWeights probList = nodeType->property(propertyName.toUtf8()).value<btChildWeights>();
     for (int i = 0; i < node->childCount(); i++) 
     {        
         QLabel * nodeName = new QLabel(this);
@@ -36,16 +43,14 @@ void btChildListWidget::setChildProbabilites(QObject* object, bool enabled)
         prob->setSingleStep(0.01);
         prob->setEnabled(enabled);
         
-        QVariantList probList = nodeType->property("probabilities").toList();
-        if(i > probList.count()-1)
+        if(i > probList.childWeightList.count()-1)
         {
-            probList.append(0.5);
-            nodeType->setProperty("probabilities", probList);
+            probList.childWeightList.append(0.5);
             prob->setValue(0.5);
         }
         else
         {
-            prob->setValue(probList[i].toDouble());
+            prob->setValue(probList.childWeightList[i].toDouble());
         }
         
         connect(prob, SIGNAL(valueChanged(double)), node->child(i)->type(), SLOT(changeProbability(double)));
@@ -54,6 +59,9 @@ void btChildListWidget::setChildProbabilites(QObject* object, bool enabled)
         childLayout->addWidget(prob);
 
     }
+    QVariant v;
+    v.setValue(probList);
+    nodeType->setProperty(propertyName.toUtf8(), v);
     this->setLayout(childLayout);
 }
 

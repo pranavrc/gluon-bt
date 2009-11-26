@@ -84,10 +84,7 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
     }
     
     foreach(QByteArray name, object->dynamicPropertyNames())
-    {
-        if(name == "probabilities")
-            continue;
-        
+    {        
         propertyName = QString(name);
         propertyValue = object->property(name);
         propertyDescription = getPropertyDescription(object, propertyName);;

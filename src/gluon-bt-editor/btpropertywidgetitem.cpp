@@ -18,6 +18,8 @@
 */
 
 #include "btpropertywidgetitem.h"
+
+#include "btglobal.h"
 #include <QtGui>
 
 #include "btqvariantlistwidget.h"
@@ -49,36 +51,33 @@ void btPropertyWidgetItem::setEditProperty(QString propertyName, bool enabled)
 
 void btPropertyWidgetItem::setupPropertyWidget(bool enabled)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     if(!editedObject)
         return;
     
     QVariant value = editedObject->property(propertyName.toUtf8());
-    
-    if(value.toString() == "[Child Weights]")
+    switch(value.type())
     {
-        editWidget = createChildProbabilitiesList(enabled);
-    }
-    else
-    {
-        switch(value.type())
-        {
-            case QVariant::String:
-                editWidget = createLineEdit(value, enabled);
-                break;
-            case QVariant::Int:
-                editWidget = createSpinBox(value, enabled);
-                break;
-            case QVariant::Double:
-                editWidget = createDoubleSpinBox(value, enabled);
-                break;
-            case QVariant::List:
-                editWidget = createList(value, enabled);
-                break;
-            default:
-                editWidget = new QLabel(this);
-                qobject_cast<QLabel*>(editWidget)->setText(tr("Unknown type (%1)").arg(value.toString()));
-                break;
-        }
+        case QVariant::String:
+            editWidget = createLineEdit(value, enabled);
+            break;
+        case QVariant::Int:
+            editWidget = createSpinBox(value, enabled);
+            break;
+        case QVariant::Double:
+            editWidget = createDoubleSpinBox(value, enabled);
+            break;
+        case QVariant::List:
+            editWidget = createList(value, enabled);
+            break;
+        case QVariant::UserType:
+            editWidget = createChildProbabilitiesList(propertyName, enabled);
+            break;
+        default:
+            editWidget = new QLabel(this);
+            qobject_cast<QLabel*>(editWidget)->setText(tr("Unknown type (%1)").arg(value.toString()));
+            break;
     }
     
     layout()->addWidget(editWidget);
@@ -226,11 +225,11 @@ const QString btPropertyWidgetItem::getPropertyType(QString propertyName)
     return "";
 }
 
-QWidget * btPropertyWidgetItem::createChildProbabilitiesList(bool readOnly)
+QWidget * btPropertyWidgetItem::createChildProbabilitiesList(QString propertyName ,bool enabled)
 {
     btChildListWidget* widget = new btChildListWidget(this);
     
-    widget->setChildProbabilites(editedObject, readOnly);
+    widget->setChildProbabilites(propertyName, editedObject, enabled);
     
     return widget;
 }
