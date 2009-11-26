@@ -54,10 +54,10 @@ private:
     QWidget * createComponentPropertyView();
     
     void setupPropertyView();
-    void appendToPropertyView (QGridLayout *layout, qint32 & row, QObject * name, QString description, QString value, QVariant options = 0);
-    void appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btEditorNode * node);
-    void appendComponentToPropertyView (QGridLayout *layout, qint32 &row, btEditorNodeType * node);
-    void appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object, bool appendingNodeType);
+    void appendToPropertyView (QGridLayout *layout, qint32 & row, QObject * name, QString description, QString value, bool enabled, QVariant options = 0);
+    void appendObjectToPropertyView (QGridLayout * layout, qint32 &row, btEditorNode * node, bool enabled);
+    void appendComponentToPropertyView (QGridLayout *layout, qint32 &row, btEditorNodeType * node, bool enabled);
+    void appendMetaObjectToPropertyView (QGridLayout * layout, qint32 &row, QObject * object, bool enabled);
     QString getPropertyDescription(QObject *object, QString propertyName);
 };
 

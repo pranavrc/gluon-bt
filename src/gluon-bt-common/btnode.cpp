@@ -147,6 +147,7 @@ int btNode::row() const
 void btNode::insertChild(int pos, btNode* child)
 {
     m_children.insert(pos, child);
+    child->setParentNode(this);
 }
 
 #include "btnode.moc"

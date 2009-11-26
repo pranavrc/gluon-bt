@@ -28,7 +28,7 @@ public:
 
     void addBehaviorTree(btTreeModel * newTree);
     void addNodeType(btEditorNodeType * newNodeType);
-    void removeNodeType(int row);
+    void removeNodeType(btEditorNodeType* nodeType ,int row);
 Q_SIGNALS:
     void behaviorTreeAdded(btTreeModel* newTree);
     void nodeTypeAdded(btEditorNodeType* newNodeType);

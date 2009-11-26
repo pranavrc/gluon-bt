@@ -50,7 +50,9 @@ QModelIndex btTreeModel::index(int row, int column, const QModelIndex &parent) c
     
     // Don't allow for the creation of indexes for anything bigger than what exists
     if(row >= parentNode->childCount() || column >= parentNode->columnCount())
+    {
         return QModelIndex();
+    }
     //if(column == 0)
         return createIndex(row, column, parentNode->child(row));
     
@@ -197,9 +199,6 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     if(action == Qt::IgnoreAction)
         return true;
     
-    if(action == Qt::MoveAction)
-        moving = true;
-    
     if(!data->hasFormat("application/bt.nodetype"))
         return false;
     
@@ -215,12 +214,16 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     // We do not allow dropping on Actions and References
     if( parentNode->type()->type() == btNodeType::ActionNodeType    ||
 /*       parentNode->type()->type() == btNodeType::ReferenceNodeType ||*/
-       parentNode->type()->type() == btNodeType::ConditionNodeType ){
+       parentNode->type()->type() == btNodeType::ConditionNodeType )
+    {
+        emit dataChanged(parent, parent);
         return false;
     }
     
     if(action == Qt::MoveAction)
     {   
+        moving = true;
+        
         QByteArray encodedData = data->data("application/bt.nodetype");
         QDataStream stream(&encodedData, QIODevice::ReadOnly);
         btEditorNode * node = NULL;
@@ -240,14 +243,19 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             if(row == -1 && column  == -1)
             {                                                
                 oldParentNode->removeChild(node);
-                
-                beginInsertRows(parent, parentNode->childCount(), parentNode->childCount());
                 parentNode->appendChild(node);
-                endInsertRows();
             }
             else 
             {
-                parentNode->removeChild(node);
+                if(oldParentNode != parentNode)
+                {
+                    oldParentNode->removeChild(node);
+                }
+                else
+                {
+                    parentNode->removeChild(node);
+                }
+                
                 parentNode->insertChild(row, node);
             }
             
@@ -318,6 +326,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             
             btEditorNode *newChild = new btEditorNode(theNodeType, parentNode);
             newChild->setName(tr("New %1").arg(theNodeType->name()));
+            newChild->setDescription(theNodeType->description());
             
             foreach(const QString &name, parentNode->type()->dynamicPropertyNames())
             {
@@ -348,9 +357,9 @@ bool btTreeModel::removeRows(int position, int rows, const QModelIndex &parent)
      if(parentNode == NULL)
          return false;
 
-     beginRemoveRows(parent, position, position+rows-1);
      if(!moving)
      {
+         beginRemoveRows(parent, position, position+rows-1);
          parentNode->removeChild(position);
          endRemoveRows();
          return true;
@@ -358,7 +367,6 @@ bool btTreeModel::removeRows(int position, int rows, const QModelIndex &parent)
      else 
      {
          moving = false;
-         endRemoveRows();
          return false;
      }
  }

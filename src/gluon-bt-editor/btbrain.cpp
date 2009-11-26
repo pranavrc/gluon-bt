@@ -54,6 +54,7 @@ btTreeModel *btBrain::newBehaviorTree(QString treeName)
     // Add a real top level node, which should be a selector as per Alex' defintion of behavior trees
     btEditorNode *topNode = new btEditorNode(this->findNodeTypeByName("Selector"), btRootNode);
     topNode->setName(tr("Top Behavior"));
+    topNode->setDescription(topNode->type()->description());
     
     // Then add it to the list of referenced NodeTypes...
     btReferenceNode *newType = new btReferenceNode();
@@ -80,6 +81,7 @@ btTreeModel *btBrain::newBehaviorTree(){
 void btBrain::deleteBehaviorTree(btTreeModel *behaviorTree)
 {
     behaviorTrees.removeAll(behaviorTree);
+    delete behaviorTree;
 }
 
 void btBrain::setName(QString name) { m_name = name; }
@@ -98,9 +100,9 @@ void btBrain::addNodeType(btEditorNodeType* newNodeType)
     //emit nodeTypeAdded(newNodeType);
 }
 
-void btBrain::removeNodeType(int row)
+void btBrain::removeNodeType(btEditorNodeType* nodeType, int row)
 {
-    nodeTypes.removeAt(row);
+    nodeTypes.removeAll(nodeType);
     emit nodeTypeDeleted(row);
 }
 

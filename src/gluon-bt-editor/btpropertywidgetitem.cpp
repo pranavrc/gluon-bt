@@ -41,13 +41,13 @@ void btPropertyWidgetItem::setEditObject(QObject * editThis)
 }
 
 
-void btPropertyWidgetItem::setEditProperty(QString propertyName)
+void btPropertyWidgetItem::setEditProperty(QString propertyName, bool enabled)
 {
     this->propertyName = propertyName;
-    setupPropertyWidget();
+    setupPropertyWidget(enabled);
 }
 
-void btPropertyWidgetItem::setupPropertyWidget()
+void btPropertyWidgetItem::setupPropertyWidget(bool enabled)
 {
     if(!editedObject)
         return;
@@ -56,23 +56,23 @@ void btPropertyWidgetItem::setupPropertyWidget()
     
     if(value.toString() == "[Child Weights]")
     {
-        editWidget = createChildProbabilitiesList();
+        editWidget = createChildProbabilitiesList(enabled);
     }
     else
     {
         switch(value.type())
         {
             case QVariant::String:
-                editWidget = createLineEdit(value);
+                editWidget = createLineEdit(value, enabled);
                 break;
             case QVariant::Int:
-                editWidget = createSpinBox(value);
+                editWidget = createSpinBox(value, enabled);
                 break;
             case QVariant::Double:
-                editWidget = createDoubleSpinBox(value);
+                editWidget = createDoubleSpinBox(value, enabled);
                 break;
             case QVariant::List:
-                editWidget = createList(value);
+                editWidget = createList(value, enabled);
                 break;
             default:
                 editWidget = new QLabel(this);
@@ -174,31 +174,34 @@ void btPropertyWidgetItem::QVariantListItemChanged(QListWidgetItem * item, int i
     editedObject->setProperty(propertyName.toUtf8(), list);
 }
 
-QWidget * btPropertyWidgetItem::createLineEdit(QVariant value)
+QWidget * btPropertyWidgetItem::createLineEdit(QVariant value, bool enabled)
 {
     QLineEdit * widget = new QLineEdit(this);
     widget->setText(value.toString());
+    widget->setEnabled(enabled);
     connect(widget, SIGNAL(textChanged(QString)), this, SLOT(propertyChanged(QString)));
     return widget;
 }
 
-QWidget * btPropertyWidgetItem::createSpinBox(QVariant value)
+QWidget * btPropertyWidgetItem::createSpinBox(QVariant value, bool enabled)
 {
     QSpinBox * widget = new QSpinBox(this);
     widget->setValue(value.toInt());
+    widget->setEnabled(enabled);
     connect(widget, SIGNAL(valueChanged(int)), this, SLOT(propertyChanged(int)));
     return widget;
 }
 
-QWidget * btPropertyWidgetItem::createDoubleSpinBox(QVariant value)
+QWidget * btPropertyWidgetItem::createDoubleSpinBox(QVariant value, bool enabled)
 {    
     QDoubleSpinBox * widget = new QDoubleSpinBox(this);
     widget->setValue(value.toDouble());
+    widget->setEnabled(enabled);
     connect(widget, SIGNAL(valueChanged(double)), this, SLOT(propertyChanged(double)));
     return widget;
 }
 
-QWidget * btPropertyWidgetItem::createList(QVariant value)
+QWidget * btPropertyWidgetItem::createList(QVariant value, bool enabled)
 {
     btQVariantListWidget * widget = new btQVariantListWidget(this);
     connect(widget, SIGNAL(itemRemoved(QListWidgetItem*, int)), this, SLOT(QVariantListItemRemoved(QListWidgetItem*, int)));
@@ -214,6 +217,7 @@ QWidget * btPropertyWidgetItem::createList(QVariant value)
         widget->addItem(item);
     }
     
+    widget->setEnabled(enabled);
     return widget;
 }
 
@@ -222,11 +226,11 @@ const QString btPropertyWidgetItem::getPropertyType(QString propertyName)
     return "";
 }
 
-QWidget * btPropertyWidgetItem::createChildProbabilitiesList()
+QWidget * btPropertyWidgetItem::createChildProbabilitiesList(bool readOnly)
 {
     btChildListWidget* widget = new btChildListWidget(this);
     
-    widget->setChildProbabilites(editedObject);
+    widget->setChildProbabilites(editedObject, readOnly);
     
     return widget;
 }

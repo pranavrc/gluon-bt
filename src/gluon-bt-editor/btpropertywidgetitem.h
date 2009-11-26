@@ -37,7 +37,7 @@ public:
     ~btPropertyWidgetItem();
     
     void setEditObject(QObject * editThis);
-    void setEditProperty(QString propertyName);
+    void setEditProperty(QString propertyName, bool readOnly);
     
 Q_SIGNALS:
     void sendUpdateTreeModel();
@@ -54,16 +54,16 @@ private Q_SLOTS:
     void QVariantListItemChanged(QListWidgetItem * item, int index);
     
 private:
-    void setupPropertyWidget();
+    void setupPropertyWidget(bool readOnly);
 
     QObject * editedObject;
     QString propertyName;
     
-    QWidget *createLineEdit (QVariant value);
-    QWidget *createSpinBox (QVariant value);
-    QWidget *createDoubleSpinBox (QVariant value);
-    QWidget *createList(QVariant value);
-    QWidget *createChildProbabilitiesList();
+    QWidget *createLineEdit (QVariant value, bool enabled);
+    QWidget *createSpinBox (QVariant value, bool enabled);
+    QWidget *createDoubleSpinBox (QVariant value, bool enabled);
+    QWidget *createList(QVariant value, bool enabled);
+    QWidget *createChildProbabilitiesList(bool enabled);
     
     QWidget * editWidget;
     
