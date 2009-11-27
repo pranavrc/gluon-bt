@@ -91,4 +91,14 @@ QHash<QString, QString> btNodeType::getPropertyDescriptions()
     return m_propertiesDescriptions;
 }
 
+/////////HACK!!!! MUST BE REMOVED FOR NEXT SEMESTER//////////
+
+void btNodeType::setHackNode(btNode* node)
+{
+    hackNode = node;
+}
+
+
+//////////////////////////
+
 #include "btnodetype.moc"
