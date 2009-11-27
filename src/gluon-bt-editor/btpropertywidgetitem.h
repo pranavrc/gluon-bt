@@ -63,7 +63,7 @@ private:
     QWidget *createSpinBox (QVariant value, bool enabled);
     QWidget *createDoubleSpinBox (QVariant value, bool enabled);
     QWidget *createList(QVariant value, bool enabled);
-    QWidget *createChildProbabilitiesList(bool enabled);
+    QWidget *createChildProbabilitiesList(QString propertyName ,bool enabled);
     
     QWidget * editWidget;
     

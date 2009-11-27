@@ -9,6 +9,7 @@
 #include <QIcon>
 #include "btreferencenode.h"
 #include <QTreeview>
+#include "btglobal.h"
 
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
     : QAbstractItemModel(parent)
@@ -196,6 +197,8 @@ QStringList btTreeModel::mimeTypes() const
 
 bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     if(action == Qt::IgnoreAction)
         return true;
     
@@ -250,17 +253,24 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
                 if(oldParentNode != parentNode)
                 {
                     oldParentNode->removeChild(node);
+                    foreach(const QString &name, parentNode->type()->dynamicPropertyNames())
+                    {
+                        if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType)
+                        {
+                            node->type()->setProperty("probability", 0.5);
+                        }
+                    }
                 }
                 else
                 {
                     foreach(const QString &name, parentNode->type()->dynamicPropertyNames())
                     {
-                        if(parentNode->type()->property(name.toUtf8()) == "[Child Weights]")
+                        if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType)
                         {
                             if(parentNode->children().indexOf(node) > -1)
                             {
-                                QVariantList list = parentNode->type()->property("probabilities").toList();
-                                node->type()->setProperty("probability", list[parentNode->children().indexOf(node)].toDouble());
+                                btChildWeights list = parentNode->type()->property(name.toUtf8()).value<btChildWeights>();
+                                node->type()->setProperty("probability", list.childWeightList[parentNode->children().indexOf(node)].toDouble());
                             }
                             break;
                         }
@@ -343,7 +353,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             
             foreach(const QString &name, parentNode->type()->dynamicPropertyNames())
             {
-                if(parentNode->type()->property(name.toUtf8()) == "[Child Weights]")
+                if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType)
                 {
                     emit addRemoveBTNode();
                     break;

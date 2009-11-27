@@ -1,5 +1,6 @@
 #include "bteditornodetype.h"
 
+#include "btglobal.h"
 #include "projectparser.h"
 #include "nodetypefactory.h"
 
@@ -133,6 +134,8 @@ const QString btEditorNodeType::toDataXml()
 
 void btEditorNodeType::initProperties()
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     foreach(const QString &name, this->dynamicPropertyNames())
     {
         int typeId = QMetaType::type(this->property(name.toUtf8()).toString().toUtf8());
@@ -152,9 +155,10 @@ void btEditorNodeType::initProperties()
                 dataType = QVariant(QVariant::List);
                 break;
             default:
-                if(this->property(name.toUtf8()).toString() == "Child Weights")
+                if(typeId == QMetaType::type("btChildWeights"))
                 {
-                    dataType = "[Child Weights]";
+                    btChildWeights ch;
+                    dataType.setValue(ch);
                     break;
                 }
                 dataType = QVariant(QVariant::Invalid);
@@ -166,43 +170,70 @@ void btEditorNodeType::initProperties()
 
 void btEditorNodeType::appendingChild(int index)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     foreach(const QString &name, this->dynamicPropertyNames())
     {
-        if(this->property(name.toUtf8()) == "[Child Weights]" && this->parentNode()->child(index)->type()->property("probability").isValid())
+        if(this->property(name.toUtf8()).type() == QVariant::UserType)
         {
-            QVariantList list = this->property("probabilities").toList();
-            list.insert(index, this->parentNode()->child(index)->type()->property("probability").toDouble());
-            this->setProperty("probabilities", list);
-            this->parentNode()->child(index)->type()->setProperty("probability", QVariant::Invalid);
+            btChildWeights list = this->property(name.toUtf8()).value<btChildWeights>();
+            
+            if(this->parentNode()->child(index)->type()->property("probability").isValid())
+            {
+                list.childWeightList.insert(index, this->parentNode()->child(index)->type()->property("probability").toDouble());
+                this->parentNode()->child(index)->type()->setProperty("probability", QVariant::Invalid);
+            }
+            
+            QVariant v;
+            v.setValue(list);
+            this->setProperty(name.toUtf8(), v);
             break;
         }
     }
-    
-    this->parentNode()->child(index)->type()->setProperty("probability", QVariant::Invalid);
 }
 
 void btEditorNodeType::removingChild(int index)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     btEditorNodeType * childNodeType = qobject_cast<btEditorNodeType*>(this->parentNode()->child(index)->type());
     childNodeType->disconnectChangeProperty();
-    
-    if(this->property("probabilities").isValid())
+    foreach(const QString &name, this->dynamicPropertyNames())
     {
-        QVariantList list = this->property("probabilities").toList();
-        list.removeAt(index);
-        this->setProperty("probabilities", list);
+        if(this->property(name.toUtf8()).type() == QVariant::UserType)        
+        {
+            btChildWeights list = this->property(name.toUtf8()).value<btChildWeights>();
+            list.childWeightList.removeAt(index);
+            QVariant v;
+            v.setValue(list);
+            this->setProperty(name.toUtf8(), v);
+            break;
+        }
     }
 }
 
 void btEditorNodeType::changeProbability(double value)
 {
-    QVariantList list = this->parentNode()->parentNode()->type()->property("probabilities").toList();
-    list[this->parentNode()->parentNode()->children().indexOf(this->parentNode())] = value;
-    this->parentNode()->parentNode()->type()->setProperty("probabilities", list);
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
+    foreach(const QString &name, this->parentNode()->parentNode()->type()->dynamicPropertyNames())
+    {
+        if(this->parentNode()->parentNode()->type()->property(name.toUtf8()).type() == QVariant::UserType)
+        {
+            btChildWeights list = this->parentNode()->parentNode()->type()->property(name.toUtf8()).value<btChildWeights>();
+            list.childWeightList[this->parentNode()->parentNode()->children().indexOf(this->parentNode())] = value;
+            QVariant v;
+            v.setValue(list);
+            this->parentNode()->parentNode()->type()->setProperty(name.toUtf8(), v);
+            break;
+        }
+    }
 }
 
 void btEditorNodeType::changeProperty(QString propertyName, QVariant value)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     int typeId = QMetaType::type(value.toString().toUtf8());
     QVariant dataType;
     switch (typeId) 
@@ -220,9 +251,10 @@ void btEditorNodeType::changeProperty(QString propertyName, QVariant value)
             dataType = QVariant(QVariant::List);
             break;
         default:
-            if(value.toString() == "Child Weights")
+            if(typeId == QMetaType::type("btChildWeights"))
             {
-                dataType = "[Child Weights]";
+                btChildWeights ch;
+                dataType.setValue(ch);
                 break;
             }
             dataType = QVariant(QVariant::Invalid);

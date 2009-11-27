@@ -10,6 +10,7 @@
 #include "bttreemodel.h"
 #include "btreferencenode.h"
 #include "btdecoratornode.h"
+#include "btglobal.h"
 
 projectParser::projectParser()
 {
@@ -110,6 +111,8 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
 
 void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBrain * brain)
 {
+    qRegisterMetaType<btChildWeights>("btChildWeights");
+    
     for(int i = 0; i < xNode.childNodes().count(); i++)
     {
         QDomNode currentNode = xNode.childNodes().at(i);
@@ -163,32 +166,29 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                     
                     dataType = list;
                 }
+                else if(typeId == QMetaType::type("btChildWeights"))
+                {
+                    btChildWeights list;
+                    
+                    if(currentNode.hasChildNodes())
+                    {
+                        for(int i = 0; i < currentNode.childNodes().count(); i++)
+                        {
+                            QDomNamedNodeMap attributes = currentNode.childNodes().at(i).attributes();
+                            
+                            if(!attributes.namedItem("editorvalue").isNull())
+                                list.childWeightList.append(attributes.namedItem("editorvalue").nodeValue().toDouble());
+                        }
+                    }
+                    
+                    dataType.setValue(list);
+                }
                 else 
                 {
-                    if(currentNode.attributes().namedItem("name").nodeValue() == "probabilities")
-                    {
-                        QVariantList list;
-                        
-                        if(currentNode.hasChildNodes())
-                        {
-                            for(int i = 0; i < currentNode.childNodes().count(); i++)
-                            {
-                                QDomNamedNodeMap attributes = currentNode.childNodes().at(i).attributes();
-                                
-                                if(!attributes.namedItem("editorvalue").isNull())
-                                    list.append(attributes.namedItem("editorvalue").nodeValue().toDouble());
-                            }
-                        }
-                        
-                        dataType = list;
-                    }
-                    else 
-                    {
-                        dataType = nodeAttributes.namedItem("value").nodeValue();
-                        
-                        if(dataType != "[Child Weights]")
-                            dataType.convert((QVariant::Type)typeId);
-                    }
+                    dataType = nodeAttributes.namedItem("value").nodeValue();
+                    
+                    if(dataType != "[Child Weights]")
+                        dataType.convert((QVariant::Type)typeId);
                 }
                 
                 
