@@ -4,6 +4,7 @@
 #include "btnodetype.h"
 #include "btcharacter.h"
 #include <QtCore/QDebug>
+
 btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
 {
     
@@ -29,14 +30,6 @@ btNode::~btNode()
 
 bool btNode::runBehavior(btCharacter* self)
 {    
-    for (int i = 0; i < m_decorators.size(); i++)
-    {
-        if (!m_decorators[i]->run(self))
-        {
-            return false;
-        }
-    }
-    
     if(m_type)
     {
         if(!m_type->run(self))

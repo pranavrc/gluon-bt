@@ -63,9 +63,20 @@ public:
      * @return the parent node
      */
     btNode* parentNode();
-
+    
+    
+    /////////HACK!!!! MUST BE REMOVED FOR NEXT SEMESTER//////////
+    
+    void setHackNode(btNode* node);
+    
+    //////////////////////////
 
 private:
+    /////////HACK!!!! MUST BE REMOVED FOR NEXT SEMESTER//////////
+    
+    btNode * hackNode;
+    //////////////////////////
+    
     QString m_name;
     QString m_description;
     QString m_className;
