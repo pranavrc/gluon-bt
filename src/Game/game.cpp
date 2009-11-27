@@ -75,7 +75,7 @@ Game::Game()
 
     btBrain *brain = new btBrain(fileContents);
     agent = new Agent(this,QPoint(14,0));
-    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(1));
+    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
 
    // brain->getBehaviorTree(0)->runBehavior(enemy);
 
@@ -84,8 +84,8 @@ Game::Game()
 
     Runner *runner = new Runner(enemy);
     runner->start();
-    Runner *runner2 = new Runner(enemy2);
-    runner2->start();
+    //Runner *runner2 = new Runner(enemy2);
+    //runner2->start();
 }
 
 void Game::reset()

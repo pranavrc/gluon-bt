@@ -4,6 +4,7 @@ REGISTER_NODETYPE(btProbSelectorNode)
 
 #include <QDebug>
 #include <QDateTime>
+#include <QVariant>
 
 btProbSelectorNode::btProbSelectorNode()
 {
@@ -71,12 +72,24 @@ void btProbSelectorNode::removingChild(int index)
 
 void btProbSelectorNode::childrenAdded()
 {
+
     ///fixme skal læses fra xml
     int count = probStats.count();
+    int i = 0;
     if(count > 0){
-        foreach(StatNode *node, probStats){
-            node->p = (1.0 / count);
-            node->wp = (1.0 / count);
+
+        if(property("probabilities").isValid()){
+            QList<QVariant> probs = property("probabilities").toList();
+            foreach(StatNode *node, probStats){
+                node->p = (1.0 / count);
+                node->wp = probs.at(i).toDouble(); //(1.0 / count);
+                i++;
+            }
+        }else{
+            foreach(StatNode *node, probStats){
+                node->p = (1.0 / count);
+                node->wp = (1.0 / count);
+            }
         }
     }
 }
