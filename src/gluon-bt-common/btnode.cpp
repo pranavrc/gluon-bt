@@ -4,6 +4,7 @@
 #include "btnodetype.h"
 #include "btcharacter.h"
 #include <QtCore/QDebug>
+
 btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
 {
     
