@@ -34,11 +34,13 @@ bool btProbSelectorNode::run(btCharacter *self)
                        return false;
                    }
                     if(parentNode()->child(inc)->runBehavior(self)){
+                        node->succes += 1;
                         foreach(StatNode *node, probStats){
                             node->visited = false;
                         }
                         return true;
                     }else{
+                        node->fail += 1;
                         node->visited = true;
                         scale -= node->wp;
                     }

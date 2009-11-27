@@ -18,9 +18,8 @@ public:
     void appendingChild(int index);
     void removingChild(int index);
     void childrenAdded();
+    QList<StatNode*> probStats; // lav om til property
 
-private:
-    QList<StatNode*> probStats;
 };
 
 #endif //BTPROBSELECTORNODE_H
