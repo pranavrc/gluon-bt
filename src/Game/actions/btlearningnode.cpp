@@ -28,7 +28,7 @@ void btLearningNode::calculateProbability()
     qDebug() << "calculateProbability 1";
 
 
-    foreach(StatNode* n, ((btProbSelectorNode*) parentNode()->child(0))->probStats){
+    foreach(StatNode* n, ((btProbSelectorNode*) parentNode()->child(0)->type())->probStats){
         qDebug() << "calculateProbability something";
         n->old_p = n->p;
         n->p = (1.0 - alpha) * (n->succes + 1.0) + alpha * (1.0/(1.0 + n->fail)) + n->old_p * gamma;
@@ -37,13 +37,13 @@ void btLearningNode::calculateProbability()
 
     // skal splittes op i de enkelte nodes
     if(combined_p > 0.0){
-        foreach(StatNode* n, ((btProbSelectorNode*) parentNode()->child(0))->probStats){
+        foreach(StatNode* n, ((btProbSelectorNode*) parentNode()->child(0)->type())->probStats){
             n->wp = n->p / combined_p;
         }
     }
 
     qDebug() << "-------------------: " << tries;
-    foreach(StatNode* n, ((btProbSelectorNode*) parentNode()->child(0))->probStats){
+    foreach(StatNode* n, ((btProbSelectorNode*) parentNode()->child(0)->type())->probStats){
         qDebug() << n->wp;
     }
    qDebug() << "-------------------";
