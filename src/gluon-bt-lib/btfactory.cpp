@@ -56,19 +56,6 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
         newBTNode->setDescription(xmlNode.attributes().namedItem("description").nodeValue());
     }
     
-    if(xmlNode.nodeName() == "decorator")
-    {
-        parentNode->addDecorator(newBTNode->type());
-        
-        for(int i = 0; i < xmlNode.childNodes().count(); i++)
-        {
-            btFactory::instance()->addProperty(newBTNode, xmlNode.childNodes().at(i) , brain);
-        }
-        
-        delete newBTNode;
-        return NULL;
-    }
-
     parentNode->appendChild(newBTNode);
     newBTNode->setParentNode(parentNode);
     
