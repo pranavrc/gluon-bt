@@ -144,9 +144,13 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node, int nodeIndex)
                 workingBtNode->appendChild(node);
                 workingBtNode = node;
             }
+            else if(workingBtNode->childCount() > 0 && workingBtNode->child(workingBtNode->childCount()-1)->type()->type() == btNodeType::DecoratorNodeType)
+            {
+                workingBtNode = workingBtNode->child(workingBtNode->childCount()-1);
+            }
 
             btNode *  newBTNode = btFactory::instance()->newObject(currentNode, workingBtNode ,this);
-            
+
             if(newBTNode != NULL)
             {
                 if(currentNode.hasChildNodes())
