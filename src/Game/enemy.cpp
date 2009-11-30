@@ -14,6 +14,8 @@ Enemy::Enemy(Agent *target,btNode* tree)
     this->target = target;
     this->target->setMutex(&(this->mutex));
     this->target->setWaitCondition(&(this->finished));
+    this->target->setEventMutex(&(this->eventMutex));
+    this->target->setEventCondition(&(this->eventCond));
     this->tree = tree;
     QObject::connect(this, SIGNAL(goDownSignal()),
                      this->target, SLOT(goDown()));

@@ -4,6 +4,9 @@
 #include <QThread>
 #include "enemy.h"
 #include "agent.h"
+#include <QBrush>
+#include <QColor>
+
 
 REGISTER_NODETYPE(btWonNode)
 
@@ -16,11 +19,10 @@ bool btWonNode::run(btCharacter *self)
 { 
     while(true){
         // dette her er noget en parallel skal håndtere
-            //qDebug() << "condition called";
-        ((Enemy*)self)->finished.wait(&((Enemy*)self)->mutex,200);
+            qDebug() << "condition called";
+        ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
           if(((Enemy*)self)->target->square.x() == property("x").toInt()){
         if(((Enemy*)self)->target->square.y() == property("y").toInt()){
-
             return true;
         }
     }

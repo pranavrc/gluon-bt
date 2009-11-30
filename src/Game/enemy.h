@@ -40,6 +40,8 @@ public:
     bool stopMove();
     QWaitCondition finished;
     QMutex mutex;
+    QWaitCondition eventCond;
+    QMutex eventMutex;
     Agent* target;
 private:
     btNode* tree;

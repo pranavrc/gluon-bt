@@ -5,6 +5,7 @@
 #include <QtCore>
 #include "enemy.h"
 #include "agent.h"
+#include "game.h"
 
 REGISTER_NODETYPE(isCollided)
 
@@ -15,18 +16,18 @@ isCollided::isCollided()
 
 bool isCollided::run(btCharacter *self)
 {
-    while(true){
-        // dette her er noget en parallel skal håndtere
-        qDebug() << "condition called";
-        ((Enemy*)self)->finished.wait(&((Enemy*)self)->mutex,200);
-        if(((Enemy*)self)->target->square.x() == property("x").toInt()){
-            if(((Enemy*)self)->target->square.y() == property("y").toInt()){
+    GameItem* occupant = ((Enemy*)self)->target->game->board[((Enemy*)self)->target->square.x()][((Enemy*)self)->target->square.y()]->occupant;
 
+    while(true){
+                ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
+        if((occupant != NULL) && (occupant != ((Enemy*)self)->target)){
+            if(occupant->square == ((Enemy*)self)->target->square){
                 return true;
             }
         }
 
     }
+
     return false;
 }
 
