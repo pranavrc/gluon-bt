@@ -6,6 +6,7 @@
 #include "ui_bteditor.h"
 #include "treeselectordialog.h"
 
+class btNode;
 class btNodeTypesModel;
 class btBrain;
 class btTreeModel;
@@ -37,6 +38,8 @@ public Q_SLOTS:
     void nodeTypeDeleted(int row);
     void updateView(const QModelIndex& one, const QModelIndex& two);
     
+    void showFor(btEditorNode* node);
+    
 private:
     btBrain *m_brain;
     btNodeTypesModel *nodeTypes;
@@ -48,6 +51,7 @@ private:
     QMenu   *treeContextMenu;
     QMenu   *btEditorContextMenu;
     QString fileName;
+    QList<btPropertyWidget*> oldPropertyWidgets;
 
 private slots:
     void on_actionNew_triggered();

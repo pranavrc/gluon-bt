@@ -59,6 +59,9 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
         newBTNode->setDescription(xmlNode.attributes().namedItem("description").nodeValue());
     }
     
+    qDebug() << "parent " << parentNode->name();
+    qDebug() << "child " << newBTNode->name();
+    
     parentNode->appendChild(newBTNode);
     newBTNode->setParentNode(parentNode);
     

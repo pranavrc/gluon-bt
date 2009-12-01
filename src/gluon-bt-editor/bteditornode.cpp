@@ -11,6 +11,11 @@ btEditorNode::btEditorNode(btNodeType *type, btNode *parent) : btNode(type, pare
 {
 }
 
+btEditorNode::~btEditorNode()
+{
+   qDeleteAll(m_decorators);
+}
+
 const QString btEditorNode::toXml(QList<btTreeModel *> behaviorTrees)
 {
     qRegisterMetaType<btChildWeights>("btChildWeights");
@@ -196,5 +201,38 @@ QVariant btEditorNode::data(int column) const
 	}
 	return QVariant();
 }
+
+void btEditorNode::addDecorator(btNodeType* decorator) 
+{
+    m_decorators.append(decorator); 
+    decorator->setParentNode(this);
+}
+
+void btEditorNode::moveDecorator(int move, btNodeType * decorator)
+{
+    if(m_decorators.indexOf(decorator) > -1)
+    {
+        int orgIndex = m_decorators.indexOf(decorator);
+        m_decorators.removeAt(orgIndex);
+        int index = orgIndex + move;
+        if(index < 0)
+        {
+            m_decorators.insert(0, decorator);
+        }
+        else if(index > m_decorators.count()-1)
+        {
+            m_decorators.append(decorator);
+        }
+        else 
+        {
+            m_decorators.insert(index, decorator);
+        }
+
+    }
+}
+
+void btEditorNode::removeDecorator(btNodeType* decorator) { m_decorators.removeAll(decorator); }
+int btEditorNode::decoratorCount() const { return m_decorators.count(); }
+QList<btNodeType*> btEditorNode::decorators() const { return m_decorators; }
 
 #include "bteditornode.moc"

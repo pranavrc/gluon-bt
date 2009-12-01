@@ -3,6 +3,7 @@
 #include "btglobal.h"
 #include "projectparser.h"
 #include "nodetypefactory.h"
+#include "bteditornode.h"
 
 #include <QtCore/QDebug>
 
@@ -254,6 +255,11 @@ void btEditorNodeType::changeProperty(QString propertyName, QVariant value)
             if(typeId == QMetaType::type("btChildWeights"))
             {
                 btChildWeights ch;
+                
+                for (int i = 0; i < this->parentNode()->childCount(); i++) {
+                    ch.childWeightList.append(0.5);
+                }
+                
                 dataType.setValue(ch);
                 break;
             }
@@ -268,6 +274,9 @@ void btEditorNodeType::disconnectChangeProperty()
 {
     disconnect(m_sender, SIGNAL(propertyChanged(QString, QVariant)), this, SLOT(changeProperty(QString, QVariant)));
     disconnect(m_sender, SIGNAL(propertyDescriptionChanged(QString, QString, QString)), this, SLOT(changePropertyDescription(QString,QString, QString)));
+    disconnect(m_sender, SIGNAL(nameChanged(QString)), this, SLOT(changeName(QString)));
+    disconnect(m_sender, SIGNAL(descriptionChanged(QString)), this, SLOT(changeDescription(QString)));
+    disconnect(m_sender, SIGNAL(classNameChanged(QString)), this, SLOT(changeClassName(QString)));
 }
 
 void btEditorNodeType::connectChangeProperty(btEditorNodeType* sender)
@@ -275,6 +284,9 @@ void btEditorNodeType::connectChangeProperty(btEditorNodeType* sender)
     m_sender = sender;
     connect(m_sender, SIGNAL(propertyChanged(QString, QVariant)), this, SLOT(changeProperty(QString, QVariant)));
     connect(m_sender, SIGNAL(propertyDescriptionChanged(QString, QString, QString)), this, SLOT(changePropertyDescription(QString,QString, QString)));
+    connect(m_sender, SIGNAL(nameChanged(QString)), this, SLOT(changeName(QString)));
+    connect(m_sender, SIGNAL(descriptionChanged(QString)), this, SLOT(changeDescription(QString)));
+    connect(m_sender, SIGNAL(classNameChanged(QString)), this, SLOT(changeClassName(QString)));
 }
 
 void btEditorNodeType::emitPropertyChangedSignal(QString propertyName, QVariant value)
@@ -301,6 +313,57 @@ void btEditorNodeType::changePropertyDescription(QString propertyName, QString o
     {
         setPropertyDescription(propertyName, oldPropertyName, description);
     }
+}
+
+void btEditorNodeType::removeActionTriggered()
+{        
+    btEditorNode * node = qobject_cast<btEditorNode*>(parentNode());
+    node->removeDecorator(this);
+}
+
+void btEditorNodeType::moveUpAction()
+{    
+    btEditorNode * node = qobject_cast<btEditorNode*>(parentNode());
+    node->moveDecorator(-1, this);
+}
+
+void btEditorNodeType::moveDownAction()
+{    
+    btEditorNode * node = qobject_cast<btEditorNode*>(parentNode());
+    node->moveDecorator(1, this);
+}
+
+void btEditorNodeType::emitNameChanged(QString name)
+{
+    emit nameChanged(name);
+}
+
+void btEditorNodeType::emitClassNameChanged(QString className)
+{
+    emit classNameChanged(className);
+}
+
+void btEditorNodeType::emitDescriptionChanged(QString description)
+{
+    emit descriptionChanged(description);
+}
+
+void btEditorNodeType::changeName(QString name)
+{
+    this->setName(name);
+    emit nameChanged(name);
+}
+
+void btEditorNodeType::changeDescription(QString description)
+{
+    this->setDescription(description);
+    emit descriptionChanged(description);
+}
+
+void btEditorNodeType::changeClassName(QString className)
+{
+    this->setClassName(className);
+    emit classNameChanged(className);
 }
 
 #include "bteditornodetype.moc"

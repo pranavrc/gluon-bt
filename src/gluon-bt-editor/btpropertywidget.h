@@ -39,7 +39,6 @@ public:
     void setNode(btEditorNode * theNode);
     
 public Q_SLOTS:
-    void removeActionTriggered();
     void dragDropUpdate();
     void updateTreeModel();
     

@@ -1,3 +1,4 @@
+
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QFile>
@@ -124,6 +125,7 @@ void bteditor::showPropertiesFor(btEditorNode* showFor)
         propertyScrollArea->setWidget(propertyWidget);
         connect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
     }
+    
     propertyWidget->setNode(showFor);
 }
 
@@ -417,6 +419,11 @@ void bteditor::on_actionNew_Tree_triggered()
 void bteditor::updateView(const QModelIndex& one, const QModelIndex& two)
 {
     this->btEditor->scrollTo(one);
+}
+
+void bteditor::showFor(btEditorNode* node)
+{
+    this->showPropertiesFor(node);
 }
 
 #include "bteditor.moc"

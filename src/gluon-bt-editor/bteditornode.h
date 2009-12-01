@@ -14,11 +14,24 @@ class btEditorNode : public btNode
 public:    
     
     btEditorNode(btNodeType *type = 0, btNode *parent = 0);
+    ~btEditorNode();
     
     const QString toXml(QList<btTreeModel *> behaviorTrees);
     
     QVariant data(int column) const;
     QVariant headerData(int column) const;
+    
+    void addDecorator(btNodeType* decorator);
+    void removeDecorator(btNodeType* decorator);
+    void moveDecorator(int move, btNodeType * decorator);
+    int decoratorCount() const;
+    QList<btNodeType*> decorators() const;
+    
+Q_SIGNALS:
+    void updatePropertyWidget();
+    
+private:    
+    QList<btNodeType*> m_decorators;
 };
 
 #endif

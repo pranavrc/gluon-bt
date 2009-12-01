@@ -24,6 +24,8 @@
 
 #include "btqvariantlistwidget.h"
 #include "btchildlistwidget.h"
+#include "bteditornode.h"
+#include "bteditornodetype.h"
 
 btPropertyWidgetItem::btPropertyWidgetItem(QObject * parent, Qt::WindowFlags f)
 {
@@ -35,6 +37,28 @@ btPropertyWidgetItem::btPropertyWidgetItem(QObject * parent, Qt::WindowFlags f)
 
 btPropertyWidgetItem::~btPropertyWidgetItem()
 {
+    if(qobject_cast<btEditorNodeType*>(editedObject))
+    {
+        btEditorNodeType * nodeType = qobject_cast<btEditorNodeType*>(editedObject);
+        
+        if(nodeType->metaObject()->indexOfProperty(propertyName.toUtf8()) > -1)
+        {
+            QLineEdit * lineEdit = qobject_cast<QLineEdit*>(editWidget);
+            
+            if(propertyName == "className")
+            {
+                disconnect(nodeType, SIGNAL(classNameChanged(QString)), lineEdit, SLOT(setText(QString)));
+            }
+            else if(propertyName == "name")
+            {
+                disconnect(nodeType, SIGNAL(nameChanged(QString)), lineEdit, SLOT(setText(QString)));
+            }
+            else if(propertyName == "description")
+            {
+                disconnect(nodeType, SIGNAL(descriptionChanged(QString)), lineEdit, SLOT(setText(QString)));
+            }
+        }
+    }
 }
 
 void btPropertyWidgetItem::setEditObject(QObject * editThis)
@@ -178,6 +202,31 @@ QWidget * btPropertyWidgetItem::createLineEdit(QVariant value, bool enabled)
     QLineEdit * widget = new QLineEdit(this);
     widget->setText(value.toString());
     widget->setEnabled(enabled);
+    
+    if(qobject_cast<btEditorNodeType*>(editedObject))
+    {
+        btEditorNodeType * nodeType = qobject_cast<btEditorNodeType*>(editedObject);
+        
+        if(nodeType->metaObject()->indexOfProperty(propertyName.toUtf8()) > -1)
+        {
+            QLineEdit * lineEdit = qobject_cast<QLineEdit*>(widget);
+            
+            if(propertyName == "className")
+            {
+                connect(nodeType, SIGNAL(classNameChanged(QString)), lineEdit, SLOT(setText(QString)));
+            }
+            else if(propertyName == "name")
+            {
+                connect(nodeType, SIGNAL(nameChanged(QString)), lineEdit, SLOT(setText(QString)));
+            }
+            else if(propertyName == "description")
+            {
+                connect(nodeType, SIGNAL(descriptionChanged(QString)), lineEdit, SLOT(setText(QString)));
+            }
+        }
+    }
+    
+    
     connect(widget, SIGNAL(textChanged(QString)), this, SLOT(propertyChanged(QString)));
     return widget;
 }

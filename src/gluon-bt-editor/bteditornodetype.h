@@ -31,15 +31,29 @@ public:
     
     void emitPropertyChangedSignal(QString propertyName, QVariant value);
     void emitPropertyDescriptionChangedSignal(QString propertyName, QString oldPropertyName , QString description);
+    void emitNameChanged(QString name);
+    void emitClassNameChanged(QString className);
+    void emitDescriptionChanged(QString description);
 
 Q_SIGNALS:
     void propertyChanged(QString propertyName, QVariant value);
     void propertyDescriptionChanged(QString propertyName, QString oldPropertyName , QString description);
+    void nameChanged(QString name);
+    void descriptionChanged(QString description);
+    void classNameChanged(QString className);
     
 public Q_SLOTS:
     void changeProbability(double value);
     void changeProperty(QString propertyName, QVariant value);
     void changePropertyDescription(QString propertyName, QString oldPropertyName , QString description);
+    void changeName(QString name);
+    void changeDescription(QString description);
+    void changeClassName(QString className);
+    
+    //used for moving decoratos up and down
+    void removeActionTriggered();
+    void moveUpAction();
+    void moveDownAction();
     
 private:
     btNodeType::nodeType m_type;

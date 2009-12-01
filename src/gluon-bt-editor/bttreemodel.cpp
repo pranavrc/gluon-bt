@@ -355,6 +355,11 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             {
                 if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType)
                 {
+                    btChildWeights cw = parentNode->type()->property(name.toUtf8()).value<btChildWeights>();
+                    cw.childWeightList.append(0.5);
+                    QVariant v;
+                    v.setValue(cw);
+                    parentNode->type()->setProperty(name.toUtf8(), v);
                     emit addRemoveBTNode();
                     break;
                 }

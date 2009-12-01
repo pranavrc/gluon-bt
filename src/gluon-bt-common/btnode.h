@@ -46,10 +46,11 @@ public:
 	virtual void setType(btNodeType *newType);
     virtual btNodeType* type() const;
 
-    virtual void addDecorator(btNodeType* decorator);
+/*    virtual void addDecorator(btNodeType* decorator);
     virtual void removeDecorator(btNodeType* decorator);
+    virtual void 
     virtual int decoratorCount() const;
-    QList<btNodeType*> decorators() const;
+    QList<btNodeType*> decorators() const;*/
 
 private:
 	btNodeType *m_type;
@@ -60,7 +61,7 @@ private:
 	QString m_name;
     QString m_description;
 	QList<QVariant> nodeData;
-    QList<btNodeType*> m_decorators;
+    //QList<btNodeType*> m_decorators;
 };
 
 #endif // BTNODE_H
