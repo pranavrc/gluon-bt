@@ -19,9 +19,15 @@ public:
     Agent(Game* game,QPoint pos);
     void setSquare(int x,int y);
     QMutex *mutex;
+    QMutex *eventMutex;
     QWaitCondition *waitCond;
+    QWaitCondition *eventCond;
     void setMutex(QMutex *mutex){this->mutex = mutex;}
     void setWaitCondition(QWaitCondition *waitCond){this->waitCond = waitCond;}
+
+    void setEventMutex(QMutex *eventMutex){this->eventMutex = eventMutex;}
+    void setEventCondition(QWaitCondition *eventCond){this->eventCond = eventCond;}
+
     bool returnValue;
 public Q_SLOTS:
     void sayHello();

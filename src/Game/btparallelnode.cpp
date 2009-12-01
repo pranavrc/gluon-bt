@@ -54,18 +54,18 @@ void btParallelNode::childrenAdded()
 bool btParallelNode::decide()
 {
     // make sure to expose this choice in the editor
-    /*foreach(Worker* w,workers){
+    foreach(Worker* w,workers){
         if(w->value == false){
             return false;
         }
     }
-    return true;*/
+    return true;
 
-    foreach(Worker* w,workers){
+    /*foreach(Worker* w,workers){
         if(w->value == true){
             return true;
         }
     }
-    return false;
+    return false;*/
 }
 

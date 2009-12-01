@@ -31,7 +31,8 @@ SOURCES += main.cpp \
     actions/moveawayupdown.cpp \
     actions/moveawayleftright.cpp \
     actions/iscollided.cpp \
-    actions/btlearningnode.cpp
+    actions/btlearningnode.cpp \
+    actions/changecolor.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -59,7 +60,8 @@ HEADERS += mainwindow.h \
     actions/moveawayupdown.h \
     actions/moveawayleftright.h \
     actions/iscollided.h \
-    actions/btlearningnode.h
+    actions/btlearningnode.h \
+    actions/changecolor.h
 INCLUDEPATH += c:/repo/gluon-bt/src/gluon-bt-lib \
     c:/repo/gluon-bt/src/gluon-bt-common
 LIBS += c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/libbtlib.dll

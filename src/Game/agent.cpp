@@ -41,28 +41,30 @@ void Agent::unlock()
     qDebug() << "unlock";
     mutex->unlock();
     waitCond->wakeAll();
+    eventMutex->unlock();
+    eventCond->wakeAll();
 }
 
 void Agent::sayHello()
 {
     int count = 0;
-    QList<int> possibleMove;
+    //QList<int> possibleMove;
     if(dir == Up || dir == Down){
         if(move(Right)){
-            possibleMove.append(Right);
+           // possibleMove.append(Right);
             count++;
         }
         if(move(Left)){
-            possibleMove.append(Left);
+          //  possibleMove.append(Left);
             count++;
         }
     }else if(dir == Left || dir == Right){
         if(move(Up)){
-            possibleMove.append(Up);
+          //  possibleMove.append(Up);
             count++;
         }
         if(move(Down)){
-            possibleMove.append(Down);
+           // possibleMove.append(Down);
             count++;
         }
     }
@@ -73,6 +75,8 @@ void Agent::sayHello()
         mutex->unlock();
         waitCond->wakeAll();
     }
+    eventMutex->unlock();
+    eventCond->wakeAll();
 }
 
 
