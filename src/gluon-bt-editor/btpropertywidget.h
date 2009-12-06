@@ -26,6 +26,7 @@ class btEditorNodeType;
 class QGridLayout;
 class btDecoratorNode;
 class ColorGen;
+class QMenu;
 
 class btPropertyWidget : public QWidget
 {

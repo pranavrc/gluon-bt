@@ -51,7 +51,8 @@ private:
     QMenu   *treeContextMenu;
     QMenu   *btEditorContextMenu;
     QString fileName;
-    QList<btPropertyWidget*> oldPropertyWidgets;
+    
+    btPropertyWidget* oldPropertyWidget;
 
 private slots:
     void on_actionNew_triggered();

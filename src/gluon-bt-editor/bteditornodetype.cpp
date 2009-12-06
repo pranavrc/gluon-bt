@@ -319,18 +319,21 @@ void btEditorNodeType::removeActionTriggered()
 {        
     btEditorNode * node = qobject_cast<btEditorNode*>(parentNode());
     node->removeDecorator(this);
+    node->emitUpdatePropertyWidget();
 }
 
 void btEditorNodeType::moveUpAction()
 {    
     btEditorNode * node = qobject_cast<btEditorNode*>(parentNode());
     node->moveDecorator(-1, this);
+    node->emitUpdatePropertyWidget();
 }
 
 void btEditorNodeType::moveDownAction()
 {    
     btEditorNode * node = qobject_cast<btEditorNode*>(parentNode());
     node->moveDecorator(1, this);
+    node->emitUpdatePropertyWidget();
 }
 
 void btEditorNodeType::emitNameChanged(QString name)

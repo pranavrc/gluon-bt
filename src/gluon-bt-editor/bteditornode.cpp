@@ -235,4 +235,9 @@ void btEditorNode::removeDecorator(btNodeType* decorator) { m_decorators.removeA
 int btEditorNode::decoratorCount() const { return m_decorators.count(); }
 QList<btNodeType*> btEditorNode::decorators() const { return m_decorators; }
 
+void btEditorNode::emitUpdatePropertyWidget()
+{
+    emit updatePropertyWidget(this);
+}
+
 #include "bteditornode.moc"

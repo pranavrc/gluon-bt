@@ -40,12 +40,12 @@ bool btNode::runBehavior(btCharacter* self)
     return true;
 }
 
-void btNode::appendChild(btNode *node)
+void btNode::appendChild(btNode *child)
 {
-    m_children.append(node);
+    m_children.append(child);
     //has to be in the list, before this function is called
     m_type->appendingChild(m_children.count()-1);
-    node->setParentNode(this);
+    child->setParentNode(this);
 }
 
 void btNode::removeChild(int row)

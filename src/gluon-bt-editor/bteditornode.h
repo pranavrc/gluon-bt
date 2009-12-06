@@ -27,8 +27,10 @@ public:
     int decoratorCount() const;
     QList<btNodeType*> decorators() const;
     
+    void emitUpdatePropertyWidget();
+    
 Q_SIGNALS:
-    void updatePropertyWidget();
+    void updatePropertyWidget(btEditorNode* node);
     
 private:    
     QList<btNodeType*> m_decorators;

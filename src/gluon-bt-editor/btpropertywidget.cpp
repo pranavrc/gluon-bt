@@ -43,6 +43,7 @@ btPropertyWidget::btPropertyWidget(QObject * parent)
 
 btPropertyWidget::~btPropertyWidget()
 {
+    qDeleteAll(this->children());
     delete colorgen;
 }
 
@@ -121,29 +122,30 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
         QHBoxLayout * hLayout = new QHBoxLayout();
         hLayout->addWidget(titleLabel);
         
-        QToolButton * showMenuButton = new QToolButton();
+        QToolButton * showMenuButton = new QToolButton(this);
+        
         QMenu * buttonMenu = new QMenu(showMenuButton);
         
         btEditorNode* parent = qobject_cast<btEditorNode*>(node->parentNode());
         
         if(parent->decorators().indexOf(node) > 0)
         {
-            QAction* upAction = new QAction(showMenuButton);
-            upAction->setText("Move up");
+            QAction* upAction = new QAction(buttonMenu);
+            upAction->setText("Move up");            
             connect(upAction, SIGNAL(triggered()), node, SLOT(moveUpAction()));
             buttonMenu->addAction(upAction);
         }
         
         if(parent->decorators().indexOf(node) < parent->decoratorCount()-1)
         {
-            QAction* downAction = new QAction(showMenuButton);
-            downAction->setText("Move down");
+            QAction* downAction = new QAction(buttonMenu);
+            downAction->setText("Move down");            
             connect(downAction, SIGNAL(triggered()), node, SLOT(moveDownAction()));
             buttonMenu->addAction(downAction);
         }
         
-        QAction * removeAction = new QAction(showMenuButton);
-        removeAction->setText("Remove");
+        QAction * removeAction = new QAction(buttonMenu);
+        removeAction->setText("Remove");        
         connect(removeAction, SIGNAL(triggered()), node, SLOT(removeActionTriggered()));
         
         QAction * sep = buttonMenu->addSeparator();
@@ -215,7 +217,13 @@ btEditorNode * btPropertyWidget::node() const
 
 void btPropertyWidget::setNode(btEditorNode * node)
 {        
+    /*if(m_node)
+    {
+        disconnect(m_node, SIGNAL(updatePropertyWidget()), this, SLOT(dragDropUpdate()));
+    }*/
+    
     m_node = node;
+    //connect(m_node, SIGNAL(updatePropertyWidget()), this, SLOT(dragDropUpdate()));
     setupPropertyView(); 
 }
 

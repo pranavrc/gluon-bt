@@ -23,7 +23,7 @@ public:
     
     bool runBehavior(btCharacter *self);
 
-	virtual void appendChild(btNode *);
+	virtual void appendChild(btNode * child);
     virtual void insertChild(int pos, btNode* child);
     virtual void removeChild(int row);
     virtual void removeChild(btNode* child);
