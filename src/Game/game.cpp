@@ -63,7 +63,7 @@ Game::Game()
     this->addItem(marker);
 
     // --------------------------------------
-    QString fileName = "parallel.xml";
+    QString fileName = "test.glbt.xml";
 
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -75,17 +75,17 @@ Game::Game()
 
     btBrain *brain = new btBrain(fileContents);
     agent = new Agent(this,QPoint(14,0));
-    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(2));
+    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(1));
 
    // brain->getBehaviorTree(0)->runBehavior(enemy);
 
     //Agent *agent2 = new Agent(this,QPoint(14,14));
-    Enemy *enemy2 = new Enemy(marker,brain->getBehaviorTree(1));
+    Enemy *enemy2 = new Enemy(marker,brain->getBehaviorTree(2));
 
     Runner *runner = new Runner(enemy);
     runner->start();
-    Runner *runner2 = new Runner(enemy2);
-    runner2->start();
+    //Runner *runner2 = new Runner(enemy2);
+    //runner2->start();
 }
 
 void Game::reset()

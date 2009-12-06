@@ -34,12 +34,14 @@ bool btProbSelectorNode::run(btCharacter *self)
                        return false;
                    }
                     if(parentNode()->child(inc)->runBehavior(self)){
+                        qDebug("behavior run succes");
                         node->succes += 1;
                         foreach(StatNode *node, probStats){
                             node->visited = false;
                         }
                         return true;
                     }else{
+                        qDebug("behavior run fail");
                         node->fail += 1;
                         node->visited = true;
                         scale -= node->wp;
@@ -80,8 +82,8 @@ void btProbSelectorNode::childrenAdded()
     int i = 0;
     if(count > 0){
 
-        if(property("probabilities").isValid()){
-            QList<QVariant> probs = property("probabilities").toList();
+        if(property("weights").isValid()){
+            QList<QVariant> probs = property("weights").toList();
             foreach(StatNode *node, probStats){
                 node->p = (1.0 / count);
                 node->wp = probs.at(i).toDouble(); //(1.0 / count);
