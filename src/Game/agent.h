@@ -30,8 +30,8 @@ public:
 
     bool returnValue;
 public Q_SLOTS:
-    void sayHello();
-    void unlock();
+    virtual void sayHello();
+    virtual void unlock();
 
     bool relativeLeft();
     bool relativeRight();

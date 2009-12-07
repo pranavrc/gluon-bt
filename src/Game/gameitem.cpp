@@ -36,7 +36,6 @@ void GameItem::setAnimationStep(QPoint from,QPoint to, Direction dir){
             break;
     }
 
-    game->board[square.x()][square.y()]->setVisible(false);
     timer->start();
 }
 
@@ -92,9 +91,11 @@ GameItem::GameItem(int x,int y,Game* game){
 }
 
 void GameItem::setSquare(int x,int y){
+    squareLock.lock();
     square.setX(x);
     square.setY(y);
     setPos((x * 20)+ 10,(y * 20) +10);
+    squareLock.unlock();
 }
 
 QVariant GameItem::itemChange(GraphicsItemChange change,

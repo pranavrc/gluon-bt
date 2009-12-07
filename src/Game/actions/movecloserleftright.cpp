@@ -18,8 +18,8 @@ bool moveCloserLeftRight::run(btCharacter *self)
 {
     qDebug() << "moveCloser::run()";
     Enemy* e = (Enemy*)self;
-    qDebug() << "enemy.x " << e->target->game->agent->square.x() << "self.x " <<  e->target->square.x();
-    if(e->target->game->agent->square.x() >= e->target->square.x()){
+    qDebug() << "enemy.x " << e->target->game->marker->square.x() << "self.x " <<  e->target->square.x();
+    if(e->target->game->marker->square.x() >= e->target->square.x()){
         return ((Enemy*)self)->goRight();
     }else{
         return ((Enemy*)self)->goLeft();

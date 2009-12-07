@@ -32,7 +32,9 @@ SOURCES += main.cpp \
     actions/moveawayleftright.cpp \
     actions/iscollided.cpp \
     actions/btlearningnode.cpp \
-    actions/btgoalnode.cpp
+    actions/btgoalnode.cpp \
+    player.cpp \
+    guard.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -60,7 +62,9 @@ HEADERS += mainwindow.h \
     actions/moveawayleftright.h \
     actions/iscollided.h \
     actions/btlearningnode.h \
-    actions/btgoalnode.h
+    actions/btgoalnode.h \
+    player.h \
+    guard.h
 INCLUDEPATH += ../gluon-bt-lib \
     ../gluon-bt-common
 LIBS += ../gluon-bt-lib/qtcreator-build/libbtlib.dll

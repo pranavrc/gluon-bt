@@ -6,6 +6,7 @@
 class Game;
 #include <QTimeLine>
 #include <QGraphicsItemAnimation>
+#include <QMutex>
 
 class GameItem : public QObject, public QGraphicsPolygonItem
 {
@@ -45,6 +46,7 @@ protected:
     QGraphicsItemAnimation *animation;
     Direction dir;
     int delay;
+    QMutex squareLock;
 public Q_SLOTS:
     void animationDone();
 protected:

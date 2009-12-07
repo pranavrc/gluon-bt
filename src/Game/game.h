@@ -2,7 +2,8 @@
 #define GAME_H
 
 #include <QGraphicsScene>
-#include "agent.h"
+#include "player.h"
+#include "guard.h"
 #include <QDebug>
 #include <QKeyEvent>
 #include <QTimeLine>
@@ -13,8 +14,11 @@ class Game : public QGraphicsScene
 {
 public:
     Game();
-    Agent* marker;
-    Agent* agent;
+    Player* marker;
+    Guard* agent;
+    Guard* agent2;
+    Guard* agent3;
+    Guard* agent4;
     void drawItems();
     GameItem* board[16][16];
     QList<GameItem*> goals;

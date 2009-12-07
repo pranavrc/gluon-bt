@@ -47,6 +47,7 @@ Game::Game()
                         << QPointF(-5, 0);
                 board[j][i]->setPolygon(myPolygon);
                 board[j][i]->setZValue(0);
+                board[j][i]->setBrush(Qt::white);
             }else if(locations[i][j] == 2){
                 board[j][i] = new GameItem(j,i,this);
                 board[j][i]->setBlocks(false);
@@ -65,14 +66,14 @@ Game::Game()
         }
     }
 
-    for(int i = 0; i < 16; ++i){
+    /*for(int i = 0; i < 16; ++i){
         this->addLine((float)(i * 20),0.0,(float)(i * 20),300.0,QPen(QColor(Qt::gray)));
         this->addLine(0.0,(float)(i * 20),300.0,(float)(i * 20),QPen(QColor(Qt::gray)));
-    }
-    marker = new Agent(this,QPoint(0,14));//new GameItem(this);
+    }*/
+    marker = new Player(this,QPoint(0,14));//new GameItem(this);
     //marker->setPos(10.0,10.0);
     marker->setBrush(Qt::yellow);
-    marker->setZValue(5);
+    marker->setZValue(10);
     this->addItem(marker);
 
     // --------------------------------------
@@ -87,19 +88,30 @@ Game::Game()
     file.close();
 
     btBrain *brain = new btBrain(fileContents);
-    agent = new Agent(this,QPoint(14,0));
-    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(2));
+    agent = new Guard(this,QPoint(14,0));
+    //agent2 = new Guard(this,QPoint(0,0));
+   // agent3 = new Guard(this,QPoint(14,14));
+  //  agent4 = new Guard(this,QPoint(0,14));
 
-   // brain->getBehaviorTree(0)->runBehavior(enemy);
+    Enemy *player = new Enemy(marker,brain->getBehaviorTree(2));
 
-    //Agent *agent2 = new Agent(this,QPoint(14,14));
-    Enemy *enemy2 = new Enemy(marker,brain->getBehaviorTree(1));
+    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(3));
+  //  Enemy *enemy2 = new Enemy(agent2,brain->getBehaviorTree(3));
+  //  Enemy *enemy3 = new Enemy(agent3,brain->getBehaviorTree(3));
+  //  Enemy *enemy4 = new Enemy(agent4,brain->getBehaviorTree(3));
+
+    this->setBackgroundBrush(QBrush(QColor(Qt::black)));
 
     Runner *runner = new Runner(enemy);
     runner->start();
     //Runner *runner2 = new Runner(enemy2);
     //runner2->start();
+    //Runner *runner3 = new Runner(enemy3);
+    //runner3->start();
+    //Runner *runner4 = new Runner(enemy4);
+    //runner4->start();
 }
+
 
 void Game::reset()
 {
