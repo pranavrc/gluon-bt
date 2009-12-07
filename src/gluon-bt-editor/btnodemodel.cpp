@@ -183,7 +183,7 @@ QString btnodemodel::name() const
 void btnodemodel::setName(QString name)
 {
     node->setName(name);
-    node->emitPropertyChangedSignal("name", name);
+    node->emitNameChanged(name);
 }
 
 QString btnodemodel::description() const
@@ -194,7 +194,7 @@ QString btnodemodel::description() const
 void btnodemodel::setDescription(QString description)
 {
     node->setDescription(description);
-    node->emitPropertyChangedSignal("description", description);
+    node->emitDescriptionChanged(description);
 }
 
 QString btnodemodel::classname() const
@@ -205,7 +205,7 @@ QString btnodemodel::classname() const
 void btnodemodel::setClassname(QString classname)
 {
     node->setClassName(classname);
-    node->emitPropertyChangedSignal("className", classname);
+    node->emitClassNameChanged(classname);
 }
 
 #include "btnodemodel.moc"

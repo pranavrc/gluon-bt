@@ -23,7 +23,7 @@ public:
     
     bool runBehavior(btCharacter *self);
 
-	virtual void appendChild(btNode *);
+	virtual void appendChild(btNode * child);
     virtual void insertChild(int pos, btNode* child);
     virtual void removeChild(int row);
     virtual void removeChild(btNode* child);
@@ -46,10 +46,11 @@ public:
 	virtual void setType(btNodeType *newType);
     virtual btNodeType* type() const;
 
-    virtual void addDecorator(btNodeType* decorator);
+/*    virtual void addDecorator(btNodeType* decorator);
     virtual void removeDecorator(btNodeType* decorator);
+    virtual void 
     virtual int decoratorCount() const;
-    QList<btNodeType*> decorators() const;
+    QList<btNodeType*> decorators() const;*/
 
 private:
 	btNodeType *m_type;
@@ -60,7 +61,7 @@ private:
 	QString m_name;
     QString m_description;
 	QList<QVariant> nodeData;
-    QList<btNodeType*> m_decorators;
+    //QList<btNodeType*> m_decorators;
 };
 
 #endif // BTNODE_H

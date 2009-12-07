@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <QIcon>
 #include "btreferencenode.h"
-#include <QTreeview>
+#include <QtGui/QTreeView>
 #include "btglobal.h"
 
 btTreeModel::btTreeModel(QObject* parent, btBrain* containingBrain)
@@ -355,6 +355,11 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             {
                 if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType)
                 {
+                    btChildWeights cw = parentNode->type()->property(name.toUtf8()).value<btChildWeights>();
+                    cw.childWeightList.append(0.5);
+                    QVariant v;
+                    v.setValue(cw);
+                    parentNode->type()->setProperty(name.toUtf8(), v);
                     emit addRemoveBTNode();
                     break;
                 }
@@ -430,10 +435,10 @@ QMimeData* btTreeModel::mimeData(const QModelIndexList &indexes) const
             btEditorNode * node = nodeFromIndex(index);
             if(node)
             {       
-                int nodeMemAdress = reinterpret_cast<int>(node);
+                quint64 nodeMemAdress = reinterpret_cast<quint64>(node);
                 stream <<  nodeMemAdress;
                 
-                nodeMemAdress = reinterpret_cast<int>(node->parent());
+                nodeMemAdress = reinterpret_cast<quint64>(node->parent());
                 stream << nodeMemAdress;
             }
         }        

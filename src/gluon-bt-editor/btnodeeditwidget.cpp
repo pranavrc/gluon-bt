@@ -70,7 +70,7 @@ void btNodeEditWidget::connectSignals()
 
 void btNodeEditWidget::disconnectSignals(btTreeModel * currentBehaviorTree)
 {
-    if(currentBehaviorTree)
+    if(currentBehaviorTree && model)
         connect(model, SIGNAL(updatePropertyWidget()), currentBehaviorTree, SIGNAL(addRemoveBTNode()));
     
     disconnect(nameedit, SIGNAL(textChanged(QString)), this, SLOT(nameEdited(QString)));

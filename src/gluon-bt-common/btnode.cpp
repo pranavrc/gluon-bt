@@ -25,7 +25,6 @@ btNode::btNode(btNodeType *type, btNode *parent) : QObject(parent)
 btNode::~btNode()
 {
     qDeleteAll(m_children);
-    qDeleteAll(m_decorators);
 }
 
 bool btNode::runBehavior(btCharacter* self)
@@ -41,12 +40,12 @@ bool btNode::runBehavior(btCharacter* self)
     return true;
 }
 
-void btNode::appendChild(btNode *node)
+void btNode::appendChild(btNode *child)
 {
-    m_children.append(node);
+    m_children.append(child);
     //has to be in the list, before this function is called
     m_type->appendingChild(m_children.count()-1);
-    node->setParentNode(this);
+    child->setParentNode(this);
 }
 
 void btNode::removeChild(int row)
@@ -91,7 +90,7 @@ void btNode::setType(btNodeType *type)
 }
 btNodeType *btNode::type() const { return m_type; }
 
-void btNode::addDecorator(btNodeType* decorator) 
+/*void btNode::addDecorator(btNodeType* decorator) 
 {
     m_decorators.append(decorator); 
     decorator->setParentNode(this);
@@ -99,7 +98,7 @@ void btNode::addDecorator(btNodeType* decorator)
 void btNode::removeDecorator(btNodeType* decorator) { m_decorators.removeAll(decorator); }
 int btNode::decoratorCount() const { return m_decorators.count(); }
 QList<btNodeType*> btNode::decorators() const { return m_decorators; }
-
+*/
 void btNode::setParentNode(btNode* node)
 {    
     m_parent = node;

@@ -43,6 +43,7 @@ btPropertyWidget::btPropertyWidget(QObject * parent)
 
 btPropertyWidget::~btPropertyWidget()
 {
+    qDeleteAll(this->children());
     delete colorgen;
 }
 
@@ -114,26 +115,49 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
 
     titleLabel->setStyleSheet("background-color: " + colorgen->nextColor().name());
     if(QString(node->metaObject()->className()) == "btDecoratorNode")
-    {
+    {        
         titleLabel->setText(node->name());
         titleLabel->setToolTip(node->description());
         
-        QHBoxLayout * hLayout = new QHBoxLayout(this);
+        QHBoxLayout * hLayout = new QHBoxLayout();
         hLayout->addWidget(titleLabel);
         
-        QAction * removeAction = new QAction(node);
-        removeAction->setText("Remove");
-        connect(removeAction, SIGNAL(triggered()), this, SLOT(removeActionTriggered()));
+        QToolButton * showMenuButton = new QToolButton(this);
         
-        QMenu * buttonMenu = new QMenu(this);
+        QMenu * buttonMenu = new QMenu(showMenuButton);
+        
+        btEditorNode* parent = qobject_cast<btEditorNode*>(node->parentNode());
+        
+        if(parent->decorators().indexOf(node) > 0)
+        {
+            QAction* upAction = new QAction(buttonMenu);
+            upAction->setText("Move up");            
+            connect(upAction, SIGNAL(triggered()), node, SLOT(moveUpAction()));
+            buttonMenu->addAction(upAction);
+        }
+        
+        if(parent->decorators().indexOf(node) < parent->decoratorCount()-1)
+        {
+            QAction* downAction = new QAction(buttonMenu);
+            downAction->setText("Move down");            
+            connect(downAction, SIGNAL(triggered()), node, SLOT(moveDownAction()));
+            buttonMenu->addAction(downAction);
+        }
+        
+        QAction * removeAction = new QAction(buttonMenu);
+        removeAction->setText("Remove");        
+        connect(removeAction, SIGNAL(triggered()), node, SLOT(removeActionTriggered()));
+        
+        QAction * sep = buttonMenu->addSeparator();
+        sep->setParent(this);
         buttonMenu->addAction(removeAction);
         
-        QToolButton * showMenuButton = new QToolButton(this);
         showMenuButton->setText("Menu");
         showMenuButton->setMenu(buttonMenu);
         showMenuButton->setPopupMode(QToolButton::InstantPopup);
         
-        hLayout->addWidget(showMenuButton);
+        hLayout->addWidget(showMenuButton); 
+        
         layout->addLayout(hLayout, row, 0,1,2);
     }
     else
@@ -150,6 +174,8 @@ void btPropertyWidget::appendComponentToPropertyView (QGridLayout * layout, qint
 void btPropertyWidget::setupPropertyView()
 {
     qDeleteAll(this->children());
+    delete colorgen;
+    
     colorgen = new ColorGen(0,70,30);
     
     QGridLayout * propertyLayout = new QGridLayout(this);
@@ -180,13 +206,24 @@ void btPropertyWidget::setupPropertyView()
     containerLayout->setSpacing(0);
     containerLayout->setMargin(0);
     
+    
     this->setLayout(containerLayout);
 }
 
-btEditorNode * btPropertyWidget::node() const { return m_node; }
-void btPropertyWidget::setNode(btEditorNode * node)
+btEditorNode * btPropertyWidget::node() const 
 { 
-    m_node = node; 
+    return m_node; 
+}
+
+void btPropertyWidget::setNode(btEditorNode * node)
+{        
+    /*if(m_node)
+    {
+        disconnect(m_node, SIGNAL(updatePropertyWidget()), this, SLOT(dragDropUpdate()));
+    }*/
+    
+    m_node = node;
+    //connect(m_node, SIGNAL(updatePropertyWidget()), this, SLOT(dragDropUpdate()));
     setupPropertyView(); 
 }
 
@@ -200,17 +237,12 @@ QString btPropertyWidget::getPropertyDescription(QObject *object, QString proper
     return node->getPropertyDescription(propertyName);
 }
 
-void btPropertyWidget::removeActionTriggered()
-{
-    m_node->removeDecorator((btNodeType*)QObject::sender()->parent());
-    setupPropertyView();
-    emit treeModelUpdate();
-}
-
 void btPropertyWidget::dragDropUpdate()
 {
     if(m_node != NULL)
+    {        
         setupPropertyView();
+    }
 }
 
 void btPropertyWidget::updateTreeModel()

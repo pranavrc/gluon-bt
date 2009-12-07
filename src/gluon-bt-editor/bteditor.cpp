@@ -1,3 +1,4 @@
+
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QFile>
@@ -22,6 +23,7 @@
 bteditor::bteditor(QWidget *parent)
 {
     m_currentBehaviorTree = NULL;
+    oldPropertyWidget = NULL;
     
     setupUi(this);
     propertyWidget = new btPropertyWidget(this);
@@ -118,12 +120,35 @@ void bteditor::editorSelectionChanged(const QItemSelection& selected, const QIte
 
 void bteditor::showPropertiesFor(btEditorNode* showFor)
 {
-    if(propertyWidget == NULL)
+    /*if(propertyWidget == NULL)
     {
         propertyWidget = new btPropertyWidget(this);
         propertyScrollArea->setWidget(propertyWidget);
         connect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
+    }*/
+    
+    if(oldPropertyWidget)
+    {
+        delete oldPropertyWidget;
+        oldPropertyWidget = NULL;
     }
+
+    if(propertyWidget)
+    {
+        oldPropertyWidget = qobject_cast<btPropertyWidget*>(propertyScrollArea->takeWidget());
+        disconnect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
+    }
+    
+    if(propertyWidget->node())
+    {
+        disconnect(propertyWidget->node(), SIGNAL(updatePropertyWidget(btEditorNode*)), this, SLOT(showFor(btEditorNode*)));
+    }
+    
+    
+    propertyWidget = new btPropertyWidget(this);
+    propertyScrollArea->setWidget(propertyWidget);
+    connect(m_currentBehaviorTree, SIGNAL(addRemoveBTNode()), propertyWidget, SLOT(dragDropUpdate()));
+    connect(showFor, SIGNAL(updatePropertyWidget(btEditorNode*)), this, SLOT(showFor(btEditorNode*)));
     propertyWidget->setNode(showFor);
 }
 
@@ -417,6 +442,11 @@ void bteditor::on_actionNew_Tree_triggered()
 void bteditor::updateView(const QModelIndex& one, const QModelIndex& two)
 {
     this->btEditor->scrollTo(one);
+}
+
+void bteditor::showFor(btEditorNode* node)
+{
+    this->showPropertiesFor(node);
 }
 
 #include "bteditor.moc"
