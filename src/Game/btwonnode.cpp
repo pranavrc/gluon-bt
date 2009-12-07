@@ -23,8 +23,10 @@ bool btWonNode::run(btCharacter *self)
         ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
           if(((Enemy*)self)->target->square.x() == property("x").toInt()){
         if(((Enemy*)self)->target->square.y() == property("y").toInt()){
+            ((Enemy*)self)->eventMutex.unlock();
             return true;
         }
+        ((Enemy*)self)->eventMutex.unlock();
     }
 
     }

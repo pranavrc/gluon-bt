@@ -17,6 +17,7 @@ bool btLoopNode::run(btCharacter *self)
             }
             if(!parentNode()->child(i)->runBehavior(self))
             {
+                qDebug("out of loop");
                 return false;
             }
         }

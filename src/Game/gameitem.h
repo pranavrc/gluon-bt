@@ -27,6 +27,8 @@ Q_SIGNALS:
 public:
     bool blocks();
     void setBlocks(bool value);
+    bool goal();
+    void setGoal(bool value);
     void setupAnimation();
     void setAnimationStep(QPoint from, QPoint to,Direction dir);
     QTimeLine *timer;
@@ -39,6 +41,7 @@ public:
 protected:
     QPolygonF myPolygon;
     bool blocking;
+    bool isGoal;
     QGraphicsItemAnimation *animation;
     Direction dir;
     int delay;

@@ -39,9 +39,10 @@ void Agent::unlock()
 {
     returnValue = false;
     qDebug() << "unlock";
-    mutex->unlock();
+    //mutex->unlock();
     waitCond->wakeAll();
-    eventMutex->unlock();
+    qDebug() << "unlock2";
+    //eventMutex->unlock();
     eventCond->wakeAll();
 }
 
@@ -72,10 +73,10 @@ void Agent::sayHello()
     //qDebug() << "callback";
     if(count >= 1){
         returnValue = true;
-        mutex->unlock();
+        //mutex->unlock();
         waitCond->wakeAll();
     }
-    eventMutex->unlock();
+    //eventMutex->unlock();
     eventCond->wakeAll();
 }
 

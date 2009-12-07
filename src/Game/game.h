@@ -17,6 +17,7 @@ public:
     Agent* agent;
     void drawItems();
     GameItem* board[16][16];
+    QList<GameItem*> goals;
     void reset();
     void keyPressEvent(QKeyEvent *event){
        qDebug() << event->key();

@@ -6,7 +6,7 @@
 #include <QObject>
 
 void GameItem::setupAnimation(){
-     timer = new QTimeLine(250);
+     timer = new QTimeLine(200);
      timer->setFrameRange(0, 2);
 
      animation = new QGraphicsItemAnimation;
@@ -184,6 +184,16 @@ bool GameItem::blocks()
 void GameItem::setBlocks(bool value)
 {
     blocking = value;
+}
+
+bool GameItem::goal()
+{
+    return isGoal;
+}
+
+void GameItem::setGoal(bool value)
+{
+    isGoal = value;
 }
 
 //#include "gameitem.moc"
