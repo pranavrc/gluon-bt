@@ -25,8 +25,9 @@ void Worker::run()
         qDebug("terminating threads");
         if(worker != this){
             worker->node->type()->setStopFlag(true);
-            ((Enemy*)self)->mutex.unlock();
+            //((Enemy*)self)->mutex.unlock();
             ((Enemy*)self)->finished.wakeAll();
+           // ((Enemy*)self)->eventCond.wakeAll();
         }
     }
     qDebug() << "value: " << value;

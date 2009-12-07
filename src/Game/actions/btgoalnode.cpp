@@ -21,6 +21,7 @@ bool btGoalNode::run(btCharacter *self)
     while(true){
         // dette her er noget en parallel skal håndtere
             qDebug() << "condition called";
+            ((Enemy*)self)->eventMutex.lock();
         ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
           if(((Enemy*)self)->target->game->board[((Enemy*)self)->target->square.x()][((Enemy*)self)->target->square.y()]->goal()){
               ((Enemy*)self)->target->game->board[((Enemy*)self)->target->square.x()][((Enemy*)self)->target->square.y()]->setGoal(false);

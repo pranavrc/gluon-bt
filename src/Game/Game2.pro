@@ -63,5 +63,5 @@ HEADERS += mainwindow.h \
     actions/btgoalnode.h
 INCLUDEPATH += ../gluon-bt-lib \
     ../gluon-bt-common
-LIBS += ../gluon-bt-lib/qtcreator-build/libbtlib.so
+LIBS += ../gluon-bt-lib/qtcreator-build/libbtlib.dll
 FORMS += mainwindow.ui
