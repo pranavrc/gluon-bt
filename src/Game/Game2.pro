@@ -34,7 +34,9 @@ SOURCES += main.cpp \
     actions/btlearningnode.cpp \
     actions/btgoalnode.cpp \
     player.cpp \
-    guard.cpp
+    guard.cpp \
+    scenario.cpp \
+    scenarioset.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -64,7 +66,9 @@ HEADERS += mainwindow.h \
     actions/btlearningnode.h \
     actions/btgoalnode.h \
     player.h \
-    guard.h
+    guard.h \
+    scenario.h \
+    scenarioset.h
 INCLUDEPATH += ../gluon-bt-lib \
     ../gluon-bt-common
 LIBS += ../gluon-bt-lib/qtcreator-build/libbtlib.dll

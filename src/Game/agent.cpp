@@ -128,3 +128,19 @@ bool Agent::stopMove()
     animation->clear();
 }
 
+bool Agent::collision(){
+    if(!scene()->collidingItems(this).isEmpty()){
+        foreach(QGraphicsItem* item,scene()->collidingItems(this)){
+            if(item == static_cast<QGraphicsItem*>(this)){
+                continue;
+            }
+            if(item->zValue() >= 10){
+                returnValue = true;
+            }
+        }
+        qDebug() << "hey";
+        returnValue = false;
+    }
+}
+
+

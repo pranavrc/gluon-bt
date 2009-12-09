@@ -22,14 +22,10 @@ bool isCollided::run(btCharacter *self)
     while(true){
         ((Enemy*)self)->eventMutex.lock();
                 ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
-        if((occupant != NULL) && (occupant != ((Enemy*)self)->target)){
-            if(occupant->square == ((Enemy*)self)->target->square){
-               occupant->collided();
-                ((Enemy*)self)->eventMutex.unlock();
-                return true;
-            }
-
-        }
+                if(((Enemy*)self)->collision() == true){
+                    return true;
+                }
+        
         ((Enemy*)self)->eventMutex.unlock();
 
     }

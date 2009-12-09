@@ -24,6 +24,7 @@ Q_SIGNALS:
     void backSignal();
     void relativeLeftSignal();
     void relativeRightSignal();
+    void collisionSignal();
 
 public:
     bool start();
@@ -38,6 +39,7 @@ public:
     bool relativeRight();
 
     bool stopMove();
+    bool collision();
     QWaitCondition finished;
     QMutex mutex;
     QWaitCondition eventCond;

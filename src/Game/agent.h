@@ -38,6 +38,7 @@ public Q_SLOTS:
     bool forward();
     bool back();
     bool stopMove();
+    bool collision();
 };
 
 #endif // AGENT_H

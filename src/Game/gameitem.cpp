@@ -5,6 +5,16 @@
 #include <QGraphicsItemAnimation>
 #include <QObject>
 
+bool GameItem::collidesWithItem(const QGraphicsItem * other)
+{
+    qDebug("something happened");
+    if(other->zValue() < 9){
+        return false;
+    }else{
+        return QGraphicsItem::collidesWithItem(other);
+    }
+}
+
 void GameItem::setupAnimation(){
      timer = new QTimeLine(200);
 

@@ -37,6 +37,8 @@ Enemy::Enemy(Agent *target,btNode* tree)
                      this->target, SLOT(relativeRight()));
     QObject::connect(this, SIGNAL(moveCloserSignal()),
                      this->target, SLOT(moveCloser()));
+    QObject::connect(this, SIGNAL(collisionSignal()),
+                     this->target, SLOT(collision()));
 }
 
 bool Enemy::goDown()
@@ -148,6 +150,18 @@ bool Enemy::relativeRight(){
     this->finished.wait(&(this->mutex));
     qDebug("finished waiting");
     this->mutex.unlock();
+    qDebug("unlocked now");
+    return this->target->returnValue;
+}
+
+bool Enemy::collision(){
+    qDebug("about to lock");
+   //this->mutex.lock();
+    emit collisionSignal();
+    //    this->mutex.lock();
+    //this->finished.wait(&(this->mutex));
+    qDebug("finished waiting");
+   // this->mutex.unlock();
     qDebug("unlocked now");
     return this->target->returnValue;
 }
