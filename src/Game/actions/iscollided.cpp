@@ -22,7 +22,9 @@ bool isCollided::run(btCharacter *self)
     while(true){
         ((Enemy*)self)->eventMutex.lock();
                 ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
+
                 if(((Enemy*)self)->collision() == true){
+                    qDebug() << "behavior tree collision detected";
                     return true;
                 }
         

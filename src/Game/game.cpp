@@ -36,7 +36,7 @@ Game::Game()
                 board[j][i]->setGoal(false);
                 board[j][i]->setBrush(Qt::red);
                 board[j][i]->setBlocks(true);
-                board[j][i]->setZValue(8);
+                board[j][i]->setZValue(0);
             }else if(locations[i][j] == 0){
                 board[j][i] = new GameItem(j,i,this);
                 board[j][i]->setBlocks(false);

@@ -19,6 +19,7 @@ public:
     enum Direction { Up = 0, Down, Left, Right};
     virtual void setSquare(int x,int y);
     bool collidesWithItem(const QGraphicsItem * other);
+
 public Q_SLOTS:
     bool goUp();
     bool goDown();

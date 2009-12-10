@@ -6,21 +6,35 @@
 
 class ScenarioSet : public QObject
 {
+    Q_OBJECT
+    Q_PROPERTY(float wchallenge READ wchallenge WRITE setWChallenge)
+    Q_PROPERTY(float wbehavior READ wbehavior WRITE setWBehavior)
+    Q_PROPERTY(float wspatial READ wspatial WRITE setWSpatial)
 public:
     ScenarioSet();
-    void save();
-    void load();
+    void save(QString filename);
+    void load(QString filename);
     float calculateInterest();
     float calculateSpatialDiversity();
     float calculateBehavioralDiversity();
     float calculateChallengeLevel();
 
-    float calcAverageKillTime();
     int findMaxKillTime();
     int findMinKillTime();
+    float calcAverageKillTime();
     float calcMaximumDeviation();
     float calcStandardDeviation();
-    //void visit(int x,int y);
+
+    void addScenario(Scenario* scenario);
+
+    float wchallenge() const {return wt;}
+    void setWChallenge(float wchallenge) {wt = wchallenge;}
+
+    float wbehavior() const {return ws;}
+    void setWBehavior(float wbehavior) {ws = wbehavior;}
+
+    float wspatial() const {return we;}
+    void setWSpatial(float wspatial) {we = wspatial;}
 
 private:
     QList<Scenario*> scenarios;
@@ -33,9 +47,9 @@ private:
     float p3;
 
     // interest weights
-    float wt;
-    float ws;
-    float we;
+    float wt;   // challenge
+    float ws;   // behavior
+    float we;   // spatial
 };
 
 #endif // SCENARIOSET_H

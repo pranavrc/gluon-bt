@@ -10,7 +10,7 @@ public:
     void visit(int x,int y);
     void killed();
 
-    float calculateGoodness();
+    float calculateInterest();
     float calculateSpatialDiversity();
     float calculateChallengeLevel();
     int getKillTime();

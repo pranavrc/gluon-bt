@@ -155,15 +155,9 @@ bool Enemy::relativeRight(){
 }
 
 bool Enemy::collision(){
-    qDebug("about to lock");
-   //this->mutex.lock();
-    emit collisionSignal();
-    //    this->mutex.lock();
-    //this->finished.wait(&(this->mutex));
-    qDebug("finished waiting");
-   // this->mutex.unlock();
-    qDebug("unlocked now");
-    return this->target->returnValue;
+    //qDebug("about to lock");
+    //emit collisionSignal();
+    return this->target->collided;
 }
 
 

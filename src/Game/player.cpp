@@ -6,6 +6,7 @@ Player::Player(Game* game,QPoint pos)
         : Agent(game,pos)
 {
     score = 0;
+    setZValue(13);
 }
 
 void Player::sayHello()

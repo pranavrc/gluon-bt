@@ -7,5 +7,5 @@
 Guard::Guard(Game* game,QPoint pos)
         : Agent(game,pos)
 {
-    this->setZValue(9);
+    this->setZValue(12);
 }

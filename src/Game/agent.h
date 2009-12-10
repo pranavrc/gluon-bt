@@ -29,6 +29,11 @@ public:
     void setEventCondition(QWaitCondition *eventCond){this->eventCond = eventCond;}
 
     bool returnValue;
+    bool collided;
+
+    void paint(QPainter *painter,
+                           const QStyleOptionGraphicsItem *option,
+                           QWidget *widget);
 public Q_SLOTS:
     virtual void sayHello();
     virtual void unlock();

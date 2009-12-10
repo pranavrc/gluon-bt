@@ -1,32 +1,46 @@
 #include "scenarioset.h"
 #include "math.h"
+#include <QFile>
+#include <QDebug>
 
 ScenarioSet::ScenarioSet()
 {
-    wt = 1 / 3;
-    ws = 1 / 3;
-    we = 1 / 3;
+    wt = 0.333;
+    ws = 0.333;
+    we = 0.333;
 }
 
 // Load the game scenarios from a file
-void ScenarioSet::save()
+void ScenarioSet::save(QString filename)
 {
 
 }
 
 // Save the game scenarios to a file
-void ScenarioSet::load()
+void ScenarioSet::load(QString filename)
 {
 
+}
+
+// Add a scenario to the set
+void ScenarioSet::addScenario(Scenario* scenario)
+{
+    scenarios.append(scenario);
 }
 
 // Calculate the overall performance of the behavior.
 // Uses entertainment metrics.
 float ScenarioSet::calculateInterest()
 {
-    return ((wt * calculateChallengeLevel()) +
-            (ws * calculateBehavioralDiversity()) +
-            (we * calculateSpatialDiversity())) / (wt + ws + we);
+    float challengeLevel = calculateChallengeLevel();
+    float behavioralDiversity = calculateBehavioralDiversity();
+    float spatialDiversity = calculateSpatialDiversity();
+    qDebug() << "Challenge Level: " << challengeLevel;
+    qDebug() << "Behavioral Diversity: " << behavioralDiversity;
+    qDebug() << "Spatial Diversity: " << spatialDiversity;
+    return ((wt * challengeLevel) +
+            (ws * behavioralDiversity) +
+            (we * spatialDiversity)) / (wt + ws + we);
 }
 
 // called H in the litterature
@@ -38,7 +52,7 @@ float ScenarioSet::calculateSpatialDiversity()
         foreach(Scenario* s, scenarios){
             diversity += s->calculateSpatialDiversity();
         }
-        return diversity / scenarios.count();
+        return diversity / static_cast<float>(scenarios.count());
     }else{
         return 0.0;
     }
@@ -48,16 +62,24 @@ float ScenarioSet::calculateSpatialDiversity()
 // Calculate how diverse the behavior is
 float ScenarioSet::calculateBehavioralDiversity()
 {
-    return calcStandardDeviation() / calcMaximumDeviation();
+    float maximumDeviation = calcMaximumDeviation();
+    float standardDeviation = calcStandardDeviation();
+    qDebug() << "Behavior Standard Deviation: " << standardDeviation;
+    qDebug() << "Behavior Max Deviation: " << maximumDeviation;
+    if(maximumDeviation > 0){
+        return standardDeviation / maximumDeviation;
+    }else{
+        return 0.0;
+    }
 }
 
 // called T in the litterature
 // Calculate the level of challenge
 float ScenarioSet::calculateChallengeLevel()
 {
-    int maxkilltime = 0;
-    if((maxkilltime = findMaxKillTime()) != 0){
-        return 1 - (calcAverageKillTime() / maxkilltime);
+    int maxkilltime = findMaxKillTime();
+    if(maxkilltime != 0){
+        return 1 - (calcAverageKillTime() / static_cast<float>(maxkilltime));
     }else{
         return 0.0;
     }
@@ -72,7 +94,7 @@ float ScenarioSet::calcAverageKillTime()
         foreach(Scenario* s, scenarios){
             steps += s->getKillTime();
         }
-        return steps / scenarios.count();
+        return static_cast<float>(steps) / static_cast<float>(scenarios.count());
     }else{
         return 0.0;
     }
@@ -106,7 +128,7 @@ int ScenarioSet::findMinKillTime()
 // Calculate the maximum standard deviation in killtime
 float ScenarioSet::calcMaximumDeviation()
 {
-    return 0.5 * sqrt(scenarios.count()/(scenarios.count() - 1)) * (findMaxKillTime() - findMinKillTime());
+    return 0.5 * sqrt(static_cast<float>(scenarios.count())/(static_cast<float>(scenarios.count()) - 1.0)) * (findMaxKillTime() - findMinKillTime());
 }
 
 // Calculate the standard deviation in killtime
@@ -120,11 +142,12 @@ float ScenarioSet::calcStandardDeviation()
         foreach(Scenario* s, scenarios){
             sum += pow(s->getKillTime() - u,2);
         }
-        return sqrt( sum / scenarios.count() );
+        return sqrt( sum / static_cast<float>(scenarios.count()) );
     }else{
         return 1.0;
     }
 }
+
 
 
 

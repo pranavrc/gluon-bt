@@ -6,7 +6,7 @@
 
 Agent::Agent()
 {
-
+    collided = false;
 }
 
 Agent::Agent(Game* game)
@@ -34,6 +34,19 @@ Agent::Agent(Game* game,QPoint pos)
     this->setSquare(pos.x(),pos.y());
     this->returnValue = true;
 }
+
+ void Agent::paint(QPainter *painter,
+                           const QStyleOptionGraphicsItem *option,
+                           QWidget *widget)
+ {
+     QGraphicsPolygonItem::paint(painter,option,widget);
+     if(collision() == true){
+        qDebug() << "coliided and repainted";
+        collided = true;
+    }else{
+        collided = false;
+    }
+ }
 
 void Agent::unlock()
 {
@@ -136,9 +149,13 @@ bool Agent::collision(){
             }
             if(item->zValue() >= 10){
                 returnValue = true;
+                qDebug() << "collision";
+                return true;
             }
         }
-        qDebug() << "hey";
+        //qDebug() << "hey";
+        return false;
+        qDebug() << "no collision";
         returnValue = false;
     }
 }

@@ -10,6 +10,7 @@ public:
     void sayHello();
     void setSquare(int x,int y);
     void collided();
+
 private:
     int score;
 };
