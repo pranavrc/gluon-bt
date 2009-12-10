@@ -10,6 +10,7 @@ public:
     Runner();
     Runner(Enemy *target);
     void run();
+    Enemy* getTarget();
 private:
     Enemy* target;
 };

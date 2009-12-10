@@ -21,6 +21,7 @@ bool btParallelNode::run(btCharacter *self)
     qDebug() << "Parallel Execution Started";
     foreach(Worker* w,workers){
         qDebug() << "First worker";
+        w->terminate();
         w->setSelf(self);
         w->start();
 

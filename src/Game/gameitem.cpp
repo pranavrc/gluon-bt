@@ -200,7 +200,8 @@ void GameItem::setBlocks(bool value)
 
 bool GameItem::goal()
 {
-    return isGoal;
+    //return isGoal;
+    return false;
 }
 
 void GameItem::setGoal(bool value)

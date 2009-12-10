@@ -16,7 +16,11 @@ void Player::sayHello()
 }
 
 void Player::setSquare(int x,int y){
-    if(this->game->board[x][y]->occupant != NULL || this->game->board[square.x()][square.y()]->occupant != this ){
+    /*if(this->game->board[x][y]->occupant != NULL || this->game->board[square.x()][square.y()]->occupant != this ){
+        qDebug("You Lost");
+    }*/
+
+    if(collided == true){
         qDebug("You Lost");
     }
     if(this->game->board[x][y]->goal()){
@@ -30,6 +34,14 @@ void Player::setSquare(int x,int y){
     Agent::setSquare(x,y);
 }
 
-void Player::collided(){
-    qDebug("You Lost");
-}
+ void Player::paint(QPainter *painter,
+                           const QStyleOptionGraphicsItem *option,
+                           QWidget *widget)
+ {
+     QGraphicsPolygonItem::paint(painter,option,widget);
+     if(collision() == true){
+        qDebug() << "player collided";
+        collided = true;
+    }
+
+ }

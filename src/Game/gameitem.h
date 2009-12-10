@@ -16,7 +16,7 @@ public:
     GameItem();
     GameItem(Game* game);
     GameItem(int x,int y,Game* game);
-    enum Direction { Up = 0, Down, Left, Right};
+    enum Direction { Up = 0, Down, Left, Right, None};
     virtual void setSquare(int x,int y);
     bool collidesWithItem(const QGraphicsItem * other);
 
@@ -40,11 +40,11 @@ public:
     bool move(Direction dir);
     GameItem* occupant;
     QPoint square;
-        Game* game;
+    Game* game;
+    bool isGoal;
 protected:
     QPolygonF myPolygon;
     bool blocking;
-    bool isGoal;
     QGraphicsItemAnimation *animation;
     Direction dir;
     int delay;

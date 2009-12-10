@@ -90,6 +90,7 @@ void Agent::sayHello()
         waitCond->wakeAll();
     }
     //eventMutex->unlock();
+    //collided = false;   // don't know if this is the right place
     eventCond->wakeAll();
 }
 
@@ -148,7 +149,7 @@ bool Agent::collision(){
                 continue;
             }
             if(item->zValue() >= 10){
-                returnValue = true;
+                //returnValue = true;
                 qDebug() << "collision";
                 return true;
             }
@@ -156,7 +157,7 @@ bool Agent::collision(){
         //qDebug() << "hey";
         return false;
         qDebug() << "no collision";
-        returnValue = false;
+        //returnValue = false;
     }
 }
 

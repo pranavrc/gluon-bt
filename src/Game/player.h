@@ -9,7 +9,9 @@ public:
     Player(Game* game,QPoint pos);
     void sayHello();
     void setSquare(int x,int y);
-    void collided();
+    void Player::paint(QPainter *painter,
+                           const QStyleOptionGraphicsItem *option,
+                           QWidget *widget);
 
 private:
     int score;

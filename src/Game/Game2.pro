@@ -36,7 +36,8 @@ SOURCES += main.cpp \
     player.cpp \
     guard.cpp \
     scenario.cpp \
-    scenarioset.cpp
+    scenarioset.cpp \
+    actions/btnotnode.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -68,7 +69,8 @@ HEADERS += mainwindow.h \
     player.h \
     guard.h \
     scenario.h \
-    scenarioset.h
+    scenarioset.h \
+    actions/btnotnode.h
 INCLUDEPATH += ../gluon-bt-lib \
     ../gluon-bt-common
 LIBS += ../gluon-bt-lib/qtcreator-build/libbtlib.dll

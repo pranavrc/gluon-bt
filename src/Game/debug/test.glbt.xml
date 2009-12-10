@@ -47,6 +47,8 @@
 		</nodetype>
 		<nodetype name="Is Goal" description="" classname="btGoalNode" category="condition">
 		</nodetype>
+		<nodetype name="Not" description="Invert the return value" classname="btNotNode" category="decorator">
+		</nodetype>
 	</nodetypes>
 	<behaviortrees>
 		<behaviortree name="New Tree" description="" uid="0">

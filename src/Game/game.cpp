@@ -102,7 +102,7 @@ Game::Game()
 
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
 
-    Runner *runner = new Runner(enemy);
+    runner = new Runner(enemy);
     runner->start();
     //Runner *runner2 = new Runner(enemy2);
     //runner2->start();
@@ -118,11 +118,20 @@ void Game::reset()
     for(int i = 0; i < 15; ++i){
         for(int j = 0;j < 15; ++j){
             board[i][j]->setVisible(true);
-            if(board[i][j]->occupant != NULL){
-                board[i][j]->occupant->setSquare(0,0);
-            }
+            /*if(board[i][j]->occupant != NULL){
+                board[i][j]->occupant->setSquare(qrand() % 14, qrand() % 14);
+            }*/
         }
     }
+    marker->setSquare(0,0);
+    agent->setSquare(14,14);
+    agent->setDirection(GameItem::None);
+
+    //Enemy* target = runner->getTarget();
+    //runner->terminate();
+    //delete runner;
+    //runner = new Runner(target);
+    //runner->start();
 }
 
 void Game::drawItems(){

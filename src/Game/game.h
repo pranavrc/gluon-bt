@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QTimeLine>
+#include "runner.h"
 
 class GameItem;
 
@@ -19,6 +20,7 @@ public:
     Guard* agent2;
     Guard* agent3;
     Guard* agent4;
+    Runner *runner;
     void drawItems();
     GameItem* board[16][16];
     QList<GameItem*> goals;
