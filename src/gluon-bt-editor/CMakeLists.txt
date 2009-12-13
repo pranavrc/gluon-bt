@@ -20,6 +20,7 @@ set(bteditor_SRCS
     bteditornode.cpp
     ../gluon-bt-common/btnode.cpp
     ../gluon-bt-common/btnodetype.cpp
+    ../gluon-bt-common/btcharacter.cpp
     bteditornodetype.cpp
     btnodetypesmodel.cpp
     btnodetypesmodelnode.cpp
