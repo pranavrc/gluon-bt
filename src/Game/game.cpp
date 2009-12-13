@@ -73,7 +73,7 @@ Game::Game()
     marker = new Player(this,QPoint(0,14));//new GameItem(this);
     //marker->setPos(10.0,10.0);
     marker->setBrush(Qt::yellow);
-    marker->setZValue(10);
+    marker->setZValue(13);
     this->addItem(marker);
 
     // --------------------------------------

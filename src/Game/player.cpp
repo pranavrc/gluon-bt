@@ -7,6 +7,7 @@ Player::Player(Game* game,QPoint pos)
 {
     score = 0;
     setZValue(13);
+    collided = false;
 }
 
 void Player::sayHello()

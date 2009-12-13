@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include "enemy.h"
+#include "randgenerator.h"
 
 Worker::Worker(btNode* node,btParallelNode* parent)
 {
@@ -18,7 +19,9 @@ void Worker::setSelf(btCharacter *self)
 void Worker::run()
 {
     qDebug() << "worker run";
-    qsrand(QDateTime::currentDateTime().toTime_t() - (int)QThread::currentThreadId());
+    //qsrand(QDateTime::currentDateTime().toTime_t() - (int)QThread::currentThreadId());
+    //qDebug() << "random number: " << qrand();
+    //qDebug() << "random number: " << RandGenerator::instance()->rand();
     value = node->runBehavior(this->self);
     // this is a hack, this does not work
     foreach(Worker* worker,parent->workers){

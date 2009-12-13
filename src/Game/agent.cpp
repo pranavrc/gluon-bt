@@ -19,6 +19,7 @@ Agent::Agent(Game* game)
                      this, SLOT(unlock()));
 
     this->setBrush(QBrush(QColor(Qt::green)));
+    collided = false;
 }
 
 Agent::Agent(Game* game,QPoint pos)
@@ -33,6 +34,7 @@ Agent::Agent(Game* game,QPoint pos)
     this->setBrush(QBrush(QColor(Qt::green)));
     this->setSquare(pos.x(),pos.y());
     this->returnValue = true;
+    collided = false;
 }
 
  void Agent::paint(QPainter *painter,

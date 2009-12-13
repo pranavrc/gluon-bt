@@ -1,7 +1,6 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-11-13T00:31:17
 # -------------------------------------------------
-QT += testlib
 TARGET = Game
 TEMPLATE = app
 SOURCES += main.cpp \
@@ -37,7 +36,8 @@ SOURCES += main.cpp \
     guard.cpp \
     scenario.cpp \
     scenarioset.cpp \
-    actions/btnotnode.cpp
+    actions/btnotnode.cpp \
+    randgenerator.cpp
 HEADERS += mainwindow.h \
     game.h \
     gameitem.h \
@@ -70,7 +70,8 @@ HEADERS += mainwindow.h \
     guard.h \
     scenario.h \
     scenarioset.h \
-    actions/btnotnode.h
+    actions/btnotnode.h \
+    randgenerator.h
 INCLUDEPATH += ../gluon-bt-lib \
     ../gluon-bt-common
 LIBS += ../gluon-bt-lib/qtcreator-build/libbtlib.dll
