@@ -33,3 +33,4 @@ bool btWonNode::run(btCharacter *self)
     return false;
 }
 
+#include "btwonnode.moc"

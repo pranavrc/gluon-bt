@@ -34,6 +34,8 @@ public:
     void paint(QPainter *painter,
                            const QStyleOptionGraphicsItem *option,
                            QWidget *widget);
+    bool collision();
+
 public Q_SLOTS:
     virtual void sayHello();
     virtual void unlock();
@@ -43,7 +45,6 @@ public Q_SLOTS:
     bool forward();
     bool back();
     bool stopMove();
-    bool collision();
 };
 
 #endif // AGENT_H

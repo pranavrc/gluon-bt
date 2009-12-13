@@ -29,10 +29,10 @@ bool btProbSelectorNode::run(btCharacter *self)
             if(node->visited == false){
                 if(intStart < randNum && randNum <= (node->wp + intStart)){
                    qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
-                   if(stopFlag()){  // måske kan man gøre det til en del af runBehavior ?
+                   /*if(stopFlag()){  // måske kan man gøre det til en del af runBehavior ?
                        setStopFlag(false);
                        return false;
-                   }
+                   }*/
                     if(parentNode()->child(inc)->runBehavior(self)){
                         qDebug("behavior run succes");
                         node->succes += 1;
@@ -103,4 +103,6 @@ void btProbSelectorNode::childrenAdded()
     }
     qDebug("den er ikke her");
 }
+
+#include "btprobabilisticselectornode.moc"
 

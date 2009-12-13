@@ -49,3 +49,5 @@ void btLearningNode::calculateProbability()
    qDebug() << "-------------------";
     qDebug() << "";
 }
+
+#include "btlearningnode.moc"

@@ -23,12 +23,14 @@ void Player::setSquare(int x,int y){
 
     if(collided == true){
         qDebug("You Lost");
+        emit pacmanLost();
     }
     if(this->game->board[x][y]->goal()){
         score++;
         if(score >= 5){
             qDebug("You Won");
             this->setBrush(QBrush(QColor(Qt::gray)));
+            emit pacmanWon();
         }
     }
 
@@ -40,6 +42,10 @@ void Player::setSquare(int x,int y){
                            QWidget *widget)
  {
      QGraphicsPolygonItem::paint(painter,option,widget);
+
+     //qDebug() << "collided: " << collided;
+     //qDebug() << "returnvalue: " << returnValue;
+
      if(collision() == true){
         qDebug() << "player collided";
         collided = true;

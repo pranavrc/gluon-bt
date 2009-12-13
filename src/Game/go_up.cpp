@@ -18,3 +18,4 @@ bool goUpNode::run(btCharacter *self)
     return ((Enemy*)self)->goUp();
 }
 
+#include "go_up.moc"

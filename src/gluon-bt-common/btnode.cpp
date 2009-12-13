@@ -29,6 +29,27 @@ btNode::~btNode()
 
 bool btNode::runBehavior(btCharacter* self)
 {    
+/*if(m_type)
+    {
+        if(!m_type->run(self))
+        {
+            return false;
+        }
+    }
+    
+    return true;*/
+    
+    if(!self->continueThinking())
+    {
+        qDebug() << "character requested stopping";
+        return false;
+    }
+        
+    return run(self);
+}
+
+bool btNode::run(btCharacter* self)
+{    
     if(m_type)
     {
         if(!m_type->run(self))

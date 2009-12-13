@@ -76,6 +76,7 @@ Game::Game()
     marker->setZValue(13);
     this->addItem(marker);
 
+
     // --------------------------------------
     QString fileName = "test.glbt.xml";
 
@@ -103,6 +104,7 @@ Game::Game()
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
 
     runner = new Runner(enemy);
+    connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
     runner->start();
     //Runner *runner2 = new Runner(enemy2);
     //runner2->start();
@@ -115,25 +117,58 @@ Game::Game()
 
 void Game::reset()
 {
-    for(int i = 0; i < 15; ++i){
+  /*  for(int i = 0; i < 15; ++i){
         for(int j = 0;j < 15; ++j){
             board[i][j]->setVisible(true);
             /*if(board[i][j]->occupant != NULL){
                 board[i][j]->occupant->setSquare(qrand() % 14, qrand() % 14);
             }*/
+        /*}
+    }
+    marker->setSquare(0,0);
+    agent->setSquare(14,14);
+    agent->setDirection(GameItem::None);*/
+
+    Enemy* target = runner->getTarget();
+    target->stopThinking();
+    qDebug() << "stop thinking";
+    //runner->wait();
+    //runner->terminate();
+    
+/*    delete runner;
+    runner = new Runner(target);
+    target->startThinking();
+    runner->start();*/
+}
+
+void Game::resetGame()
+{
+    qDebug() << "resetting";
+    for(int i = 0; i < 15; ++i){
+        for(int j = 0;j < 15; ++j){
+            board[i][j]->setVisible(true);
+            /*if(board[i][j]->occupant != NULL){
+             board[i][j]->occupant->setSquare(qrand() % 14, qrand() % 14);
+             }*/
         }
     }
     marker->setSquare(0,0);
     agent->setSquare(14,14);
     agent->setDirection(GameItem::None);
-
-    //Enemy* target = runner->getTarget();
-    //runner->terminate();
-    //delete runner;
-    //runner = new Runner(target);
-    //runner->start();
+    
+    Enemy* target = runner->getTarget();
+    
+    delete runner;
+    runner = new Runner(target);
+    connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
+    target->startThinking();
+    marker->collided = false;
+    agent->collided = false;
+    runner->start();
 }
 
 void Game::drawItems(){
 
 }
+
+#include "game.moc"

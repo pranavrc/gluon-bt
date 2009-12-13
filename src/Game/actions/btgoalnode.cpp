@@ -34,3 +34,4 @@ bool btGoalNode::run(btCharacter *self)
     return false;
 }
 
+#include "btgoalnode.moc"

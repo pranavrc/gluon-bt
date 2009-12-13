@@ -13,6 +13,7 @@ class GameItem;
 
 class Game : public QGraphicsScene
 {
+    Q_OBJECT
 public:
     Game();
     Player* marker;
@@ -49,6 +50,10 @@ public:
 
         QGraphicsScene::keyPressEvent(event);
     }
+    
+public Q_SLOTS:
+    void resetGame();
+    
 private:
 
 };

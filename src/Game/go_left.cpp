@@ -17,3 +17,4 @@ bool goLeftNode::run(btCharacter *self)
     return ((Enemy*)self)->goLeft();
 }
 
+#include "go_left.moc"

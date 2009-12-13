@@ -6,6 +6,7 @@
 
 class Runner : public QThread
 {
+    Q_OBJECT
 public:
     Runner();
     Runner(Enemy *target);
