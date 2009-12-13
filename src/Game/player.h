@@ -9,7 +9,7 @@ public:
     Player(Game* game,QPoint pos);
     void sayHello();
     void setSquare(int x,int y);
-    void Player::paint(QPainter *painter,
+    void paint(QPainter *painter,
                            const QStyleOptionGraphicsItem *option,
                            QWidget *widget);
 
