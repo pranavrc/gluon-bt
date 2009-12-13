@@ -73,5 +73,5 @@ HEADERS += mainwindow.h \
     actions/btnotnode.h
 INCLUDEPATH += ../gluon-bt-lib \
     ../gluon-bt-common
-LIBS += ../gluon-bt-lib/qtcreator-build/libbtlib.dll
+LIBS += ../gluon-bt-lib/build/libbtlib.dylib
 FORMS += mainwindow.ui

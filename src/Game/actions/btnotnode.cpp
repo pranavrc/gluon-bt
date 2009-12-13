@@ -12,3 +12,5 @@ bool btNotNode::run(btCharacter *self)
 	return !(parentNode()->child(0)->runBehavior(self));
 
 }
+
+#include "btnotnode.moc"

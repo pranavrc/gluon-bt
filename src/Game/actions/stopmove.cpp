@@ -18,3 +18,4 @@ bool stopMove::run(btCharacter *self)
     return ((Enemy*)self)->stopMove();
 }
 
+#include "stopmove.moc"

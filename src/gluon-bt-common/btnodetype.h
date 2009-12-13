@@ -15,7 +15,7 @@ class BT_LIB_EXPORT btNodeType : public QObject
     Q_PROPERTY(QString description READ description WRITE setDescription)
     Q_PROPERTY(nodeType type READ type WRITE setNodeType)
     Q_PROPERTY(QString className READ className WRITE setClassName )
-    Q_PROPERTY(bool stopFlag READ stopFlag WRITE setStopFlag )
+/*    Q_PROPERTY(bool stopFlag READ stopFlag WRITE setStopFlag )*/
     Q_ENUMS(nodeType)
 
 public:
@@ -48,8 +48,8 @@ public:
     virtual btNodeType * copy();
     virtual QString className() const;
     virtual void setClassName(QString className);
-    virtual void setStopFlag(bool stopFlag);
-    virtual bool stopFlag() const;
+/*    virtual void setStopFlag(bool stopFlag);
+    virtual bool stopFlag() const;*/
     
     void setPropertyDescription(QString propertyName, QString description);
     void setPropertyDescription(QString newPropertyName, QString oldPropertyName, QString description);
@@ -82,7 +82,7 @@ private:
     QString m_className;
     btNode* m_parent;
     nodeType m_type;
-    bool m_stopFlag;
+    //bool m_stopFlag;
     QHash<QString, QString> m_propertiesDescriptions;
 };
 

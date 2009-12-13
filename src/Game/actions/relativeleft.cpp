@@ -18,3 +18,4 @@ bool relativeLeft::run(btCharacter *self)
     return ((Enemy*)self)->relativeLeft();
 }
 
+#include "relativeleft.moc"

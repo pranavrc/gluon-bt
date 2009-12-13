@@ -18,7 +18,6 @@ public:
     GameItem(int x,int y,Game* game);
     enum Direction { Up = 0, Down, Left, Right, None};
     virtual void setSquare(int x,int y);
-    bool collidesWithItem(const QGraphicsItem * other);
 
 public Q_SLOTS:
     bool goUp();

@@ -26,3 +26,4 @@ bool moveCloserLeftRight::run(btCharacter *self)
     }
 }
 
+#include "movecloserleftright.moc"

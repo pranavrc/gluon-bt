@@ -21,17 +21,18 @@ bool btParallelNode::run(btCharacter *self)
     qDebug() << "Parallel Execution Started";
     foreach(Worker* w,workers){
         qDebug() << "First worker";
-        w->terminate();
+        //w->terminate();
         w->setSelf(self);
         w->start();
 
     }
 
     foreach(Worker* w,workers){
-        w->wait();
+        w->wait(600000); //10 mins
         qDebug() << "thread stopped";
     }
 qDebug("parallel done");
+    ((Enemy*)self)->finished.wakeAll();
     return decide();
 }
 
@@ -69,4 +70,6 @@ bool btParallelNode::decide()
     }
     return false;
 }
+
+#include "btparallelnode.moc"
 

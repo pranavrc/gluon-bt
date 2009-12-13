@@ -16,3 +16,5 @@ bool goRightNode::run(btCharacter *self)
     qDebug() << "goRightNode::run()";
     return ((Enemy*)self)->goRight();
 }
+
+#include "go_right.moc"

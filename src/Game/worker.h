@@ -6,6 +6,7 @@
 
 class Worker : public QThread
 {
+    Q_OBJECT
 public:
     Worker(btNode* node,btParallelNode* parent);
     Worker(){}

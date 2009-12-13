@@ -62,6 +62,8 @@ private:
     QString m_description;
 	QList<QVariant> nodeData;
     //QList<btNodeType*> m_decorators;
+    
+    bool run(btCharacter *self);
 };
 
 #endif // BTNODE_H

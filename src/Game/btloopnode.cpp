@@ -8,13 +8,13 @@ REGISTER_NODETYPE(btLoopNode)
 
 bool btLoopNode::run(btCharacter *self)
 {
-    while(!stopFlag()){
+    while(/*!stopFlag()*/self->continueThinking()){
         for(int i = 0; i < parentNode()->childCount(); i++)
         {
-            if(stopFlag()){
+            /*if(stopFlag()){
                 setStopFlag(false);
                 return false;
-            }
+            }*/
             if(!parentNode()->child(i)->runBehavior(self))
             {
                 qDebug("out of loop");
@@ -22,6 +22,8 @@ bool btLoopNode::run(btCharacter *self)
             }
         }
     }
-    setStopFlag(false);
+    //setStopFlag(false);
     return false; // tjek hvad det gør
 }
+
+#include "btloopnode.moc"

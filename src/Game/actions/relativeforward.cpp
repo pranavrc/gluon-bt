@@ -18,3 +18,4 @@ bool relativeForward::run(btCharacter *self)
     return ((Enemy*)self)->forward();
 }
 
+#include "relativeforward.moc"

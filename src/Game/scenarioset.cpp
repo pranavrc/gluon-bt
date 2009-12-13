@@ -148,9 +148,7 @@ float ScenarioSet::calcStandardDeviation()
     }
 }
 
-
-
-
+#include "scenarioset.moc"
 
 
 

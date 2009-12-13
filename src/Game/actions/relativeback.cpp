@@ -18,3 +18,4 @@ bool relativeBack::run(btCharacter *self)
     return ((Enemy*)self)->back();
 }
 
+#include "relativeback.moc"

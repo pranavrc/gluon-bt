@@ -13,6 +13,11 @@ public:
                            const QStyleOptionGraphicsItem *option,
                            QWidget *widget);
 
+Q_SIGNALS:
+    void pacmanWon();
+    void pacmanLost();
+    
+    
 private:
     int score;
 };

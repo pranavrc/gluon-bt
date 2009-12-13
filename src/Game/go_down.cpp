@@ -16,3 +16,5 @@ bool goDownNode::run(btCharacter *self)
     qDebug() << "goDownNode::run()";
     return ((Enemy*)self)->goDown();
 }
+
+#include "go_down.moc"

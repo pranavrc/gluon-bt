@@ -26,3 +26,5 @@ bool moveCloserUpDown::run(btCharacter *self)
     }
 }
 
+
+#include "movecloserupdown.moc"

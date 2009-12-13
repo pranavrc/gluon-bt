@@ -35,10 +35,8 @@ Enemy::Enemy(Agent *target,btNode* tree)
                      this->target, SLOT(relativeLeft()));
     QObject::connect(this, SIGNAL(relativeRightSignal()),
                      this->target, SLOT(relativeRight()));
-    QObject::connect(this, SIGNAL(moveCloserSignal()),
-                     this->target, SLOT(moveCloser()));
-    QObject::connect(this, SIGNAL(collisionSignal()),
-                     this->target, SLOT(collision()));
+    //QObject::connect(this, SIGNAL(collisionSignal()),
+      //               this->target, SLOT(collision()));
 }
 
 bool Enemy::goDown()
@@ -167,3 +165,5 @@ bool Enemy::start()
     qDebug("exit enemy");
     return true;
 }
+
+#include "enemy.moc"

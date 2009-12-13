@@ -26,3 +26,4 @@ bool moveAwayUpDown::run(btCharacter *self)
     }
 }
 
+#include "moveawayupdown.moc"

@@ -19,6 +19,7 @@ Agent::Agent(Game* game)
                      this, SLOT(unlock()));
 
     this->setBrush(QBrush(QColor(Qt::green)));
+    collided = false;
 }
 
 Agent::Agent(Game* game,QPoint pos)
@@ -33,6 +34,7 @@ Agent::Agent(Game* game,QPoint pos)
     this->setBrush(QBrush(QColor(Qt::green)));
     this->setSquare(pos.x(),pos.y());
     this->returnValue = true;
+    collided = false;
 }
 
  void Agent::paint(QPainter *painter,
@@ -57,6 +59,7 @@ void Agent::unlock()
     qDebug() << "unlock2";
     //eventMutex->unlock();
     eventCond->wakeAll();
+    qDebug() << "done unlucking and waking"; 
 }
 
 void Agent::sayHello()
@@ -97,6 +100,19 @@ void Agent::sayHello()
 
 void Agent::setSquare(int x,int y){
     squareLock.lock();
+    
+    if(x < 0)
+        x = 0;
+    
+    if(y < 0)
+        y = 0;
+    
+    if(y > 14)
+        y = 14;
+    
+    if(x > 14)
+        x = 14;
+    
     this->game->board[square.x()][square.y()]->occupant = NULL;
     square.setX(x);
     square.setY(y);
@@ -155,10 +171,11 @@ bool Agent::collision(){
             }
         }
         //qDebug() << "hey";
-        return false;
-        qDebug() << "no collision";
+        //return false;
+        //qDebug() << "no collision";
         //returnValue = false;
     }
+    return false;
 }
 
-
+#include "agent.moc"

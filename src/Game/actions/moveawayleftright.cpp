@@ -26,3 +26,4 @@ bool moveAwayLeftRight::run(btCharacter *self)
     }
 }
 
+#include "moveawayleftright.moc"

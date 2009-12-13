@@ -43,3 +43,5 @@ void MainWindow::on_pushButton_5_clicked()
     Game *scene =  static_cast<Game*>(ui->graphicsView->scene());
     scene->reset();
 }
+
+#include "mainwindow.moc"
