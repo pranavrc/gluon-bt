@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include "enemy.h"
-#include "randgenerator.h"
+//#include "randgenerator.h"
 
 Worker::Worker(btNode* node,btParallelNode* parent)
 {

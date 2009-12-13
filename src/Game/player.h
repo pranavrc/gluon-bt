@@ -5,6 +5,7 @@
 
 class Player : public Agent
 {
+    Q_OBJECT
 public:
     Player(Game* game,QPoint pos);
     void sayHello();

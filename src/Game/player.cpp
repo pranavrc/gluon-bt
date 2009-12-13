@@ -52,3 +52,5 @@ void Player::setSquare(int x,int y){
     }
 
  }
+
+#include "player.moc"
