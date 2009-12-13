@@ -43,16 +43,23 @@ set(game_src
     actions/btnotnode.cpp
 )
 
-
 set(mainwindow_UIS
     mainwindow.ui
 )
  
+
 qt4_wrap_ui(mainwindow_UIS_H ${mainwindow_UIS})
  
 qt4_automoc(${game_src})
 add_executable(Game ${game_src} ${mainwindow_UIS_H})
 
-set(btlib ${PROJECT_SOURCE_DIR}/../gluon-bt-lib/build/libbtlib.dylib) 
+if(WIN32)
 
+set(btlib ${PROJECT_SOURCE_DIR}/../gluon-bt-lib/qtcreator-build/libbtlib.dll)
+message(${btlib})
+else()
+
+set(btlib ${PROJECT_SOURCE_DIR}/../gluon-bt-lib/build/libbtlib.dylib)
+
+endif()
 target_link_libraries(Game ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${btlib})

@@ -15,7 +15,6 @@ set(btlib_SRCS
 )
 
 
-
 add_definitions(-DMAKE_BT_LIB)
 
 qt4_automoc(${btlib_SRCS})
