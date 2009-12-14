@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="">
+	<nodetypes>
+		<nodetype name="Prob Selector" description="Probabilistic Selector" classname="btProbSelectorNode" category="composite">
+			<property name="weights" description="" datatype="btChildWeights" />
+		</nodetype>
+		<nodetype name="Parallel" description="Run behaviors in parallel" classname="btParallelNode" category="composite">
+		</nodetype>
+		<nodetype name="Loop" description="Loop behaviors" classname="btLoopNode" category="composite">
+		</nodetype>
+		<nodetype name="Won Game" description="Check wincondition" classname="btWonNode" category="condition">
+			<property name="x" description="x coordinate" datatype="int" />
+			<property name="y" description="y coordinate" datatype="int" />
+		</nodetype>
+		<nodetype name="Is Collided" description="" classname="isCollided" category="condition">
+		</nodetype>
+		<nodetype name="Weight Learning" description="" classname="btLearningNode" category="decorator">
+		</nodetype>
+		<nodetype name="Debug" description="Print Debug Message" classname="btDebugNode" category="action">
+			<property name="message" description="" datatype="QString" />
+		</nodetype>
+		<nodetype name="Stop" description="" classname="stopMove" category="action">
+		</nodetype>
+		<nodetype name="Move Left" description="" classname="goLeftNode" category="action">
+		</nodetype>
+		<nodetype name="Move Right" description="" classname="goRightNode" category="action">
+		</nodetype>
+		<nodetype name="Move Up" description="" classname="goUpNode" category="action">
+		</nodetype>
+		<nodetype name="Move Down" description="" classname="goDownNode" category="action">
+		</nodetype>
+		<nodetype name="Relative Left" description="" classname="relativeLeft" category="action">
+		</nodetype>
+		<nodetype name="Relative Right" description="" classname="relativeRight" category="action">
+		</nodetype>
+		<nodetype name="Forward" description="" classname="relativeForward" category="action">
+		</nodetype>
+		<nodetype name="Back" description="" classname="relativeBack" category="action">
+		</nodetype>
+		<nodetype name="Move Away Left/Right" description="" classname="moveAwayLeftRight" category="action">
+		</nodetype>
+		<nodetype name="Move Away Up/Down" description="" classname="moveAwayUpDown" category="action">
+		</nodetype>
+		<nodetype name="Move Closer Left/Right" description="" classname="moveCloserLeftRight" category="action">
+		</nodetype>
+		<nodetype name="Move Closer Up/Down" description="" classname="moveCloserUpDown" category="action">
+		</nodetype>
+		<nodetype name="Is Goal" description="" classname="btGoalNode" category="condition">
+		</nodetype>
+		<nodetype name="Not" description="Invert the return value" classname="btNotNode" category="decorator">
+		</nodetype>
+	</nodetypes>
+	<behaviortrees>
+		<behaviortree name="New Tree" description="" uid="0">
+			<behaviornode name="Top Behavior" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+			</behaviornode>
+		</behaviortree>
+		<behaviortree name="Wander" description="" uid="1">
+			<behaviornode name="Top Behavior" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+					<behaviornode name="New Selector" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+						<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+							<property name="weights" value="">
+								<item value="0.5" editorvalue="0.5"/>
+								<item value="0.5" editorvalue="0.5"/>
+							</property>
+							<behaviornode name="New Move Closer Left/Right" description="" nodetype="moveCloserLeftRight" >
+							</behaviornode>
+							<behaviornode name="New Move Closer Up/Down" description="" nodetype="moveCloserUpDown" >
+							</behaviornode>
+						</behaviornode>
+						<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+							<property name="weights" value="">
+								<item value="0.25" editorvalue="0.5"/>
+								<item value="0.25" editorvalue="0.5"/>
+								<item value="0.25" editorvalue="0.5"/>
+								<item value="0.25" editorvalue="0.5"/>
+							</property>
+							<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+							</behaviornode>
+							<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+							</behaviornode>
+							<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+							</behaviornode>
+							<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+							</behaviornode>
+						</behaviornode>
+					</behaviornode>
+				</behaviornode>
+			</behaviornode>
+		</behaviortree>
+		<behaviortree name="Search" description="" uid="2">
+			<behaviornode name="Top Behavior" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				<behaviornode name="New Sequence" description="A sequence of behaviors, launched in order (fails if one fails)" nodetype="[sequence]" >
+					<behaviornode name="New Parallel" description="Run behaviors in parallel" nodetype="btParallelNode" >
+						<behaviornode name="New Is Goal" description="" nodetype="btGoalNode" >
+						</behaviornode>
+						<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+							<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+								<property name="weights" value="">
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+								</property>
+								<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+								</behaviornode>
+								<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+								</behaviornode>
+								<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+								</behaviornode>
+								<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+								</behaviornode>
+							</behaviornode>
+						</behaviornode>
+					</behaviornode>
+					<behaviornode name="New Debug" description="Print Debug Message" nodetype="btDebugNode" >
+						<property name="message" value="found one" />
+					</behaviornode>
+					<behaviornode name="New Parallel" description="Run behaviors in parallel" nodetype="btParallelNode" >
+						<behaviornode name="New Is Goal" description="" nodetype="btGoalNode" >
+						</behaviornode>
+						<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+							<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+								<property name="weights" value="">
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+								</property>
+								<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+								</behaviornode>
+								<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+								</behaviornode>
+								<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+								</behaviornode>
+								<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+								</behaviornode>
+							</behaviornode>
+						</behaviornode>
+					</behaviornode>
+					<behaviornode name="New Debug" description="Print Debug Message" nodetype="btDebugNode" >
+						<property name="message" value="found two" />
+					</behaviornode>
+					<behaviornode name="New Parallel" description="Run behaviors in parallel" nodetype="btParallelNode" >
+						<behaviornode name="New Is Goal" description="" nodetype="btGoalNode" >
+						</behaviornode>
+						<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+							<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+								<property name="weights" value="">
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+								</property>
+								<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+								</behaviornode>
+								<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+								</behaviornode>
+								<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+								</behaviornode>
+								<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+								</behaviornode>
+							</behaviornode>
+						</behaviornode>
+					</behaviornode>
+					<behaviornode name="New Debug" description="Print Debug Message" nodetype="btDebugNode" >
+						<property name="message" value="found three" />
+					</behaviornode>
+					<behaviornode name="New Parallel" description="Run behaviors in parallel" nodetype="btParallelNode" >
+						<behaviornode name="New Is Goal" description="" nodetype="btGoalNode" >
+						</behaviornode>
+						<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+							<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+								<property name="weights" value="">
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+								</property>
+								<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+								</behaviornode>
+								<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+								</behaviornode>
+								<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+								</behaviornode>
+								<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+								</behaviornode>
+							</behaviornode>
+						</behaviornode>
+					</behaviornode>
+					<behaviornode name="New Debug" description="Print Debug Message" nodetype="btDebugNode" >
+						<property name="message" value="found four" />
+					</behaviornode>
+					<behaviornode name="New Parallel" description="Run behaviors in parallel" nodetype="btParallelNode" >
+						<behaviornode name="New Is Goal" description="" nodetype="btGoalNode" >
+						</behaviornode>
+						<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+							<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+								<property name="weights" value="">
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+									<item value="0.25" editorvalue="0.5"/>
+								</property>
+								<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+								</behaviornode>
+								<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+								</behaviornode>
+								<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+								</behaviornode>
+								<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+								</behaviornode>
+							</behaviornode>
+						</behaviornode>
+					</behaviornode>
+					<behaviornode name="New Debug" description="Print Debug Message" nodetype="btDebugNode" >
+						<property name="message" value="found five" />
+					</behaviornode>
+				</behaviornode>
+			</behaviornode>
+		</behaviortree>
+		<behaviortree name="Follow" description="" uid="3">
+			<behaviornode name="Top Behavior" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+					<behaviornode name="New Parallel" description="Run behaviors in parallel" nodetype="btParallelNode" >
+						<behaviornode name="New Sequence" description="A sequence of behaviors, launched in order (fails if one fails)" nodetype="[sequence]" >
+							<behaviornode name="New Is Collided" description="" nodetype="isCollided" >
+							</behaviornode>
+							<behaviornode name="New Debug" description="Print Debug Message" nodetype="btDebugNode" >
+								<property name="message" value="collision detected" />
+							</behaviornode>
+						</behaviornode>
+						<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+							<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+								<property name="weights" value="">
+									<item value="0.489130434782609" editorvalue="0.9"/>
+									<item value="0.489130434782609" editorvalue="0.9"/>
+									<item value="0.00543478260869565" editorvalue="0.01"/>
+									<item value="0.00543478260869565" editorvalue="0.01"/>
+									<item value="0.00543478260869565" editorvalue="0.01"/>
+									<item value="0.00543478260869565" editorvalue="0.01"/>
+								</property>
+								<behaviornode name="New Move Closer Left/Right" description="" nodetype="moveCloserLeftRight" >
+								</behaviornode>
+								<behaviornode name="New Move Closer Up/Down" description="" nodetype="moveCloserUpDown" >
+								</behaviornode>
+								<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+								</behaviornode>
+								<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+								</behaviornode>
+								<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+								</behaviornode>
+								<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+								</behaviornode>
+							</behaviornode>
+						</behaviornode>
+					</behaviornode>
+				</behaviornode>
+			</behaviornode>
+		</behaviortree>
+		<behaviortree name="Flee" description="" uid="4">
+			<behaviornode name="Top Behavior" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+					<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+						<property name="weights" value="">
+							<item value="0.346153846153846" editorvalue="0.9"/>
+							<item value="0.346153846153846" editorvalue="0.9"/>
+							<item value="0.0769230769230769" editorvalue="0.2"/>
+							<item value="0.0769230769230769" editorvalue="0.2"/>
+							<item value="0.0769230769230769" editorvalue="0.2"/>
+							<item value="0.0769230769230769" editorvalue="0.2"/>
+						</property>
+						<behaviornode name="New Move Away Left/Right" description="" nodetype="moveAwayLeftRight" >
+						</behaviornode>
+						<behaviornode name="New Move Away Up/Down" description="" nodetype="moveAwayUpDown" >
+						</behaviornode>
+						<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+						</behaviornode>
+						<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+						</behaviornode>
+						<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+						</behaviornode>
+						<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+						</behaviornode>
+					</behaviornode>
+				</behaviornode>
+			</behaviornode>
+		</behaviortree>
+	</behaviortrees> 
+</project>
