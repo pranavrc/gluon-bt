@@ -125,7 +125,7 @@
    <widget class="QPushButton" name="pushButton_7">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>400</x>
       <y>170</y>
       <width>111</width>
       <height>23</height>
@@ -135,27 +135,96 @@
      <string>Calculate Interest</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>210</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>210</y>
+      <x>390</x>
+      <y>204</y>
       <width>46</width>
-      <height>14</height>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>Interest:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="interest">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>210</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="interest_2">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>240</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>240</y>
+      <width>46</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Challenge:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="interest_3">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>270</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>270</y>
+      <width>46</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Behavior:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="interest_4">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>300</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>300</y>
+      <width>46</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Spatial:</string>
     </property>
    </widget>
   </widget>

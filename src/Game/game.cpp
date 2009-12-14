@@ -8,6 +8,8 @@
 #include <QPushButton>
 #include <QDateTime>
 #include <QFile>
+#include "scenario.h"
+#include "scenarioset.h"
 
 Game::Game()
 {
@@ -66,10 +68,10 @@ Game::Game()
         }
     }
 
-    /*for(int i = 0; i < 16; ++i){
+    for(int i = 0; i < 16; ++i){
         this->addLine((float)(i * 20),0.0,(float)(i * 20),300.0,QPen(QColor(Qt::gray)));
         this->addLine(0.0,(float)(i * 20),300.0,(float)(i * 20),QPen(QColor(Qt::gray)));
-    }*/
+    }
     
 
 
@@ -86,14 +88,20 @@ Game::Game()
 
     btBrain *brain = new btBrain(fileContents);
     
-    this->setBackgroundBrush(QBrush(QColor(Qt::black)));
+    //this->setBackgroundBrush(QBrush(QColor(Qt::black)));
+
+    ss = new ScenarioSet();
+    Scenario *s1 = new Scenario();
+
+    ss->addScenario(s1);
     
     marker = new Player(this,QPoint(0,0));//new GameItem(this);
     connect(marker, SIGNAL(pacmanLost()), this, SLOT(reset()));
     connect(marker, SIGNAL(pacmanWon()), this, SLOT(reset()));
+    connect(marker, SIGNAL(enteredNewCell(int,int)), s1, SLOT(visit(int,int)));
     marker->setBrush(Qt::yellow);
     
-    Enemy *player = new Enemy(marker,brain->getBehaviorTree(4));
+    Enemy *player = new Enemy(marker,brain->getBehaviorTree(0));
     player->thename = "mr. anderson";
     Runner* playerRunner = new Runner(player);
     connect(playerRunner, SIGNAL(finished()), this, SLOT(resetGame()));
@@ -101,8 +109,8 @@ Game::Game()
     
     for (int i = 0; i < this->numberOfEnemies(); i++)
     {
-        Guard* agent = new Guard(this,QPoint(14,i));        
-        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(3));
+        Guard* agent = new Guard(this,QPoint(14,14));        
+        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));=
         
         Runner* runner = new Runner(enemy);
         connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
@@ -144,7 +152,6 @@ void Game::resetGame()
         }
     }
     
-    
 
     //qDebug() << "resetting";
     QBrush brush(QColor(Qt::white));
@@ -159,6 +166,12 @@ void Game::resetGame()
              }*/
         }
     }
+
+    Scenario *s = new Scenario();
+    ss->addScenario(s);
+
+    disconnect(marker, SIGNAL(enteredNewCell(int,int)), ss->scenarioList().last(), SLOT(visit(int,int)));
+    connect(marker, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
     
     for(int i = 0; i <runners.count(); i++)
     {
@@ -198,7 +211,7 @@ void Game::drawItems(){
 
 int Game::numberOfEnemies()
 {
-    return 4;
+    return 2;
 }
 
 #include "game.moc"

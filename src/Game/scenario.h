@@ -5,16 +5,19 @@
 
 class Scenario : public QObject
 {
+    Q_OBJECT
 public:
     Scenario();
-    void visit(int x,int y);
-    void killed();
 
     float calculateInterest();
     float calculateSpatialDiversity();
     float calculateChallengeLevel();
     int getKillTime();
     int getVisits();
+
+public Q_SLOTS:
+    void visit(int x,int y);
+    void killed();
 
 private:
     int board[15][15];
