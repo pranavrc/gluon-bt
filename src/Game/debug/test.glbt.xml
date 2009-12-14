@@ -234,12 +234,12 @@
 						<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
 							<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
 								<property name="weights" value="">
-									<item value="0.409090909090909" editorvalue="0.9"/>
-									<item value="0.409090909090909" editorvalue="0.9"/>
-									<item value="0.0454545454545455" editorvalue="0.1"/>
-									<item value="0.0454545454545455" editorvalue="0.1"/>
-									<item value="0.0454545454545455" editorvalue="0.1"/>
-									<item value="0.0454545454545455" editorvalue="0.1"/>
+									<item value="0.489130434782609" editorvalue="0.9"/>
+									<item value="0.489130434782609" editorvalue="0.9"/>
+									<item value="0.00543478260869565" editorvalue="0.01"/>
+									<item value="0.00543478260869565" editorvalue="0.01"/>
+									<item value="0.00543478260869565" editorvalue="0.01"/>
+									<item value="0.00543478260869565" editorvalue="0.01"/>
 								</property>
 								<behaviornode name="New Move Closer Left/Right" description="" nodetype="moveCloserLeftRight" >
 								</behaviornode>
@@ -254,6 +254,34 @@
 								<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
 								</behaviornode>
 							</behaviornode>
+						</behaviornode>
+					</behaviornode>
+				</behaviornode>
+			</behaviornode>
+		</behaviortree>
+		<behaviortree name="Flee" description="" uid="4">
+			<behaviornode name="Top Behavior" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+					<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+						<property name="weights" value="">
+							<item value="0.346153846153846" editorvalue="0.9"/>
+							<item value="0.346153846153846" editorvalue="0.9"/>
+							<item value="0.0769230769230769" editorvalue="0.2"/>
+							<item value="0.0769230769230769" editorvalue="0.2"/>
+							<item value="0.0769230769230769" editorvalue="0.2"/>
+							<item value="0.0769230769230769" editorvalue="0.2"/>
+						</property>
+						<behaviornode name="New Move Away Left/Right" description="" nodetype="moveAwayLeftRight" >
+						</behaviornode>
+						<behaviornode name="New Move Away Up/Down" description="" nodetype="moveAwayUpDown" >
+						</behaviornode>
+						<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+						</behaviornode>
+						<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+						</behaviornode>
+						<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+						</behaviornode>
+						<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
 						</behaviornode>
 					</behaviornode>
 				</behaviornode>
