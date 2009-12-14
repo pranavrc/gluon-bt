@@ -21,6 +21,19 @@ void Player::setSquare(int x,int y){
     /*if(this->game->board[x][y]->occupant != NULL || this->game->board[square.x()][square.y()]->occupant != this ){
         qDebug("You Lost");
     }*/
+    
+    if(x < 0)
+        x = 0;
+    
+    if(y < 0)
+        y = 0;
+    
+    if(y > 14)
+        y = 14;
+    
+    if(x > 14)
+        x = 14;
+    
     emit enteredNewCell(x,y);
     if(collided == true){
        // qDebug("You Lost");
