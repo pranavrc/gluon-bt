@@ -13,7 +13,8 @@ Player::Player(Game* game,QPoint pos)
 void Player::sayHello()
 {
     Agent::sayHello();
-    game->board[square.x()][square.y()]->setVisible(false);
+    QColor color = game->board[square.x()][square.y()]->brush().color().darker(110);
+    game->board[square.x()][square.y()]->setBrush(QBrush(color));
 }
 
 void Player::setSquare(int x,int y){

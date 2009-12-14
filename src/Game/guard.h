@@ -7,6 +7,7 @@ class Guard : public Agent
 {
 public:
     Guard(Game* game,QPoint pos);
+    void sayHello();
 };
 
 #endif // GUARD_H

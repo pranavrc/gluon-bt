@@ -177,9 +177,12 @@ void Game::resetGame()
     
     
     qDebug() << "resetting";
+    QBrush brush(QColor(Qt::white));
     for(int i = 0; i < 15; ++i){
         for(int j = 0;j < 15; ++j){
             board[i][j]->setVisible(true);
+
+            //board[i][j]->setBrush(brush);
             /*if(board[i][j]->occupant != NULL){
              board[i][j]->occupant->setSquare(qrand() % 14, qrand() % 14);
              }*/
