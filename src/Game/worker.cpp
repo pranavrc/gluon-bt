@@ -20,7 +20,7 @@ void Worker::run()
 {
   //  qDebug() << "worker run";
 
-    qsrand(QDateTime::currentDateTime().toTime_t() - - reinterpret_cast<quint64>(this));
+    qsrand(QDateTime::currentDateTime().toTime_t() - reinterpret_cast<quint64>(this));
     //(int)QThread::currentThreadId());
 
     value = node->runBehavior(this->self);
