@@ -9,6 +9,7 @@
 #include <QTimeLine>
 #include "runner.h"
 #include "mainwindow.h"
+#include <QFile>
 
 
 class GameItem;
@@ -22,6 +23,7 @@ public:
     Player* marker;
     Guard* agent;
     ScenarioSet *ss;
+    QFile *logFile;
     /*Guard* agent2;
     Guard* agent3;
     Guard* agent4;

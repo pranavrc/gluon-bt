@@ -83,11 +83,29 @@ Game::Game(MainWindow *ui)
 
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug("Could not open behavior tree file");
         return;
     }
     QByteArray byteArray = file.readAll();
     QString fileContents(byteArray.data());
     file.close();
+
+    QString logFilename = "log.txt";
+
+    logFile = new QFile(logFilename);
+    if(!logFile->open(QIODevice::Append | QIODevice::Text)){
+        qDebug("Could not open file");
+        return;
+    }
+
+    QTextStream out(logFile);
+    out << ";Board;Killtime;Avg Killtime;Interest;Challenge;Behavior Div;Spatial Div;Max Diviation;Standard Diviation;";
+
+
+    //QByteArray byteArray = logFile.readAll();
+   // QString fileContents(byteArray.data());
+
+    //file.close();
 
     btBrain *brain = new btBrain(fileContents);
     
@@ -113,7 +131,7 @@ Game::Game(MainWindow *ui)
     for (int i = 0; i < this->numberOfEnemies(); i++)
     {
         Guard* agent = new Guard(this,QPoint(14,14));        
-        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
+        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(3));
         
         Runner* runner = new Runner(enemy);
         connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
@@ -170,10 +188,33 @@ void Game::resetGame()
         }
     }
 
+    disconnect(marker, SIGNAL(enteredNewCell(int,int)), ss->scenarioList().last(), SLOT(visit(int,int)));
+
+    QTextStream out(logFile);
+
+
+
+    for(int x = 0; x < 15; ++x){
+        for(int y = 0;y < 15; ++y){
+            out << QString("%1").arg(ss->scenarioList().last()->board[x][y]) << ((x==14&&y==14) ? "" : ":");
+        }
+    }
+
+    out << ";" << ss->scenarioList().last()->getKillTime();
+    out << ";" << ss->calcAverageKillTime();
+    out << ";" << ss->calculateInterest();
+    out << ";" << ss->calculateChallengeLevel();
+    out << ";" << ss->calculateBehavioralDiversity();
+    out << ";" << ss->calculateSpatialDiversity();
+    out << ";" << ss->calcMaximumDeviation();
+    out << ";" << ss->calcStandardDeviation();
+    out << "\n";
+
+    //ss->scenarioList().last()->
+
     Scenario *s = new Scenario();
     ss->addScenario(s);
 
-    disconnect(marker, SIGNAL(enteredNewCell(int,int)), ss->scenarioList().last(), SLOT(visit(int,int)));
     connect(marker, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
 
     ui->takeScreenshot(gameCounter++);
@@ -217,7 +258,7 @@ void Game::drawItems(){
 
 int Game::numberOfEnemies()
 {
-    return 2;
+    return 1;
 }
 
 #include "game.moc"

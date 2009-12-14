@@ -10,6 +10,9 @@ Scenario::Scenario()
             board[x][y] = 0;
         }
     }
+     kill_time  = 0;
+     visits     = 0;
+
 }
 
 void Scenario::killed()

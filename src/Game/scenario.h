@@ -14,13 +14,13 @@ public:
     float calculateChallengeLevel();
     int getKillTime();
     int getVisits();
+    int board[15][15];
 
 public Q_SLOTS:
     void visit(int x,int y);
     void killed();
 
 private:
-    int board[15][15];
     int kill_time;
     int visits;
 };
