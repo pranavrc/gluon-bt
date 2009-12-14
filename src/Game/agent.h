@@ -35,6 +35,9 @@ public:
                            const QStyleOptionGraphicsItem *option,
                            QWidget *widget);
     bool collision();
+    
+    Agent* objective();
+    void setObjective(Agent* o);
 
 public Q_SLOTS:
     virtual void sayHello();
@@ -45,6 +48,9 @@ public Q_SLOTS:
     bool forward();
     bool back();
     bool stopMove();
+    
+private:
+    Agent* obj;
 };
 
 #endif // AGENT_H

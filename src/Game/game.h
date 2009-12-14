@@ -18,7 +18,7 @@ public:
     Game();
     Player* marker;
     Guard* agent;
-    Guard* agent2;
+    /*Guard* agent2;
     Guard* agent3;
     Guard* agent4;
 /*    Runner *runner;
@@ -50,6 +50,8 @@ public:
 
         QGraphicsScene::keyPressEvent(event);
     }
+    
+    int numberOfEnemies();
     
 public Q_SLOTS:
     void resetGame();

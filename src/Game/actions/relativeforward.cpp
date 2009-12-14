@@ -14,7 +14,7 @@ relativeForward::relativeForward()
 
 bool relativeForward::run(btCharacter *self)
 {
-    qDebug() << "relativeForward::run()";
+    //qDebug() << "relativeForward::run()";
     return ((Enemy*)self)->forward();
 }
 

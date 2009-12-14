@@ -14,7 +14,8 @@ goUpNode::goUpNode()
 
 bool goUpNode::run(btCharacter *self)
 {
-    qDebug() << "goUpNode::run()";
+ //   qDebug() << "goUpNode::run()";
+    qDebug()<<"up " << ((Enemy*)self)->name();
     return ((Enemy*)self)->goUp();
 }
 

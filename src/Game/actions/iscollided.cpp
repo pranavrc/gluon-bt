@@ -17,14 +17,14 @@ isCollided::isCollided()
 
 bool isCollided::run(btCharacter *self)
 {
-    Player* occupant = static_cast<Player*>(((Enemy*)self)->target->game->board[((Enemy*)self)->target->square.x()][((Enemy*)self)->target->square.y()]->occupant);
+//    Player* occupant = static_cast<Player*>(((Enemy*)self)->target->game->board[((Enemy*)self)->target->square.x()][((Enemy*)self)->target->square.y()]->occupant);
 
     while(self->continueThinking()){
         ((Enemy*)self)->eventMutex.lock();
                 ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
 
                 if(((Enemy*)self)->collision() == true){
-                    qDebug() << "behavior tree collision detected";
+                    //qDebug() << "behavior tree collision detected";
                     ((Enemy*)self)->eventMutex.unlock();
                     return true;
                 }

@@ -14,7 +14,7 @@ stopMove::stopMove()
 
 bool stopMove::run(btCharacter *self)
 {
-    qDebug() << "stopMove::run()";
+  //  qDebug() << "stopMove::run()";
     return ((Enemy*)self)->stopMove();
 }
 
