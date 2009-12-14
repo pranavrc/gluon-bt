@@ -20,7 +20,7 @@ bool moveAwayLeftRight::run(btCharacter *self)
     Enemy* e = (Enemy*)self;
     
     int currentX = 15;
-    int currentDelta;
+    int currentDelta = 15;
     foreach(Agent* a, e->target->getObjectives())
     {
         int delta;

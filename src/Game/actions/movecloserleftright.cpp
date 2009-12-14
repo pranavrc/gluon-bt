@@ -21,8 +21,8 @@ bool moveCloserLeftRight::run(btCharacter *self)
     //qDebug() << "enemy.x " << e->target->game->marker->square.x() << "self.x " <<  e->target->square.x();
     
     int currentX = 15;
-    int currentDelta;
-    qDebug() << "currentDelta" << currentDelta;
+    int currentDelta = 15;
+
     foreach(Agent* a, e->target->getObjectives())
     {
         int delta;

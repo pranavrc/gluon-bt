@@ -21,7 +21,7 @@ bool moveCloserUpDown::run(btCharacter *self)
     //qDebug() << "enemy.y " << e->target->game->marker->square.y() << "self.y " <<  e->target->square.y();
     
     int currentY = 15;
-    int currentDelta;
+    int currentDelta = 15;
     foreach(Agent* a, e->target->getObjectives())
     {
         int delta;
