@@ -22,6 +22,7 @@ bool moveCloserLeftRight::run(btCharacter *self)
     
     int currentX = 15;
     int currentDelta;
+    qDebug() << "currentDelta" << currentDelta;
     foreach(Agent* a, e->target->getObjectives())
     {
         int delta;

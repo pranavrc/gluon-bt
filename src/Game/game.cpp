@@ -99,7 +99,7 @@ Game::Game(MainWindow *ui)
     }
 
     QTextStream out(logFile);
-    out << ";Board;Killtime;Avg Killtime;Interest;Challenge;Behavior Div;Spatial Div;Max Diviation;Standard Diviation;";
+    out << ";Board;Killtime;Avg Killtime;Interest;Challenge;Behavior Div;Spatial Div;Max Diviation;Standard Diviation;\n";
 
 
     //QByteArray byteArray = logFile.readAll();
@@ -122,7 +122,7 @@ Game::Game(MainWindow *ui)
     connect(marker, SIGNAL(enteredNewCell(int,int)), s1, SLOT(visit(int,int)));
     marker->setBrush(Qt::yellow);
     
-    Enemy *player = new Enemy(marker,brain->getBehaviorTree(0));
+    Enemy *player = new Enemy(marker,brain->getBehaviorTree(3));
     player->thename = "mr. anderson";
     Runner* playerRunner = new Runner(player);
     connect(playerRunner, SIGNAL(finished()), this, SLOT(resetGame()));
@@ -131,7 +131,7 @@ Game::Game(MainWindow *ui)
     for (int i = 0; i < this->numberOfEnemies(); i++)
     {
         Guard* agent = new Guard(this,QPoint(14,14));        
-        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(3));
+        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
         
         Runner* runner = new Runner(enemy);
         connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
@@ -258,7 +258,7 @@ void Game::drawItems(){
 
 int Game::numberOfEnemies()
 {
-    return 2;
+    return 1;
 }
 
 #include "game.moc"
