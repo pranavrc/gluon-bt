@@ -65,3 +65,5 @@ int Scenario::getVisits()
 {
     return visits;
 }
+
+#include "scenario.moc"

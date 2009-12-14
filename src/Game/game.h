@@ -9,7 +9,9 @@
 #include <QTimeLine>
 #include "runner.h"
 
+
 class GameItem;
+class ScenarioSet;
 
 class Game : public QGraphicsScene
 {
@@ -18,6 +20,7 @@ public:
     Game();
     Player* marker;
     Guard* agent;
+    ScenarioSet *ss;
     /*Guard* agent2;
     Guard* agent3;
     Guard* agent4;

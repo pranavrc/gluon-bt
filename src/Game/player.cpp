@@ -13,7 +13,7 @@ Player::Player(Game* game,QPoint pos)
 void Player::sayHello()
 {
     Agent::sayHello();
-    QColor color = game->board[square.x()][square.y()]->brush().color().darker(110);
+    QColor color = game->board[square.x()][square.y()]->brush().color().darker(105);
     game->board[square.x()][square.y()]->setBrush(QBrush(color));
 }
 
@@ -21,7 +21,7 @@ void Player::setSquare(int x,int y){
     /*if(this->game->board[x][y]->occupant != NULL || this->game->board[square.x()][square.y()]->occupant != this ){
         qDebug("You Lost");
     }*/
-
+    emit enteredNewCell(x,y);
     if(collided == true){
        // qDebug("You Lost");
         emit pacmanLost();

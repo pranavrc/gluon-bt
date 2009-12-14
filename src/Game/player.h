@@ -17,6 +17,7 @@ public:
 Q_SIGNALS:
     void pacmanWon();
     void pacmanLost();
+    void enteredNewCell(int x,int y);
     
     
 private:

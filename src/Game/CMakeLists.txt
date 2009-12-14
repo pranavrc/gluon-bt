@@ -47,11 +47,11 @@ set(mainwindow_UIS
     mainwindow.ui
 )
  
-
 qt4_wrap_ui(mainwindow_UIS_H ${mainwindow_UIS})
  
 qt4_automoc(${game_src})
 add_executable(Game ${game_src} ${mainwindow_UIS_H})
+
 
 
 find_library(LIBBT
@@ -62,7 +62,7 @@ find_library(LIBBT
     PATHS
         c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build
         /usr/lib
-        /usr/local/lib
+        /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build
 )
 message("-- Found libbtlib:" ${LIBBT})
 
@@ -74,12 +74,12 @@ find_path(LIBBTPATH
     PATHS
         c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build
         /usr/lib
-        /usr/local/lib
+        /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build
 )
 message("-- Found libbt's path:" ${LIBBTPATH})
 add_library(btlib SHARED IMPORTED)
 set_property(TARGET btlib PROPERTY IMPORTED_LOCATION ${LIBBT})
 set_property(TARGET btlib PROPERTY IMPORTED_IMPLIB ${LIBBT})
 
-target_link_libraries(Game ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} btlib)
+target_link_libraries(Game ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTOPENGL_LIBRARY} btlib)
 

@@ -10,6 +10,7 @@ class ScenarioSet : public QObject
     Q_PROPERTY(float wchallenge READ wchallenge WRITE setWChallenge)
     Q_PROPERTY(float wbehavior READ wbehavior WRITE setWBehavior)
     Q_PROPERTY(float wspatial READ wspatial WRITE setWSpatial)
+    Q_PROPERTY(QList<Scenario*> scenarioList READ scenarioList);
 public:
     ScenarioSet();
     void save(QString filename);
@@ -35,6 +36,8 @@ public:
 
     float wspatial() const {return we;}
     void setWSpatial(float wspatial) {we = wspatial;}
+
+    QList<Scenario*> scenarioList() const {return scenarios;}
 
 private:
     QList<Scenario*> scenarios;
