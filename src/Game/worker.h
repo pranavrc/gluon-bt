@@ -13,6 +13,7 @@ public:
     void run();
     void setSelf(btCharacter *self);
     bool value;
+    Worker* copy();
 private:
     btParallelNode *parent;
     btCharacter *self;

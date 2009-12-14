@@ -38,9 +38,11 @@ target_link_libraries(btlib ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_
 install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 if(APPLE)
-
 set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
-
+elseif(WIN32)
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
+else()
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
 endif()
 
 install(FILES

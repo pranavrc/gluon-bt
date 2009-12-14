@@ -19,21 +19,35 @@ void btParallelNode::workerDone()
 bool btParallelNode::run(btCharacter *self)
 {
     //qDebug() << "Parallel Execution Started";
+    QList<Worker*> workerList;
     foreach(Worker* w,workers){
        // qDebug() << "First worker";
         //w->terminate();
-        w->setSelf(self);
-        w->start();
+        workerList.append(w->copy());
+        workerList[workerList.count()-1]->setSelf(self);
+//        w->setSelf(self);
+  //      w->start();
+        workerList[workerList.count()-1]->start();
 
     }
 
-    foreach(Worker* w,workers){
-        w->wait(600000); //10 mins
-        //qDebug() << "thread stopped";
+    foreach(Worker* w,workerList){
+        w->wait(60000); //1 min
+        qDebug() << "thread stopped " << ((Enemy*)self)->name();
     }
-qDebug("parallel done");
+qDebug() << "parallel done " << ((Enemy*)self)->name();
     ((Enemy*)self)->finished.wakeAll();
-    return decide();
+    
+    bool result = decide(workerList);
+    
+    foreach(Worker* w,workerList)
+    {
+        w->terminate();
+    }
+    
+    qDeleteAll(workerList);
+    
+    return result;
 }
 
 void btParallelNode::appendingChild(int index)
@@ -53,7 +67,7 @@ void btParallelNode::childrenAdded()
 
 }
 
-bool btParallelNode::decide()
+bool btParallelNode::decide(QList<Worker*> workList)
 {
     // make sure to expose this choice in the editor
     /*foreach(Worker* w,workers){
@@ -63,7 +77,7 @@ bool btParallelNode::decide()
     }
     return true;*/
 
-    foreach(Worker* w,workers){
+    foreach(Worker* w,workList){
         if(w->value == true){
             return true;
         }

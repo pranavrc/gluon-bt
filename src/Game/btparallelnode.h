@@ -21,7 +21,7 @@ public:
     void appendingChild(int index);
     void removingChild(int index);
     void childrenAdded();
-    virtual bool decide();
+    virtual bool decide(QList<Worker*> workList);
     QList<Worker*> workers;
 };
 

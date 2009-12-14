@@ -110,13 +110,14 @@ Game::Game()
     for (int i = 0; i < this->numberOfEnemies(); i++)
     {
         Guard* agent = new Guard(this,QPoint(14,14));        
-        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
+        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));=
         
         Runner* runner = new Runner(enemy);
         connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
         runners.append(runner);
         enemy->thename = "mr. smith " + QVariant(i).toString();
-        agent->setObjective(marker);
+        agent->addObjective(marker);
+        marker->addObjective(agent);
     }//*/
 
     foreach(Runner* r , runners)

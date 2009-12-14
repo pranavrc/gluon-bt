@@ -178,14 +178,14 @@ bool Agent::collision(){
     return false;
 }
 
-Agent* Agent::objective()
+QList<Agent*> Agent::getObjectives()
 {
-    return obj;
+    return objectives;
 }
 
-void Agent::setObjective(Agent* o)
+void Agent::addObjective(Agent* o)
 {
-        obj = o;
+    objectives.append(o);
 }
 
 #include "agent.moc"

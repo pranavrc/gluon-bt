@@ -41,11 +41,11 @@ Enemy::Enemy(Agent *target,btNode* tree)
 
 bool Enemy::goDown()
 {
-  //  qDebug("enemyDown");
+    qDebug() << "enemyDown "<< thename;
    this->mutex.lock();
     emit goDownSignal();
     //this->mutex.lock();
-    this->finished.wait(&(this->mutex));
+    this->finished.wait(&(this->mutex), 30000);
   //  qDebug("finished waiting");
        this->mutex.unlock();
   //     qDebug("unlocked now");
@@ -54,12 +54,12 @@ bool Enemy::goDown()
 
 bool Enemy::goUp()
 {
-  //  qDebug("enemyUp");
+    qDebug()<<"enemyUp " << thename;
     qDebug("locking");
     this->mutex.lock();
     emit goUpSignal();
     //this->mutex.lock();
-    this->finished.wait(&(this->mutex));
+    this->finished.wait(&(this->mutex), 30000);
         qDebug("finished waiting");
       this->mutex.unlock();
      qDebug("unlocked now");
@@ -68,12 +68,12 @@ bool Enemy::goUp()
 
 bool Enemy::goLeft()
 {
-   // qDebug("enemyLeft");
+    qDebug() <<"enemyLeft " << thename;
     qDebug("locking");
    this->mutex.lock();
     emit goLeftSignal();
     //this->mutex.lock();
-    this->finished.wait(&(this->mutex));
+    this->finished.wait(&(this->mutex), 30000);
    qDebug("finished waiting");
         this->mutex.unlock();
         qDebug("unlocked now");
@@ -82,12 +82,12 @@ bool Enemy::goLeft()
 
 bool Enemy::goRight()
 {
-  //  qDebug("enemyRight");
+    qDebug() <<"enemyRight " << thename;;
         qDebug("locking");
     this->mutex.lock();
     emit goRightSignal();
     //this->mutex.lock();
-    this->finished.wait(&(this->mutex));
+    this->finished.wait(&(this->mutex), 30000);
     qDebug("finished waiting");
       this->mutex.unlock();
       qDebug("unlocked now");
@@ -96,7 +96,7 @@ bool Enemy::goRight()
 
 bool Enemy::stopMove()
 {
-    qDebug("stopMove");
+    qDebug()<< "stopMove " << thename;
         qDebug("locking");
   this->mutex.lock();
     emit stopMoveSignal();
@@ -109,6 +109,7 @@ bool Enemy::stopMove()
 }
 
 bool Enemy::forward(){
+    qDebug() << "forward " << thename;
     qDebug("about to lock");
     this->mutex.lock();
     emit forwardSignal();
@@ -133,7 +134,7 @@ bool Enemy::back(){
 }
 
 bool Enemy::relativeLeft(){
-   // qDebug("about to lock");
+    qDebug("about to lock");
     this->mutex.lock();
     emit relativeLeftSignal();
     //    this->mutex.lock();
@@ -145,7 +146,7 @@ bool Enemy::relativeLeft(){
 }
 
 bool Enemy::relativeRight(){
-  //  qDebug("about to lock");
+    //qDebug("about to lock");
    this->mutex.lock();
     emit relativeRightSignal();
     //    this->mutex.lock();

@@ -12,7 +12,7 @@ Runner::Runner(Enemy *target)
 void Runner::run()
 {
     qDebug("runner");
-    qsrand(QDateTime::currentDateTime().toTime_t() - 234);//(int)QThread::currentThreadId());
+    qsrand(QDateTime::currentDateTime().toTime_t() - reinterpret_cast<quint64>(this));//(int)QThread::currentThreadId());
     this->target->start();
 }
 
