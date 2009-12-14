@@ -14,7 +14,7 @@ relativeRight::relativeRight()
 
 bool relativeRight::run(btCharacter *self)
 {
-    qDebug() << "relativeRight::run()";
+    //qDebug() << "relativeRight::run()";
     return ((Enemy*)self)->relativeRight();
 }
 

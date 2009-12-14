@@ -9,7 +9,7 @@ Enemy::Enemy()
 
 Enemy::Enemy(Agent *target,btNode* tree)
 {
-    qDebug("enemy constructor");
+  //  qDebug("enemy constructor");
     qsrand(QDateTime::currentDateTime().toTime_t());
     this->target = target;
     this->target->setMutex(&(this->mutex));
@@ -41,38 +41,40 @@ Enemy::Enemy(Agent *target,btNode* tree)
 
 bool Enemy::goDown()
 {
-    qDebug("enemyDown");
+  //  qDebug("enemyDown");
    this->mutex.lock();
     emit goDownSignal();
     //this->mutex.lock();
     this->finished.wait(&(this->mutex));
-    qDebug("finished waiting");
+  //  qDebug("finished waiting");
        this->mutex.unlock();
-       qDebug("unlocked now");
+  //     qDebug("unlocked now");
     return this->target->returnValue;
 }
 
 bool Enemy::goUp()
 {
-    qDebug("enemyUp");
+  //  qDebug("enemyUp");
+    qDebug("locking");
     this->mutex.lock();
     emit goUpSignal();
     //this->mutex.lock();
     this->finished.wait(&(this->mutex));
-    qDebug("finished waiting");
+        qDebug("finished waiting");
       this->mutex.unlock();
-      qDebug("unlocked now");
+     qDebug("unlocked now");
     return this->target->returnValue;
 }
 
 bool Enemy::goLeft()
 {
-    qDebug("enemyLeft");
+   // qDebug("enemyLeft");
+    qDebug("locking");
    this->mutex.lock();
     emit goLeftSignal();
     //this->mutex.lock();
     this->finished.wait(&(this->mutex));
-    qDebug("finished waiting");
+   qDebug("finished waiting");
         this->mutex.unlock();
         qDebug("unlocked now");
     return this->target->returnValue;
@@ -80,7 +82,8 @@ bool Enemy::goLeft()
 
 bool Enemy::goRight()
 {
-    qDebug("enemyRight");
+  //  qDebug("enemyRight");
+        qDebug("locking");
     this->mutex.lock();
     emit goRightSignal();
     //this->mutex.lock();
@@ -94,13 +97,14 @@ bool Enemy::goRight()
 bool Enemy::stopMove()
 {
     qDebug("stopMove");
+        qDebug("locking");
   this->mutex.lock();
     emit stopMoveSignal();
     //this->mutex.lock();
     this->finished.wait(&(this->mutex));
     qDebug("finished waiting");
         this->mutex.unlock();
-        qDebug("unlocked now");
+      qDebug("unlocked now");
     return this->target->returnValue;
 }
 
@@ -129,26 +133,26 @@ bool Enemy::back(){
 }
 
 bool Enemy::relativeLeft(){
-    qDebug("about to lock");
+   // qDebug("about to lock");
     this->mutex.lock();
     emit relativeLeftSignal();
     //    this->mutex.lock();
     this->finished.wait(&(this->mutex));
-    qDebug("finished waiting");
+   // qDebug("finished waiting");
      this->mutex.unlock();
-     qDebug("unlocked now");
+   //  qDebug("unlocked now");
     return this->target->returnValue;
 }
 
 bool Enemy::relativeRight(){
-    qDebug("about to lock");
+  //  qDebug("about to lock");
    this->mutex.lock();
     emit relativeRightSignal();
     //    this->mutex.lock();
     this->finished.wait(&(this->mutex));
-    qDebug("finished waiting");
+   // qDebug("finished waiting");
     this->mutex.unlock();
-    qDebug("unlocked now");
+   // qDebug("unlocked now");
     return this->target->returnValue;
 }
 
@@ -164,6 +168,11 @@ bool Enemy::start()
     this->tree->runBehavior(this);
     qDebug("exit enemy");
     return true;
+}
+
+QString Enemy::name()
+{
+    return thename;
 }
 
 #include "enemy.moc"

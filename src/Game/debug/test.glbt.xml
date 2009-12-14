@@ -53,6 +53,24 @@
 	<behaviortrees>
 		<behaviortree name="New Tree" description="" uid="0">
 			<behaviornode name="Top Behavior" description="A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)" nodetype="[selector]" >
+				<behaviornode name="New Loop" description="Loop behaviors" nodetype="btLoopNode" >
+					<behaviornode name="New Prob Selector" description="Probabilistic Selector" nodetype="btProbSelectorNode" >
+						<property name="weights" value="">
+							<item value="0.25" editorvalue="0.5"/>
+							<item value="0.25" editorvalue="0.5"/>
+							<item value="0.25" editorvalue="0.5"/>
+							<item value="0.25" editorvalue="0.5"/>
+						</property>
+						<behaviornode name="New Move Left" description="" nodetype="goLeftNode" >
+						</behaviornode>
+						<behaviornode name="New Move Right" description="" nodetype="goRightNode" >
+						</behaviornode>
+						<behaviornode name="New Move Up" description="" nodetype="goUpNode" >
+						</behaviornode>
+						<behaviornode name="New Move Down" description="" nodetype="goDownNode" >
+						</behaviornode>
+					</behaviornode>
+				</behaviornode>
 			</behaviornode>
 		</behaviortree>
 		<behaviortree name="Wander" description="" uid="1">

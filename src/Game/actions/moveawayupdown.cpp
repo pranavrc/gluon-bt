@@ -16,10 +16,10 @@ moveAwayUpDown::moveAwayUpDown()
 
 bool moveAwayUpDown::run(btCharacter *self)
 {
-    qDebug() << "moveAway::run()";
+   // qDebug() << "moveAway::run()";
     Enemy* e = (Enemy*)self;
 
-    if(e->target->game->marker->square.y() > e->target->square.y()){
+    if(e->target->objective()->square.y() > e->target->square.y()){
         return ((Enemy*)self)->goUp();
     }else{
         return ((Enemy*)self)->goDown();

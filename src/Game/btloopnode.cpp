@@ -1,8 +1,10 @@
 #include "btloopnode.h"
 
+#include "enemy.h"
+
 REGISTER_NODETYPE(btLoopNode)
 
-        btLoopNode::btLoopNode()
+btLoopNode::btLoopNode()
 {
 }
 
@@ -15,11 +17,16 @@ bool btLoopNode::run(btCharacter *self)
                 setStopFlag(false);
                 return false;
             }*/
-            if(!parentNode()->child(i)->runBehavior(self))
+            
+            qDebug() <<"loop: " << ((Enemy*)self)->name();
+            
+            parentNode()->child(i)->runBehavior(self);
+#warning fix conditions!!!!
+/*            if(!parentNode()->child(i)->runBehavior(self))
             {
                 qDebug("out of loop");
                 return false;
-            }
+            }*/
         }
     }
     //setStopFlag(false);

@@ -16,10 +16,10 @@ moveAwayLeftRight::moveAwayLeftRight()
 
 bool moveAwayLeftRight::run(btCharacter *self)
 {
-    qDebug() << "moveAway::run()";
+    //qDebug() << "moveAway::run()";
     Enemy* e = (Enemy*)self;
 
-    if(e->target->game->marker->square.x() < e->target->square.x()){
+    if(e->target->objective()->square.x() < e->target->square.x()){
         return ((Enemy*)self)->goRight();
     }else{
         return ((Enemy*)self)->goLeft();

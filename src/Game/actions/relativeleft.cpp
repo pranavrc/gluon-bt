@@ -14,7 +14,7 @@ relativeLeft::relativeLeft()
 
 bool relativeLeft::run(btCharacter *self)
 {
-    qDebug() << "relativeLeft::run()";
+   // qDebug() << "relativeLeft::run()";
     return ((Enemy*)self)->relativeLeft();
 }
 

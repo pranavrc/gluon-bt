@@ -13,7 +13,8 @@ goRightNode::goRightNode()
 
 bool goRightNode::run(btCharacter *self)
 {
-    qDebug() << "goRightNode::run()";
+   // qDebug() << "goRightNode::run()";
+    qDebug()<<"right " << ((Enemy*)self)->name();
     return ((Enemy*)self)->goRight();
 }
 

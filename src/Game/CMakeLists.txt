@@ -61,7 +61,7 @@ find_library(LIBBT
     PATHS
         c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/ 
         /usr/lib
-        /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build
+        /usr/local/lib
 )
 message("-- Found libbtlib:" ${LIBBT})
 
@@ -73,7 +73,7 @@ find_path(LIBBTPATH
     PATHS
         c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/
         /usr/lib
-        /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build
+        /usr/local/lib
 )
 message("-- Found libbt's path:" ${LIBBTPATH})
 add_library(btlib SHARED IMPORTED)

@@ -45,6 +45,9 @@ public:
     QWaitCondition eventCond;
     QMutex eventMutex;
     Agent* target;
+    
+    QString name();
+    QString thename;
 private:
     btNode* tree;
     btNode* current;

@@ -22,13 +22,13 @@ void Player::setSquare(int x,int y){
     }*/
 
     if(collided == true){
-        qDebug("You Lost");
+       // qDebug("You Lost");
         emit pacmanLost();
     }
     if(this->game->board[x][y]->goal()){
         score++;
         if(score >= 5){
-            qDebug("You Won");
+          //  qDebug("You Won");
             this->setBrush(QBrush(QColor(Qt::gray)));
             emit pacmanWon();
         }
@@ -47,7 +47,7 @@ void Player::setSquare(int x,int y){
      //qDebug() << "returnvalue: " << returnValue;
 
      if(collision() == true){
-        qDebug() << "player collided";
+        //qDebug() << "player collided";
         collided = true;
     }
 

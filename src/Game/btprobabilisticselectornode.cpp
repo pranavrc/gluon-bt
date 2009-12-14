@@ -14,6 +14,8 @@ btProbSelectorNode::btProbSelectorNode()
 
 bool btProbSelectorNode::run(btCharacter *self)
 {
+    
+                qDebug() <<"prob: " << ((Enemy*)self)->name();
 
     float randNum;
     float intStart = 0.0;
@@ -21,14 +23,14 @@ bool btProbSelectorNode::run(btCharacter *self)
     int inc = 0;
 
     for(int i = 0; i < probStats.count(); i++){
-        qDebug() << qrand();
+      //  qDebug() << qrand();
         randNum = ((float)qrand()/RAND_MAX) * scale;
-        qDebug() << "RandNum: " << randNum;
+       // qDebug() << "RandNum: " << randNum;
         foreach(StatNode *node, probStats)
         {
             if(node->visited == false){
                 if(intStart < randNum && randNum <= (node->wp + intStart)){
-                   qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
+               //    qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
                    /*if(stopFlag()){  // måske kan man gøre det til en del af runBehavior ?
                        setStopFlag(false);
                        return false;
@@ -65,7 +67,7 @@ bool btProbSelectorNode::run(btCharacter *self)
 void btProbSelectorNode::appendingChild(int index)
 {
     StatNode *newNode = new StatNode();
-    qDebug() << "prob stat insert at: " << index;
+    //qDebug() << "prob stat insert at: " << index;
     probStats.insert(index,newNode);
 }
 
@@ -76,7 +78,7 @@ void btProbSelectorNode::removingChild(int index)
 
 void btProbSelectorNode::childrenAdded()
 {
-    qDebug("eller her er den");
+    //qDebug("eller her er den");
     ///fixme skal læses fra xml
     int count = probStats.count();
     int i = 0;
@@ -84,24 +86,24 @@ void btProbSelectorNode::childrenAdded()
 
         if(property("weights").isValid()){
             QList<QVariant> probs = property("weights").toList();
-            qDebug("her 1");
-            qDebug() << "probs.count(): " << probs.count();
+      //      qDebug("her 1");
+           // qDebug() << "probs.count(): " << probs.count();
             foreach(StatNode *node, probStats){
                 node->p = (1.0 / count);
                 node->wp = probs.at(i).toDouble(); //(1.0 / count);
                 i++;
-                qDebug("her 2");
+        //        qDebug("her 2");
             }
         }else{
-            qDebug("her 3");
+          //  qDebug("her 3");
             foreach(StatNode *node, probStats){
                 node->p = (1.0 / count);
                 node->wp = (1.0 / count);
-                qDebug("her 4");
+            //    qDebug("her 4");
             }
         }
     }
-    qDebug("den er ikke her");
+//    qDebug("den er ikke her");
 }
 
 #include "btprobabilisticselectornode.moc"

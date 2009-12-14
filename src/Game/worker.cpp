@@ -12,13 +12,13 @@ Worker::Worker(btNode* node,btParallelNode* parent)
 
 void Worker::setSelf(btCharacter *self)
 {
-    qDebug() << "set self";
+    //qDebug() << "set self";
     this->self = self;
 }
 
 void Worker::run()
 {
-    qDebug() << "worker run";
+  //  qDebug() << "worker run";
 
     qsrand(QDateTime::currentDateTime().toTime_t() - 345645);
     //(int)QThread::currentThreadId());
@@ -34,7 +34,7 @@ void Worker::run()
            // ((Enemy*)self)->eventCond.wakeAll();
         }
     }*/
-    qDebug() << "value: " << value;
+   // qDebug() << "value: " << value;
 }
 
 #include "worker.moc"

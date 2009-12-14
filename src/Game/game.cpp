@@ -70,13 +70,7 @@ Game::Game()
         this->addLine((float)(i * 20),0.0,(float)(i * 20),300.0,QPen(QColor(Qt::gray)));
         this->addLine(0.0,(float)(i * 20),300.0,(float)(i * 20),QPen(QColor(Qt::gray)));
     }*/
-    marker = new Player(this,QPoint(0,14));//new GameItem(this);
-    connect(marker, SIGNAL(pacmanLost()), this, SLOT(reset()));
-    connect(marker, SIGNAL(pacmanWon()), this, SLOT(reset()));
-    //marker->setPos(10.0,10.0);
-    marker->setBrush(Qt::yellow);
-    marker->setZValue(13);
-    this->addItem(marker);
+    
 
 
     // --------------------------------------
@@ -91,31 +85,31 @@ Game::Game()
     file.close();
 
     btBrain *brain = new btBrain(fileContents);
-    agent = new Guard(this,QPoint(14,0));
-   // agent2 = new Guard(this,QPoint(0,0));
-   // agent3 = new Guard(this,QPoint(14,14));
-  //  agent4 = new Guard(this,QPoint(0,14));
-
-    Enemy *player = new Enemy(marker,brain->getBehaviorTree(4));
-
-    Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(3));
-//    Enemy *enemy2 = new Enemy(agent2,brain->getBehaviorTree(4));
-  //  Enemy *enemy3 = new Enemy(agent3,brain->getBehaviorTree(3));
-  //  Enemy *enemy4 = new Enemy(agent4,brain->getBehaviorTree(3));
-
+    
     this->setBackgroundBrush(QBrush(QColor(Qt::black)));
-
-    Runner* runner = new Runner(enemy);
-    connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
-    runners.append(runner);
     
-  /*  Runner* flee = new Runner(enemy2);
-    connect(flee, SIGNAL(finished()), this, SLOT(resetGame()));
-        runners.append(flee);    */
+    marker = new Player(this,QPoint(0,0));//new GameItem(this);
+    connect(marker, SIGNAL(pacmanLost()), this, SLOT(reset()));
+    connect(marker, SIGNAL(pacmanWon()), this, SLOT(reset()));
+    marker->setBrush(Qt::yellow);
     
+    Enemy *player = new Enemy(marker,brain->getBehaviorTree(4));
+    player->thename = "mr. anderson";
     Runner* playerRunner = new Runner(player);
     connect(playerRunner, SIGNAL(finished()), this, SLOT(resetGame()));
     runners.append(playerRunner);
+    
+    for (int i = 0; i < this->numberOfEnemies(); i++)
+    {
+        Guard* agent = new Guard(this,QPoint(14,14));        
+        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(3));
+        
+        Runner* runner = new Runner(enemy);
+        connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
+        runners.append(runner);
+        enemy->thename = "mr. smith " + QVariant(i).toString();
+        agent->setObjective(marker);
+    }//*/
 
     foreach(Runner* r , runners)
     {
@@ -132,37 +126,11 @@ Game::Game()
 
 
 void Game::reset()
-{
-  /*  for(int i = 0; i < 15; ++i){
-        for(int j = 0;j < 15; ++j){
-            board[i][j]->setVisible(true);
-            /*if(board[i][j]->occupant != NULL){
-                board[i][j]->occupant->setSquare(qrand() % 14, qrand() % 14);
-            }*/
-        /*}
-    }
-    marker->setSquare(0,0);
-    agent->setSquare(14,14);
-    agent->setDirection(GameItem::None);*/
-
-/*    Enemy* e = playerRunner->getTarget();
-    e->stopThinking();
-    Enemy* target = runner->getTarget();
-    target->stopThinking();*/
-    
+{    
     foreach(Runner* r , runners)
     {
         r->getTarget()->stopThinking();
     }
-    
-    qDebug() << "stop thinking";
-    //runner->wait();
-    //runner->terminate();
-    
-/*    delete runner;
-    runner = new Runner(target);
-    target->startThinking();
-    runner->start();*/
 }
 
 void Game::resetGame()
@@ -176,7 +144,7 @@ void Game::resetGame()
     }
     
     
-    qDebug() << "resetting";
+    //qDebug() << "resetting";
     for(int i = 0; i < 15; ++i){
         for(int j = 0;j < 15; ++j){
             board[i][j]->setVisible(true);
@@ -185,17 +153,6 @@ void Game::resetGame()
              }*/
         }
     }
-    marker->setSquare(0,0);
-    agent->setSquare(14,14);
-    agent->setDirection(GameItem::None);
-    
-/*    Enemy* target = runner->getTarget();
-    Enemy* e = playerRunner->getTarget();
-    
-    delete runner;
-    delete playerRunner;
-    runner = new Runner(target);
-    playerRunner = new Runner(e);*/
     
     for(int i = 0; i <runners.count(); i++)
     {
@@ -207,6 +164,15 @@ void Game::resetGame()
         t->startThinking();
         t->target->collided = false;
         
+        if(t->target == marker)
+        {
+            marker->setSquare(0,0);
+        }
+        else 
+        {
+            t->target->setSquare(14,14);
+            t->target->setDirection(GameItem::None);
+        }        
     }
     
     foreach(Runner* r , runners)
@@ -222,6 +188,11 @@ void Game::resetGame()
 
 void Game::drawItems(){
 
+}
+
+int Game::numberOfEnemies()
+{
+    return 2;
 }
 
 #include "game.moc"

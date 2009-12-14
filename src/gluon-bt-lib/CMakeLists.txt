@@ -14,6 +14,19 @@ set(btlib_SRCS
     btsequencenode.cpp
 )
 
+set(btlib_HEADERS
+
+    ../gluon-bt-common/btnodetype.h
+    ../gluon-bt-common/btnode.h
+    ../gluon-bt-common/btcharacter.h
+    btfactory.h
+    btbrain.h
+    btselectornode.h
+    btsequencenode.h
+    ../gluon-bt-common/btglobal.h
+    btlib_export.h
+    btlib.h
+)
 
 
 add_definitions(-DMAKE_BT_LIB)
@@ -24,5 +37,13 @@ add_library(btlib SHARED ${btlib_SRCS} ${btlib_UIS_H})
 target_link_libraries(btlib ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY})
 
 install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-#set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
 
+if(APPLE)
+
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
+
+endif()
+
+install(FILES
+${btlib_HEADERS}
+DESTINATION ${INCLUDE_INSTALL_DIR}/ COMPONENT Devel)

@@ -43,7 +43,7 @@ Agent::Agent(Game* game,QPoint pos)
  {
      QGraphicsPolygonItem::paint(painter,option,widget);
      if(collision() == true){
-        qDebug() << "coliided and repainted";
+        //qDebug() << "coliided and repainted";
         collided = true;
     }else{
         collided = false;
@@ -53,13 +53,13 @@ Agent::Agent(Game* game,QPoint pos)
 void Agent::unlock()
 {
     returnValue = false;
-    qDebug() << "unlock";
+ //   qDebug() << "unlock";
     //mutex->unlock();
     waitCond->wakeAll();
-    qDebug() << "unlock2";
+  //  qDebug() << "unlock2";
     //eventMutex->unlock();
     eventCond->wakeAll();
-    qDebug() << "done unlucking and waking"; 
+  //  qDebug() << "done unlucking and waking"; 
 }
 
 void Agent::sayHello()
@@ -166,7 +166,7 @@ bool Agent::collision(){
             }
             if(item->zValue() >= 10){
                 //returnValue = true;
-                qDebug() << "collision";
+                //qDebug() << "collision";
                 return true;
             }
         }
@@ -176,6 +176,16 @@ bool Agent::collision(){
         //returnValue = false;
     }
     return false;
+}
+
+Agent* Agent::objective()
+{
+    return obj;
+}
+
+void Agent::setObjective(Agent* o)
+{
+        obj = o;
 }
 
 #include "agent.moc"

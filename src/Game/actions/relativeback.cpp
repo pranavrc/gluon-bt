@@ -14,7 +14,7 @@ relativeBack::relativeBack()
 
 bool relativeBack::run(btCharacter *self)
 {
-    qDebug() << "relativeBack::run()";
+    //qDebug() << "relativeBack::run()";
     return ((Enemy*)self)->back();
 }
 

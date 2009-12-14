@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QThread>
+#include "enemy.h"
 
 REGISTER_NODETYPE(btDebugNode)
 
@@ -12,7 +13,7 @@ btDebugNode::btDebugNode()
 
 bool btDebugNode::run(btCharacter *self)
 { 
-    qDebug() << " says " << property("message").toString();
+    qDebug() << ((Enemy*)self)->name() << " says " << property("message").toString();
     return true;
 }
 
