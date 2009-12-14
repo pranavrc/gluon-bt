@@ -47,11 +47,11 @@ set(mainwindow_UIS
     mainwindow.ui
 )
  
+
 qt4_wrap_ui(mainwindow_UIS_H ${mainwindow_UIS})
  
 qt4_automoc(${game_src})
 add_executable(Game ${game_src} ${mainwindow_UIS_H})
-
 
 
 find_library(LIBBT
@@ -65,6 +65,8 @@ find_library(LIBBT
         /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build
 )
 message("-- Found libbtlib:" ${LIBBT})
+
+
 
 find_path(LIBBTPATH
     NAMES

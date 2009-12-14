@@ -10,10 +10,12 @@
 #include <QFile>
 #include "scenario.h"
 #include "scenarioset.h"
+#include "mainwindow.h"
 
-Game::Game()
+Game::Game(MainWindow *ui)
 {
-
+    this->ui = ui;
+    gameCounter = 0;
     qsrand(QDateTime::currentDateTime().toTime_t());
     int locations[15][15] =    {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                                 0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,
@@ -110,7 +112,7 @@ Game::Game()
     for (int i = 0; i < this->numberOfEnemies(); i++)
     {
         Guard* agent = new Guard(this,QPoint(14,14));        
-        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));=
+        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
         
         Runner* runner = new Runner(enemy);
         connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
@@ -172,6 +174,8 @@ void Game::resetGame()
 
     disconnect(marker, SIGNAL(enteredNewCell(int,int)), ss->scenarioList().last(), SLOT(visit(int,int)));
     connect(marker, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
+
+    ui->takeScreenshot(gameCounter++);
     
     for(int i = 0; i <runners.count(); i++)
     {
@@ -215,3 +219,4 @@ int Game::numberOfEnemies()
 }
 
 #include "game.moc"
+

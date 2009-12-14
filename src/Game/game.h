@@ -8,6 +8,7 @@
 #include <QKeyEvent>
 #include <QTimeLine>
 #include "runner.h"
+#include "mainwindow.h"
 
 
 class GameItem;
@@ -17,7 +18,7 @@ class Game : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    Game();
+    Game(MainWindow *ui);
     Player* marker;
     Guard* agent;
     ScenarioSet *ss;
@@ -26,6 +27,7 @@ public:
     Guard* agent4;
 /*    Runner *runner;
     Runner *playerRunner;*/
+    int gameCounter;
     void drawItems();
     GameItem* board[16][16];
     QList<GameItem*> goals;
@@ -61,7 +63,9 @@ public Q_SLOTS:
     void reset();
     
 private:
+    MainWindow *ui;
     QList<Runner*> runners;
+
 };
 
 #endif // GAME_H

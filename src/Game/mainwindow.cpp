@@ -5,12 +5,13 @@
 #include "scenario.h"
 #include <QGLWidget>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->graphicsView->setViewport(new QGLWidget());
-    ui->graphicsView->setScene(new Game());
+   // ui->graphicsView->setViewport(new QGLWidget());
+    ui->graphicsView->setScene(new Game(this));
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +58,11 @@ void MainWindow::on_pushButton_7_clicked()
     ui->interest_2->setText(QString("%1").arg(scene->ss->calculateChallengeLevel()));
     ui->interest_3->setText(QString("%1").arg(scene->ss->calculateBehavioralDiversity()));
     ui->interest_4->setText(QString("%1").arg(scene->ss->calculateSpatialDiversity()));
+}
+
+void MainWindow::takeScreenshot(int counter)
+{
+    QPixmap::grabWindow(ui->graphicsView->winId()).save(QString("game%1.png").arg(QString("%1").arg(counter),5,'0'));
 }
 
 #include "mainwindow.moc"
