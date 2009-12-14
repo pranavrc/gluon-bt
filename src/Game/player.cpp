@@ -13,7 +13,7 @@ Player::Player(Game* game,QPoint pos)
 void Player::sayHello()
 {
     Agent::sayHello();
-    QColor color = game->board[square.x()][square.y()]->brush().color().darker(105);
+    QColor color = game->board[square.x()][square.y()]->brush().color().darker(102);
     game->board[square.x()][square.y()]->setBrush(QBrush(color));
 }
 

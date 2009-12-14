@@ -52,6 +52,7 @@ Game::Game(MainWindow *ui)
                 board[j][i]->setPolygon(myPolygon);
                 board[j][i]->setZValue(0);
                 board[j][i]->setBrush(Qt::white);
+                board[j][i]->setPen(QPen(QColor(Qt::transparent)));
             }else if(locations[i][j] == 2){
                 board[j][i] = new GameItem(j,i,this);
                 board[j][i]->setBlocks(false);
@@ -70,10 +71,10 @@ Game::Game(MainWindow *ui)
         }
     }
 
-    for(int i = 0; i < 16; ++i){
+    /*for(int i = 0; i < 16; ++i){
         this->addLine((float)(i * 20),0.0,(float)(i * 20),300.0,QPen(QColor(Qt::gray)));
         this->addLine(0.0,(float)(i * 20),300.0,(float)(i * 20),QPen(QColor(Qt::gray)));
-    }
+    }*/
     
 
 
@@ -176,6 +177,7 @@ void Game::resetGame()
     connect(marker, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
 
     ui->takeScreenshot(gameCounter++);
+    ui->updateInterest();
     
     for(int i = 0; i <runners.count(); i++)
     {
