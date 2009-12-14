@@ -20,7 +20,7 @@ bool btWonNode::run(btCharacter *self)
     while(true){
         // dette her er noget en parallel skal håndtere
            // qDebug() << "condition called";
-        ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
+        ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex, 30000);
           if(((Enemy*)self)->target->square.x() == property("x").toInt()){
         if(((Enemy*)self)->target->square.y() == property("y").toInt()){
             ((Enemy*)self)->eventMutex.unlock();

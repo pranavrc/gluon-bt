@@ -258,7 +258,7 @@ void Game::drawItems(){
 
 int Game::numberOfEnemies()
 {
-    return 1;
+    return 2;
 }
 
 #include "game.moc"

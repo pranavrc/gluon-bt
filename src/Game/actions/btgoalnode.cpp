@@ -22,7 +22,7 @@ bool btGoalNode::run(btCharacter *self)
         // dette her er noget en parallel skal håndtere
             //qDebug() << "condition called";
             ((Enemy*)self)->eventMutex.lock();
-        ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex);
+        ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex, 30000);
           if(((Enemy*)self)->target->game->board[((Enemy*)self)->target->square.x()][((Enemy*)self)->target->square.y()]->goal()){
               ((Enemy*)self)->target->game->board[((Enemy*)self)->target->square.x()][((Enemy*)self)->target->square.y()]->setGoal(false);
             ((Enemy*)self)->eventMutex.unlock();
