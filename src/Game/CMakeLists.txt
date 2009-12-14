@@ -2,7 +2,7 @@ project(Game)
 cmake_minimum_required(VERSION 2.6)
 find_package(Qt4 REQUIRED)
 
-add_definitions(-DMAKE_BT_LIB)
+#add_definitions(-DMAKE_BT_LIB)
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/../gluon-bt-common/ ${PROJECT_SOURCE_DIR}/../gluon-bt-lib/)
 
@@ -43,15 +43,16 @@ set(game_src
     actions/btnotnode.cpp
 )
 
-
 set(mainwindow_UIS
     mainwindow.ui
 )
  
+
 qt4_wrap_ui(mainwindow_UIS_H ${mainwindow_UIS})
  
 qt4_automoc(${game_src})
 add_executable(Game ${game_src} ${mainwindow_UIS_H})
+
 
 find_library(LIBBT
     NAMES
@@ -59,7 +60,7 @@ find_library(LIBBT
         libbtlib.dylib
         libbtlib.dll
     PATHS
-        c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/ 
+        c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build
         /usr/lib
         /usr/local/lib
 )
@@ -71,7 +72,7 @@ find_path(LIBBTPATH
         libbtlib.dylib
         libbtlib.dll
     PATHS
-        c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/
+        c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build
         /usr/lib
         /usr/local/lib
 )
@@ -81,3 +82,4 @@ set_property(TARGET btlib PROPERTY IMPORTED_LOCATION ${LIBBT})
 set_property(TARGET btlib PROPERTY IMPORTED_IMPLIB ${LIBBT})
 
 target_link_libraries(Game ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} btlib)
+

@@ -74,5 +74,5 @@ HEADERS += mainwindow.h \
     randgenerator.h
 INCLUDEPATH += ../gluon-bt-lib \
     ../gluon-bt-common
-LIBS += ../gluon-bt-lib/build/libbtlib.dylib
+LIBS += ../gluon-bt-lib/qtcreator-build/libbtlib.dll
 FORMS += mainwindow.ui
