@@ -21,11 +21,11 @@ public:
     Guard* agent2;
     Guard* agent3;
     Guard* agent4;
-    Runner *runner;
+/*    Runner *runner;
+    Runner *playerRunner;*/
     void drawItems();
     GameItem* board[16][16];
     QList<GameItem*> goals;
-    void reset();
     void keyPressEvent(QKeyEvent *event){
        qDebug() << event->key();
        switch(event->key()){
@@ -53,9 +53,10 @@ public:
     
 public Q_SLOTS:
     void resetGame();
+    void reset();
     
 private:
-
+    QList<Runner*> runners;
 };
 
 #endif // GAME_H

@@ -25,6 +25,4 @@ bool btCharacter::continueThinking()
     return think;
 }
 
-
-
 #include "btcharacter.moc"
