@@ -20,7 +20,7 @@ void Worker::run()
 {
   //  qDebug() << "worker run";
 
-    qsrand(QDateTime::currentDateTime().toTime_t() - 345645);
+    qsrand(QDateTime::currentDateTime().toTime_t() - - reinterpret_cast<quint64>(this));
     //(int)QThread::currentThreadId());
 
     value = node->runBehavior(this->self);
@@ -35,6 +35,12 @@ void Worker::run()
         }
     }*/
    // qDebug() << "value: " << value;
+}
+
+Worker* Worker::copy()
+{
+    Worker* copy = new Worker(this->node, this->parent);
+    return copy;
 }
 
 #include "worker.moc"

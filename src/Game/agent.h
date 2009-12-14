@@ -36,8 +36,8 @@ public:
                            QWidget *widget);
     bool collision();
     
-    Agent* objective();
-    void setObjective(Agent* o);
+    QList<Agent*> getObjectives();
+    void addObjective(Agent* o);
 
 public Q_SLOTS:
     virtual void sayHello();
@@ -50,7 +50,7 @@ public Q_SLOTS:
     bool stopMove();
     
 private:
-    Agent* obj;
+    QList<Agent*> objectives;
 };
 
 #endif // AGENT_H
