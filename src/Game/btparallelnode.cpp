@@ -32,13 +32,18 @@ bool btParallelNode::run(btCharacter *self)
     }
 
     foreach(Worker* w,workerList){
-        w->wait(600000); //10 mins
-        //qDebug() << "thread stopped";
+        w->wait(60000); //1 min
+        qDebug() << "thread stopped " << ((Enemy*)self)->name();
     }
-qDebug("parallel done");
+qDebug() << "parallel done " << ((Enemy*)self)->name();
     ((Enemy*)self)->finished.wakeAll();
     
     bool result = decide(workerList);
+    
+    foreach(Worker* w,workerList)
+    {
+        w->terminate();
+    }
     
     qDeleteAll(workerList);
     
