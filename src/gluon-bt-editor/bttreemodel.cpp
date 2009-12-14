@@ -234,7 +234,7 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
         
         while(!stream.atEnd())
         {
-            int nodeMemAdress;
+            quint64 nodeMemAdress;
             stream >> nodeMemAdress;
             node =  reinterpret_cast<btEditorNode*>(nodeMemAdress);
             stream >> nodeMemAdress;
