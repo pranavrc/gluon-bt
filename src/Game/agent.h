@@ -39,6 +39,9 @@ public:
     QList<Agent*> getObjectives();
     void addObjective(Agent* o);
 
+    QList<GameItem*> getGoals();
+    void addGoal(GameItem* o);
+
 public Q_SLOTS:
     virtual void sayHello();
     virtual void unlock();
@@ -51,6 +54,7 @@ public Q_SLOTS:
     
 private:
     QList<Agent*> objectives;
+    QList<GameItem*> goals;
 };
 
 #endif // AGENT_H

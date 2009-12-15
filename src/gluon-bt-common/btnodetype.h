@@ -48,8 +48,8 @@ public:
     virtual btNodeType * copy();
     virtual QString className() const;
     virtual void setClassName(QString className);
-/*    virtual void setStopFlag(bool stopFlag);
-    virtual bool stopFlag() const;*/
+    virtual void setStopFlag(bool stopFlag);
+    virtual bool stopFlag() const;
     
     void setPropertyDescription(QString propertyName, QString description);
     void setPropertyDescription(QString newPropertyName, QString oldPropertyName, QString description);
@@ -82,7 +82,7 @@ private:
     QString m_className;
     btNode* m_parent;
     nodeType m_type;
-    //bool m_stopFlag;
+    bool m_stopFlag;
     QHash<QString, QString> m_propertiesDescriptions;
 };
 

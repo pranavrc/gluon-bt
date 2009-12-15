@@ -11,6 +11,7 @@
 #include "scenario.h"
 #include "scenarioset.h"
 #include "mainwindow.h"
+#include "colorgen.h"
 
 Game::Game(MainWindow *ui)
 {
@@ -32,6 +33,7 @@ Game::Game(MainWindow *ui)
                                 0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,
                                 0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,
                                 2,0,0,0,0,0,0,0,0,0,0,0,0,0,2};
+
 
     for(int i = 0; i < 15; ++i){
         for(int j = 0;j < 15; ++j){
@@ -121,20 +123,23 @@ Game::Game(MainWindow *ui)
     connect(marker, SIGNAL(pacmanWon()), this, SLOT(reset()));
     connect(marker, SIGNAL(enteredNewCell(int,int)), s1, SLOT(visit(int,int)));
 
-    marker->setBrush(Qt::yellow);
+    marker->setBrush(Qt::magenta);
     
-    Enemy *player = new Enemy(marker,brain->getBehaviorTree(4));
+    Enemy *player = new Enemy(marker,brain->getBehaviorTree(10));
     player->thename = "mr. anderson";
     Runner* playerRunner = new Runner(player);
     connect(playerRunner, SIGNAL(finished()), this, SLOT(resetGame()));
-    runners.append(playerRunner);
+    //runners.append(playerRunner);
     
     int trees[3] = {6,7,9};
+
+    ColorGen colors(0,255,30);
 
     for (int i = 0; i < this->numberOfEnemies(); i++)
     {
         Guard* agent = new Guard(this,QPoint(6,6));
         Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(trees[i]));
+        agent->setBrush(QBrush(colors.nextColor()));
         
         Runner* runner = new Runner(enemy);
         connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
@@ -143,6 +148,10 @@ Game::Game(MainWindow *ui)
         agent->addObjective(marker);
         marker->addObjective(agent);
     }//*/
+
+    foreach(GameItem* goal,goals){
+        marker->addGoal(goal);
+    }
 
     foreach(Runner* r , runners)
     {
@@ -182,7 +191,11 @@ void Game::resetGame()
 
     for(int i = 0; i < 15; ++i){
         for(int j = 0;j < 15; ++j){
-            board[i][j]->setVisible(true);
+            //board[i][j]->setVisible(true);
+            if(!board[i][j]->isVisible()){
+                board[i][j]->setGoal(true);
+                board[i][j]->setVisible(true);
+            }
 
             //board[i][j]->setBrush(brush);
             /*if(board[i][j]->occupant != NULL){
@@ -235,6 +248,7 @@ void Game::resetGame()
         if(t->target == marker)
         {
             marker->setSquare(8,12);
+            marker->collided = false;
         }
         else 
         {
@@ -260,7 +274,7 @@ void Game::drawItems(){
 
 int Game::numberOfEnemies()
 {
-    return 1;
+    return 3;
 }
 
 #include "game.moc"

@@ -18,7 +18,7 @@ btGoalNode::btGoalNode()
 
 bool btGoalNode::run(btCharacter *self)
 { 
-    while(true){
+    while(!stopFlag() && self->continueThinking()){
         // dette her er noget en parallel skal håndtere
             //qDebug() << "condition called";
             ((Enemy*)self)->eventMutex.lock();

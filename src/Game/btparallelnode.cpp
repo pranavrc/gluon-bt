@@ -27,6 +27,7 @@ bool btParallelNode::run(btCharacter *self)
         workerList[workerList.count()-1]->setSelf(self);
 //        w->setSelf(self);
   //      w->start();
+        //workerList[workerList.count()-1]->value = true; // does this fix it -- morten
         workerList[workerList.count()-1]->start();
 
     }
@@ -79,8 +80,8 @@ bool btParallelNode::decide(QList<Worker*> workList)
 
     foreach(Worker* w,workList){
         qDebug() << "w: " << w->value;
-        if(w->value == false){
-            return false;
+        if(w->value == true){
+            return true;
         }
     }
     return false;

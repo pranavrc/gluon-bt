@@ -24,16 +24,16 @@ void Worker::run()
     //(int)QThread::currentThreadId());
 
     value = node->runBehavior(this->self);
-    /*// this is a hack, this does not work
+    // this is a hack, this does not work
     foreach(Worker* worker,parent->workers){
         qDebug() << "terminating " << worker->node->name();
         if(worker != this){
-            //worker->node->type()->setStopFlag(true);
+            worker->node->type()->setStopFlag(true);
             //((Enemy*)self)->mutex.unlock();
             ((Enemy*)self)->finished.wakeAll();
            // ((Enemy*)self)->eventCond.wakeAll();
         }
-    }*/
+    }
    // qDebug() << "value: " << value;
 }
 

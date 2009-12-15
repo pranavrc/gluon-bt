@@ -31,16 +31,17 @@ bool btProbSelectorNode::run(btCharacter *self)
             if(node->visited == false){
                 if(intStart < randNum && randNum <= (node->wp + intStart)){
                //    qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
-                   /*if(stopFlag()){  // måske kan man gøre det til en del af runBehavior ?
+                   if(stopFlag()){  // måske kan man gøre det til en del af runBehavior ?
                        setStopFlag(false);
                        return false;
-                   }*/
+                   }
                     if(parentNode()->child(inc)->runBehavior(self)){
                         qDebug("behavior run succes");
                         node->succes += 1;
                         foreach(StatNode *node, probStats){
                             node->visited = false;
                         }
+                        setStopFlag(false);
                         return true;
                     }else{
                         qDebug("behavior run fail");
@@ -60,7 +61,7 @@ bool btProbSelectorNode::run(btCharacter *self)
     foreach(StatNode *node, probStats){
         node->visited = 0;
     }
-
+    setStopFlag(false);
     return false;
 }
 

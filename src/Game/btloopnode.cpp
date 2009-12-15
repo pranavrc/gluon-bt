@@ -11,12 +11,13 @@ btLoopNode::btLoopNode()
 
 bool btLoopNode::run(btCharacter *self)
 {
+    setStopFlag(false);
     int repeats = -1;
     if(property("repeat").isValid()){
         repeats = property("repeat").toInt();
     }
     qDebug() << "repeat: " << repeats;
-    while(/*!stopFlag()*/self->continueThinking() && (repeats != 0)){
+    while(!stopFlag() && self->continueThinking() && (repeats != 0)){
         for(int i = 0; i < parentNode()->childCount(); i++)
         {            
             qDebug() <<"loop: " << ((Enemy*)self)->name();
@@ -29,6 +30,7 @@ bool btLoopNode::run(btCharacter *self)
             repeats--;
         }
     }
+    setStopFlag(false);
     return false; // tjek hvad det gør
 }
 

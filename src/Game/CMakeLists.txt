@@ -32,6 +32,8 @@ set(game_src
     actions/relativeback.cpp 
     actions/movecloserupdown.cpp 
     actions/movecloserleftright.cpp 
+    actions/movecloserupdowntogoal.cpp
+    actions/movecloserleftrighttogoal.cpp
     actions/movecloserupdownpinky.cpp
     actions/movecloserleftrightpinky.cpp
     actions/moveawayupdown.cpp 
@@ -46,6 +48,7 @@ set(game_src
     scenario.cpp 
     scenarioset.cpp 
     actions/btnotnode.cpp
+    colorgen.cpp
 )
 
 set(mainwindow_UIS

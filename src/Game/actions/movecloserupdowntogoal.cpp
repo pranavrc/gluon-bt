@@ -1,4 +1,4 @@
-#include "moveawayupdown.h"
+#include "movecloserupdowntogoal.h"
 
 #include <QDebug>
 #include <QtCore/QThread>
@@ -7,23 +7,31 @@
 #include "agent.h"
 #include "game.h"
 
-REGISTER_NODETYPE(moveAwayUpDown)
+REGISTER_NODETYPE(moveCloserUpDownToGoal)
 
-moveAwayUpDown::moveAwayUpDown()
+moveCloserUpDownToGoal::moveCloserUpDownToGoal()
 {
     // init variables
 }
 
-bool moveAwayUpDown::run(btCharacter *self)
+bool moveCloserUpDownToGoal::run(btCharacter *self)
 {
-   // qDebug() << "moveAway::run()";
+    //qDebug() << "moveCloser::run()";
     Enemy* e = (Enemy*)self;
-    Agent* closest = e->target->getObjectives().first();
-
+    //qDebug() << "enemy.y " << e->target->game->marker->square.y() << "self.y " <<  e->target->square.y();
+    
     int currentY = 15;
-    int currentDelta;
-    foreach(Agent* a, e->target->getObjectives())
-    {
+    int currentDelta = 15;
+
+    bool isGoal = false;
+
+    GameItem *closest = e->target->getGoals().first();
+
+    foreach(GameItem* a, e->target->getGoals())
+    {   
+        isGoal = a->goal();
+        if(isGoal == false) continue;
+
         int delta;
         if(a->square.y() < e->target->square.y())
         {
@@ -34,7 +42,6 @@ bool moveAwayUpDown::run(btCharacter *self)
             delta = a->square.y() - e->target->square.y();
         }
         
-        a->setPen(QPen(Qt::SolidLine));
         if(currentDelta > delta)
         {
             currentDelta = delta;
@@ -42,20 +49,21 @@ bool moveAwayUpDown::run(btCharacter *self)
             closest = a;
         }
     }
-
-    closest->setPen(QPen(Qt::DotLine));
     
-    if(currentY > e->target->square.y()){
+    //closest->setGoal(false);
+
+    if(currentY <= e->target->square.y()){
         return ((Enemy*)self)->goUp();
     }else{
         return ((Enemy*)self)->goDown();
     }
-
-    /*if(e->target->objective()->square.y() > e->target->square.y()){
+    
+    /*if(e->target->objective()->square.y() <= e->target->square.y()){
         return ((Enemy*)self)->goUp();
     }else{
         return ((Enemy*)self)->goDown();
     }*/
 }
 
-#include "moveawayupdown.moc"
+
+#include "movecloserupdowntogoal.moc"

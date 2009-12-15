@@ -17,19 +17,21 @@ keepChecking::keepChecking()
 
 bool keepChecking::run(btCharacter *self)
 {
-    while(self->continueThinking()){
+    while(!stopFlag() && self->continueThinking()){
         ((Enemy*)self)->eventMutex.lock();
                 ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex, 30000);
                 qDebug() << "is close enough";
                 if(parentNode()->child(0)->runBehavior(self) == true){
                     ((Enemy*)self)->eventMutex.unlock();
                     qDebug() << "yes it is";
+                    setStopFlag(false);
                     return true;
                 }
         
         ((Enemy*)self)->eventMutex.unlock();
 
     }
+    setStopFlag(false);
     return false;
 }
 

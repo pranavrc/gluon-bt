@@ -190,8 +190,7 @@ void GameItem::setBlocks(bool value)
 
 bool GameItem::goal()
 {
-    //return isGoal;
-    return false;
+    return isGoal;
 }
 
 void GameItem::setGoal(bool value)

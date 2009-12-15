@@ -188,4 +188,15 @@ void Agent::addObjective(Agent* o)
     objectives.append(o);
 }
 
+QList<GameItem*> Agent::getGoals()
+{
+    return goals;
+}
+
+void Agent::addGoal(GameItem* o)
+{
+    goals.append(o);
+}
+
+
 #include "agent.moc"
