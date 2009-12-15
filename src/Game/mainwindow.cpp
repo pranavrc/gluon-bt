@@ -65,4 +65,10 @@ void MainWindow::takeScreenshot(int counter)
     QPixmap::grabWindow(ui->graphicsView->winId()).save(QString("game%1.png").arg(QString("%1").arg(counter),5,'0'));
 }
 
+void MainWindow::updateInterest(int counter)
+    {
+        on_pushButton_7_clicked();
+        ui->lcdNumber->display(counter);
+    }
+
 #include "mainwindow.moc"

@@ -19,16 +19,17 @@ bool btWonNode::run(btCharacter *self)
 { 
     while(true){
         // dette her er noget en parallel skal håndtere
-           // qDebug() << "condition called";
+        // qDebug() << "condition called";
+        ((Enemy*)self)->eventMutex.lock();
         ((Enemy*)self)->eventCond.wait(&((Enemy*)self)->eventMutex, 30000);
-          if(((Enemy*)self)->target->square.x() == property("x").toInt()){
-        if(((Enemy*)self)->target->square.y() == property("y").toInt()){
-            ((Enemy*)self)->eventMutex.unlock();
-            return true;
+        if(((Enemy*)self)->target->square.x() == property("x").toInt()){
+            if(((Enemy*)self)->target->square.y() == property("y").toInt()){
+                ((Enemy*)self)->eventMutex.unlock();
+                return true;
+            }
+
         }
         ((Enemy*)self)->eventMutex.unlock();
-    }
-
     }
     return false;
 }

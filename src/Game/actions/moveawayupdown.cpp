@@ -18,7 +18,8 @@ bool moveAwayUpDown::run(btCharacter *self)
 {
    // qDebug() << "moveAway::run()";
     Enemy* e = (Enemy*)self;
-    
+    Agent* closest = e->target->getObjectives().first();
+
     int currentY = 15;
     int currentDelta;
     foreach(Agent* a, e->target->getObjectives())
@@ -37,8 +38,12 @@ bool moveAwayUpDown::run(btCharacter *self)
         {
             currentDelta = delta;
             currentY = a->square.y();
+            a->setPen(QPen(Qt::SolidLine));
+            closest = a;
         }
     }
+
+    closest->setPen(QPen(Qt::DotLine));
     
     if(currentY > e->target->square.y()){
         return ((Enemy*)self)->goUp();

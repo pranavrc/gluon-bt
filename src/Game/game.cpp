@@ -24,7 +24,7 @@ Game::Game(MainWindow *ui)
                                 0,1,0,1,0,0,0,0,0,0,0,1,0,1,0,
                                 0,1,0,1,0,1,1,0,1,1,0,1,0,1,0,
                                 0,1,0,1,0,1,0,0,0,1,0,1,0,1,0,
-                                0,0,0,1,0,1,0,1,0,1,0,1,0,0,0,
+                                0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,
                                 0,1,0,1,0,1,0,0,0,1,0,1,0,1,0,
                                 0,1,0,1,0,1,1,0,1,1,0,1,0,1,0,
                                 0,1,0,1,0,0,0,0,0,0,0,1,0,1,0,
@@ -99,7 +99,7 @@ Game::Game(MainWindow *ui)
     }
 
     QTextStream out(logFile);
-    out << ";Board;Killtime;Avg Killtime;Interest;Challenge;Behavior Div;Spatial Div;Max Diviation;Standard Diviation;\n";
+    out << ";Board;Killtime;Avg Killtime;Interest;Challenge;Behavior Div;Spatial Div;Max Deviation;Standard Deviation;\n";
 
 
     //QByteArray byteArray = logFile.readAll();
@@ -116,22 +116,25 @@ Game::Game(MainWindow *ui)
 
     ss->addScenario(s1);
     
-    marker = new Player(this,QPoint(0,0));//new GameItem(this);
+    marker = new Player(this,QPoint(8,12));//new GameItem(this);
     connect(marker, SIGNAL(pacmanLost()), this, SLOT(reset()));
     connect(marker, SIGNAL(pacmanWon()), this, SLOT(reset()));
     connect(marker, SIGNAL(enteredNewCell(int,int)), s1, SLOT(visit(int,int)));
+
     marker->setBrush(Qt::yellow);
     
-    Enemy *player = new Enemy(marker,brain->getBehaviorTree(3));
+    Enemy *player = new Enemy(marker,brain->getBehaviorTree(4));
     player->thename = "mr. anderson";
     Runner* playerRunner = new Runner(player);
     connect(playerRunner, SIGNAL(finished()), this, SLOT(resetGame()));
     runners.append(playerRunner);
     
+    int trees[3] = {6,7,9};
+
     for (int i = 0; i < this->numberOfEnemies(); i++)
     {
-        Guard* agent = new Guard(this,QPoint(14,14));        
-        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(0));
+        Guard* agent = new Guard(this,QPoint(6,6));
+        Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(trees[i]));
         
         Runner* runner = new Runner(enemy);
         connect(runner, SIGNAL(finished()), this, SLOT(resetGame()));
@@ -210,7 +213,6 @@ void Game::resetGame()
     out << ";" << ss->calcStandardDeviation();
     out << "\n";
 
-    //ss->scenarioList().last()->
 
     Scenario *s = new Scenario();
     ss->addScenario(s);
@@ -218,7 +220,7 @@ void Game::resetGame()
     connect(marker, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
 
     ui->takeScreenshot(gameCounter++);
-    ui->updateInterest();
+    ui->updateInterest(gameCounter);
     
     for(int i = 0; i <runners.count(); i++)
     {
@@ -232,11 +234,11 @@ void Game::resetGame()
         
         if(t->target == marker)
         {
-            marker->setSquare(0,0);
+            marker->setSquare(8,12);
         }
         else 
         {
-            t->target->setSquare(14,14);
+            t->target->setSquare(6,6);
             t->target->setDirection(GameItem::None);
         }        
     }

@@ -16,7 +16,7 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void takeScreenshot(int counter);
-    void updateInterest(){ on_pushButton_7_clicked(); }
+    void updateInterest(int counter);
 
 private:
     Ui::MainWindow *ui;

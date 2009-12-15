@@ -78,8 +78,9 @@ bool btParallelNode::decide(QList<Worker*> workList)
     return true;*/
 
     foreach(Worker* w,workList){
-        if(w->value == true){
-            return true;
+        qDebug() << "w: " << w->value;
+        if(w->value == false){
+            return false;
         }
     }
     return false;

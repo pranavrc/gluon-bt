@@ -234,6 +234,7 @@ QWidget * btPropertyWidgetItem::createLineEdit(QVariant value, bool enabled)
 QWidget * btPropertyWidgetItem::createSpinBox(QVariant value, bool enabled)
 {
     QSpinBox * widget = new QSpinBox(this);
+    widget->setRange(-32000,32000);
     widget->setValue(value.toInt());
     widget->setEnabled(enabled);
     connect(widget, SIGNAL(valueChanged(int)), this, SLOT(propertyChanged(int)));

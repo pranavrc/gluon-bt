@@ -1,4 +1,4 @@
-#include "moveawayleftright.h"
+#include "movecloserleftrightpinky.h"
 
 #include <QDebug>
 #include <QtCore/QThread>
@@ -7,55 +7,56 @@
 #include "agent.h"
 #include "game.h"
 
-REGISTER_NODETYPE(moveAwayLeftRight)
+REGISTER_NODETYPE(moveCloserLeftRightPinky)
 
-moveAwayLeftRight::moveAwayLeftRight()
+
+
+moveCloserLeftRightPinky::moveCloserLeftRightPinky()
 {
     // init variables
 }
 
-bool moveAwayLeftRight::run(btCharacter *self)
+bool moveCloserLeftRightPinky::run(btCharacter *self)
 {
-    //qDebug() << "moveAway::run()";
+    //qDebug() << "moveCloser::run()";
     Enemy* e = (Enemy*)self;
-    Agent* closest = e->target->getObjectives().first();
+    //qDebug() << "enemy.x " << e->target->game->marker->square.x() << "self.x " <<  e->target->square.x();
     
     int currentX = 15;
     int currentDelta = 15;
+    QPoint targetSquare = pinkySquare(e->target->square,e->target->direction());
+
     foreach(Agent* a, e->target->getObjectives())
     {
         int delta;
         if(a->square.x() < e->target->square.x())
         {
-            delta = e->target->square.x() - a->square.x();
+            delta = targetSquare.x() - a->square.x();
         }
         else
         {
-            delta = a->square.x() - e->target->square.x();
+            delta = a->square.x() - targetSquare.x();
         }
         
         if(currentDelta > delta)
         {
             currentDelta = delta;
             currentX = a->square.x();
-            a->setPen(QPen(Qt::SolidLine));
-            closest = a;
         }
     }
-
-    closest->setPen(QPen(Qt::DotLine));
+    //((Enemy*)self)->target->direction()
     
-    if(currentX < e->target->square.x()){
+    if(currentX >= targetSquare.x()){
         return ((Enemy*)self)->goRight();
     }else{
         return ((Enemy*)self)->goLeft();
     }
-
-    /*if(e->target->objective()->square.x() < e->target->square.x()){
+    
+    /*if(e->target->objective()->square.x() >= e->target->square.x()){
         return ((Enemy*)self)->goRight();
     }else{
         return ((Enemy*)self)->goLeft();
     }*/
 }
 
-#include "moveawayleftright.moc"
+#include "movecloserleftrightpinky.moc"

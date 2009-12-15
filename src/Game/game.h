@@ -21,7 +21,7 @@ class Game : public QGraphicsScene
 public:
     Game(MainWindow *ui);
     Player* marker;
-    Guard* agent;
+    //Guard* agent;
     ScenarioSet *ss;
     QFile *logFile;
     /*Guard* agent2;

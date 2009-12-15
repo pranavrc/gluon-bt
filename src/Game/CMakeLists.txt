@@ -6,6 +6,7 @@ find_package(Qt4 REQUIRED)
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/../gluon-bt-common/ ${PROJECT_SOURCE_DIR}/../gluon-bt-lib/)
 
+
 set(game_src
     main.cpp
     mainwindow.cpp
@@ -31,11 +32,15 @@ set(game_src
     actions/relativeback.cpp 
     actions/movecloserupdown.cpp 
     actions/movecloserleftright.cpp 
+    actions/movecloserupdownpinky.cpp
+    actions/movecloserleftrightpinky.cpp
     actions/moveawayupdown.cpp 
     actions/moveawayleftright.cpp 
     actions/iscollided.cpp 
     actions/btlearningnode.cpp 
     actions/btgoalnode.cpp 
+    actions/isclose.cpp
+    actions/keepchecking.cpp
     player.cpp 
     guard.cpp 
     scenario.cpp 
@@ -47,6 +52,8 @@ set(mainwindow_UIS
     mainwindow.ui
 )
  
+
+
 
 qt4_wrap_ui(mainwindow_UIS_H ${mainwindow_UIS})
  

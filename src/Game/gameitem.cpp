@@ -6,7 +6,7 @@
 #include <QObject>
 
 void GameItem::setupAnimation(){
-     timer = new QTimeLine(1);
+     timer = new QTimeLine(200);
 
      timer->setFrameRange(0, 2);
 
