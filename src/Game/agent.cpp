@@ -112,13 +112,16 @@ void Agent::setSquare(int x,int y){
     
     if(x > 14)
         x = 14;
-    
+
+    emit enteredNewCell(x,y);
+
     this->game->board[square.x()][square.y()]->occupant = NULL;
     square.setX(x);
     square.setY(y);
     setPos((x * 20)+ 10,(y * 20) +10);
     this->game->board[square.x()][square.y()]->occupant = this;
     squareLock.unlock();
+
 }
 
 bool Agent::forward()

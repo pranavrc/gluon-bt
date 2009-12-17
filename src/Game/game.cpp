@@ -119,9 +119,9 @@ Game::Game(MainWindow *ui)
     ss->addScenario(s1);
     
     marker = new Player(this,QPoint(8,12));//new GameItem(this);
-    connect(marker, SIGNAL(pacmanLost()), this, SLOT(reset()));
-    connect(marker, SIGNAL(pacmanWon()), this, SLOT(reset()));
-    connect(marker, SIGNAL(enteredNewCell(int,int)), s1, SLOT(visit(int,int)));
+    connect(marker, SIGNAL(pacmanLost()), this, SLOT(resetAfterLost()));
+    connect(marker, SIGNAL(pacmanWon()), this, SLOT(resetAfterWon()));
+
 
     marker->setBrush(Qt::magenta);
     
@@ -129,9 +129,12 @@ Game::Game(MainWindow *ui)
     player->thename = "mr. anderson";
     Runner* playerRunner = new Runner(player);
     connect(playerRunner, SIGNAL(finished()), this, SLOT(resetGame()));
-    //runners.append(playerRunner);
+    runners.append(playerRunner);
     
-    int trees[3] = {6,7,9};
+    //int trees[3] = {6,7,9}; // pinky
+    //int trees[3] = {7,7,9}; // clyde
+    //int trees[3] = {9,7,9}; // Blinky
+    int trees[3] = {0,7,9}; // Pure Random
 
     ColorGen colors(0,255,30);
 
@@ -146,6 +149,7 @@ Game::Game(MainWindow *ui)
         runners.append(runner);
         enemy->thename = "mr. smith " + QVariant(i).toString();
         agent->addObjective(marker);
+        connect(agent, SIGNAL(enteredNewCell(int,int)), s1, SLOT(visit(int,int)));
         marker->addObjective(agent);
     }//*/
 
@@ -173,6 +177,46 @@ void Game::reset()
     {
         r->getTarget()->stopThinking();
     }
+}
+
+void Game::resetAfterWon()
+{
+    reset();
+}
+
+void Game::resetAfterLost()
+{
+    QTextStream out(logFile);
+
+
+
+    for(int x = 0; x < 15; ++x){
+        for(int y = 0;y < 15; ++y){
+            out << QString("%1").arg(ss->scenarioList().last()->board[x][y]) << ((x==14&&y==14) ? "" : ":");
+        }
+    }
+
+    out << ";" << ss->scenarioList().last()->getKillTime();
+    out << ";" << ss->calcAverageKillTime();
+    out << ";" << ss->calculateInterest();
+    out << ";" << ss->calculateChallengeLevel();
+    out << ";" << ss->calculateBehavioralDiversity();
+    out << ";" << ss->calculateSpatialDiversity();
+    out << ";" << ss->calcMaximumDeviation();
+    out << ";" << ss->calcStandardDeviation();
+    out << "\n";
+
+    Guard *ghost = static_cast<Guard*>(runners.last()->getTarget()->target);
+
+    disconnect(ghost, SIGNAL(enteredNewCell(int,int)), ss->scenarioList().last(), SLOT(visit(int,int)));
+
+
+    Scenario *s = new Scenario();
+    ss->addScenario(s);
+
+    connect(ghost, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
+
+    reset();
 }
 
 void Game::resetGame()
@@ -204,34 +248,6 @@ void Game::resetGame()
         }
     }
 
-    disconnect(marker, SIGNAL(enteredNewCell(int,int)), ss->scenarioList().last(), SLOT(visit(int,int)));
-
-    QTextStream out(logFile);
-
-
-
-    for(int x = 0; x < 15; ++x){
-        for(int y = 0;y < 15; ++y){
-            out << QString("%1").arg(ss->scenarioList().last()->board[x][y]) << ((x==14&&y==14) ? "" : ":");
-        }
-    }
-
-    out << ";" << ss->scenarioList().last()->getKillTime();
-    out << ";" << ss->calcAverageKillTime();
-    out << ";" << ss->calculateInterest();
-    out << ";" << ss->calculateChallengeLevel();
-    out << ";" << ss->calculateBehavioralDiversity();
-    out << ";" << ss->calculateSpatialDiversity();
-    out << ";" << ss->calcMaximumDeviation();
-    out << ";" << ss->calcStandardDeviation();
-    out << "\n";
-
-
-    Scenario *s = new Scenario();
-    ss->addScenario(s);
-
-    connect(marker, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
-
     ui->takeScreenshot(gameCounter++);
     ui->updateInterest(gameCounter);
     
@@ -256,6 +272,10 @@ void Game::resetGame()
             t->target->setDirection(GameItem::None);
         }        
     }
+
+
+    marker->setSquare(8,12);
+    marker->collided = false;
     
     foreach(Runner* r , runners)
     {
@@ -274,7 +294,7 @@ void Game::drawItems(){
 
 int Game::numberOfEnemies()
 {
-    return 3;
+    return 1;
 }
 
 #include "game.moc"

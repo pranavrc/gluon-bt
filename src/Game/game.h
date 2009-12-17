@@ -61,6 +61,8 @@ public:
     int numberOfEnemies();
     
 public Q_SLOTS:
+    void resetAfterWon();
+    void resetAfterLost();
     void resetGame();
     void reset();
     

@@ -13,8 +13,8 @@ Player::Player(Game* game,QPoint pos)
 void Player::sayHello()
 {
     Agent::sayHello();
-    QColor color = game->board[square.x()][square.y()]->brush().color().darker(102);
-    game->board[square.x()][square.y()]->setBrush(QBrush(color));
+    //QColor color = game->board[square.x()][square.y()]->brush().color().darker(102);
+    //game->board[square.x()][square.y()]->setBrush(QBrush(color));
     if(game->board[square.x()][square.y()]->goal()){
         game->board[square.x()][square.y()]->setVisible(false);
         game->board[square.x()][square.y()]->setGoal(false);
@@ -38,7 +38,7 @@ void Player::setSquare(int x,int y){
     if(x > 14)
         x = 14;
     qDebug() << "entered a cell";
-    emit enteredNewCell(x,y);
+    //emit enteredNewCell(x,y);
     if(collided == true){
        // qDebug("You Lost");
         emit pacmanLost();
@@ -48,7 +48,7 @@ void Player::setSquare(int x,int y){
         this->game->board[x][y]->setVisible(false);
         if(score >= 7){
           //  qDebug("You Won");
-            this->setBrush(QBrush(QColor(Qt::gray)));
+           // this->setBrush(QBrush(QColor(Qt::gray)));
             score = 0;
             emit pacmanWon();
         }

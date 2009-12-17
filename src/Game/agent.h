@@ -51,6 +51,9 @@ public Q_SLOTS:
     bool forward();
     bool back();
     bool stopMove();
+
+Q_SIGNALS:
+    void enteredNewCell(int x,int y);
     
 private:
     QList<Agent*> objectives;

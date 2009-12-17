@@ -13,6 +13,6 @@ Guard::Guard(Game* game,QPoint pos)
 void Guard::sayHello()
 {
     Agent::sayHello();
-    //QColor color = game->board[square.x()][square.y()]->brush().color().darker(110);
-    //game->board[square.x()][square.y()]->setBrush(QBrush(color));
+    QColor color = game->board[square.x()][square.y()]->brush().color().darker(102);
+    game->board[square.x()][square.y()]->setBrush(QBrush(color));
 }
