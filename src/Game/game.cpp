@@ -132,9 +132,9 @@ Game::Game(MainWindow *ui)
     runners.append(playerRunner);
     
     //int trees[3] = {6,7,9}; // pinky
-    //int trees[3] = {7,7,9}; // clyde
+    int trees[3] = {7,7,9}; // clyde
     //int trees[3] = {9,7,9}; // Blinky
-    int trees[3] = {0,7,9}; // Pure Random
+    //int trees[3] = {0,7,9}; // Pure Random
 
     ColorGen colors(0,255,30);
 
