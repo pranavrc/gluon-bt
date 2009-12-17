@@ -8,6 +8,7 @@ Player::Player(Game* game,QPoint pos)
     score = 0;
     setZValue(13);
     collided = false;
+    counter = 0;
 }
 
 void Player::sayHello()
@@ -41,7 +42,9 @@ void Player::setSquare(int x,int y){
     //emit enteredNewCell(x,y);
     if(collided == true){
        // qDebug("You Lost");
-        emit pacmanLost();
+        counter++;
+        if(counter == 1)
+            emit pacmanLost();
     }
     if(this->game->board[x][y]->goal()){
         score++;

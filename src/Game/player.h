@@ -13,14 +13,16 @@ public:
     void paint(QPainter *painter,
                            const QStyleOptionGraphicsItem *option,
                            QWidget *widget);
-
+    
+    int counter;
+    int score;
 Q_SIGNALS:
     void pacmanWon();
     void pacmanLost();
     
     
 private:
-    int score;
+
 };
 
 #endif // PLAYER_H

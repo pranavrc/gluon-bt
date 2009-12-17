@@ -128,7 +128,12 @@ int ScenarioSet::findMinKillTime()
 // Calculate the maximum standard deviation in killtime
 float ScenarioSet::calcMaximumDeviation()
 {
-    return 0.5 * sqrt(static_cast<float>(scenarios.count())/(static_cast<float>(scenarios.count()) - 1.0)) * (findMaxKillTime() - findMinKillTime());
+    if(scenarios.count() > 1){
+        return 0.5 * sqrt(static_cast<float>(scenarios.count())/(static_cast<float>(scenarios.count()) - 1.0)) * (findMaxKillTime() - findMinKillTime());
+    }else{
+        return 0.0;
+    }
+//    return 0.5 * sqrt(static_cast<float>(scenarios.count())/(static_cast<float>(scenarios.count()) - 1.0)) * (findMaxKillTime() - findMinKillTime());
 }
 
 // Calculate the standard deviation in killtime

@@ -186,6 +186,8 @@ void Game::resetAfterWon()
 
 void Game::resetAfterLost()
 {
+        reset();
+    
     QTextStream out(logFile);
 
 
@@ -216,7 +218,6 @@ void Game::resetAfterLost()
 
     connect(ghost, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
 
-    reset();
 }
 
 void Game::resetGame()
@@ -276,6 +277,8 @@ void Game::resetGame()
 
     marker->setSquare(8,12);
     marker->collided = false;
+    marker->counter = 0;
+    marker->score = 0;
     
     foreach(Runner* r , runners)
     {
