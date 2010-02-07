@@ -3,6 +3,8 @@
 
 #include "bteditornodetype.h"
 
+class QXmlStreamWriter;
+
 class btDecoratorNode : public btEditorNodeType
 {
 	Q_OBJECT
@@ -13,7 +15,7 @@ public:
 	
 	bool run();
     
-    const QString toDataXml();
+    void toDataXml(QXmlStreamWriter* xmlWriter);
 };
 
 #endif

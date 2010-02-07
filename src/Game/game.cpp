@@ -81,7 +81,7 @@ Game::Game(MainWindow *ui)
 
 
     // --------------------------------------
-    QString fileName = "test.glbt.xml";
+    QString fileName = "test2.glbt.xml";
 
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -92,7 +92,7 @@ Game::Game(MainWindow *ui)
     QString fileContents(byteArray.data());
     file.close();
 
-    QString logFilename = "log.txt";
+/*    QString logFilename = "log.txt";
 
     logFile = new QFile(logFilename);
     if(!logFile->open(QIODevice::Append | QIODevice::Text)){
@@ -101,7 +101,7 @@ Game::Game(MainWindow *ui)
     }
 
     QTextStream out(logFile);
-    out << ";Board;Killtime;Avg Killtime;Interest;Challenge;Behavior Div;Spatial Div;Max Deviation;Standard Deviation;\n";
+    out << ";Board;Killtime;Avg Killtime;Interest;Challenge;Behavior Div;Spatial Div;Max Deviation;Standard Deviation;\n";//*/
 
 
     //QByteArray byteArray = logFile.readAll();
@@ -113,10 +113,10 @@ Game::Game(MainWindow *ui)
     
     //this->setBackgroundBrush(QBrush(QColor(Qt::black)));
 
-    ss = new ScenarioSet();
+   /* ss = new ScenarioSet();
     Scenario *s1 = new Scenario();
 
-    ss->addScenario(s1);
+    ss->addScenario(s1);*/
     
     marker = new Player(this,QPoint(8,12));//new GameItem(this);
     connect(marker, SIGNAL(pacmanLost()), this, SLOT(resetAfterLost()));
@@ -125,22 +125,25 @@ Game::Game(MainWindow *ui)
 
     marker->setBrush(Qt::magenta);
     
-    Enemy *player = new Enemy(marker,brain->getBehaviorTree(10));
+    Enemy *player = new Enemy(marker,brain->getBehaviorTree(2));
     player->thename = "mr. anderson";
     Runner* playerRunner = new Runner(player);
     connect(playerRunner, SIGNAL(finished()), this, SLOT(resetGame()));
-    runners.append(playerRunner);
+    runners.append(playerRunner);//*/
     
     //int trees[3] = {6,7,9}; // pinky
-    int trees[3] = {7,7,9}; // clyde
+    //int trees[3] = {7,7,9}; // clyde
     //int trees[3] = {9,7,9}; // Blinky
-    //int trees[3] = {0,7,9}; // Pure Random
+    //int trees[3] = {0,7,9}; // Pure Random*/
+	
+	//int trees[1] = {0};
+	int trees[1] = {1};
 
     ColorGen colors(0,255,30);
 
     for (int i = 0; i < this->numberOfEnemies(); i++)
     {
-        Guard* agent = new Guard(this,QPoint(6,6));
+        Guard* agent = new Guard(this,QPoint(0,0));
         Enemy *enemy = new Enemy(agent,brain->getBehaviorTree(trees[i]));
         agent->setBrush(QBrush(colors.nextColor()));
         
@@ -149,7 +152,7 @@ Game::Game(MainWindow *ui)
         runners.append(runner);
         enemy->thename = "mr. smith " + QVariant(i).toString();
         agent->addObjective(marker);
-        connect(agent, SIGNAL(enteredNewCell(int,int)), s1, SLOT(visit(int,int)));
+        //connect(agent, SIGNAL(enteredNewCell(int,int)), s1, SLOT(visit(int,int)));
         marker->addObjective(agent);
     }//*/
 
@@ -188,7 +191,7 @@ void Game::resetAfterLost()
 {
         reset();
     
-    QTextStream out(logFile);
+   /* QTextStream out(logFile);
 
 
 
@@ -216,7 +219,7 @@ void Game::resetAfterLost()
     Scenario *s = new Scenario();
     ss->addScenario(s);
 
-    connect(ghost, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));
+    connect(ghost, SIGNAL(enteredNewCell(int,int)), s, SLOT(visit(int,int)));*/
 
 }
 
@@ -249,8 +252,8 @@ void Game::resetGame()
         }
     }
 
-    ui->takeScreenshot(gameCounter++);
-    ui->updateInterest(gameCounter);
+  //  ui->takeScreenshot(gameCounter++);
+  //  ui->updateInterest(gameCounter);
     
     for(int i = 0; i <runners.count(); i++)
     {
@@ -269,7 +272,7 @@ void Game::resetGame()
         }
         else 
         {
-            t->target->setSquare(6,6);
+            t->target->setSquare(0,0);
             t->target->setDirection(GameItem::None);
         }        
     }
@@ -278,7 +281,7 @@ void Game::resetGame()
     marker->setSquare(8,12);
     marker->collided = false;
     marker->counter = 0;
-    marker->score = 0;
+    marker->score = 0;//*/
     
     foreach(Runner* r , runners)
     {

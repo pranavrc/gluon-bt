@@ -250,7 +250,59 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
 
 const QString projectParser::serializeProject(btBrain * brain)
 {
-    QString xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
+	QString xmlData = "";
+	QXmlStreamWriter* xmlWriter = new QXmlStreamWriter(&xmlData);
+	
+	/*QString xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
+	 
+	 xmlData += "\n<project name=\""+ brain->name() + "\">";
+	 increaseIndents();
+	 
+	 xmlData += writeIndents() + "<nodetypes>";
+	 increaseIndents();
+	 for(int i = 2; i < brain->nodeTypes.count(); i++)
+	 {
+	 xmlData += brain->nodeTypes[i]->toNodeTypeXml();
+	 }*/
+	
+	xmlWriter->writeStartDocument("1.0");
+	
+	xmlWriter->writeStartElement("project");
+	xmlWriter->writeAttribute("name", brain->name());
+	
+	xmlWriter->writeStartElement("nodetypes");
+	
+	for (int i = 2; i < brain->nodeTypes.count(); i++) 
+	{
+		brain->nodeTypes[i]->toNodeTypeXml(xmlWriter);
+	}
+	
+	xmlWriter->writeEndElement(); //nodetypes
+	
+	xmlWriter->writeStartElement("behaviortrees");
+	for(int i = 0; i < brain->behaviorTrees.count(); i++)
+    {
+		xmlWriter->writeStartElement("behaviortree")		;
+        //xmlData += writeIndents()+ "<behaviortree name=\""+ brain->behaviorTrees[i]->name() +"\" description=\"" + brain->behaviorTrees[i]->description() + "\" uid=\"" + QVariant(i).toString() + "\">";
+        xmlWriter->writeAttribute("name", brain->behaviorTrees[i]->name());
+		xmlWriter->writeAttribute("description", brain->behaviorTrees[i]->description());
+		xmlWriter->writeAttribute("uid", QVariant(i).toString());
+		
+		qobject_cast<btEditorNode*>(brain->behaviorTrees[i]->rootNode()->child(0))->toXml(xmlWriter, brain->behaviorTrees);
+        /*increaseIndents();        
+        xmlData +=  qobject_cast<btEditorNode*>(brain->behaviorTrees[i]->rootNode()->child(0))->toXml(brain->behaviorTrees);
+        decreaseIndents();*/
+        
+		xmlWriter->writeEndElement();
+        //xmlData += writeIndents()+"</behaviortree>";
+    }
+	xmlWriter->writeEndElement(); //behaviortrees
+	
+	xmlWriter->writeEndElement(); //project
+	
+	xmlWriter->writeEndDocument();
+	
+    /*QString xmlData = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
 
     xmlData += "\n<project name=\""+ brain->name() + "\">";
     increaseIndents();
@@ -282,10 +334,10 @@ const QString projectParser::serializeProject(btBrain * brain)
     decreaseIndents();
     xmlData += "\n</project>";
     
-    return xmlData;
+    return xmlData;*/
 }
 
-void projectParser::increaseIndents()
+/*void projectParser::increaseIndents()
 {
     m_indentCount++;
 }
@@ -304,6 +356,6 @@ const QString projectParser::writeIndents()
     }
     
     return indents;
-}
+}*/
 
 #include "projectparser.moc"

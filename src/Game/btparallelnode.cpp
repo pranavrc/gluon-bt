@@ -41,10 +41,10 @@ qDebug() << "parallel done " << ((Enemy*)self)->name();
     
     bool result = decide(workerList);
     
-    foreach(Worker* w,workerList)
+    /*foreach(Worker* w,workerList)
     {
         w->terminate();
-    }
+    }*/
     
     qDeleteAll(workerList);
     

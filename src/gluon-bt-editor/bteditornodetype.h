@@ -5,6 +5,8 @@
 
 #include "../gluon-bt-common/btnodetype.h"
 
+class QXmlStreamWriter;
+
 class btEditorNodeType : public btNodeType
 {
     Q_OBJECT
@@ -21,8 +23,8 @@ public:
     btNodeType::nodeType childType() const;
     void setChildType(btNodeType::nodeType);
     
-    const QString toNodeTypeXml();
-    virtual const QString toDataXml();
+    void toNodeTypeXml(QXmlStreamWriter* xmlWriter);
+    virtual void toDataXml(QXmlStreamWriter* xmlWriter);
     
     void initProperties();
     

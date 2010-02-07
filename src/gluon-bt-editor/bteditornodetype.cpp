@@ -6,6 +6,7 @@
 #include "bteditornode.h"
 
 #include <QtCore/QDebug>
+#include <QtXml>
 
 btEditorNodeType::btEditorNodeType(QObject * parent) : btNodeType(parent)
 {
@@ -58,15 +59,15 @@ btEditorNodeType * btEditorNodeType::copy()
 
 }
 
-const QString btEditorNodeType::toNodeTypeXml()
+void btEditorNodeType::toNodeTypeXml(QXmlStreamWriter* xmlWriter)
 {
 	if(this->type() == btNodeType::ReferenceNodeType)
-		return "";
+		return;
 	
-    QString startTag = projectParser::instance()->writeIndents() +  "<nodetype ";
-    QString endTag = projectParser::instance()->writeIndents() + "</nodetype>";
-    
-    const QMetaObject * mo = this->metaObject();
+	//QString startTag = projectParser::instance()->writeIndents() +  "<nodetype ";
+	xmlWriter->writeStartElement("nodetype");
+	
+	const QMetaObject * mo = this->metaObject();
     
     for(int i = 0; i < mo->propertyCount(); i++)
     {
@@ -80,57 +81,76 @@ const QString btEditorNodeType::toNodeTypeXml()
         
         if(propertyName == "name")
         {
-            startTag += "name=\"" + this->property(moProperty.name()).toString() + "\" ";
+            //startTag += "name=\"" + this->property(moProperty.name()).toString() + "\" ";
+			xmlWriter->writeAttribute("name", this->property(moProperty.name()).toString());
         }
         else if(propertyName == "description")
         {
-            startTag += "description=\"" + this->property(moProperty.name()).toString() + "\" ";
+            //startTag += "description=\"" + this->property(moProperty.name()).toString() + "\" ";
+			xmlWriter->writeAttribute("description", this->property(moProperty.name()).toString());
         }
         else if(propertyName == "className")
         {
-            startTag += "classname=\"" + this->property(moProperty.name()).toString() + "\" ";
+            //startTag += "classname=\"" + this->property(moProperty.name()).toString() + "\" ";
+			xmlWriter->writeAttribute("className", this->property(moProperty.name()).toString());
         }
     }
     
     switch(this->type())
     {
         case btNodeType::ActionNodeType:
-            startTag += "category=\"action\">";
+            //startTag += "category=\"action\">";
+			xmlWriter->writeAttribute("category", "action");
             break;
         case btNodeType::CompositeNodeType:
-            startTag += "category=\"composite\">";
+            //startTag += "category=\"composite\">";
+			xmlWriter->writeAttribute("category", "composite");
             break;
         case btNodeType::ConditionNodeType:
-            startTag += "category=\"condition\">";
+            //startTag += "category=\"condition\">";
+			xmlWriter->writeAttribute("category", "condition");
             break;
         case btNodeType::DecoratorNodeType:
-            startTag += "category=\"decorator\">";
+            //startTag += "category=\"decorator\">";
+			xmlWriter->writeAttribute("category", "decorator");
             break;
         case btNodeType::UnusableNodeType:
-            startTag += "category=\"unusable\">";
+            //startTag += "category=\"unusable\">";
+			xmlWriter->writeAttribute("category", "unusable");
             break;
     }
     
-    QString properties = "";
+    //QString properties = "";
     
-    projectParser::instance()->increaseIndents();
+    //projectParser::instance()->increaseIndents();
+	
     for(int i = 0; i < this->dynamicPropertyNames().count(); i++)
     {
         QString propertyName(this->dynamicPropertyNames().at(i));
-        properties += projectParser::instance()->writeIndents();
+		
+		xmlWriter->writeStartElement(propertyName);
+		
+		xmlWriter->writeAttribute("name", propertyName);
+		xmlWriter->writeAttribute("description", this->getPropertyDescription(propertyName));
+		xmlWriter->writeAttribute("datatype", this->property(propertyName.toUtf8()).toString());
+		
+		xmlWriter->writeEndElement();
+        /*properties += projectParser::instance()->writeIndents();
         properties += "<property name=\"" + propertyName + "\" ";
         properties += "description=\""+ this->getPropertyDescription(propertyName) + "\" ";
         properties += "datatype=\"" +this->property(propertyName.toUtf8()).toString();
-        properties += "\" />";
+        properties += "\" />";*/
     }
-    projectParser::instance()->decreaseIndents();
+    /*projectParser::instance()->decreaseIndents();
     
-    return startTag + properties + endTag;
+    return startTag + properties + endTag;*/
+	
+	xmlWriter->writeEndElement();
+	//QString endTag = projectParser::instance()->writeIndents() + "</nodetype>";
 }
 
-const QString btEditorNodeType::toDataXml()
+void btEditorNodeType::toDataXml(QXmlStreamWriter* xmlWriter)
 {
-    return "";
 }
 
 void btEditorNodeType::initProperties()

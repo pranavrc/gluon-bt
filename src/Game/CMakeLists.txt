@@ -61,7 +61,11 @@ set(mainwindow_UIS
 qt4_wrap_ui(mainwindow_UIS_H ${mainwindow_UIS})
  
 qt4_automoc(${game_src})
+if(APPLE)
+add_executable(Game MACOSX_BUNDLE ${game_src} ${mainwindow_UIS_H})
+else()
 add_executable(Game ${game_src} ${mainwindow_UIS_H})
+endif()
 
 
 find_library(LIBBT
@@ -72,7 +76,7 @@ find_library(LIBBT
     PATHS
         c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build
         /usr/lib
-        /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build
+        /usr/local/lib
 )
 message("-- Found libbtlib:" ${LIBBT})
 
@@ -86,7 +90,7 @@ find_path(LIBBTPATH
     PATHS
         c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build
         /usr/lib
-        /Users/kimjung/Uni/gluon-bt/src/gluon-bt-lib/build
+        /usr/local/lib
 )
 message("-- Found libbt's path:" ${LIBBTPATH})
 add_library(btlib SHARED IMPORTED)

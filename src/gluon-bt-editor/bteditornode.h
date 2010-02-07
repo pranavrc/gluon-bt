@@ -6,6 +6,7 @@
 #include "../gluon-bt-common/btnode.h"
 
 class btTreeModel;
+class QXmlStreamWriter;
 
 class btEditorNode : public btNode 
 {
@@ -16,7 +17,7 @@ public:
     btEditorNode(btNodeType *type = 0, btNode *parent = 0);
     ~btEditorNode();
     
-    const QString toXml(QList<btTreeModel *> behaviorTrees);
+    void toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behaviorTrees);
     
     QVariant data(int column) const;
     QVariant headerData(int column) const;

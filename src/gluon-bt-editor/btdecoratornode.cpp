@@ -1,6 +1,8 @@
 #include "btdecoratornode.h"
 #include "projectparser.h"
 
+#include <QtXml>
+
 btDecoratorNode::btDecoratorNode()
 {
     setNodeType(btNodeType::DecoratorNodeType);
@@ -15,11 +17,12 @@ bool btDecoratorNode::run()
 	return false;
 }
 
-const QString btDecoratorNode::toDataXml()
+void  btDecoratorNode::toDataXml(QXmlStreamWriter* xmlWriter)
 {
-    QString startTag = projectParser::instance()->writeIndents() + "<decorator ";
-    QString endTag = projectParser::instance()->writeIndents() + "</decorator>";
-    QString properties = "";
+   // QString startTag = projectParser::instance()->writeIndents() + "<decorator ";
+	xmlWriter->writeStartElement("decorator");
+//    QString endTag = projectParser::instance()->writeIndents() + "</decorator>";
+   // QString properties = "";
     
     const QMetaObject * mo = this->metaObject();
     
@@ -35,32 +38,42 @@ const QString btDecoratorNode::toDataXml()
         
         if(propertyName == "name")
         {
-            startTag += "name=\"" + this->property(moProperty.name()).toString() + "\" ";
+			xmlWriter->writeAttribute("name", this->property(moProperty.name()).toString());
+            //startTag += "name=\"" + this->property(moProperty.name()).toString() + "\" ";
         }
         else if(propertyName == "description")
         {
-            startTag += "description=\"" + this->property(moProperty.name()).toString() + "\" ";
+			xmlWriter->writeAttribute("description", this->property(moProperty.name()).toString());
+            //startTag += "description=\"" + this->property(moProperty.name()).toString() + "\" ";
         }
         else if(propertyName == "className")
         {
-            startTag += "nodetype=\"" + this->property(moProperty.name()).toString() + "\" ";
+			xmlWriter->writeAttribute("nodetype", this->property(moProperty.name()).toString());
+            //startTag += "nodetype=\"" + this->property(moProperty.name()).toString() + "\" ";
         }
     }
     
-    startTag += ">";
+    //startTag += ">";
     
-    projectParser::instance()->increaseIndents();
+    //projectParser::instance()->increaseIndents();
     for(int i = 0; i < this->dynamicPropertyNames().count(); i++)
     {
         QString propertyName(this->dynamicPropertyNames().at(i));
-        properties += projectParser::instance()->writeIndents();
+		xmlWriter->writeStartElement("property");
+		
+		xmlWriter->writeAttribute("name", propertyName);
+		xmlWriter->writeAttribute("value", this->property(propertyName.toUtf8()).toString());
+		
+		xmlWriter->writeEndElement(); //property
+        /*properties += projectParser::instance()->writeIndents();
         properties += "<property name=\"" + propertyName + "\" value=\"";
         properties +=  this->property(propertyName.toUtf8()).toString();
-        properties += "\" />";
+        properties += "\" />";*/
     }
-    projectParser::instance()->decreaseIndents();
+    //projectParser::instance()->decreaseIndents();
     
-    return startTag + properties + endTag;
+	xmlWriter->writeEndElement(); //decorator
+    //return startTag + properties + endTag;
 }
 
 #include "btdecoratornode.moc"

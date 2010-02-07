@@ -50,6 +50,11 @@ set(bteditor_UIS
 qt4_wrap_ui(bteditor_UIS_H ${bteditor_UIS})
  
 qt4_automoc(${bteditor_SRCS})
+
+if(APPLE)
+add_executable(bteditor MACOSX_BUNDLE ${bteditor_SRCS} ${bteditor_UIS_H})
+else()
 add_executable(bteditor ${bteditor_SRCS} ${bteditor_UIS_H})
+endif()
  
 target_link_libraries(bteditor ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY})

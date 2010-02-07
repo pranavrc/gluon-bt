@@ -22,9 +22,9 @@ public:
     //returning the btBrain serialized to a xml formatted QString
     const QString serializeProject(btBrain * brain);
     
-    void increaseIndents();
+    /*void increaseIndents();
     void decreaseIndents();
-    const QString writeIndents();
+    const QString writeIndents();*/
 
 private:
     projectParser();
