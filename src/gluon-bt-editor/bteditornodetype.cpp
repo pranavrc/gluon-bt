@@ -128,7 +128,7 @@ void btEditorNodeType::toNodeTypeXml(QXmlStreamWriter* xmlWriter)
     {
         QString propertyName(this->dynamicPropertyNames().at(i));
 		
-		xmlWriter->writeStartElement(propertyName);
+		xmlWriter->writeStartElement("property");
 		
 		xmlWriter->writeAttribute("name", propertyName);
 		xmlWriter->writeAttribute("description", this->getPropertyDescription(propertyName));

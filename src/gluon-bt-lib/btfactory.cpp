@@ -1,10 +1,10 @@
 #include "btfactory.h"
 
 #include "btnode.h"
-#include "btnodetype.h"
 #include "btbrain.h"
 #include "btselectornode.h"
 #include "btsequencenode.h"
+#include "btreferencenode.h"
 #include "btglobal.h"
 
 #include <QtCore/QDebug>
@@ -12,9 +12,11 @@
 btFactory::btFactory()
 {
     m_nodeTypes["[selector]"] = new btSelectorNode();
-    m_nodeTypes["[selector]"]->setNodeType(btNodeType::CompositeNodeType);
+    m_nodeTypes["[selector]"]->setType(btNode::CompositeNodeType);
     m_nodeTypes["[sequence]"] = new btSequenceNode();
-    m_nodeTypes["[sequence]"]->setNodeType(btNodeType::CompositeNodeType);
+    m_nodeTypes["[sequence]"]->setType(btNode::CompositeNodeType);
+	m_nodeTypes["[reference]"] = new btReferenceNode();
+	m_nodeTypes["[reference]"]->setType(btNode::ReferenceNodeType);
 }
 
 btFactory* btFactory::instance()
@@ -37,18 +39,21 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
         return NULL;
     }
     
-    btNode* newBTNode = new btNode();
+    //btNode* newBTNode = new btNode();
     
-    btNodeType* nodeType = m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()];
-    newBTNode->setType((btNodeType*)nodeType->metaObject()->newInstance());
-    newBTNode->type()->setNodeType(nodeType->type());
+    //btNodeType* nodeType = m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()];
+	btNode* nodeType = m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()];
+	btNode* newBTNode = qobject_cast<btNode*>(nodeType->metaObject()->newInstance());
+    //newBTNode->setType((btNodeType*)nodeType->metaObject()->newInstance());
+    //newBTNode->type()->setNodeType(nodeType->type());
+	newBTNode->setType(nodeType->type());
     
     foreach(const QString &name ,nodeType->dynamicPropertyNames())
     {
-        newBTNode->type()->setProperty(name.toUtf8(),nodeType->property(name.toUtf8()));
+        newBTNode->setProperty(name.toUtf8(),nodeType->property(name.toUtf8()));
     }
     
-    newBTNode->type()->setParentNode(newBTNode);
+    //newBTNode->type()->setParentNode(newBTNode);
     
     if(!xmlNode.attributes().namedItem("name").isNull())
     {
@@ -59,9 +64,6 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
         newBTNode->setDescription(xmlNode.attributes().namedItem("description").nodeValue());
     }
     
-/*    qDebug() << "parent " << parentNode->name();
-    qDebug() << "child " << newBTNode->name();*/
-    
     parentNode->appendChild(newBTNode);
     newBTNode->setParentNode(parentNode);
     
@@ -70,19 +72,20 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
                                
 btNode* btFactory::newObject(QString className)
 {
-    btNode* newBTNode = new btNode();
-    newBTNode->setType((btNodeType*)m_nodeTypes[className]->metaObject()->newInstance());
-    newBTNode->type()->setParentNode(newBTNode);
+    //btNode* newBTNode = new btNode();
+    //newBTNode->setType((btNodeType*)m_nodeTypes[className]->metaObject()->newInstance());
+	btNode* newBTNode = qobject_cast<btNode*>(m_nodeTypes[className]->metaObject()->newInstance());
+    //newBTNode->type()->setParentNode(newBTNode);
     return newBTNode;
 }
                                
 
-void btFactory::registerNodeType(btNodeType* nodeType)
+void btFactory::registerNodeType(btNode* nodeType)
 {
     m_nodeTypes[nodeType->metaObject()->className()] = nodeType;
 }
 
-btNodeType* btFactory::getRegisteredNodeType(QString className)
+btNode* btFactory::getRegisteredNodeType(QString className)
 {
     return m_nodeTypes[className];
 }
@@ -90,36 +93,36 @@ btNodeType* btFactory::getRegisteredNodeType(QString className)
 void btFactory::initNodeType(QDomNode xmlNode)
 {
     QDomNamedNodeMap nodeTypeAttributes = xmlNode.attributes();
-    btNodeType* nodeType = btFactory::instance()->getRegisteredNodeType(nodeTypeAttributes.namedItem("classname").nodeValue());
+    btNode* nodeType = btFactory::instance()->getRegisteredNodeType(nodeTypeAttributes.namedItem("className").nodeValue());
     nodeType->setName(nodeTypeAttributes.namedItem("name").nodeValue());
     nodeType->setDescription(nodeTypeAttributes.namedItem("description").nodeValue());
-    nodeType->setClassName(nodeTypeAttributes.namedItem("classname").nodeValue());
+    nodeType->setClassName(nodeTypeAttributes.namedItem("className").nodeValue());
     
     QString typeCategory = nodeTypeAttributes.namedItem("category").nodeValue();
     
     if(typeCategory == "action")
     {
-        nodeType->setNodeType(btNodeType::ActionNodeType);
+        nodeType->setType(btNode::ActionNodeType);
     }
     else if(typeCategory == "condition")
     {
-        nodeType->setNodeType(btNodeType::ConditionNodeType);
+        nodeType->setType(btNode::ConditionNodeType);
     }
     else if(typeCategory == "composite")
     {
-        nodeType->setNodeType(btNodeType::CompositeNodeType);
+        nodeType->setType(btNode::CompositeNodeType);
     }
     else if(typeCategory == "decorator")
     {
-        nodeType->setNodeType(btNodeType::DecoratorNodeType);
+        nodeType->setType(btNode::DecoratorNodeType);
     }
     else if(typeCategory == "reference")
     {
-        nodeType->setNodeType(btNodeType::ReferenceNodeType);
+        nodeType->setType(btNode::ReferenceNodeType);
     }
     else
     {
-        nodeType->setNodeType(btNodeType::UnusableNodeType);
+        nodeType->setType(btNode::UnusableNodeType);
     }
     
     for(int j = 0; j < xmlNode.childNodes().count(); j++)
@@ -140,19 +143,26 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
         btNode* currentParent = node;
         if(xNode.hasChildNodes())
         {
-            for (int i = 0; i < xNode.childNodes().count(); i++) 
+            for (int i = 0; i < xNode.childNodes().count(); i++)
             {
                 currentParent = btFactory::instance()->newObject(xNode.childNodes().at(i), currentParent, brain);
             }
         }
         
-        currentParent->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
+		btReferenceNode * refNode = qobject_cast<btReferenceNode*>(btFactory::instance()->newObject("[reference]"));
+		
+		currentParent->appendChild(refNode);
+		
+		refNode->addParentNode(currentParent);
+		refNode->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
+		
+        //currentParent->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
         
         return;
     }
-    btNodeType* nodeType = node->type();
+    //btNodeType* nodeType = node->type();
     
-    int typeId = QMetaType::type(nodeType->property(xNode.attributes().namedItem("name").nodeValue().toUtf8()).toString().toUtf8());
+    int typeId = QMetaType::type(node->property(xNode.attributes().namedItem("name").nodeValue().toUtf8()).toString().toUtf8());
     QVariant dataType;
     
     if(typeId == QVariant::List)
@@ -187,15 +197,16 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
         dataType.convert((QVariant::Type)typeId);
     }
     
-    nodeType->setProperty(xNode.attributes().namedItem("name").nodeValue().toUtf8(), dataType);
+    node->setProperty(xNode.attributes().namedItem("name").nodeValue().toUtf8(), dataType);
     
 }
 
 btNode* btFactory::createRootNode(QDomNode xmlNode, btBrain* brain)
 {
-    btNode* newRootNode = new btNode();
-    newRootNode->setType((btNodeType*)this->m_nodeTypes["[sequence]"]->metaObject()->newInstance());
-    newRootNode->type()->setParentNode(newRootNode);
+//    btNode* newRootNode = new btNode();
+//    newRootNode->setType((btNodeType*)this->m_nodeTypes["[sequence]"]->metaObject()->newInstance());
+	btNode* newRootNode = (btNode*)this->m_nodeTypes["[sequence]"]->metaObject()->newInstance();
+    //newRootNode->type()->setParentNode(newRootNode);
     newRootNode->setParent(brain);
     
     newRootNode->setName(xmlNode.attributes().namedItem("name").nodeValue());

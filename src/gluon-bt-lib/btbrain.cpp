@@ -1,12 +1,12 @@
 #include "btbrain.h"
 
 #include "btnode.h"
-#include "btnodetype.h"
 #include "btfactory.h"
+
+#include <QtCore/QDebug>
 
 btBrain::btBrain(QString data)
 {
-
     QDomDocument xmlDocument("data");
     if(xmlDocument.setContent(data))
     {
@@ -30,7 +30,7 @@ btBrain::btBrain(QString data)
         }
         
         //then parse every tree, and link them together
-        parseBehaviorTrees(behaviorTrees, NULL, 0);
+        parseBehaviorTrees(behaviorTrees, NULL);
     }
 }
 
@@ -82,10 +82,8 @@ void btBrain::parseNodeTypes(QDomNode xNode)
 
 }
 
-void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node, int nodeIndex)
-{
-    btNode * workingBtNode = node;
-    
+void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)
+{    
     for(int i = 0; i < xNode.childNodes().count(); i++)
     {
         QDomNode currentNode = xNode.childNodes().at(i);
@@ -94,72 +92,38 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node, int nodeIndex)
         if(!nodeAttributes.namedItem("uid").isNull())
         {
             btNode* rootNode = m_behaviorTrees[nodeAttributes.namedItem("uid").nodeValue().toInt()];
-            parseBehaviorTrees(currentNode, rootNode, 0);            
+            parseBehaviorTrees(currentNode, rootNode);            
         }
         else
         {            
             if(currentNode.nodeName() == "property")
             {
-                btFactory::instance()->addProperty(workingBtNode, currentNode, this);
+                btFactory::instance()->addProperty(node, currentNode, this);
                 continue;
             }
             
+			btNode * newBTNode = NULL;
+			
             if(currentNode.nodeName() == "decorator")
-            {                
-                if(workingBtNode == node->parentNode())
-                {
-                    btNode * child = workingBtNode->child(workingBtNode->childCount()-1);
-                    workingBtNode->removeChild(child);
-                    workingBtNode->insertChild(nodeIndex, child);
-                    workingBtNode = child;
-                    
-                    /////////HACK!!!! MUST BE REMOVED FOR NEXT SEMESTER//////////                    
-                    workingBtNode->type()->setHackNode(node);                    
-                    //////////////////////////
-
-                }
-                else if(workingBtNode->type()->type() == btNodeType::DecoratorNodeType)
-                {
-                    workingBtNode = workingBtNode->child(0);
-                    /////////HACK!!!! MUST BE REMOVED FOR NEXT SEMESTER//////////                    
-                    workingBtNode->type()->setHackNode(node);                    
-                    //////////////////////////
-                }
-                else
-                {
-                    workingBtNode = node->parentNode();
-                    workingBtNode->removeChild(nodeIndex);
-                }
-            }
-            else if(workingBtNode->type()->type() == btNodeType::DecoratorNodeType) 
             {
-                if(workingBtNode->childCount() > 0 && workingBtNode->child(0)->type()->type() == btNodeType::DecoratorNodeType)
-                {
-                    workingBtNode = workingBtNode->child(0);
-                    /////////HACK!!!! MUST BE REMOVED FOR NEXT SEMESTER//////////                    
-                    workingBtNode->type()->setHackNode(node);                    
-                    //////////////////////////
-                }
-                
-                workingBtNode->appendChild(node);
-                workingBtNode = node;
-            }
-            else if(workingBtNode->childCount() > 0 && workingBtNode->child(workingBtNode->childCount()-1)->type()->type() == btNodeType::DecoratorNodeType)
-            {
-                workingBtNode->child(workingBtNode->childCount()-1)->appendChild(node);
-                workingBtNode = node;
-            }
-
-            btNode *  newBTNode = btFactory::instance()->newObject(currentNode, workingBtNode ,this);
-            //if(workingBtNode->parentNode())
+				btNode* parentNode = node->parentNode();
+				newBTNode = btFactory::instance()->newObject(currentNode, parentNode, this);
+				newBTNode->appendChild(node);
+				parentNode->removeChild(parentNode->childCount()-1);
+				parentNode->appendChild(newBTNode);
+				newBTNode = node;
+			}
+			else
+			{
+				newBTNode = btFactory::instance()->newObject(currentNode, node ,this);
+			}
+			
             if(newBTNode != NULL)
             {
                 if(currentNode.hasChildNodes())
                 {
-                    parseBehaviorTrees(currentNode, newBTNode, i);
+                    parseBehaviorTrees(currentNode, newBTNode);
                 }
-                
-                newBTNode->doneParsingChildren();
             }
         }
     }

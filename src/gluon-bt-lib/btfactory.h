@@ -7,7 +7,6 @@
 
 #include "btlib_export.h"
 
-class btNodeType;
 class btNode;
 class btBrain;
 
@@ -26,14 +25,14 @@ public:
     void addProperty(btNode* node, QDomNode xNode, btBrain* brain);
     void initNodeType(QDomNode xmlNode);
     
-    btNodeType* getRegisteredNodeType(QString className);
+    btNode * getRegisteredNodeType(QString className);
     
-    void registerNodeType(btNodeType* newType);
+    void registerNodeType(btNode * newType);
     
 private:    
     btFactory();
     
-    QHash<QString, btNodeType*> m_nodeTypes;
+    QHash<QString, btNode*> m_nodeTypes;
 };
 
 template<class T>
@@ -41,13 +40,13 @@ class BT_LIB_EXPORT Registration
 {
 
 public:
-    Registration(T* newNodeType)
+    Registration(T* newNode)
     {
-        btFactory::instance()->registerNodeType(newNodeType);
+        btFactory::instance()->registerNodeType(newNode);
     }
 };
 
-#define REGISTER_NODETYPE(NEWNODETYPE) \
-Registration<NEWNODETYPE> NEWNODETYPE ## _registration_(new NEWNODETYPE());
+#define REGISTER_NODETYPE(NEWNODE) \
+Registration<NEWNODE> NEWNODE ## _registration_(new NEWNODE());
 
 #endif // BTABSTRACTFACTORY_H

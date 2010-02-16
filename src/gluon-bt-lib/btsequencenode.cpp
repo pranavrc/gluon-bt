@@ -7,22 +7,19 @@ btSequenceNode::btSequenceNode()
 {
 }
 
-bool btSequenceNode::run(btCharacter *self)
+btNode::status btSequenceNode::run(btCharacter *self)
 {
-    for(int i = 0; i < parentNode()->childCount(); i++)
+    for(int i = this->currentChildIndex(); i < this->childCount(); i++)
     {
-        if(stopFlag()){
-            setStopFlag(false);
-            return false;
-        }
-        if(!parentNode()->child(i)->runBehavior(self))
+        if(this->currentChildStatus() == btNode::Failed)
         {
-            setStopFlag(false);
-            return false;
+            return btNode::Failed;
         }
+		
+		return this->runChild(i);
     }
-    setStopFlag(false);
-    return true;
+	
+    return btNode::Succeeded;
 }
 
 #include "btsequencenode.moc"

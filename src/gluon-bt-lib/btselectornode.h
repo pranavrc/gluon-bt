@@ -3,18 +3,18 @@
 
 #include <QObject>
 
-#include "btnodetype.h"
+#include "btnode.h"
 #include "btfactory.h"
 #include "btcharacter.h"
 #include "btlib_export.h"
 
-class BT_LIB_EXPORT btSelectorNode : public btNodeType
+class BT_LIB_EXPORT btSelectorNode : public btNode
 {
     Q_OBJECT
     
 public:
     Q_INVOKABLE btSelectorNode();
-    bool run(btCharacter *self);
+	btNode::status run(btCharacter *self);
 };
 
 #endif //BTSELECTORNODE_H

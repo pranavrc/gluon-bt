@@ -5,20 +5,20 @@ find_package(Qt4 REQUIRED)
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/../gluon-bt-common/)
 
 set(btlib_SRCS
-    ../gluon-bt-common/btnodetype.cpp
-    ../gluon-bt-common/btnode.cpp
-    ../gluon-bt-common/btcharacter.cpp
+	btcharacter.cpp
     btfactory.cpp
     btbrain.cpp
     btselectornode.cpp
     btsequencenode.cpp
+	btnode.cpp
+	btreferencenode.cpp
+	
+	main.cpp
+	bthellonode.cpp
 )
 
 set(btlib_HEADERS
-
-    ../gluon-bt-common/btnodetype.h
-    ../gluon-bt-common/btnode.h
-    ../gluon-bt-common/btcharacter.h
+	btcharacter.h
     btfactory.h
     btbrain.h
     btselectornode.h
@@ -26,25 +26,22 @@ set(btlib_HEADERS
     ../gluon-bt-common/btglobal.h
     btlib_export.h
     btlib.h
+	btnode.h
+	btreferencenode.h
 )
 
 add_definitions(-DMAKE_BT_LIB)
 
 qt4_automoc(${btlib_SRCS})
-add_library(btlib SHARED ${btlib_SRCS} ${btlib_UIS_H})
+#add_library(btlib SHARED ${btlib_SRCS} ${btlib_UIS_H})
+add_executable(btlib MACOSX_BUNDLE ${btlib_SRCS})
 
 target_link_libraries(btlib ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY})
 
-install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+#install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
-if(APPLE)
-set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
-elseif(WIN32)
-set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
-else()
-set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
-endif()
+#set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
 
-install(FILES
-${btlib_HEADERS}
-DESTINATION ${INCLUDE_INSTALL_DIR}/ COMPONENT Devel)
+#install(FILES
+#${btlib_HEADERS}
+#DESTINATION ${INCLUDE_INSTALL_DIR}/ COMPONENT Devel)

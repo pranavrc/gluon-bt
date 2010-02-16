@@ -1,31 +1,24 @@
 #include "btselectornode.h"
 
-#include "btnode.h"
 #include "btcharacter.h"
 
 btSelectorNode::btSelectorNode()
 {
 }
 
-bool btSelectorNode::run(btCharacter *self)
+btNode::status btSelectorNode::run(btCharacter *self)
 {
-    for(int i = 0; i < parentNode()->childCount(); i++)
+    for(int i = this->currentChildIndex(); i < this->childCount(); i++)
     {
-        if(stopFlag()){
-            setStopFlag(false);
-            return false;
-        }
-        if(parentNode()->child(i)->runBehavior(self))
+        if(this->currentChildStatus() == btNode::Succeeded)
         {
-            qDebug() << "ran child: " << i;
-            setStopFlag(false);
-            return true;
+            return btNode::Succeeded;
         }
-        qDebug() << "could not run child: " << i;
+		
+		return runChild(i);
     }
 
-    setStopFlag(false);
-    return false;
+    return btNode::Failed;
 }
 
 #include "btselectornode.moc"

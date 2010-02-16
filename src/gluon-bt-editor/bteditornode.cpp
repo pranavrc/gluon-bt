@@ -111,18 +111,16 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
         for(int i = 0; i < nodeType->dynamicPropertyNames().count(); i++)
         {
             QString propertyName(nodeType->dynamicPropertyNames().at(i));
-            
-            //properties += projectParser::instance()->writeIndents();
-            //properties += "<property name=\"" + propertyName + "\" value=\"";
+			
 			xmlWriter->writeStartElement("property");
+			xmlWriter->writeAttribute("name", propertyName);
             
             QVariant value = nodeType->property(propertyName.toUtf8());
             
             if(value.type() == QVariant::List)
             {
-                //properties += "\">";
+                xmlWriter->writeAttribute("value", "");
                 QVariantList list = qvariant_cast<QVariantList>(value);
-                //projectParser::instance()->increaseIndents();
                 
                 foreach(const QVariant &v, list)
                 {
@@ -131,23 +129,15 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
 					xmlWriter->writeAttribute("value", v.toString());
 					
 					xmlWriter->writeEndElement(); //item
-                    //properties += projectParser::instance()->writeIndents() + "<item value=\"" + v.toString() + "\"/>";
                 }
-                    
-                //projectParser::instance()->decreaseIndents();
-                
-                //properties += projectParser::instance()->writeIndents() + "</property>";
-                
+                                    
             }
             else if(value.type() == QVariant::UserType)
-            {
-                //properties += "\">";
-                
+            {                
+				xmlWriter->writeAttribute("value", "");
                 double totalProbability = 0.0;
                 
                 btChildWeights list = value.value<btChildWeights>();
-                
-                //projectParser::instance()->increaseIndents();
                 
                 foreach(const QVariant &v, list.childWeightList)
                 {
@@ -164,20 +154,12 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
 					xmlWriter->writeAttribute("editorvalue", v.toString());
 					
 					xmlWriter->writeEndElement(); //item
-                    //properties += projectParser::instance()->writeIndents() + "<item value=\"" + prob.toString() + "\"";
-                    //properties += " editorvalue=\"" + v.toString()  + "\"/>";
                 }
-                
-                //projectParser::instance()->decreaseIndents();
-                
-                //properties += projectParser::instance()->writeIndents() + "</property>";
             }
-            /*else
-            {                    
-                properties +=  value.toString();
-                properties += "\" />";
-                
-            }*/
+            else
+            {               
+				xmlWriter->writeAttribute("value", value.toString());                
+            }
 			
 			xmlWriter->writeEndElement(); //property
         }

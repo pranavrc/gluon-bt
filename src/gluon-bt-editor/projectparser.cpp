@@ -1,6 +1,7 @@
 #include "projectparser.h"
 
 #include <QtXml>
+#include <QtCore/QDebug>
 
 #include "btbrain.h"
 #include "btcompositenode.h"
@@ -95,8 +96,8 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
         btNodeType* newNode = nodeTypeFactory::instance()->newObject(nodeTypeAttributes.namedItem("category").nodeValue());
         newNode->setName(nodeTypeAttributes.namedItem("name").nodeValue());
         newNode->setDescription(nodeTypeAttributes.namedItem("description").nodeValue());
-        newNode->setClassName(nodeTypeAttributes.namedItem("classname").nodeValue());
-
+        newNode->setClassName(nodeTypeAttributes.namedItem("className").nodeValue());
+		
         for(int j = 0; j < currentNodeType.childNodes().count(); j++)
         {
             QDomNode currentProperty = currentNodeType.childNodes().at(j);

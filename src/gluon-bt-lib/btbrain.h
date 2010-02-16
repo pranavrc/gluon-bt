@@ -10,7 +10,6 @@
 #include "btlib_export.h"
 
 class btNode;
-class btNodeType;
 
 class BT_LIB_EXPORT btBrain : public QObject
 {
@@ -38,7 +37,7 @@ private:
     QString m_description;
     
     void parseNodeTypes(QDomNode xNode);
-    void parseBehaviorTrees(QDomNode xNode, btNode* node, int nodeIndex);
+    void parseBehaviorTrees(QDomNode xNode, btNode* node);
 };
 
 #endif
