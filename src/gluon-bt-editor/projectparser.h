@@ -21,10 +21,6 @@ public:
     btBrain* parseProject(QString xmlData);
     //returning the btBrain serialized to a xml formatted QString
     const QString serializeProject(btBrain * brain);
-    
-    /*void increaseIndents();
-    void decreaseIndents();
-    const QString writeIndents();*/
 
 private:
     projectParser();
