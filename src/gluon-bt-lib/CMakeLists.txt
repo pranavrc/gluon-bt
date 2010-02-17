@@ -11,7 +11,6 @@ set(btlib_SRCS
     btselectornode.cpp
     btsequencenode.cpp
 	btnode.cpp
-	btreferencenode.cpp
 	
 	main.cpp
 	bthellonode.cpp
@@ -27,7 +26,6 @@ set(btlib_HEADERS
     btlib_export.h
     btlib.h
 	btnode.h
-	btreferencenode.h
 )
 
 add_definitions(-DMAKE_BT_LIB)

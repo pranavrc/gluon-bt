@@ -4,7 +4,6 @@
 #include "btbrain.h"
 #include "btselectornode.h"
 #include "btsequencenode.h"
-#include "btreferencenode.h"
 #include "btglobal.h"
 
 #include <QtCore/QDebug>
@@ -15,8 +14,6 @@ btFactory::btFactory()
     m_nodeTypes["[selector]"]->setType(btNode::CompositeNodeType);
     m_nodeTypes["[sequence]"] = new btSequenceNode();
     m_nodeTypes["[sequence]"]->setType(btNode::CompositeNodeType);
-	m_nodeTypes["[reference]"] = new btReferenceNode();
-	m_nodeTypes["[reference]"]->setType(btNode::ReferenceNodeType);
 }
 
 btFactory* btFactory::instance()
@@ -148,15 +145,8 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
                 currentParent = btFactory::instance()->newObject(xNode.childNodes().at(i), currentParent, brain);
             }
         }
-        
-		btReferenceNode * refNode = qobject_cast<btReferenceNode*>(btFactory::instance()->newObject("[reference]"));
 		
-		currentParent->appendChild(refNode);
-		
-		refNode->addParentNode(currentParent);
-		refNode->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
-		
-        //currentParent->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
+        currentParent->appendChild(brain->getBehaviorTree(xNode.attributes().namedItem("value").nodeValue().toInt()));
         
         return;
     }

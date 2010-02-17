@@ -4,7 +4,7 @@
 #include "btlib_export.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QtCore/QStack>
 
 #include "btnode.h"
 
@@ -21,8 +21,12 @@ public:
 private:
 	btNode* m_behaviortree;
 	
-	btNode* m_currentNode;
+	//btNode* m_currentNode;
 	btNode::status m_nodeStatus;
+	int m_currentChildIndex;
+	
+	QStack<btNode*> m_currentNode;
+	QStack<int> m_currentChild;
 };
 
 #endif // _BTCHARACTER_H_
