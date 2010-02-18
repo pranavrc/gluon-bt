@@ -8,16 +8,29 @@ btSequenceNode::btSequenceNode()
 }
 
 btNode::status btSequenceNode::run(btCharacter *self)
-{
-    for(int i = this->currentChildIndex(); i < this->childCount(); i++)
-    {
-        if(this->currentChildStatus() == btNode::Failed)
-        {
-            return btNode::Failed;
-        }
+{    
+	/*for(int i = this->currentChildIndex(); i < this->childCount(); i++)
+    {       
+		if(this->currentChildStatus() == btNode::Failed)
+		{
+			return btNode::Failed;
+		}
 		
 		return this->runChild(i);
-    }
+    }//*/
+	
+	
+	if(this->currentChildStatus() == btNode::Failed)
+	{
+		return btNode::Failed;
+	}
+	
+	if(this->nextChildIndex() < this->childCount())
+	{
+		return runChild(this->currentChildIndex());
+	}
+	
+	
 	
     return btNode::Succeeded;
 }

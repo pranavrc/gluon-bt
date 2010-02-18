@@ -21,7 +21,7 @@ public:
 private:
 	btNode* m_behaviortree;
 	
-	//btNode* m_currentNode;
+	btNode* m_currentParent;
 	btNode::status m_nodeStatus;
 	int m_currentChildIndex;
 	

@@ -8,7 +8,7 @@ btSelectorNode::btSelectorNode()
 
 btNode::status btSelectorNode::run(btCharacter *self)
 {
-    for(int i = this->currentChildIndex(); i < this->childCount(); i++)
+    /*for(int i = this->currentChildIndex(); i < this->childCount(); i++)
     {
         if(this->currentChildStatus() == btNode::Succeeded)
         {
@@ -16,8 +16,18 @@ btNode::status btSelectorNode::run(btCharacter *self)
         }
 		
 		return runChild(i);
-    }
-
+    }*/
+	
+	if(this->currentChildStatus() == btNode::Succeeded)
+	{
+		return btNode::Succeeded;
+	}
+	
+	if(this->nextChildIndex() < this->childCount())
+	{
+		return runChild(this->currentChildIndex());
+	}
+	
     return btNode::Failed;
 }
 

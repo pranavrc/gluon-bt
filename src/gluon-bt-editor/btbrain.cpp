@@ -21,6 +21,7 @@ btBrain::btBrain(QObject *parent)
     compositeNode->setDescription("A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)");
     compositeNode->setClassName("[selector]");
     nodeTypes.append(compositeNode);
+#warning add parallels and probselector
 }
 
 btBrain::~btBrain()

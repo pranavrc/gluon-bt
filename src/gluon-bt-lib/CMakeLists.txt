@@ -26,6 +26,7 @@ set(btlib_HEADERS
     btlib_export.h
     btlib.h
 	btnode.h
+	statnode.h
 )
 
 add_definitions(-DMAKE_BT_LIB)

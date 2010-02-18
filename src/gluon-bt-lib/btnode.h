@@ -52,10 +52,13 @@ public:
 	int childCount();
 	void appendChild(btNode* child);
 	void removeChild(int index);
+	void removeChild(btNode* child);
 	btNode* child(int index);
 	btNode* currentChild();
 	int currentChildIndex();
 	void setCurrentChildIndex(int index);
+	int nextChildIndex();
+	void doneParsingChildren();
 	
 	status runChild(int index);
 	status runChild();
@@ -67,6 +70,9 @@ public:
 	btNode* parentNode();
 	
 	virtual status run(btCharacter * self);
+	virtual void childrenAdded(){};
+	virtual void appendingChild(int index){};
+	virtual void removingChild(int index){};
 	
 	
 private:

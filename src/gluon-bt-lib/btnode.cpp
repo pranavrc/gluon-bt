@@ -62,6 +62,8 @@ int btNode::childCount()
 void btNode::appendChild(btNode* child) 
 {
 	m_children.append(child);
+	//has to be in the list, before this function is called
+	this->appendingChild(m_children.count()-1);
 }
 
 btNode* btNode::child(int index)
@@ -122,7 +124,31 @@ void btNode::setParentNode(btNode* parent)
 
 void btNode::removeChild(int index)
 {
+	this->removingChild(index);
 	m_children.removeAt(index);
+}
+
+void btNode::removeChild(btNode* child)
+{
+	for (int i = 0; i < m_children.count(); i++)
+	{
+		if(m_children.at(i) == child)
+		{
+			this->removeChild(i);
+		}
+	}
+}
+
+void btNode::doneParsingChildren()
+{
+	this->childrenAdded();
+}
+
+int btNode::nextChildIndex()
+{
+	if(m_currentChildStatus == btNode::None)
+		return m_currentChildIndex;
+	return ++m_currentChildIndex;
 }
 
 #include "btnode.moc"
