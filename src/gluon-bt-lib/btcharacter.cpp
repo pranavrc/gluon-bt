@@ -29,8 +29,8 @@ void btCharacter::think()
 	currentNode->setCurrentChildStatus(m_nodeStatus);
 	currentNode->setParentNode(m_currentParent);
 	
-	/*qDebug() <<"node " <<currentNode->name();
-	if(m_currentParent != NULL)
+	qDebug() <<"node " <<currentNode->name();
+	/*if(m_currentParent != NULL)
 		qDebug() <<"parent " <<m_currentParent->name();*/
 	
 	m_nodeStatus = currentNode->run(this);

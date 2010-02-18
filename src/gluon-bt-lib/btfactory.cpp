@@ -62,7 +62,7 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
     }
     
     parentNode->appendChild(newBTNode);
-    newBTNode->setParentNode(parentNode);
+    //newBTNode->setParentNode(parentNode);
     
     return newBTNode;
 }

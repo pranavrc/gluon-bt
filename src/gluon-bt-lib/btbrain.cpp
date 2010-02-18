@@ -106,6 +106,8 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)
 			
             if(currentNode.nodeName() == "decorator")
             {
+				//qDebug() << "parent " << node->parentNode()->name();
+				qDebug() << "node " << node->name(); 
 				btNode* parentNode = node->parentNode();
 				newBTNode = btFactory::instance()->newObject(currentNode, parentNode, this);
 				newBTNode->appendChild(node);
