@@ -9,106 +9,51 @@ REGISTER_NODETYPE(btProbSelectorNode)
 btProbSelectorNode::btProbSelectorNode()
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
-	m_currentScale = 1.0f;
-	m_currentStart = 0.0f;
 }
 
 btNode::status btProbSelectorNode::run(btCharacter *self)
 {
 	if(this->currentChildStatus() == Succeeded)
 	{
+		this->resetProbNodes();
 		return Succeeded;
 	}
 	
-	float randNum = ((float)qrand()/RAND_MAX) * m_currentScale;
+	float scale = 1.0f;
+	float start = 0.0f;
+	
+	foreach(ProbNode * node, m_visitedProbStats)
+	{
+		node->visited = true;
+		scale -= node->probability;
+		start += node->probability;
+	}
+	
+	float randNum = ((float)qrand()/RAND_MAX) * scale;
 	
 	for(int i = 0; i < m_probStats.count(); i++)
 	{
-		StatNode * node = m_probStats[i];
+		ProbNode * node = m_probStats[i];
 		
 		if(node->visited == false)
 		{
 			if(start < randNum && randNum <= (node->probability + start))
 			{				
-				if(parentNode()->child(inc)->runBehavior(self))
-				{
-					foreach(StatNode *node, m_probStats)
-					{
-						node->visited = false;
-					}
-					return Succeeded;
-				}
-				else
-				{
-					node->visited = true;
-					scale -= node->probability;
-				}
+				m_visitedProbStats.append(node);
+				return runChild(i);
 			}
-			intStart += node->wp;
+			start += node->probability;
 		}
 	}
 	
-	/*float randNum;
-	float intStart = 0.0;
-	float scale = 1.0;
-	int inc = 0;
-	
-	for(int i = 0; i < probStats.count(); i++)
-	{
-		//  qDebug() << qrand();
-		randNum = ((float)qrand()/RAND_MAX) * scale;
-		// qDebug() << "RandNum: " << randNum;
-		foreach(StatNode *node, probStats)
-		{
-			if(node->visited == false)
-			{
-				if(intStart < randNum && randNum <= (node->wp + intStart)){
-					//    qDebug() << intStart << " < " << randNum << " <= " << node->wp + intStart << " YES";
-					if(stopFlag())
-					{  // måske kan man gøre det til en del af runBehavior ?
-						setStopFlag(false);
-						return false;
-					}
-					if(parentNode()->child(inc)->runBehavior(self))
-					{
-						qDebug("behavior run succes");
-						node->succes += 1;
-						foreach(StatNode *node, probStats)
-						{
-							node->visited = false;
-						}
-						setStopFlag(false);
-						return true;
-					
-					}
-					else
-					{
-						qDebug("behavior run fail");
-						node->fail += 1;
-						node->visited = true;
-						scale -= node->wp;
-					}
-				}
-				intStart += node->wp;
-			}
-			inc += 1;
-		}
-		intStart = 0.0;
-		inc = 0;
-	}
-	 //*/
-	
-    this->resetVisitedNodes();
-	
-	m_currentScale = 1.0f;
-	m_currentStart = 0.0f;
+    this->resetProbNodes();
 	
     return Failed;
 }
 
 void btProbSelectorNode::appendingChild(int index)
 {
-    StatNode *newNode = new StatNode();
+    ProbNode *newNode = new ProbNode();
     //qDebug() << "prob stat insert at: " << index;
     m_probStats.insert(index,newNode);
 }
@@ -129,7 +74,7 @@ void btProbSelectorNode::childrenAdded()
 		{
             QList<QVariant> probs = property("weights").toList();
 			// qDebug() << "probs.count(): " << probs.count();
-            foreach(StatNode *node, m_probStats)
+            foreach(ProbNode *node, m_probStats)
 			{
                 node->probability = probs.at(i).toDouble();
                 i++;
@@ -137,7 +82,7 @@ void btProbSelectorNode::childrenAdded()
         }
 		else
 		{
-            foreach(StatNode *node, m_probStats)
+            foreach(ProbNode *node, m_probStats)
 			{
                 node->probability = (1.0 / count);
             }
@@ -145,12 +90,22 @@ void btProbSelectorNode::childrenAdded()
     }
 }
 
-void btNode::resetVisitedNodes()
+void btProbSelectorNode::resetProbNodes()
 {
-	foreach(StatNode *node, m_probStats)
+	foreach(ProbNode *node, m_probStats)
 	{
         node->visited = false;
     }
+}
+
+void btProbSelectorNode::setVisitedProbNodes(QList<ProbNode*> probNodes)
+{
+	m_visitedProbStats = probNodes;
+}
+
+QList<ProbNode*> btProbSelectorNode::visitedProbNodes()
+{
+	return m_visitedProbStats;
 }
 
 #include "btprobselectornode.moc"

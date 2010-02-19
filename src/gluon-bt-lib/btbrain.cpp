@@ -153,53 +153,6 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node, int nodeIndex)
             }
         }
     }
-    /*for(int i = 0; i < xNode.childNodes().count(); i++)
-    {
-        QDomNode currentNode = xNode.childNodes().at(i);
-        QDomNamedNodeMap nodeAttributes = currentNode.attributes();
-        
-        if(!nodeAttributes.namedItem("uid").isNull())
-        {
-            btNode* rootNode = m_behaviorTrees[nodeAttributes.namedItem("uid").nodeValue().toInt()];
-            parseBehaviorTrees(currentNode, rootNode);            
-        }
-        else
-        {            
-            if(currentNode.nodeName() == "property")
-            {
-                btFactory::instance()->addProperty(node, currentNode, this);
-                continue;
-            }
-            
-			btNode * newBTNode = NULL;
-			
-            if(currentNode.nodeName() == "decorator")
-            {
-				//qDebug() << "parent " << node->parentNode()->name();
-				qDebug() << "node " << node->name(); 
-				btNode* parentNode = node->parentNode();
-				newBTNode = btFactory::instance()->newObject(currentNode, parentNode, this);
-				newBTNode->appendChild(node);
-				parentNode->removeChild(parentNode->childCount()-1);
-				parentNode->appendChild(newBTNode);
-				newBTNode = node;
-			}
-			else
-			{
-				newBTNode = btFactory::instance()->newObject(currentNode, node ,this);
-			}
-			
-            if(newBTNode != NULL)
-            {
-                if(currentNode.hasChildNodes())
-                {
-                    parseBehaviorTrees(currentNode, newBTNode);
-                }
-				
-				newBTNode->doneParsingChildren();
-            }
-        }
-    }*/
 }
 
 #include "btbrain.moc"

@@ -1,12 +1,13 @@
 #ifndef _BTCHARACTER_H_
 #define _BTCHARACTER_H_
 
+#include "btlib.h"
 #include "btlib_export.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QStack>
 
-#include "btlib.h"
+struct ProbNode;
 
 class BT_LIB_EXPORT btCharacter : public QObject
 {
@@ -24,10 +25,12 @@ private:
 	btNode* m_currentParent;
 	btNode::status m_nodeStatus;
 	int m_currentChildIndex;
+	QList<ProbNode*> m_visitedProbChildren;
 	
-	QStack<btNode*> m_currentNode;
-	QStack<int> m_currentChild;
-	QStack<btNode*> m_parallelExecution;
+	QStack<btNode*> m_currentNodeStack;
+	QStack<int> m_currentChildStack;
+	QStack<btNode*> m_parallelExecutionStack;
+	QStack<QList<ProbNode*> > m_visitedProbChildrenStack;
 };
 
 #endif // _BTCHARACTER_H_

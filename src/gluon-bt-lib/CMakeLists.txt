@@ -29,7 +29,7 @@ set(btlib_HEADERS
     btlib_export.h
     btlib.h
 	btnode.h
-	statnode.h
+	probnode.h
 	btprobselectornode.h
 	btparallelnode.h
 )

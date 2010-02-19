@@ -3,7 +3,6 @@
 
 #include <QObject>
 
-#include "statnode.h"
 #include "btlib.h"
 
 
@@ -17,12 +16,13 @@ public:
     void appendingChild(int index);
     void removingChild(int index);
     void childrenAdded();
-	void resetVisitedNodes();
+	void resetProbNodes();
+	void setVisitedProbNodes(QList<ProbNode*> probNodes);
+	QList<ProbNode*> visitedProbNodes();
 	
 private:
-    QList<StatNode*> m_probStats;
-	float m_currentScale;
-	float m_currentStart;
+    QList<ProbNode*> m_probStats;
+	QList<ProbNode*> m_visitedProbStats;
 };
 
 #endif //BTPROBSELECTORNODE_H
