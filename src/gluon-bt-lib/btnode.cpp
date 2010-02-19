@@ -150,5 +150,10 @@ int btNode::nextChildIndex()
 		return m_currentChildIndex;
 	return ++m_currentChildIndex;
 }
+	
+void btNode::insertChild(int index, btNode* child)
+{
+	m_children.insert(index, child);
+}
 
 #include "btnode.moc"

@@ -51,6 +51,7 @@ public:
 	
 	int childCount();
 	void appendChild(btNode* child);
+	void insertChild(int index, btNode* child);
 	void removeChild(int index);
 	void removeChild(btNode* child);
 	btNode* child(int index);
@@ -73,6 +74,7 @@ public:
 	virtual void childrenAdded(){};
 	virtual void appendingChild(int index){};
 	virtual void removingChild(int index){};
+	virtual void resetVisitedNodes(){};
 	
 	
 private:

@@ -20,7 +20,7 @@ btNode::status btSelectorNode::run(btCharacter *self)
 	
 	if(this->currentChildStatus() == btNode::Succeeded)
 	{
-		return btNode::Succeeded;
+		return Succeeded;
 	}
 	
 	if(this->nextChildIndex() < this->childCount())
@@ -28,7 +28,7 @@ btNode::status btSelectorNode::run(btCharacter *self)
 		return runChild(this->currentChildIndex());
 	}
 	
-    return btNode::Failed;
+    return Failed;
 }
 
 #include "btselectornode.moc"

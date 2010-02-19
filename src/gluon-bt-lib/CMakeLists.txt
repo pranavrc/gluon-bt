@@ -11,9 +11,12 @@ set(btlib_SRCS
     btselectornode.cpp
     btsequencenode.cpp
 	btnode.cpp
+	btprobselectornode.cpp
+	btparallelnode.cpp
 	
 	main.cpp
 	bthellonode.cpp
+	btdecorator.cpp
 )
 
 set(btlib_HEADERS
@@ -27,6 +30,8 @@ set(btlib_HEADERS
     btlib.h
 	btnode.h
 	statnode.h
+	btprobselectornode.h
+	btparallelnode.h
 )
 
 add_definitions(-DMAKE_BT_LIB)

@@ -4,6 +4,8 @@
 #include "btbrain.h"
 #include "btselectornode.h"
 #include "btsequencenode.h"
+#include "btprobselectornode.h"
+
 #include "btglobal.h"
 
 #include <QtCore/QDebug>
@@ -14,6 +16,8 @@ btFactory::btFactory()
     m_nodeTypes["[selector]"]->setType(btNode::CompositeNodeType);
     m_nodeTypes["[sequence]"] = new btSequenceNode();
     m_nodeTypes["[sequence]"]->setType(btNode::CompositeNodeType);
+	m_nodeTypes["[probselector]"] = new btProbSelectorNode();
+    m_nodeTypes["[probselector]"]->setType(btNode::CompositeNodeType);
 }
 
 btFactory* btFactory::instance()
@@ -62,7 +66,7 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
     }
     
     parentNode->appendChild(newBTNode);
-    //newBTNode->setParentNode(parentNode);
+    newBTNode->setParentNode(parentNode);
     
     return newBTNode;
 }

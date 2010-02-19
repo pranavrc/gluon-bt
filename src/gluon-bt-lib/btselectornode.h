@@ -14,7 +14,7 @@ class BT_LIB_EXPORT btSelectorNode : public btNode
     
 public:
     Q_INVOKABLE btSelectorNode();
-	btNode::status run(btCharacter *self);
+	status run(btCharacter *self);
 };
 
 #endif //BTSELECTORNODE_H

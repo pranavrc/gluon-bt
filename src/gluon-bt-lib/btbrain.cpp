@@ -30,7 +30,7 @@ btBrain::btBrain(QString data)
         }
         
         //then parse every tree, and link them together
-        parseBehaviorTrees(behaviorTrees, NULL);
+        parseBehaviorTrees(behaviorTrees, NULL, 0);
     }
 }
 
@@ -82,9 +82,78 @@ void btBrain::parseNodeTypes(QDomNode xNode)
 
 }
 
-void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)
+void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node, int nodeIndex)
 {    
+	btNode * workingBtNode = node;
+    
     for(int i = 0; i < xNode.childNodes().count(); i++)
+    {
+        QDomNode currentNode = xNode.childNodes().at(i);
+        QDomNamedNodeMap nodeAttributes = currentNode.attributes();
+        
+        if(!nodeAttributes.namedItem("uid").isNull())
+        {
+            btNode* rootNode = m_behaviorTrees[nodeAttributes.namedItem("uid").nodeValue().toInt()];
+            parseBehaviorTrees(currentNode, rootNode, 0);            
+        }
+        else
+        {            
+            if(currentNode.nodeName() == "property")
+            {
+                btFactory::instance()->addProperty(workingBtNode, currentNode, this);
+                continue;
+            }
+            
+            if(currentNode.nodeName() == "decorator")
+            {                
+                if(workingBtNode == node->parentNode())
+                {
+                    btNode * child = workingBtNode->child(workingBtNode->childCount()-1);
+                    workingBtNode->removeChild(child);
+                    workingBtNode->insertChild(nodeIndex, child);
+                    workingBtNode = child;
+					
+                }
+                else if(workingBtNode->type() == btNode::DecoratorNodeType)
+                {
+                    workingBtNode = workingBtNode->child(0);
+                }
+                else
+                {
+                    workingBtNode = node->parentNode();
+                    workingBtNode->removeChild(nodeIndex);
+                }
+            }
+            else if(workingBtNode->type() == btNode::DecoratorNodeType) 
+            {
+                if(workingBtNode->childCount() > 0 && workingBtNode->child(0)->type() == btNode::DecoratorNodeType)
+                {
+                    workingBtNode = workingBtNode->child(0);
+                }
+                
+                workingBtNode->appendChild(node);
+                workingBtNode = node;
+            }
+            else if(workingBtNode->childCount() > 0 && workingBtNode->child(workingBtNode->childCount()-1)->type() == btNode::DecoratorNodeType)
+            {
+                workingBtNode->child(workingBtNode->childCount()-1)->appendChild(node);
+                workingBtNode = node;
+            }
+			
+            btNode *  newBTNode = btFactory::instance()->newObject(currentNode, workingBtNode ,this);
+            //if(workingBtNode->parentNode())
+            if(newBTNode != NULL)
+            {
+                if(currentNode.hasChildNodes())
+                {
+                    parseBehaviorTrees(currentNode, newBTNode, i);
+                }
+                
+                newBTNode->doneParsingChildren();
+            }
+        }
+    }
+    /*for(int i = 0; i < xNode.childNodes().count(); i++)
     {
         QDomNode currentNode = xNode.childNodes().at(i);
         QDomNamedNodeMap nodeAttributes = currentNode.attributes();
@@ -130,8 +199,7 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)
 				newBTNode->doneParsingChildren();
             }
         }
-    }
-
+    }*/
 }
 
 #include "btbrain.moc"

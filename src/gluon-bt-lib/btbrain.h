@@ -37,7 +37,7 @@ private:
     QString m_description;
     
     void parseNodeTypes(QDomNode xNode);
-    void parseBehaviorTrees(QDomNode xNode, btNode* node);
+    void parseBehaviorTrees(QDomNode xNode, btNode* node, int nodeIndex);
 };
 
 #endif

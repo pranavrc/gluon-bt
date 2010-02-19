@@ -15,7 +15,7 @@ class BT_LIB_EXPORT btSequenceNode : public btNode
     
 public:
     Q_INVOKABLE btSequenceNode();
-    btNode::status run(btCharacter *self);
+    status run(btCharacter *self);
 };
 
 #endif

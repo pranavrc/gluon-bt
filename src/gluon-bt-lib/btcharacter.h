@@ -6,7 +6,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QStack>
 
-#include "btnode.h"
+#include "btlib.h"
 
 class BT_LIB_EXPORT btCharacter : public QObject
 {
@@ -27,6 +27,7 @@ private:
 	
 	QStack<btNode*> m_currentNode;
 	QStack<int> m_currentChild;
+	QStack<btNode*> m_parallelExecution;
 };
 
 #endif // _BTCHARACTER_H_

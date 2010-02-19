@@ -22,7 +22,7 @@ btNode::status btSequenceNode::run(btCharacter *self)
 	
 	if(this->currentChildStatus() == btNode::Failed)
 	{
-		return btNode::Failed;
+		return Failed;
 	}
 	
 	if(this->nextChildIndex() < this->childCount())
@@ -32,7 +32,7 @@ btNode::status btSequenceNode::run(btCharacter *self)
 	
 	
 	
-    return btNode::Succeeded;
+    return Succeeded;
 }
 
 #include "btsequencenode.moc"
