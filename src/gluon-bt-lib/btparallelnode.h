@@ -33,15 +33,12 @@ public:
 	void setRunningNodesStatus(QList<btNode::status> nodeStatus);
 	QList<QStack<btNode*> > runningNodesParents();
 	
+	int childNodeIndex(btNode* childNode);
 private:
 	QList<btNode*> m_runningNodes;
 	QList<int> m_runningNodesIndexes;
 	QList<btNode::status> m_runningNodesStatus;
 	QList<btNode::status> m_conditionStatus;
-	
-	//QQueue<QStack<btNode*> > m_childNodes;
-	//QQueue<QStack<int> > m_childNodesIndex;
-	
 	QList<QStack<btNode*> > m_childNodes;
 	QList<QStack<int> > m_childNodesIndex;
 	QList<QStack<btNode*> > m_parents;

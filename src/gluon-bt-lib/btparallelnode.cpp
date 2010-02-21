@@ -7,11 +7,17 @@ REGISTER_NODETYPE(btParallelNode)
 
 btParallelNode::btParallelNode()
 {
+	this->setCurrentChildStatus(Running);
 }
 
 btNode::status btParallelNode::run(btCharacter *self)
-{
-	return RunningChild;
+{	
+	if(this->currentChildStatus() == None)
+	{
+		return Running;
+	}
+		
+	return this->currentChildStatus();
 }
 
 void btParallelNode::appendingChild(int index)
@@ -125,6 +131,11 @@ void btParallelNode::setRunningNodesStatus(QList<btNode::status> nodeStatus)
 QList<QStack<btNode*> > btParallelNode::runningNodesParents()
 {
 	return m_parents;
+}
+
+int btParallelNode::childNodeIndex(btNode* childNode)
+{	
+	return m_nodesIndex[childNode];
 }
 
 #include "btparallelnode.moc"

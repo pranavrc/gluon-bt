@@ -37,15 +37,15 @@ set(btlib_HEADERS
 add_definitions(-DMAKE_BT_LIB)
 
 qt4_automoc(${btlib_SRCS})
-#add_library(btlib SHARED ${btlib_SRCS} ${btlib_UIS_H})
-add_executable(btlib MACOSX_BUNDLE ${btlib_SRCS})
+add_library(btlib SHARED ${btlib_SRCS} ${btlib_UIS_H})
+#add_executable(btlib MACOSX_BUNDLE ${btlib_SRCS})
 
 target_link_libraries(btlib ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY})
 
-#install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
-#set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
 
-#install(FILES
-#${btlib_HEADERS}
-#DESTINATION ${INCLUDE_INSTALL_DIR}/ COMPONENT Devel)
+install(FILES
+${btlib_HEADERS}
+DESTINATION ${INCLUDE_INSTALL_DIR}/ COMPONENT Devel)

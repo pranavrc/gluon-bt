@@ -8,6 +8,7 @@
 #include <QtCore/QStack>
 #include <QtCore/QList>
 #include <QtCore/QQueue>
+#include <QtCore/QHash>
 
 struct ProbNode;
 
@@ -45,7 +46,8 @@ private:
 	QStack<QList<ProbNode*> > m_visitedProbChildrenStack;
 	
 	//used for parallels
-	QList<btNode::status> m_parallelNodeStatusList;	
+	QHash<btNode*, QStack<QList<btNode::status> > > m_parallelNodeStatusHash;
+	QList<btNode::status> m_parallelNodeStatus;
 };
 
 #endif // _BTCHARACTER_H_
