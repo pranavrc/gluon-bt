@@ -7,9 +7,13 @@
 #include "btconditionnode.h"
 #include <QtCore/qtextstream.h>
 #include "btreferencenode.h"
+#include "btglobal.h"
+
 
 btBrain::btBrain(QObject *parent)
 {
+	qRegisterMetaType<btChildWeights>("btChildWeights");
+	
     btCompositeNode *compositeNode = new btCompositeNode();
     compositeNode->setName("Sequence");
     compositeNode->setDescription("A sequence of behaviors, launched in order (fails if one fails)");
@@ -21,7 +25,19 @@ btBrain::btBrain(QObject *parent)
     compositeNode->setDescription("A collection of behaviors which are launched in order, until one succeeds (only fails if all fails)");
     compositeNode->setClassName("[selector]");
     nodeTypes.append(compositeNode);
-#warning add parallels and probselector
+	
+	compositeNode = new btCompositeNode();
+    compositeNode->setName("Probability Selector");
+    compositeNode->setDescription("A collection of behaviors which are launched due to a probability, until one succeeds (only fails if all fails)");
+    compositeNode->setClassName("[probselector]");
+	compositeNode->setProperty("weights", QVariant("btChildWeights"));
+	nodeTypes.append(compositeNode);
+	
+	compositeNode = new btCompositeNode();
+    compositeNode->setName("Parallel");
+    compositeNode->setDescription("A collection of behaviors which are launched in parallel, and fails or succeeds according a set of conditions");
+    compositeNode->setClassName("[parallel]");
+    nodeTypes.append(compositeNode);
 }
 
 btBrain::~btBrain()

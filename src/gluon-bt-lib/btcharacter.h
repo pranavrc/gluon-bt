@@ -6,6 +6,8 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QStack>
+#include <QtCore/QList>
+#include <QtCore/QQueue>
 
 struct ProbNode;
 
@@ -23,14 +25,27 @@ private:
 	btNode* m_behaviortree;
 	
 	btNode* m_currentParent;
+	QStack<btNode*> m_currentParentsStack;
+	QQueue<QStack<btNode*> > m_currentParentsQueue;
+	
 	btNode::status m_nodeStatus;
+	QQueue<btNode::status> m_nodesStatusQueue;
+	
 	int m_currentChildIndex;
+	
 	QList<ProbNode*> m_visitedProbChildren;
 	
+	QQueue<QStack<btNode*> > m_currentNodeStackQueue;
 	QStack<btNode*> m_currentNodeStack;
+	
 	QStack<int> m_currentChildStack;
-	QStack<btNode*> m_parallelExecutionStack;
+	QQueue<QStack<int> > m_currentChildStackQueue;
+	
+	//used for probselectors
 	QStack<QList<ProbNode*> > m_visitedProbChildrenStack;
+	
+	//used for parallels
+	QList<btNode::status> m_parallelNodeStatusList;	
 };
 
 #endif // _BTCHARACTER_H_

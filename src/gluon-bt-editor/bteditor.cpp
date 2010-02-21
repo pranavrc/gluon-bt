@@ -287,7 +287,9 @@ void bteditor::on_availableNodes_activated(QModelIndex index)
 
     if(selectedNode->nodeType()->className() == "[selector]" 
        || selectedNode->nodeType()->className() == "[sequence]"
-       || selectedNode->nodeType()->className() == "[reference]")
+       || selectedNode->nodeType()->className() == "[reference]"
+	   || selectedNode->nodeType()->className() == "[probselector]"
+	   || selectedNode->nodeType()->className() == "[parallel]")
     {
         return;
     }
@@ -317,7 +319,10 @@ void bteditor::on_availableNodes_customContextMenuRequested(QPoint pos)
     if(availableNodes->indexAt(pos).isValid())
     {
         btNodeTypesModelNode* selectedNode = static_cast<btNodeTypesModelNode*>(availableNodes->selectionModel()->currentIndex().internalPointer());
-        if(selectedNode->nodeType()->className() != "[selector]" && selectedNode->nodeType()->className() != "[sequence]")
+        if(selectedNode->nodeType()->className() != "[selector]"
+		   && selectedNode->nodeType()->className() != "[sequence]"
+		   && selectedNode->nodeType()->className() != "[probselector]"
+		   && selectedNode->nodeType()->className() != "[parallel]")
         {
             treeContextMenu->exec(availableNodes->viewport()->mapToGlobal(pos));
         }

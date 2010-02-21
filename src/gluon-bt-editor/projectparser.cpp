@@ -262,7 +262,7 @@ const QString projectParser::serializeProject(btBrain * brain)
 	
 	xmlWriter->writeStartElement("nodetypes");
 	
-	for (int i = 2; i < brain->nodeTypes.count(); i++) 
+	for (int i = 4; i < brain->nodeTypes.count(); i++) 
 	{
 		brain->nodeTypes[i]->toNodeTypeXml(xmlWriter);
 	}

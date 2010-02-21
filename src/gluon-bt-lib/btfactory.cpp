@@ -18,6 +18,10 @@ btFactory::btFactory()
     m_nodeTypes["[sequence]"]->setType(btNode::CompositeNodeType);
 	m_nodeTypes["[probselector]"] = new btProbSelectorNode();
     m_nodeTypes["[probselector]"]->setType(btNode::CompositeNodeType);
+	m_nodeTypes["[probselector]"]->setProperty("weights", "btChildWeights");
+	m_nodeTypes["[parallel]"] = new btParallelNode();
+    m_nodeTypes["[parallel]"]->setType(btNode::CompositeNodeType);
+    m_nodeTypes["[parallel]"]->setProperty("conditions", "btParallelConditions");
 }
 
 btFactory* btFactory::instance()
@@ -39,10 +43,7 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
         this->addProperty(parentNode, xmlNode.childNodes().at(0), brain);
         return NULL;
     }
-    
-    //btNode* newBTNode = new btNode();
-    
-    //btNodeType* nodeType = m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()];
+	
 	btNode* nodeType = m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()];
 	btNode* newBTNode = qobject_cast<btNode*>(nodeType->metaObject()->newInstance());
     //newBTNode->setType((btNodeType*)nodeType->metaObject()->newInstance());
@@ -138,6 +139,7 @@ void btFactory::initNodeType(QDomNode xmlNode)
 void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
 {
     qRegisterMetaType<btChildWeights>("btChildWeights");
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
     
     if(xNode.attributes().namedItem("name").nodeValue() == "reference")
     {
@@ -172,7 +174,7 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
         
         dataType = list;
     }
-    else if(typeId == QMetaType::type("btChildWeights"))
+    else if(typeId == QMetaType::type("btChildWeights") || typeId == QMetaType::type("btParallelConditions"))
     {
         QVariantList list;
         
@@ -180,7 +182,9 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
         {
             QDomNamedNodeMap attributes = xNode.childNodes().at(i).attributes();
             if(!attributes.namedItem("value").isNull())
-                list.append(attributes.namedItem("value").nodeValue().toDouble());
+			{
+				list.append(attributes.namedItem("value").nodeValue().toDouble());
+			}
         }
         
         dataType = list;
