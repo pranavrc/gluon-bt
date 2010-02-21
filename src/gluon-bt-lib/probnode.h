@@ -1,7 +1,7 @@
 #ifndef STATNODE_H
 #define STATNODE_H
 
-#include "../gluon-bt-lib/btlib_export.h"
+#include "btlib_export.h"
 
 struct BT_LIB_EXPORT ProbNode
 {
