@@ -25,16 +25,10 @@ public:
 private:
 	btNode* m_behaviortree;
 	
-	btNode* m_currentParent;
-	QStack<btNode*> m_currentParentsStack;
-	QQueue<QStack<btNode*> > m_currentParentsQueue;
-	
 	btNode::status m_nodeStatus;
 	QQueue<btNode::status> m_nodesStatusQueue;
 	
 	int m_currentChildIndex;
-	
-	QList<ProbNode*> m_visitedProbChildren;
 	
 	QQueue<QStack<btNode*> > m_currentNodeStackQueue;
 	QStack<btNode*> m_currentNodeStack;
@@ -43,6 +37,8 @@ private:
 	QQueue<QStack<int> > m_currentChildStackQueue;
 	
 	//used for probselectors
+	QQueue<QStack<QList<ProbNode*> > > m_visitedProbChildrenStackQueue;
+	QList<ProbNode*> m_visitedProbChildren;
 	QStack<QList<ProbNode*> > m_visitedProbChildrenStack;
 	
 	//used for parallels

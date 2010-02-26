@@ -6,8 +6,8 @@ btCharacter::btCharacter()
 {
 	m_nodesStatusQueue.enqueue(btNode::None);
 	m_currentChildIndex = 0;
-	m_currentParentsStack.push(NULL);
-	m_currentParentsQueue.enqueue(m_currentParentsStack);
+	//m_currentParentsStack.push(NULL);
+	//m_currentParentsQueue.enqueue(m_currentParentsStack);
 }
 
 btCharacter::~btCharacter()
@@ -31,13 +31,21 @@ void btCharacter::think()
 {
 	btProbSelectorNode * probSelector = NULL;
 	btParallelNode * parallel = NULL;
+	btNode* m_currentParent = NULL;
+	QStack<QList<ProbNode*> > visitedProbChildrenStack;
 
 	m_currentNodeStack = m_currentNodeStackQueue.dequeue();
 	m_currentChildStack = m_currentChildStackQueue.dequeue();
 	m_nodeStatus = m_nodesStatusQueue.dequeue();
-	m_currentParentsStack = m_currentParentsQueue.dequeue();
 	
 	btNode* currentNode = m_currentNodeStack.top();
+	
+	if(m_currentNodeStack.count() > 1)
+	{
+		m_currentParent = m_currentNodeStack.at(m_currentNodeStack.count() - 2);
+	}
+
+	
 	if(m_currentChildStack.count() > 0)
 	{
 		m_currentChildIndex = m_currentChildStack.pop();
@@ -55,25 +63,13 @@ void btCharacter::think()
 	else if (QString(currentNode->metaObject()->className()) == "btParallelNode")
 	{
 		parallel = qobject_cast<btParallelNode*>(currentNode);
-		qDebug() << parallel->name();
-		/*if(m_parallelNodeStatusQueue.count() > 0)
-		{
-			m_parallelNodeStatusQueue.enqueue(m_parallelNodeStatus);
-			m_parallelNodeStatus = m_parallelNodeStatusQueue.dequeue();
-		}
-		else if(m_parallelNodeStatus.count() == 0)
-		{
-			m_parallelNodeStatus = parallel->runningNodesStatus();
-			//m_parallelNodeStatusQueue.enqueue(m_parallelNodeStatus);
-		}*/
-		
+		qDebug() << parallel->name();		
 		
 		if(m_nodeStatus == btNode::None)
 		{
 			m_currentNodeStackQueue.append(parallel->parallelChildren());
 			m_currentChildStackQueue.append(parallel->parallelChildrenIndex());
 			m_nodesStatusQueue.append(parallel->runningNodesStatus());
-			m_currentParentsQueue.append(parallel->runningNodesParents());
 			
 			if(m_parallelNodeStatusHash.contains(parallel))
 			{
@@ -104,8 +100,6 @@ void btCharacter::think()
 	currentNode->setParentNode(m_currentParent);
 	
 	qDebug() <<"node " <<currentNode->name();
-	/*if(m_currentParent != NULL)
-	 qDebug() <<"parent " <<m_currentParent->name();*/
 	
 	m_nodeStatus = currentNode->run(this);
 	
@@ -121,8 +115,6 @@ void btCharacter::think()
 			m_nodesStatusQueue.enqueue(btNode::None);
 			
 			m_currentChildIndex = 0;
-			m_currentParentsStack.push(currentNode);
-			m_currentParentsQueue.enqueue(m_currentParentsStack);
 			
 			if(probSelector)
 			{
@@ -145,15 +137,6 @@ void btCharacter::think()
 					m_currentChildIndex = 0;
 				}
 				
-				if(m_currentParentsStack.count() > 1)
-				{
-					m_currentParent = m_currentParentsStack.pop();
-				}
-				else 
-				{
-					m_currentParent = m_currentParentsStack.top();
-				}
-				
 				if(m_currentNodeStack.count() > 0 && QString(m_currentParent->metaObject()->className()) == "btProbSelectorNode")
 				{
 					m_visitedProbChildren = m_visitedProbChildrenStack.pop();
@@ -165,7 +148,7 @@ void btCharacter::think()
 			}
 			else
 			{				
-				m_currentParent = m_currentParentsStack.top();
+				//m_currentParent = m_currentParentsStack.top();
 				if(m_currentChildStack.count() > 0)
 				{
 					m_currentChildIndex = m_currentChildStack.top();
@@ -179,6 +162,8 @@ void btCharacter::think()
 					m_nodeStatus = btNode::None;
 			}	
 			
+			
+#warning add such that it removes all children that are currently executed, check the with the first node in the stack and the parallel itself
 			if(m_currentParent != NULL && QString(m_currentParent->metaObject()->className()) == "btParallelNode")
 			{
 				parallel = qobject_cast<btParallelNode*>(m_currentParent);
@@ -186,12 +171,11 @@ void btCharacter::think()
 				m_parallelNodeStatus[parallel->childNodeIndex(currentNode)] = m_nodeStatus;
 				m_parallelNodeStatusHash[m_currentParent].push(m_parallelNodeStatus);
 			}
-			else//*/
+			else
 			{
 				m_currentNodeStackQueue.enqueue(m_currentNodeStack);
 				m_currentChildStackQueue.enqueue(m_currentChildStack);
 				m_nodesStatusQueue.enqueue(m_nodeStatus);
-				m_currentParentsQueue.enqueue(m_currentParentsStack);
 			}
 			break;
 		case btNode::Running:
@@ -201,7 +185,6 @@ void btCharacter::think()
 			m_currentChildStack.push(m_currentChildIndex);
 			m_currentChildStackQueue.enqueue(m_currentChildStack);
 			m_nodesStatusQueue.enqueue(m_nodeStatus);
-			m_currentParentsQueue.enqueue(m_currentParentsStack);
 			
 			if(probSelector)
 			{

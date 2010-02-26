@@ -23,6 +23,7 @@ btNode::status btParallelNode::run(btCharacter *self)
 void btParallelNode::appendingChild(int index)
 {
 	QStack<btNode*> nodes = QStack<btNode*>();
+	nodes.push(this);
 	nodes.push(this->child(index));
 	//m_childNodes.enqueue(nodes);
 	m_childNodes.append(nodes);
@@ -34,19 +35,19 @@ void btParallelNode::appendingChild(int index)
 	
 	m_runningNodesStatus.insert(index, btNode::None);
 	
-	QStack<btNode*> parent = QStack<btNode*>();
+	/*QStack<btNode*> parent = QStack<btNode*>();
 	parent.push(this);
-	m_parents.insert(index, parent);
+	m_parents.insert(index, parent);*/
 	
 	m_nodesIndex[this->child(index)] = index;
 }
 
 void btParallelNode::removingChild(int index)
 {
-	m_childNodes.removeAt(index);
+	m_childNodes.removeAt(index+1);
 	m_childNodesIndex.removeAt(index);
 	m_runningNodesStatus.removeAt(index);
-	m_parents.removeAt(index);
+	//m_parents.removeAt(index);
 	m_nodesIndex.remove(this->child(index));
 }
 
