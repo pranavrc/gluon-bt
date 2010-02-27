@@ -6,8 +6,6 @@ btCharacter::btCharacter()
 {
 	m_nodesStatusQueue.enqueue(btNode::None);
 	m_currentChildIndex = 0;
-	//m_currentParentsStack.push(NULL);
-	//m_currentParentsQueue.enqueue(m_currentParentsStack);
 }
 
 btCharacter::~btCharacter()
@@ -17,10 +15,10 @@ btCharacter::~btCharacter()
 
 void btCharacter::setBehaviorTree(btNode* behaviorTree)
 {
-	//m_behaviortree = m_currentNode = behaviorTree;
 	m_behaviortree = behaviorTree;
 	
-	m_currentNodeStack.push(m_behaviortree);
+	m_currentNodeStack = new QStack<btNode*>();
+	m_currentNodeStack->push(m_behaviortree);
 	m_currentChildStack.push(0);
 	
 	m_currentChildStackQueue.enqueue(m_currentChildStack);
@@ -31,18 +29,18 @@ void btCharacter::think()
 {
 	btProbSelectorNode * probSelector = NULL;
 	btParallelNode * parallel = NULL;
-	btNode* m_currentParent = NULL;
+	btNode* currentParent = NULL;
 	QStack<QList<ProbNode*> > visitedProbChildrenStack;
 
 	m_currentNodeStack = m_currentNodeStackQueue.dequeue();
 	m_currentChildStack = m_currentChildStackQueue.dequeue();
 	m_nodeStatus = m_nodesStatusQueue.dequeue();
 	
-	btNode* currentNode = m_currentNodeStack.top();
+	btNode* currentNode = m_currentNodeStack->top();
 	
-	if(m_currentNodeStack.count() > 1)
+	if(m_currentNodeStack->count() > 1)
 	{
-		m_currentParent = m_currentNodeStack.at(m_currentNodeStack.count() - 2);
+		currentParent = m_currentNodeStack->at(m_currentNodeStack->count() - 2);
 	}
 
 	
@@ -58,46 +56,50 @@ void btCharacter::think()
 	if (QString(currentNode->metaObject()->className()) == "btProbSelectorNode")
 	{
 		probSelector = qobject_cast<btProbSelectorNode*>(currentNode);
-		probSelector->setVisitedProbNodes(m_visitedProbChildren);
+		
+		if(m_visitedProbChildrenHash.contains(m_currentNodeStack))
+		{
+			probSelector->setVisitedProbNodes(m_visitedProbChildrenHash[m_currentNodeStack].pop());
+		}
+		//probSelector->setVisitedProbNodes(m_visitedProbChildren);
 	}
 	else if (QString(currentNode->metaObject()->className()) == "btParallelNode")
 	{
 		parallel = qobject_cast<btParallelNode*>(currentNode);
-		qDebug() << parallel->name();		
-		
 		if(m_nodeStatus == btNode::None)
-		{
-			m_currentNodeStackQueue.append(parallel->parallelChildren());
-			m_currentChildStackQueue.append(parallel->parallelChildrenIndex());
-			m_nodesStatusQueue.append(parallel->runningNodesStatus());
+		{			
+			QList<btNode::status>* childStatus = new QList<btNode::status>();
 			
-			if(m_parallelNodeStatusHash.contains(parallel))
+			for(int i = 0; i < parallel->childCount(); i++)
 			{
-				m_parallelNodeStatusHash[parallel].push(parallel->runningNodesStatus());
+				QStack<btNode*>* newStack = new QStack<btNode*>();
+				newStack->push(parallel);
+				newStack->push(parallel->child(i));
+				m_currentNodeStackQueue.enqueue(newStack);
+				
+				childStatus->append(btNode::None);
+				m_nodesStatusQueue.enqueue(btNode::None);
+				
+				m_parallelNodeStatusHash.insert(newStack, childStatus);
+				
+				QStack<int> childStack = QStack<int>();
+				childStack.push(0);
+				m_currentChildStackQueue.append(childStack);
 			}
-			else
-			{
-				m_parallelNodeStatusHash[parallel] = QStack<QList<btNode::status> >();
-				m_parallelNodeStatusHash[parallel].push(parallel->runningNodesStatus());
-			}
-
 			
+			m_parallelNodeStatusHash.insert(m_currentNodeStack, childStatus);
 			m_nodeStatus = btNode::Running;
 		}
-		parallel->setRunningNodesStatus(m_parallelNodeStatusHash[parallel].top());
+		
+		parallel->setRunningNodesStatus(m_parallelNodeStatusHash.value(m_currentNodeStack));
 		btNode::status conditionsFulfilled = parallel->conditionsFulfilled();
-
-		if(conditionsFulfilled == btNode::Failed || conditionsFulfilled == btNode::Succeeded)
-		{
-			m_parallelNodeStatusHash[parallel].pop();
-		}		
 		
 		m_nodeStatus = conditionsFulfilled;
 	}	
 	
 	currentNode->setCurrentChildIndex(m_currentChildIndex);
 	currentNode->setCurrentChildStatus(m_nodeStatus);
-	currentNode->setParentNode(m_currentParent);
+	currentNode->setParentNode(currentParent);
 	
 	qDebug() <<"node " <<currentNode->name();
 	
@@ -106,7 +108,7 @@ void btCharacter::think()
 	switch (m_nodeStatus)
 	{
 		case btNode::RunningChild:
-			m_currentNodeStack.push(currentNode->currentChild());
+			m_currentNodeStack->push(currentNode->currentChild());
 			m_currentChildStack.push(currentNode->currentChildIndex());
 			
 			m_currentNodeStackQueue.enqueue(m_currentNodeStack);
@@ -118,16 +120,15 @@ void btCharacter::think()
 			
 			if(probSelector)
 			{
-				m_visitedProbChildrenStack.push(probSelector->visitedProbNodes());
-				m_visitedProbChildren = QList<ProbNode*>();
+				m_visitedProbChildrenHash[m_currentNodeStack].push(probSelector->visitedProbNodes());
 			}
 			
 			break;
 		case btNode::Failed:
 		case btNode::Succeeded:
-			if(m_currentNodeStack.count() > 1)
+			if(m_currentNodeStack->count() > 1)
 			{	
-				m_currentNodeStack.pop();
+				m_currentNodeStack->pop();
 				if(m_currentChildStack.count() > 0)
 				{
 					m_currentChildIndex = m_currentChildStack.pop();
@@ -137,18 +138,17 @@ void btCharacter::think()
 					m_currentChildIndex = 0;
 				}
 				
-				if(m_currentNodeStack.count() > 0 && QString(m_currentParent->metaObject()->className()) == "btProbSelectorNode")
+				/*if(m_currentNodeStack->count() > 0 && QString(currentParent->metaObject()->className()) == "btProbSelectorNode")
 				{
 					m_visitedProbChildren = m_visitedProbChildrenStack.pop();
 				}
 				else
 				{
 					m_visitedProbChildren = QList<ProbNode*>();
-				}
+				}*/
 			}
 			else
 			{				
-				//m_currentParent = m_currentParentsStack.top();
 				if(m_currentChildStack.count() > 0)
 				{
 					m_currentChildIndex = m_currentChildStack.top();
@@ -162,17 +162,31 @@ void btCharacter::think()
 					m_nodeStatus = btNode::None;
 			}	
 			
-			
-#warning add such that it removes all children that are currently executed, check the with the first node in the stack and the parallel itself
-			if(m_currentParent != NULL && QString(m_currentParent->metaObject()->className()) == "btParallelNode")
+			if(currentParent != NULL && QString(currentParent->metaObject()->className()) == "btParallelNode")
 			{
-				parallel = qobject_cast<btParallelNode*>(m_currentParent);
-				m_parallelNodeStatus = m_parallelNodeStatusHash[m_currentParent].pop();
-				m_parallelNodeStatus[parallel->childNodeIndex(currentNode)] = m_nodeStatus;
-				m_parallelNodeStatusHash[m_currentParent].push(m_parallelNodeStatus);
+				parallel = qobject_cast<btParallelNode*>(currentParent);
+				QList<btNode::status>* m_parallelNodeStatus = m_parallelNodeStatusHash.value(m_currentNodeStack);
+				m_parallelNodeStatus->replace(parallel->childNodeIndex(currentNode), m_nodeStatus);
+				m_parallelNodeStatusHash.remove(m_currentNodeStack, m_parallelNodeStatus);
+				
+				if(m_parallelNodeStatusHash.count(m_currentNodeStack) > 0)
+				{
+					m_parallelNodeStatus = m_parallelNodeStatusHash.value(m_currentNodeStack);
+					m_parallelNodeStatus->replace(parallel->childNodeIndex(currentNode), m_nodeStatus);
+					m_parallelNodeStatusHash.remove(m_currentNodeStack, m_parallelNodeStatus);
+				}
+				
+				delete m_currentNodeStack;
+				m_currentNodeStack = NULL;
 			}
-			else
+			
+			if(QString(currentNode->metaObject()->className()) == "btParallelNode")
 			{
+				stopParallelExecution(currentNode);
+			}
+			
+			if(m_currentNodeStack)
+			{				
 				m_currentNodeStackQueue.enqueue(m_currentNodeStack);
 				m_currentChildStackQueue.enqueue(m_currentChildStack);
 				m_nodesStatusQueue.enqueue(m_nodeStatus);
@@ -185,12 +199,32 @@ void btCharacter::think()
 			m_currentChildStack.push(m_currentChildIndex);
 			m_currentChildStackQueue.enqueue(m_currentChildStack);
 			m_nodesStatusQueue.enqueue(m_nodeStatus);
-			
-			if(probSelector)
-			{
-				m_visitedProbChildren = probSelector->visitedProbNodes();
-			}
 			break;
+	}
+}
+
+void btCharacter::stopParallelExecution(btNode * currentNode)
+{
+	int counter = m_currentNodeStackQueue.count();
+	
+	while (counter > 0)
+	{
+		QStack<btNode*> * stack = m_currentNodeStackQueue.dequeue();
+		if(stack->front() == currentNode)
+		{
+			m_parallelNodeStatusHash.remove(stack, m_parallelNodeStatusHash.value(stack));
+			delete stack;
+			
+			m_visitedProbChildrenHash.remove(stack);
+		}									 
+		else
+		{
+			m_currentNodeStackQueue.enqueue(stack);
+			m_nodesStatusQueue.enqueue(m_nodesStatusQueue.dequeue());
+			m_currentChildStackQueue.enqueue(m_currentChildStackQueue.dequeue());
+		}
+		
+		counter--;
 	}
 }
 

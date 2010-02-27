@@ -9,6 +9,7 @@
 #include <QtCore/QList>
 #include <QtCore/QQueue>
 #include <QtCore/QHash>
+#include <QtCore/QMultiHash>
 
 struct ProbNode;
 
@@ -23,6 +24,8 @@ public:
 	
 	void think();
 private:
+	void stopParallelExecution(btNode * currentNode);
+	
 	btNode* m_behaviortree;
 	
 	btNode::status m_nodeStatus;
@@ -30,20 +33,17 @@ private:
 	
 	int m_currentChildIndex;
 	
-	QQueue<QStack<btNode*> > m_currentNodeStackQueue;
-	QStack<btNode*> m_currentNodeStack;
+	QQueue<QStack<btNode*>* > m_currentNodeStackQueue;
+	QStack<btNode*>* m_currentNodeStack;
 	
 	QStack<int> m_currentChildStack;
 	QQueue<QStack<int> > m_currentChildStackQueue;
 	
 	//used for probselectors
-	QQueue<QStack<QList<ProbNode*> > > m_visitedProbChildrenStackQueue;
-	QList<ProbNode*> m_visitedProbChildren;
-	QStack<QList<ProbNode*> > m_visitedProbChildrenStack;
+	QHash<QStack<btNode*>*, QStack<QList<ProbNode*> > > m_visitedProbChildrenHash;
 	
 	//used for parallels
-	QHash<btNode*, QStack<QList<btNode::status> > > m_parallelNodeStatusHash;
-	QList<btNode::status> m_parallelNodeStatus;
+	QMultiHash<QStack<btNode*>*, QList<btNode::status>* > m_parallelNodeStatusHash;
 };
 
 #endif // _BTCHARACTER_H_

@@ -14,34 +14,23 @@ class btParallelNode : public btNode
 	
 public:
     Q_INVOKABLE btParallelNode();
+	~btParallelNode();
+	
 	btNode::status run(btCharacter *self);
 	
 	void appendingChild(int index);
 	void removingChild(int index);
 	void childrenAdded();
 	
-	//QQueue<QStack<btNode*> > parallelChildren();
-	//QQueue<QStack<int> > parallelChildrenIndex();
-	
-	QList<QStack<btNode*> > parallelChildren();
-	QList<QStack<int> > parallelChildrenIndex();
-	
 	btNode::status conditionsFulfilled();
 	
 	void resetRunningNodesStatus();
-	QList<btNode::status> runningNodesStatus();
-	void setRunningNodesStatus(QList<btNode::status> nodeStatus);
-	QList<QStack<btNode*> > runningNodesParents();
+	void setRunningNodesStatus(QList<btNode::status>* nodeStatus);
 	
 	int childNodeIndex(btNode* childNode);
 private:
-	QList<btNode*> m_runningNodes;
-	QList<int> m_runningNodesIndexes;
-	QList<btNode::status> m_runningNodesStatus;
-	QList<btNode::status> m_conditionStatus;
-	QList<QStack<btNode*> > m_childNodes;
-	QList<QStack<int> > m_childNodesIndex;
-	QList<QStack<btNode*> > m_parents;
+	QList<btNode::status>* m_runningNodesStatus;
+	QList<btNode::status>* m_conditionStatus;
 	QHash<btNode*, int> m_nodesIndex;
 };
 
