@@ -61,7 +61,6 @@ void btCharacter::think()
 		{
 			probSelector->setVisitedProbNodes(m_visitedProbChildrenHash[m_currentNodeStack].pop());
 		}
-		//probSelector->setVisitedProbNodes(m_visitedProbChildren);
 	}
 	else if (QString(currentNode->metaObject()->className()) == "btParallelNode")
 	{
@@ -100,8 +99,6 @@ void btCharacter::think()
 	currentNode->setCurrentChildIndex(m_currentChildIndex);
 	currentNode->setCurrentChildStatus(m_nodeStatus);
 	currentNode->setParentNode(currentParent);
-	
-	qDebug() <<"node " <<currentNode->name();
 	
 	m_nodeStatus = currentNode->run(this);
 	
@@ -181,7 +178,7 @@ void btCharacter::think()
 			}
 			
 			if(QString(currentNode->metaObject()->className()) == "btParallelNode")
-			{
+			{				
 				stopParallelExecution(currentNode);
 			}
 			
@@ -216,6 +213,9 @@ void btCharacter::stopParallelExecution(btNode * currentNode)
 			delete stack;
 			
 			m_visitedProbChildrenHash.remove(stack);
+			
+			m_nodesStatusQueue.dequeue();
+			m_currentChildStackQueue.dequeue();
 		}									 
 		else
 		{
