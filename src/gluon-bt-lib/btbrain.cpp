@@ -36,6 +36,8 @@ btBrain::btBrain(QString data)
 
 btBrain::~btBrain()
 {
+	qDeleteAll(m_behaviorTrees.values());
+	m_behaviorTrees.clear();
 }
 
 btNode* btBrain::getBehaviorTree(int index)

@@ -12,6 +12,8 @@ btNode::btNode()
 
 btNode::~btNode()
 {
+	qDeleteAll(m_children);
+	m_children.clear();
 }
 
 void btNode::setName(QString name)

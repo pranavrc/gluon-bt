@@ -10,7 +10,19 @@ btCharacter::btCharacter()
 
 btCharacter::~btCharacter()
 {
+	qDeleteAll(m_currentNodeStackQueue);
+	m_currentNodeStackQueue.clear();
+	delete m_currentNodeStack;
 	
+	qDeleteAll(m_visitedProbChildrenHash.keys());
+	m_visitedProbChildrenHash.clear();
+	
+	//used for parallels
+	qDeleteAll(m_parallelNodeStatusHash.values());
+	qDeleteAll(m_parallelNodeStatusHash.keys());
+			   
+	m_parallelNodeStatusHash.clear();
+			   
 }
 
 void btCharacter::setBehaviorTree(btNode* behaviorTree)

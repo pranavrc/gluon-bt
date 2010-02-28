@@ -12,6 +12,8 @@ class BT_LIB_EXPORT btProbSelectorNode : public btNode
     
 public:
     Q_INVOKABLE btProbSelectorNode();
+	~btProbSelectorNode();
+	
 	btNode::status run(btCharacter *self);
     void appendingChild(int index);
     void removingChild(int index);

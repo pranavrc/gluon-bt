@@ -11,6 +11,15 @@ btProbSelectorNode::btProbSelectorNode()
     qsrand(QDateTime::currentDateTime().toTime_t());
 }
 
+btProbSelectorNode::~btProbSelectorNode()
+{
+	qDeleteAll(m_probStats);
+	m_probStats.clear();
+	
+	qDeleteAll(m_visitedProbStats);
+	m_visitedProbStats.clear();
+}
+
 btNode::status btProbSelectorNode::run(btCharacter *self)
 {
 	if(this->currentChildStatus() == Succeeded)

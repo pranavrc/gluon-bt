@@ -16,6 +16,9 @@ btParallelNode::~btParallelNode()
 {
 	delete m_runningNodesStatus;
 	delete m_conditionStatus;
+	
+	qDeleteAll(m_nodesIndex.keys());
+	m_nodesIndex.clear();
 }
 
 btNode::status btParallelNode::run(btCharacter *self)
