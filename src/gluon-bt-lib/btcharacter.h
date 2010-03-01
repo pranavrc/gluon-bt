@@ -8,8 +8,8 @@
 #include <QtCore/QStack>
 #include <QtCore/QList>
 #include <QtCore/QQueue>
-#include <QtCore/QHash>
 #include <QtCore/QMultiHash>
+#include <QtCore/QPair>
 
 struct ProbNode;
 
@@ -24,19 +24,13 @@ public:
 	
 	void think();
 private:
-	void stopParallelExecution(btNode * currentNode);
+	void stopParallelExecution(btNode * currentNode, QStack<btNode*>* parentStack);
 	
 	btNode* m_behaviortree;
 	
-	btNode::status m_nodeStatus;
+	//used for scheduler exectution
 	QQueue<btNode::status> m_nodesStatusQueue;
-	
-	int m_currentChildIndex;
-	
-	QQueue<QStack<btNode*>* > m_currentNodeStackQueue;
-	QStack<btNode*>* m_currentNodeStack;
-	
-	QStack<int> m_currentChildStack;
+	QQueue<QPair<QStack<btNode*>*, QStack<btNode*>*> > m_currentNodeStackQueue;
 	QQueue<QStack<int> > m_currentChildStackQueue;
 	
 	//used for probselectors

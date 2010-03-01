@@ -33,14 +33,14 @@ btNode::status btParallelNode::run(btCharacter *self)
 
 void btParallelNode::appendingChild(int index)
 {	
-	m_runningNodesStatus->insert(index, btNode::None);
+	//m_runningNodesStatus->insert(index, btNode::None);
 	
 	m_nodesIndex[this->child(index)] = index;
 }
 
 void btParallelNode::removingChild(int index)
 {
-	m_runningNodesStatus->removeAt(index);
+	//m_runningNodesStatus->removeAt(index);
 	m_nodesIndex.remove(this->child(index));
 }
 
@@ -79,25 +79,27 @@ void btParallelNode::childrenAdded()
 
 btNode::status btParallelNode::conditionsFulfilled()
 {
+	btNode::status fulfilled = Succeeded;
 	for (int i = 0; i < this->childCount(); i++)
 	{
 		if(m_runningNodesStatus->value(i) == btNode::None)
-			return Running;
+			fulfilled = Running;
 		
-		if(m_runningNodesStatus->value(i) != m_conditionStatus->value(i))
+		if(m_runningNodesStatus->value(i) != btNode::None && m_runningNodesStatus->value(i) != m_conditionStatus->value(i))
+		{
+			this->resetRunningNodesStatus();
 			return Failed;
+		}
 	}
+	if(fulfilled == Succeeded)
+		this->resetRunningNodesStatus();
 	
-	this->resetRunningNodesStatus();
-	return Succeeded;
+	return fulfilled;
 }
 
 void btParallelNode::resetRunningNodesStatus()
 {
-	for (int i = 0; i < m_runningNodesStatus->count(); i++)
-	{
-		m_runningNodesStatus->replace(i, btNode::None);
-	}
+	m_runningNodesStatus = NULL;
 }
 
 void btParallelNode::setRunningNodesStatus(QList<btNode::status>* nodeStatus)
