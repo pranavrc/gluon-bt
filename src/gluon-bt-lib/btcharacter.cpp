@@ -104,7 +104,6 @@ void btCharacter::think()
 				QStack<btNode*>* newStack = new QStack<btNode*>();
 				newStack->push(parallel);
 				newStack->push(parallel->child(i));
-				//m_currentNodeStackQueue.enqueue(newStack);
 				QPair<QStack<btNode*>*, QStack<btNode*>*> pair;
 				pair.first = newStack;
 				pair.second = currentNodeStack;
@@ -194,7 +193,6 @@ void btCharacter::think()
 				m_visitedProbChildrenHash.remove(currentNodeStack);
 			}
 			
-			//bool indicating if deletion of stack is necessary
 			if(currentParent != NULL && QString(currentParent->metaObject()->className()) == "btParallelNode")
 			{
 				//if the parent is a parallel, set the status for that parallel.
