@@ -25,6 +25,7 @@ public:
 	void think();
 private:
 	void stopParallelExecution(btNode * currentNode, QStack<btNode*>* parentStack);
+	void clearExecution();
 	
 	btNode* m_behaviortree;
 	

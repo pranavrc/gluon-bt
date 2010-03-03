@@ -9,24 +9,14 @@ btCharacter::btCharacter()
 
 btCharacter::~btCharacter()
 {
-	for (int i = 0; i < m_currentNodeStackQueue.count(); i++)
-	{
-		delete m_currentNodeStackQueue.at(i).first;
-	}
-	m_currentNodeStackQueue.clear();
-	
-	qDeleteAll(m_visitedProbChildrenHash.keys());
-	m_visitedProbChildrenHash.clear();
-	
-	qDeleteAll(m_parallelNodeStatusHash.values());
-	qDeleteAll(m_parallelNodeStatusHash.keys());
-			   
-	m_parallelNodeStatusHash.clear();
+	this->clearExecution();
 			   
 }
 
 void btCharacter::setBehaviorTree(btNode* behaviorTree)
 {
+	this->clearExecution();
+	
 	m_behaviortree = behaviorTree;
 	
 	QStack<btNode*>* currentNodeStack = new QStack<btNode*>();
@@ -269,6 +259,24 @@ void btCharacter::stopParallelExecution(btNode * currentNode, QStack<btNode*>* p
 		
 		counter--;
 	}
+}
+
+void btCharacter::clearExecution()
+{
+	for (int i = 0; i < m_currentNodeStackQueue.count(); i++)
+	{
+		delete m_currentNodeStackQueue.at(i).first;
+	}
+	m_currentNodeStackQueue.clear();
+	m_currentChildStackQueue.clear();
+	
+	qDeleteAll(m_visitedProbChildrenHash.keys());
+	m_visitedProbChildrenHash.clear();
+	
+	qDeleteAll(m_parallelNodeStatusHash.values());
+	qDeleteAll(m_parallelNodeStatusHash.keys());
+	
+	m_parallelNodeStatusHash.clear();
 }
 
 #include "btcharacter.moc"
