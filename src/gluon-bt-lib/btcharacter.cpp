@@ -156,19 +156,11 @@ void btCharacter::think()
 			{	
 				//if there is more than one node in the stack, pop it
 				currentNodeStack->pop();
-				if(currentChildStack.count() > 0)
-				{
-					currentChildStack.pop();
-				}
 			}
 			else
 			{	
-				//else check > 0 then set it as the top, else push a 0 on it
-				if(currentChildStack.count() > 0)
-				{
-					currentChildIndex = currentChildStack.top();
-				}
-				else
+				//else if count == 0 then push a 0 on it
+				if(currentChildStack.count() == 0)
 				{
 					currentChildStack.push(0);
 				}
