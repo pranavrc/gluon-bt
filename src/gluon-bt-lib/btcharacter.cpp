@@ -134,6 +134,7 @@ void btCharacter::think()
 			//when running child, push the child and child index onto the stacks
 			currentNodeStack->push(currentNode->currentChild());
 			currentChildStack.push(currentNode->currentChildIndex());
+			currentChildStack.push(0);
 			
 			//enqueue the stacks and status
 			m_currentNodeStackQueue.enqueue(currentChildParentStackPair);
