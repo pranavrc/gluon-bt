@@ -173,7 +173,8 @@ void btCharacter::think()
 			if(QString(currentNode->metaObject()->className()) == "btProbSelectorNode")
 			{				
 				//if probselector then remove the probnodes for this stack
-				m_visitedProbChildrenHash.remove(currentNodeStack);
+				if(m_visitedProbChildrenHash[currentNodeStack].count() == 0)
+					m_visitedProbChildrenHash.remove(currentNodeStack);
 			}
 			
 			if(currentParent != NULL && QString(currentParent->metaObject()->className()) == "btParallelNode")
