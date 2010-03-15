@@ -21,18 +21,10 @@ btEditorNode::~btEditorNode()
 void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behaviorTrees)
 {
     qRegisterMetaType<btChildWeights>("btChildWeights");
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
     
-	//QString startTag = projectParser::instance()->writeIndents() + "<behaviornode ";
 	xmlWriter->writeStartElement("behaviornode");
 
-	
-    //QString endTag = projectParser::instance()->writeIndents()+ "</behaviornode>";
-    
-	/*QString properties = "";
-    QString children = "";
-    
-    startTag += "name=\"" + this->name() + "\" ";
-    startTag += "description=\"" + this->description() + "\" ";*/
 	xmlWriter->writeAttribute("name", this->name());
 	xmlWriter->writeAttribute("description", this->description());
     
@@ -53,24 +45,18 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
         {
             if(nodeType->type() == btNodeType::ReferenceNodeType)
             {
-                //startTag += "nodetype=\"[reference]\" ";
 				xmlWriter->writeAttribute("nodetype", "[reference]");
             }
             else
             {
 				xmlWriter->writeAttribute("nodetype", nodeType->property(moProperty.name()).toString());
-                //startTag += "nodetype=\"" + nodeType->property(moProperty.name()).toString() + "\" ";
             }
         }
     }
     
-    //startTag += ">";
-    
-    //projectParser::instance()->increaseIndents();
     if(nodeType->type() == btNodeType::ReferenceNodeType)
     {
         btReferenceNode * btRefNode = qobject_cast<btReferenceNode*>(nodeType);
-        //properties = projectParser::instance()->writeIndents() + "<property name=\"reference\" value=\"";
 		xmlWriter->writeStartElement("property");
 		xmlWriter->writeAttribute("name", "reference");
         
@@ -78,33 +64,20 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
         {
             if(btRefNode->referenceBehaviorTree() == behaviorTrees.at(i))
             {
-                //properties += QVariant(i).toString();
 				xmlWriter->writeAttribute("value",  QVariant(i).toString());
             }
         }
         
         if(this->decoratorCount() > 0)
-        {
-            
-            /*properties += "\">";
-            projectParser::instance()->increaseIndents();*/
-            
+        {            
             foreach(btNodeType* node, this->decorators())
             {
                 btDecoratorNode* decorator = qobject_cast<btDecoratorNode*>(node);
-                //properties += decorator->toDataXml();
 				decorator->toDataXml(xmlWriter);
             }
-            /*projectParser::instance()->decreaseIndents();
-            properties += projectParser::instance()->writeIndents() + "</property>";*/
         }
-        /*else
-        {
-            properties += "\" />";
-        }*/
         
-		xmlWriter->writeEndElement(); //property
-        //return startTag + properties + children + endTag;
+		xmlWriter->writeEndElement();
     }
     else
     {
@@ -135,26 +108,46 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
             else if(value.type() == QVariant::UserType)
             {                
 				xmlWriter->writeAttribute("value", "");
-                double totalProbability = 0.0;
-                
-                btChildWeights list = value.value<btChildWeights>();
-                
-                foreach(const QVariant &v, list.childWeightList)
-                {
-                    totalProbability += v.toDouble();
-                }
-                
-                foreach(const QVariant &v, list.childWeightList)
-                {
-                    QVariant prob = v.toDouble()/totalProbability;
+				
+				if(propertyName == "weights")
+				{
+					double totalProbability = 0.0;
 					
-					xmlWriter->writeStartElement("item");
+					btChildWeights list = value.value<btChildWeights>();
 					
-					xmlWriter->writeAttribute("value", prob.toString());
-					xmlWriter->writeAttribute("editorvalue", v.toString());
+					foreach(const QVariant &v, list.childWeightList)
+					{
+						totalProbability += v.toDouble();
+					}
 					
-					xmlWriter->writeEndElement(); //item
-                }
+					foreach(const QVariant &v, list.childWeightList)
+					{
+						QVariant prob = v.toDouble()/totalProbability;
+						
+						xmlWriter->writeStartElement("item");
+						
+						xmlWriter->writeAttribute("value", prob.toString());
+						xmlWriter->writeAttribute("editorvalue", v.toString());
+						
+						xmlWriter->writeEndElement(); //item
+					}
+				}
+				else if (propertyName == "conditions")
+				{
+					btParallelConditions list = value.value<btParallelConditions>();
+					
+					foreach(const QVariant &v, list.parallelConditions)
+					{						
+						QVariant condition = v.toDouble();
+						
+						xmlWriter->writeStartElement("item");
+						
+						xmlWriter->writeAttribute("value", condition.toString());
+						xmlWriter->writeAttribute("editorvalue", v.toString());
+						
+						xmlWriter->writeEndElement(); //item
+					}
+				}
             }
             else
             {               
@@ -167,18 +160,12 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
     
     for(int i = 0; i < this->decoratorCount(); i++)
     {
-        //children += qobject_cast<btEditorNodeType*>(this->decorators().at(i))->toDataXml();
 		qobject_cast<btEditorNodeType*>(this->decorators().at(i))->toDataXml(xmlWriter);
     }
     for(int i = 0; i < this->childCount(); i++)
     {
-        //children += qobject_cast<btEditorNode*>(this->child(i))->toXml(behaviorTrees);
 		qobject_cast<btEditorNode*>(this->child(i))->toXml(xmlWriter, behaviorTrees);
     }
-    
-    //projectParser::instance()->decreaseIndents();
-    
-    //return startTag + properties + children + endTag;
 	
 	xmlWriter->writeEndElement(); //behaviornode
 }

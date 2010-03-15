@@ -13,6 +13,7 @@
 btBrain::btBrain(QObject *parent)
 {
 	qRegisterMetaType<btChildWeights>("btChildWeights");
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
 	
     btCompositeNode *compositeNode = new btCompositeNode();
     compositeNode->setName("Sequence");
@@ -37,6 +38,7 @@ btBrain::btBrain(QObject *parent)
     compositeNode->setName("Parallel");
     compositeNode->setDescription("A collection of behaviors which are launched in parallel, and fails or succeeds according a set of conditions");
     compositeNode->setClassName("[parallel]");
+	compositeNode->setProperty("conditions", QVariant("btParallelConditions"));
     nodeTypes.append(compositeNode);
 }
 

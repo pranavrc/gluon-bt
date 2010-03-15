@@ -26,6 +26,7 @@
 #include "btchildlistwidget.h"
 #include "bteditornode.h"
 #include "bteditornodetype.h"
+#include "btparallelconditionswidget.h"
 
 btPropertyWidgetItem::btPropertyWidgetItem(QObject * parent, Qt::WindowFlags f)
 {
@@ -76,7 +77,8 @@ void btPropertyWidgetItem::setEditProperty(QString propertyName, bool enabled)
 void btPropertyWidgetItem::setupPropertyWidget(bool enabled)
 {
     qRegisterMetaType<btChildWeights>("btChildWeights");
-    
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
+	
     if(!editedObject)
         return;
     
@@ -96,7 +98,14 @@ void btPropertyWidgetItem::setupPropertyWidget(bool enabled)
             editWidget = createList(value, enabled);
             break;
         case QVariant::UserType:
-            editWidget = createChildProbabilitiesList(propertyName, enabled);
+			if(propertyName == "weights")
+			{
+				editWidget = createChildProbabilitiesList(propertyName, enabled);
+			}
+			else if(propertyName == "conditions")
+			{
+				editWidget = createParallelConditionsList(propertyName, enabled);
+			}
             break;
         default:
             editWidget = new QLabel(this);
@@ -282,6 +291,15 @@ QWidget * btPropertyWidgetItem::createChildProbabilitiesList(QString propertyNam
     widget->setChildProbabilites(propertyName, editedObject, enabled);
     
     return widget;
+}
+
+QWidget * btPropertyWidgetItem::createParallelConditionsList(QString propertyName, bool enabled)
+{
+	btParallelConditionsWidget * widget = new btParallelConditionsWidget(this);
+	
+	widget->setParallelConditions(propertyName, editedObject, enabled);
+	
+	return widget;
 }
 
 #include "btpropertywidgetitem.moc"

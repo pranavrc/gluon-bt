@@ -198,6 +198,7 @@ QStringList btTreeModel::mimeTypes() const
 bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
     qRegisterMetaType<btChildWeights>("btChildWeights");
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
     
     if(action == Qt::IgnoreAction)
         return true;
@@ -244,7 +245,16 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
         if(node)
         {
             if(row == -1 && column  == -1)
-            {                                                
+            {                            
+				if(oldParentNode->type()->className() == "[parallel]")
+				{
+					btParallelConditions list = oldParentNode->type()->property("conditions").value<btParallelConditions>();
+					list.parallelConditions.removeAt(oldParentNode->children().indexOf(node));
+					
+					QVariant v;
+					v.setValue(list);
+					parentNode->type()->setProperty("conditions", v);
+				}
                 oldParentNode->removeChild(node);
                 parentNode->appendChild(node);
             }
@@ -255,17 +265,26 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
                     oldParentNode->removeChild(node);
                     foreach(const QString &name, parentNode->type()->dynamicPropertyNames())
                     {
-                        if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType)
+                        if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType && name == "weights")
                         {
                             node->type()->setProperty("probability", 0.5);
                         }
+						else if (parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType && name == "conditions")
+						{
+							btParallelConditions list = parentNode->type()->property(name.toUtf8()).value<btParallelConditions>();
+							list.parallelConditions.append(1.0);
+							
+							QVariant v;
+							v.setValue(list);
+							parentNode->type()->setProperty(name.toUtf8(), v);
+						}
                     }
                 }
                 else
                 {
                     foreach(const QString &name, parentNode->type()->dynamicPropertyNames())
                     {
-                        if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType)
+                        if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType && name == "weights")
                         {
                             if(parentNode->children().indexOf(node) > -1)
                             {
@@ -355,13 +374,26 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
             {
                 if(parentNode->type()->property(name.toUtf8()).type() == QVariant::UserType)
                 {
-                    btChildWeights cw = parentNode->type()->property(name.toUtf8()).value<btChildWeights>();
-                    cw.childWeightList.append(0.5);
-                    QVariant v;
-                    v.setValue(cw);
-                    parentNode->type()->setProperty(name.toUtf8(), v);
-                    emit addRemoveBTNode();
-                    break;
+					if(name == "weights")
+					{
+						btChildWeights cw = parentNode->type()->property(name.toUtf8()).value<btChildWeights>();
+						cw.childWeightList.append(0.5);
+						QVariant v;
+						v.setValue(cw);
+						parentNode->type()->setProperty(name.toUtf8(), v);
+						emit addRemoveBTNode();
+						break;
+					}
+					else if (name == "conditions")
+					{
+						btParallelConditions pc = parentNode->type()->property(name.toUtf8()).value<btParallelConditions>();
+						pc.parallelConditions.append(1.0);
+						QVariant v;
+						v.setValue(pc);
+						parentNode->type()->setProperty(name.toUtf8(), v);
+						emit addRemoveBTNode();
+						break;
+					}
                 }
             }
         }

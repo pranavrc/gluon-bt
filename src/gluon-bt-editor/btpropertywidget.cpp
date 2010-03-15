@@ -76,7 +76,7 @@ void btPropertyWidget::appendMetaObjectToPropertyView (QGridLayout * layout, qin
     {
         QMetaProperty metaproperty = metaobject->property(i);
         propertyName = metaproperty.name();
-        if(propertyName == "objectName" || propertyName == "stopFlag")
+        if(propertyName == "objectName")
             continue;
         
         propertyValue = object->property(propertyName.toUtf8());

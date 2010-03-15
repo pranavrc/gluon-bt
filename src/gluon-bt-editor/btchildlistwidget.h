@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include <QObject>
-#include <QVBoxLayout>
+
+class QVBoxLayout;
 
 class btChildListWidget : public QWidget 
 {

@@ -11,14 +11,15 @@ btQListDeletgate::btQListDeletgate(QObject *parent)
 
 QWidget *btQListDeletgate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    qRegisterMetaType<btChildWeights>("btChildWeights");
+    //qRegisterMetaType<btChildWeights>("btChildWeights");
+	//qRegisterMetaType<btParallelConditions>("btParallelConditions");
     
     QComboBox *comboBox = new QComboBox(parent);
     comboBox->addItem("int", QVariant("int"));
     comboBox->addItem("QString", QVariant("QString"));
     comboBox->addItem("double", QVariant("double"));
     comboBox->addItem("QVariantList", QVariant("QVariantList"));
-    comboBox->addItem("btChildWeights", QVariant("btChildWeights"));
+    //comboBox->addItem("btChildWeights", QVariant("btChildWeights"));
     comboBox->setCurrentIndex(comboBox->findData(index.data()));
     return comboBox;
 }

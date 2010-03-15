@@ -113,6 +113,7 @@ void projectParser::parseNodeTypes(QDomNode xNode, btBrain * brain)
 void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBrain * brain)
 {
     qRegisterMetaType<btChildWeights>("btChildWeights");
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
     
     for(int i = 0; i < xNode.childNodes().count(); i++)
     {
@@ -184,6 +185,23 @@ void projectParser::parseBehaviorTrees(QDomNode xNode, btEditorNode * node ,btBr
                     
                     dataType.setValue(list);
                 }
+				else if (typeId == QMetaType::type("btParallelConditions"))
+				{
+					btParallelConditions list;
+                    
+                    if(currentNode.hasChildNodes())
+                    {
+                        for(int i = 0; i < currentNode.childNodes().count(); i++)
+                        {
+                            QDomNamedNodeMap attributes = currentNode.childNodes().at(i).attributes();
+                            
+                            if(!attributes.namedItem("editorvalue").isNull())
+                                list.parallelConditions.append(attributes.namedItem("editorvalue").nodeValue().toDouble());
+                        }
+                    }
+                    
+                    dataType.setValue(list);
+				}
                 else 
                 {
                     dataType = nodeAttributes.namedItem("value").nodeValue();

@@ -7,6 +7,8 @@
 
 #include <QtCore/QDebug>
 #include <QtXml>
+#include <QtGui/QVboxLayout>
+#include <QtGui/QCheckBox>
 
 btEditorNodeType::btEditorNodeType(QObject * parent) : btNodeType(parent)
 {
@@ -64,7 +66,6 @@ void btEditorNodeType::toNodeTypeXml(QXmlStreamWriter* xmlWriter)
 	if(this->type() == btNodeType::ReferenceNodeType)
 		return;
 	
-	//QString startTag = projectParser::instance()->writeIndents() +  "<nodetype ";
 	xmlWriter->writeStartElement("nodetype");
 	
 	const QMetaObject * mo = this->metaObject();
@@ -81,17 +82,14 @@ void btEditorNodeType::toNodeTypeXml(QXmlStreamWriter* xmlWriter)
         
         if(propertyName == "name")
         {
-            //startTag += "name=\"" + this->property(moProperty.name()).toString() + "\" ";
 			xmlWriter->writeAttribute("name", this->property(moProperty.name()).toString());
         }
         else if(propertyName == "description")
         {
-            //startTag += "description=\"" + this->property(moProperty.name()).toString() + "\" ";
 			xmlWriter->writeAttribute("description", this->property(moProperty.name()).toString());
         }
         else if(propertyName == "className")
         {
-            //startTag += "classname=\"" + this->property(moProperty.name()).toString() + "\" ";
 			xmlWriter->writeAttribute("className", this->property(moProperty.name()).toString());
         }
     }
@@ -99,30 +97,21 @@ void btEditorNodeType::toNodeTypeXml(QXmlStreamWriter* xmlWriter)
     switch(this->type())
     {
         case btNodeType::ActionNodeType:
-            //startTag += "category=\"action\">";
 			xmlWriter->writeAttribute("category", "action");
             break;
         case btNodeType::CompositeNodeType:
-            //startTag += "category=\"composite\">";
 			xmlWriter->writeAttribute("category", "composite");
             break;
         case btNodeType::ConditionNodeType:
-            //startTag += "category=\"condition\">";
 			xmlWriter->writeAttribute("category", "condition");
             break;
         case btNodeType::DecoratorNodeType:
-            //startTag += "category=\"decorator\">";
 			xmlWriter->writeAttribute("category", "decorator");
             break;
         case btNodeType::UnusableNodeType:
-            //startTag += "category=\"unusable\">";
 			xmlWriter->writeAttribute("category", "unusable");
             break;
     }
-    
-    //QString properties = "";
-    
-    //projectParser::instance()->increaseIndents();
 	
     for(int i = 0; i < this->dynamicPropertyNames().count(); i++)
     {
@@ -135,18 +124,9 @@ void btEditorNodeType::toNodeTypeXml(QXmlStreamWriter* xmlWriter)
 		xmlWriter->writeAttribute("datatype", this->property(propertyName.toUtf8()).toString());
 		
 		xmlWriter->writeEndElement();
-        /*properties += projectParser::instance()->writeIndents();
-        properties += "<property name=\"" + propertyName + "\" ";
-        properties += "description=\""+ this->getPropertyDescription(propertyName) + "\" ";
-        properties += "datatype=\"" +this->property(propertyName.toUtf8()).toString();
-        properties += "\" />";*/
     }
-    /*projectParser::instance()->decreaseIndents();
-    
-    return startTag + properties + endTag;*/
 	
 	xmlWriter->writeEndElement();
-	//QString endTag = projectParser::instance()->writeIndents() + "</nodetype>";
 }
 
 void btEditorNodeType::toDataXml(QXmlStreamWriter* xmlWriter)
@@ -156,6 +136,7 @@ void btEditorNodeType::toDataXml(QXmlStreamWriter* xmlWriter)
 void btEditorNodeType::initProperties()
 {
     qRegisterMetaType<btChildWeights>("btChildWeights");
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
     
     foreach(const QString &name, this->dynamicPropertyNames())
     {
@@ -178,10 +159,16 @@ void btEditorNodeType::initProperties()
             default:
                 if(typeId == QMetaType::type("btChildWeights"))
                 {
-                    btChildWeights ch;
-                    dataType.setValue(ch);
+                    btChildWeights cw;
+                    dataType.setValue(cw);
                     break;
                 }
+				else if (typeId == QMetaType::type("btParallelConditions"))
+				{
+					btParallelConditions pc;
+					dataType.setValue(pc);
+					break;
+				}
                 dataType = QVariant(QVariant::Invalid);
                 break;
         }
@@ -195,7 +182,7 @@ void btEditorNodeType::appendingChild(int index)
     
     foreach(const QString &name, this->dynamicPropertyNames())
     {
-        if(this->property(name.toUtf8()).type() == QVariant::UserType)
+        if(this->property(name.toUtf8()).type() == QVariant::UserType && name == "weights")
         {
             btChildWeights list = this->property(name.toUtf8()).value<btChildWeights>();
             
@@ -216,12 +203,13 @@ void btEditorNodeType::appendingChild(int index)
 void btEditorNodeType::removingChild(int index)
 {
     qRegisterMetaType<btChildWeights>("btChildWeights");
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
     
     btEditorNodeType * childNodeType = qobject_cast<btEditorNodeType*>(this->parentNode()->child(index)->type());
     childNodeType->disconnectChangeProperty();
     foreach(const QString &name, this->dynamicPropertyNames())
     {
-        if(this->property(name.toUtf8()).type() == QVariant::UserType)        
+        if(this->property(name.toUtf8()).type() == QVariant::UserType && name == "weights")      
         {
             btChildWeights list = this->property(name.toUtf8()).value<btChildWeights>();
             list.childWeightList.removeAt(index);
@@ -230,6 +218,15 @@ void btEditorNodeType::removingChild(int index)
             this->setProperty(name.toUtf8(), v);
             break;
         }
+		else if (this->property(name.toUtf8()).type() == QVariant::UserType && name == "conditions")
+		{
+			btParallelConditions list = this->property(name.toUtf8()).value<btParallelConditions>();
+            list.parallelConditions.removeAt(index);
+            QVariant v;
+            v.setValue(list);
+            this->setProperty(name.toUtf8(), v);
+            break;
+		}
     }
 }
 
@@ -239,7 +236,7 @@ void btEditorNodeType::changeProbability(double value)
     
     foreach(const QString &name, this->parentNode()->parentNode()->type()->dynamicPropertyNames())
     {
-        if(this->parentNode()->parentNode()->type()->property(name.toUtf8()).type() == QVariant::UserType)
+        if(this->parentNode()->parentNode()->type()->property(name.toUtf8()).type() == QVariant::UserType && name == "weights")
         {
             btChildWeights list = this->parentNode()->parentNode()->type()->property(name.toUtf8()).value<btChildWeights>();
             list.childWeightList[this->parentNode()->parentNode()->children().indexOf(this->parentNode())] = value;
@@ -272,7 +269,7 @@ void btEditorNodeType::changeProperty(QString propertyName, QVariant value)
             dataType = QVariant(QVariant::List);
             break;
         default:
-            if(typeId == QMetaType::type("btChildWeights"))
+            /*if(typeId == QMetaType::type("btChildWeights"))
             {
                 btChildWeights ch;
                 
@@ -282,7 +279,7 @@ void btEditorNodeType::changeProperty(QString propertyName, QVariant value)
                 
                 dataType.setValue(ch);
                 break;
-            }
+            }*/
             dataType = QVariant(QVariant::Invalid);
             break;
     }
@@ -387,6 +384,57 @@ void btEditorNodeType::changeClassName(QString className)
 {
     this->setClassName(className);
     emit classNameChanged(className);
+}
+
+void btEditorNodeType::changeCondition(int state)
+{
+	qRegisterMetaType<btParallelConditions>("btParallelConditions");
+	
+	QCheckBox * checkBox = qobject_cast<QCheckBox*>(QObject::sender());
+	
+    foreach(const QString &name, this->parentNode()->parentNode()->type()->dynamicPropertyNames())
+    {
+        if(this->parentNode()->parentNode()->type()->property(name.toUtf8()).type() == QVariant::UserType && name == "conditions")
+        {			
+            btParallelConditions list = this->parentNode()->parentNode()->type()->property(name.toUtf8()).value<btParallelConditions>();
+			double value = checkBox->text() == "Succeeded" ? 1 : 0;			
+			
+            list.parallelConditions[this->parentNode()->parentNode()->children().indexOf(this->parentNode())] = value;
+			
+			foreach(QVariant v, list.parallelConditions)
+				qDebug() << v;
+			
+            QVariant v;
+            v.setValue(list);
+            this->parentNode()->parentNode()->type()->setProperty(name.toUtf8(), v);
+            break;
+        }
+    }
+	
+	int startIndex = QObject::sender()->parent()->children().indexOf(QObject::sender());
+	
+	int groupIndex = (startIndex-1) % 3;
+
+	switch(groupIndex)
+	{
+		case 1:
+			checkBox = qobject_cast<QCheckBox*>(QObject::sender()->parent()->children().at(startIndex+1));
+			break;
+		case 2:
+			checkBox = qobject_cast<QCheckBox*>(QObject::sender()->parent()->children().at(startIndex-1));
+			break;
+	}
+	
+	disconnect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(changeCondition(int)));
+	if(state == 2)
+	{
+		checkBox->setCheckState(Qt::Unchecked);
+	}
+	else
+	{
+		checkBox->setCheckState(Qt::Checked);
+	}
+	connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(changeCondition(int)));
 }
 
 #include "bteditornodetype.moc"

@@ -15,4 +15,5 @@ struct BT_LIB_EXPORT btParallelConditions
 };
 
 Q_DECLARE_METATYPE(btChildWeights)
+Q_DECLARE_METATYPE(btParallelConditions)
 #endif

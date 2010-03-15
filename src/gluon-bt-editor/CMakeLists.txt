@@ -40,6 +40,7 @@ set(bteditor_SRCS
 	btqlistdelegate.cpp
 	btqvariantlistwidget.cpp
     btchildlistwidget.cpp
+	btparallelconditionswidget.cpp
 )
 
 

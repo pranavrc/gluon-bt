@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QVariant>
+#include <QtGui/QVBoxLayout>
 
 #include "btnode.h"
 #include "bteditornodetype.h"

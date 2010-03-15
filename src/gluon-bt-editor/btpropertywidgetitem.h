@@ -64,6 +64,7 @@ private:
     QWidget *createDoubleSpinBox (QVariant value, bool enabled);
     QWidget *createList(QVariant value, bool enabled);
     QWidget *createChildProbabilitiesList(QString propertyName ,bool enabled);
+	QWidget *createParallelConditionsList(QString propertyName, bool enabled);
     
     QWidget * editWidget;
     
