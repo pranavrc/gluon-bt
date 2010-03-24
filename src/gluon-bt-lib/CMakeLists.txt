@@ -13,6 +13,11 @@ set(btlib_SRCS
 	btnode.cpp
 	btprobselectornode.cpp
 	btparallelnode.cpp
+
+    btperception.cpp
+    btperceptionviewcone.cpp
+    btperceptioninfo.cpp
+    btperceptionatom.cpp
 )
 
 set(btlib_HEADERS
@@ -28,6 +33,11 @@ set(btlib_HEADERS
 	probnode.h
 	btprobselectornode.h
 	btparallelnode.h
+
+    btperception.h
+    btperceptionviewcone.h
+    btperceptioninfo.h
+    btperceptionatom.h
 )
 
 add_definitions(-DMAKE_BT_LIB)
