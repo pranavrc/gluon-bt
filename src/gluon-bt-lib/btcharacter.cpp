@@ -5,6 +5,10 @@
 btCharacter::btCharacter()
 {
 	m_nodesStatusQueue.enqueue(btNode::None);
+    m_perception = new btPerception(this);
+    m_position = QVector3D();
+    m_orientation = QVector3D(0, 0, 1);
+    m_behaviortree = 0;
 }
 
 btCharacter::~btCharacter()
@@ -271,6 +275,31 @@ void btCharacter::clearExecution()
 	qDeleteAll(m_parallelNodeStatusHash.keys());
 	
 	m_parallelNodeStatusHash.clear();
+}
+
+QVector3D btCharacter::position() const
+{
+    return m_position;
+}
+
+void btCharacter::setPosition(const QVector3D& newPosition)
+{
+    m_position = newPosition;
+}
+
+QVector3D btCharacter::orientation() const
+{
+    return m_orientation;
+}
+
+void btCharacter::setOrientation(const QVector3D& newOrientation)
+{
+    m_orientation = newOrientation;
+}
+
+btPerception* btCharacter::perception()
+{
+    return m_perception;
 }
 
 #include "btcharacter.moc"
