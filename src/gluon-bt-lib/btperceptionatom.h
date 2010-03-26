@@ -38,10 +38,24 @@ class btPerceptionAtom : public QObject
         void setPerceptionInfo(btPerceptionInfo* newPerceptionInfo);
         
         QVariant knowledge() const;
-        
+
+        /**
+         * The precision by which the piece of information is known.
+         * This will automatically set shouldUpdate to true. If this is not
+         * desirable, remember to manually shouldUpdate to false.
+         * 
+         * @see setShouldUpdate()
+         */
         qreal precision() const;
         void setPrecision(const qreal& newPrecision);
         
+        /**
+         * Setting shouldUpdate to true will cause the atom to update itself
+         * when the information is next updated. If you wish it to update
+         * immediately please call the perceptionInfoUpdated slot.
+         * 
+         * @see perceptionInfoUpdated()
+         */
         bool shouldUpdate() const;
         void setShouldUpdate(const bool& newShouldUpdate);
         

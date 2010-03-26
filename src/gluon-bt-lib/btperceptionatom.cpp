@@ -68,6 +68,7 @@ qreal btPerceptionAtom::precision() const
 void btPerceptionAtom::setPrecision(const qreal& newPrecision)
 {
     d->precision = newPrecision;
+    d->shouldUpdate = true;
 }
 
 bool btPerceptionAtom::shouldUpdate() const
