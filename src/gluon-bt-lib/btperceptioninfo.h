@@ -16,8 +16,10 @@
 
 #ifndef BTPERCEPTIONINFO_H
 #define BTPERCEPTIONINFO_H
+
 #include <QtCore/QObject>
-#include <QVector3D>
+#include <QtCore/QVariant>
+#include <QtGui/QVector3D>
 
 class btPerceptionInfo : public QObject
 {
@@ -41,6 +43,10 @@ class btPerceptionInfo : public QObject
         void infoUpdated();
         void positionUpdated(QVector3D);
         void radiusUpdated(qreal);
+        
+    private:
+        class btPerceptionInfoPrivate;
+        btPerceptionInfoPrivate* d;
 };
 
 #endif // BTPERCEPTIONINFO_H
