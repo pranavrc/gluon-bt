@@ -27,8 +27,9 @@ class btPerception
                 ~btPerceptionPrivate() {}
                 
                 btCharacter* character;
+                qreal knowledgePrecision = 0;
                 qreal perceptionLimit = 0;
-                QList<btPerceptionAtom*> perceptionAtoms;
+                QHash<QString, btPerceptionAtom*> perceptionAtoms;
                 QList<btPerceptionViewcone*> viewCones;
         };
 };
@@ -45,6 +46,15 @@ btPerception::~btPerception()
     delete(d);
 }
 
+qreal btPerception::knowledgePrecision() const
+{
+
+}
+
+void btPerception::setKnowledgePrecision(const qreal& newKnowledgePrecision)
+{
+}
+
 qreal btPerception::perceptionLimit() const
 {
     return d->perceptionLimit;
@@ -53,16 +63,6 @@ qreal btPerception::perceptionLimit() const
 void btPerception::setPerceptionLimit(const qreal& newPerceptionLimit)
 {
     d->perceptionLimit = newPerceptionLimit;
-}
-
-QList< btPerceptionAtom* > btPerception::perceptionAtoms() const
-{
-    return d->perceptionAtoms;
-}
-
-void btPerception::setPerceptionAtoms(const QList< btPerceptionAtom* >& newPerceptionAtoms)
-{
-    d->perceptionAtoms = newPerceptionAtoms;
 }
 
 QList< btPerceptionViewcone* > btPerception::viewCones() const
@@ -74,5 +74,23 @@ void btPerception::setViewCones(const QList< btPerceptionViewcone* > newViewCone
 {
     d->viewCones = newViewCones;
 }
+
+QList< btPerceptionAtom* > btPerception::perceptionAtoms() const
+{
+    return d->perceptionAtoms.values();
+}
+
+btPerceptionAtom* btPerception::perceptionAtom(const QString& name) const
+{
+    btPerceptionAtom* theAtom = 0;
+    if(d->perceptionAtoms.contains(name))
+        theAtom = d->perceptionAtoms.value(name);
+    else
+    {
+        
+    }
+    return theAtom;
+}
+
 
 #include "btperception.moc"

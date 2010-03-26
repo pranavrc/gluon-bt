@@ -28,6 +28,8 @@ class btPerceptionAtom
             ~btPerceptionAtomPrivate() {}
             
             btPerceptionInfo* perceptionInfo;
+            QVariant knowledge;
+            bool shouldUpdate;
     };
 };
 
@@ -40,6 +42,39 @@ btPerceptionAtom::btPerceptionAtom(QObject* parent)
 btPerceptionAtom::~btPerceptionAtom()
 {
     delete(d);
+}
+
+btPerceptionInfo* btPerceptionAtom::perceptionInfo() const
+{
+    return d->perceptionInfo;
+}
+
+void btPerceptionAtom::setPerceptionInfo(const btPerceptionInfo& newPerceptionInfo)
+{
+    disconnect(this, SLOT(perceptionInfoUpdate());
+    d->perceptionInfo = newPerceptionInfo;
+    connect(d->perceptionInfo, SIGNAL(infoUpdated()), this, SLOT(perceptionInfoUpdated()));
+}
+
+QVariant btPerceptionAtom::knowledge() const
+{
+    return d->knowledge();
+}
+
+bool btPerceptionAtom::shouldUpdate() const
+{
+    return d->shouldUpdate;
+}
+
+void btPerceptionAtom::setShouldUpdate(const bool& newShouldUpdate)
+{
+    d->shouldUpdate = newShouldUpdate;
+}
+
+void btPerceptionAtom::perceptionInfoUpdated()
+{
+    if(d->shouldUpdate())
+        d->knowledge = d->perceptionInfo->getAdjustedValue();
 }
 
 #include "btperceptionatom.moc"

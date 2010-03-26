@@ -16,13 +16,18 @@
 
 #ifndef BTPERCEPTIONATOM_H
 #define BTPERCEPTIONATOM_H
+
 #include <QtCore/QObject>
+#include <QtCore/QVariant>
+
 #include "btperceptioninfo.h"
 
 class btPerceptionAtom : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(btPerceptionInfo* perceptionInfo READ perceptionInfo WRITE setPerceptionInfo)
+    Q_PROPERTY(QVariant knowledge READ knowledge)
+    Q_PROPERTY(bool shouldUpdate READ shouldUpdate WRITE setShouldUpdate)
     
     public:
         btPerceptionAtom(QObject* parent = 0);
@@ -30,6 +35,11 @@ class btPerceptionAtom : public QObject
         
         btPerceptionInfo* perceptionInfo() const;
         void setPerceptionInfo(const btPerceptionInfo& newPerceptionInfo);
+        
+        QVariant knowledge() const;
+        
+        bool shouldUpdate() const;
+        void setShouldUpdate(const bool& newShouldUpdate);
         
     public Q_SLOTS:
         void perceptionInfoUpdated();

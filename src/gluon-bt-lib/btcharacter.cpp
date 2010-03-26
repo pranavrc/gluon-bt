@@ -14,7 +14,6 @@ btCharacter::btCharacter()
 btCharacter::~btCharacter()
 {
 	this->clearExecution();
-			   
 }
 
 void btCharacter::setBehaviorTree(btNode* behaviorTree)

@@ -17,17 +17,30 @@
 #ifndef BTPERCEPTIONINFO_H
 #define BTPERCEPTIONINFO_H
 #include <QtCore/QObject>
+#include <QVector3D>
 
 class btPerceptionInfo : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QVector3D position READ position WRITE setPosition NOTIFY positionUpdated)
+    Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusUpdated)
     
     public:
         btPerceptionInfo(QObject* parent = 0);
         ~btPerceptionInfo();
         
+        virtual QVector3D position() const;
+        virtual void setPosition(const QVector3D& newPosition);
+        
+        virtual qreal radius() const;
+        virtual void setRadius(const qreal& newRadius);
+        
+        virtual QVariant getAdjustedValue(qreal precision) const = 0;
+        
     Q_SIGNALS:
         void infoUpdated();
+        void positionUpdated(QVector3D);
+        void radiusUpdated(qreal);
 };
 
 #endif // BTPERCEPTIONINFO_H

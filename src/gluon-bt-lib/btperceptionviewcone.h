@@ -49,6 +49,11 @@ struct btPerceptionViewcone
          * Note: This should be no larger than the radius of the perception limit
          */
         qreal radius = 0;
+        /**
+         * The precion of knowledge discovered in this view cone's area of perception
+         * 0 is no precision at all, 1.0 is full precision
+         */
+        qreal knowledgePrecision = 1.0;
 };
 
 #endif // BTPERCEPTIONVIEWCONE_H
