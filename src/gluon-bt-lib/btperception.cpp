@@ -17,21 +17,22 @@
 #include "btperception.h"
 #include "btcharacter.h"
 
-class btPerception
+class btPerception::btPerceptionPrivate
 {
-    private:
-        class btPerceptionPrivate
+    public:
+        btPerceptionPrivate()
         {
-            public:
-                btPerceptionPrivate() { character = 0; }
-                ~btPerceptionPrivate() {}
-                
-                btCharacter* character;
-                qreal knowledgePrecision = 0;
-                qreal perceptionLimit = 0;
-                QHash<QString, btPerceptionAtom*> perceptionAtoms;
-                QList<btPerceptionViewcone*> viewCones;
-        };
+            character = 0;
+            knowledgePrecision = 0;
+            perceptionLimit = 0;
+        }
+        ~btPerceptionPrivate() {}
+        
+        btCharacter* character;
+        qreal knowledgePrecision;
+        qreal perceptionLimit;
+        QHash<QString, btPerceptionAtom*> perceptionAtoms;
+        QList<btPerceptionViewcone*> viewCones;
 };
 
 btPerception::btPerception(QObject* parent)

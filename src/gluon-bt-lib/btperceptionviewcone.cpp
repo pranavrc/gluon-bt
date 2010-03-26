@@ -16,3 +16,12 @@
 
 #include "btperceptionviewcone.h"
 
+btPerceptionViewcone::btPerceptionViewcone()
+{
+    this->extentAngleHorizontal = 0;
+    this->extentAngleVertical = 0;
+    this->offsetAngleHorizontal = 0;
+    this->offsetAngleVertical = 0;
+    this->radius = 0;
+    this->knowledgePrecision = 1.0;
+}

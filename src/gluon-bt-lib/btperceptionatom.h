@@ -27,6 +27,7 @@ class btPerceptionAtom : public QObject
     Q_OBJECT
     Q_PROPERTY(btPerceptionInfo* perceptionInfo READ perceptionInfo WRITE setPerceptionInfo)
     Q_PROPERTY(QVariant knowledge READ knowledge)
+    Q_PROPERTY(qreal precision READ precision WRITE setPrecision)
     Q_PROPERTY(bool shouldUpdate READ shouldUpdate WRITE setShouldUpdate)
     
     public:
@@ -34,9 +35,12 @@ class btPerceptionAtom : public QObject
         ~btPerceptionAtom();
         
         btPerceptionInfo* perceptionInfo() const;
-        void setPerceptionInfo(const btPerceptionInfo& newPerceptionInfo);
+        void setPerceptionInfo(btPerceptionInfo* newPerceptionInfo);
         
         QVariant knowledge() const;
+        
+        qreal precision() const;
+        void setPrecision(const qreal& newPrecision);
         
         bool shouldUpdate() const;
         void setShouldUpdate(const bool& newShouldUpdate);

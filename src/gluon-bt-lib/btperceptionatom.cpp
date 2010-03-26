@@ -16,21 +16,20 @@
 
 #include "btperceptionatom.h"
 
-class btPerceptionAtom
+class btPerceptionAtom::btPerceptionAtomPrivate
 {
-    class btPerceptionAtomPrivate
-    {
-        public:
-            btPerceptionAtomPrivate()
-            {
-                perceptionInfo = 0;
-            }
-            ~btPerceptionAtomPrivate() {}
-            
-            btPerceptionInfo* perceptionInfo;
-            QVariant knowledge;
-            bool shouldUpdate;
-    };
+    public:
+        btPerceptionAtomPrivate()
+        {
+            perceptionInfo = 0;
+            precision = 0;
+        }
+        ~btPerceptionAtomPrivate() {}
+        
+        btPerceptionInfo* perceptionInfo;
+        qreal precision;
+        QVariant knowledge;
+        bool shouldUpdate;
 };
 
 btPerceptionAtom::btPerceptionAtom(QObject* parent)
@@ -49,16 +48,26 @@ btPerceptionInfo* btPerceptionAtom::perceptionInfo() const
     return d->perceptionInfo;
 }
 
-void btPerceptionAtom::setPerceptionInfo(const btPerceptionInfo& newPerceptionInfo)
+void btPerceptionAtom::setPerceptionInfo(btPerceptionInfo* newPerceptionInfo)
 {
-    disconnect(this, SLOT(perceptionInfoUpdate());
+    disconnect(this, SLOT(perceptionInfoUpdate()));
     d->perceptionInfo = newPerceptionInfo;
     connect(d->perceptionInfo, SIGNAL(infoUpdated()), this, SLOT(perceptionInfoUpdated()));
 }
 
 QVariant btPerceptionAtom::knowledge() const
 {
-    return d->knowledge();
+    return d->knowledge;
+}
+
+qreal btPerceptionAtom::precision() const
+{
+    return d->precision;
+}
+
+void btPerceptionAtom::setPrecision(const qreal& newPrecision)
+{
+    d->precision = newPrecision;
 }
 
 bool btPerceptionAtom::shouldUpdate() const
@@ -73,8 +82,8 @@ void btPerceptionAtom::setShouldUpdate(const bool& newShouldUpdate)
 
 void btPerceptionAtom::perceptionInfoUpdated()
 {
-    if(d->shouldUpdate())
-        d->knowledge = d->perceptionInfo->getAdjustedValue();
+    if(d->shouldUpdate)
+        d->knowledge = d->perceptionInfo->getAdjustedValue(d->precision);
 }
 
 #include "btperceptionatom.moc"

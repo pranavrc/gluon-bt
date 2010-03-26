@@ -1,18 +1,20 @@
 #ifndef _BTCHARACTER_H_
 #define _BTCHARACTER_H_
 
-#include "btlib.h"
-#include "btlib_export.h"
-
 #include <QtCore/QObject>
 #include <QtCore/QStack>
 #include <QtCore/QList>
 #include <QtCore/QQueue>
 #include <QtCore/QMultiHash>
 #include <QtCore/QPair>
+
+#include "btlib.h"
+#include "btlib_export.h"
+
 #include "btperception.h"
 
 struct ProbNode;
+class btPerception;
 
 class BT_LIB_EXPORT btCharacter : public QObject
 {
