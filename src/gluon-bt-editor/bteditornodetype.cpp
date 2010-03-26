@@ -7,7 +7,7 @@
 
 #include <QtCore/QDebug>
 #include <QtXml>
-#include <QtGui/QVboxLayout>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QCheckBox>
 
 btEditorNodeType::btEditorNodeType(QObject * parent) : btNodeType(parent)
