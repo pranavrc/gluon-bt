@@ -62,7 +62,9 @@ HEADERS += mainwindow.h \
     actions/iscollided.h \
     actions/btlearningnode.h \
     actions/changecolor.h
-INCLUDEPATH += c:/repo/gluon-bt/src/gluon-bt-lib \
+INCLUDEPATH:WIN32 += c:/repo/gluon-bt/src/gluon-bt-lib \
     c:/repo/gluon-bt/src/gluon-bt-common
-LIBS += c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/libbtlib.dll
+INCLUDEPATH:LINUX += ../gluon-bt-lib ../gluon-bt-common
+LIBS:WIN32 += c:/repo/gluon-bt/src/gluon-bt-lib/qtcreator-build/libbtlib.dll
+LIBS:LINUX += /usr/lib/libbtlib.so
 FORMS += mainwindow.ui
