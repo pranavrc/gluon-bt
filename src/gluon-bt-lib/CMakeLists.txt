@@ -2,6 +2,17 @@ project(btlib)
 cmake_minimum_required(VERSION 2.6)
 find_package(Qt4 REQUIRED)
 
+set(_Init_LIB_SUFFIX "")
+if ("${QT_QTCORE_LIBRARY}" MATCHES lib64)
+   set(_Init_LIB_SUFFIX 64)
+endif ("${QT_QTCORE_LIBRARY}" MATCHES lib64)
+if ("${QT_QTCORE_LIBRARY}" MATCHES lib32)
+   set(_Init_LIB_SUFFIX 32)
+endif ("${QT_QTCORE_LIBRARY}" MATCHES lib32)
+
+set(LIB_SUFFIX		    ${_Init_LIB_SUFFIX} CACHE STRING "The suffix of the system-wide library path")
+set(LIB_INSTALL_DIR         ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}    CACHE PATH "The subdirectory relative to the install prefix where libraries will be installed.")
+
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR} ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/../gluon-bt-common/)
 
 set(btlib_SRCS
@@ -47,9 +58,9 @@ add_library(btlib SHARED ${btlib_SRCS} ${btlib_UIS_H})
 
 target_link_libraries(btlib ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY})
 
-install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+install(TARGETS btlib DESTINATION ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
 
-set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include/gluon/smarts)
 
 install(FILES
 ${btlib_HEADERS}
