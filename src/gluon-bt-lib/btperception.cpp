@@ -49,11 +49,12 @@ btPerception::~btPerception()
 
 qreal btPerception::knowledgePrecision() const
 {
-
+	return d->knowledgePrecision;
 }
 
 void btPerception::setKnowledgePrecision(const qreal& newKnowledgePrecision)
 {
+	d->knowledgePrecision = newKnowledgePrecision;
 }
 
 qreal btPerception::perceptionLimit() const
@@ -76,6 +77,11 @@ void btPerception::setViewCones(const QList< btPerceptionViewcone* > newViewCone
     d->viewCones = newViewCones;
 }
 
+void btPerception::addViewCone(btPerceptionViewcone * viewcone)
+{
+	d->viewCones.append(viewcone);
+}
+
 QList< btPerceptionAtom* > btPerception::perceptionAtoms() const
 {
     return d->perceptionAtoms.values();
@@ -93,5 +99,9 @@ btPerceptionAtom* btPerception::perceptionAtom(const QString& name) const
     return theAtom;
 }
 
+void btPerception::addPerceptionAtom(btPerceptionAtom * perceptionAtom)
+{
+	d->perceptionAtoms[perceptionAtom->objectName()] = perceptionAtom;
+}
 
 #include "btperception.moc"

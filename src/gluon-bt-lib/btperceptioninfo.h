@@ -37,7 +37,7 @@ class btPerceptionInfo : public QObject
         virtual qreal radius() const;
         virtual void setRadius(const qreal& newRadius);
         
-        virtual QVariant getAdjustedValue(qreal precision) const = 0;
+        virtual QVariant getAdjustedValue(qreal precision) const;
         
     Q_SIGNALS:
         void infoUpdated();

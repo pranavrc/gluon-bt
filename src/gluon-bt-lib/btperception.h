@@ -59,9 +59,11 @@ class btPerception : public QObject
         
         QList<btPerceptionViewcone*> viewCones() const;
         void setViewCones(const QList<btPerceptionViewcone*> newViewCones);
+		void addViewCone(btPerceptionViewcone * viewcone);
         
         QList<btPerceptionAtom*> perceptionAtoms() const;
         btPerceptionAtom* perceptionAtom(const QString& name) const;
+		void addPerceptionAtom(btPerceptionAtom * perceptionAtom);
         
     private:
         class btPerceptionPrivate;
