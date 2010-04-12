@@ -60,9 +60,4 @@ void btPerceptionInfo::setRadius(const qreal& newRadius)
     d->radius = newRadius;
 }
 
-QVariant btPerceptionInfo::getAdjustedValue(qreal precision) const
-{
-	return QVariant();
-}
-
 #include "btperceptioninfo.moc"
