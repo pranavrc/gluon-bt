@@ -33,19 +33,20 @@ class BT_LIB_EXPORT btCharacter : public QObject
         /**
         * The character's position in the world
         */
-        QVector3D position() const;
-        void setPosition(const QVector3D& newPosition);
+		
+        virtual QVector3D position() const;
+        virtual void setPosition(const QVector3D& newPosition);
         
         /**
          * The character's orientation in the world.
          */
-        QVector3D orientation() const;
-        void setOrientation(const QVector3D& newOrientation);
+        virtual QVector3D orientation() const;
+        virtual void setOrientation(const QVector3D& newOrientation);
     
         /**
          * Accessor for the character's perception system
          */
-        btPerception* perception();
+        virtual btPerception* perception();
     private:
         void stopParallelExecution(btNode * currentNode, QStack<btNode*>* parentStack);
         void clearExecution();

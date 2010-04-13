@@ -49,26 +49,26 @@ public:
 	void setType(nodeType type);
 	nodeType type();
 	
-	int childCount();
+	Q_INVOKABLE int childCount();
 	void appendChild(btNode* child);
 	void insertChild(int index, btNode* child);
 	void removeChild(int index);
 	void removeChild(btNode* child);
-	btNode* child(int index);
-	btNode* currentChild();
-	int currentChildIndex();
-	void setCurrentChildIndex(int index);
-	int nextChildIndex();
+	Q_INVOKABLE btNode* child(int index);
+	Q_INVOKABLE btNode* currentChild();
+	Q_INVOKABLE int currentChildIndex();
+	Q_INVOKABLE void setCurrentChildIndex(int index);
+	Q_INVOKABLE int nextChildIndex();
 	void doneParsingChildren();
 	
-	status runChild(int index);
-	status runChild();
+	Q_INVOKABLE status runChild(int index);
+	Q_INVOKABLE status runChild();
 	
-	void setCurrentChildStatus(status nodeStatus);
-	status currentChildStatus();
+	Q_INVOKABLE void setCurrentChildStatus(status nodeStatus);
+	Q_INVOKABLE status currentChildStatus();
 	
 	void setParentNode(btNode* parent);
-	btNode* parentNode();
+	Q_INVOKABLE btNode* parentNode();
 	
 	virtual status run(btCharacter * self);
 	virtual void childrenAdded(){};
