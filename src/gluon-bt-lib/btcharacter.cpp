@@ -7,7 +7,7 @@ btCharacter::btCharacter()
 	m_nodesStatusQueue.enqueue(btNode::None);
     m_perception = new btPerception(this);
     m_position = QVector3D();
-    m_orientation = QVector3D(0, 0, 1);
+    m_orientation = QQuaternion();
     m_behaviortree = 0;
 }
 
@@ -286,12 +286,12 @@ void btCharacter::setPosition(const QVector3D& newPosition)
     m_position = newPosition;
 }
 
-QVector3D btCharacter::orientation() const
+QQuaternion btCharacter::orientation() const
 {
     return m_orientation;
 }
 
-void btCharacter::setOrientation(const QVector3D& newOrientation)
+void btCharacter::setOrientation(const QQuaternion& newOrientation)
 {
     m_orientation = newOrientation;
 }

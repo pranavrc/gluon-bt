@@ -7,6 +7,7 @@
 #include <QtCore/QQueue>
 #include <QtCore/QMultiHash>
 #include <QtCore/QPair>
+#include <QQuaternion>
 
 #include "btlib.h"
 #include "btlib_export.h"
@@ -20,7 +21,7 @@ class BT_LIB_EXPORT btCharacter : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QVector3D position READ position WRITE setPosition)
-    Q_PROPERTY(QVector3D orientation READ orientation WRITE setOrientation)
+    Q_PROPERTY(QQuaternion orientation READ orientation WRITE setOrientation)
     
     public:
         btCharacter();
@@ -40,8 +41,8 @@ class BT_LIB_EXPORT btCharacter : public QObject
         /**
          * The character's orientation in the world.
          */
-        virtual QVector3D orientation() const;
-        virtual void setOrientation(const QVector3D& newOrientation);
+        virtual QQuaternion orientation() const;
+        virtual void setOrientation(const QQuaternion& newOrientation);
     
         /**
          * Accessor for the character's perception system
@@ -65,7 +66,7 @@ class BT_LIB_EXPORT btCharacter : public QObject
         QMultiHash<QStack<btNode*>*, QList<btNode::status>* > m_parallelNodeStatusHash;
         
         QVector3D m_position;
-        QVector3D m_orientation;
+        QQuaternion m_orientation;
         btPerception* m_perception;
 };
 
