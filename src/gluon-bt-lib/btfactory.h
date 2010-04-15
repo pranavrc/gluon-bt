@@ -28,6 +28,7 @@ public:
     btNode * getRegisteredNodeType(QString className);
     
     void registerNodeType(btNode * newType);
+    void registerNodeType(btNode * newType, QString className);
     
 private:    
     btFactory();

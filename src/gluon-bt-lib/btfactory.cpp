@@ -5,6 +5,7 @@
 #include "btselectornode.h"
 #include "btsequencenode.h"
 #include "btprobselectornode.h"
+#include "btparallelnode.h"
 
 #include "btglobal.h"
 
@@ -45,17 +46,23 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
     }
 	
 	btNode* nodeType = m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()];
-	btNode* newBTNode = qobject_cast<btNode*>(nodeType->metaObject()->newInstance());
-    //newBTNode->setType((btNodeType*)nodeType->metaObject()->newInstance());
-    //newBTNode->type()->setNodeType(nodeType->type());
-	newBTNode->setType(nodeType->type());
-    
-    foreach(const QString &name ,nodeType->dynamicPropertyNames())
+    btNode* newBTNode = NULL;
+    if(nodeType)
     {
-        newBTNode->setProperty(name.toUtf8(),nodeType->property(name.toUtf8()));
+        newBTNode = qobject_cast<btNode*>(nodeType->metaObject()->newInstance());
+        newBTNode->setType(nodeType->type());
+        
+        foreach(const QString &name ,nodeType->dynamicPropertyNames())
+        {
+            newBTNode->setProperty(name.toUtf8(),nodeType->property(name.toUtf8()));
+        }
     }
-    
-    //newBTNode->type()->setParentNode(newBTNode);
+    else
+    {
+        newBTNode = new btNode();
+        newBTNode->setType(btNode::UnusableNodeType);
+        newBTNode->setClassName(xmlNode.attributes().namedItem("nodetype").nodeValue());
+    }
     
     if(!xmlNode.attributes().namedItem("name").isNull())
     {
@@ -74,17 +81,21 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
                                
 btNode* btFactory::newObject(QString className)
 {
-    //btNode* newBTNode = new btNode();
-    //newBTNode->setType((btNodeType*)m_nodeTypes[className]->metaObject()->newInstance());
 	btNode* newBTNode = qobject_cast<btNode*>(m_nodeTypes[className]->metaObject()->newInstance());
-    //newBTNode->type()->setParentNode(newBTNode);
+    if(!newBTNode)
+        newBTNode = new btNode();
     return newBTNode;
 }
                                
 
-void btFactory::registerNodeType(btNode* nodeType)
+void btFactory::registerNodeType(btNode* newType)
 {
-    m_nodeTypes[nodeType->metaObject()->className()] = nodeType;
+    m_nodeTypes[newType->metaObject()->className()] = newType;
+}
+
+void btFactory::registerNodeType(btNode * newType, QString className)
+{
+    m_nodeTypes[className] = newType;
 }
 
 btNode* btFactory::getRegisteredNodeType(QString className)
@@ -96,6 +107,14 @@ void btFactory::initNodeType(QDomNode xmlNode)
 {
     QDomNamedNodeMap nodeTypeAttributes = xmlNode.attributes();
     btNode* nodeType = btFactory::instance()->getRegisteredNodeType(nodeTypeAttributes.namedItem("className").nodeValue());
+    
+    if(!nodeType)
+    {
+        nodeType = new btNode();
+        nodeType->setType(btNode::UnusableNodeType);
+        btFactory::instance()->registerNodeType(nodeType, nodeTypeAttributes.namedItem("className").nodeValue());
+    }
+    
     nodeType->setName(nodeTypeAttributes.namedItem("name").nodeValue());
     nodeType->setDescription(nodeTypeAttributes.namedItem("description").nodeValue());
     nodeType->setClassName(nodeTypeAttributes.namedItem("className").nodeValue());
@@ -156,7 +175,6 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
         
         return;
     }
-    //btNodeType* nodeType = node->type();
     
     int typeId = QMetaType::type(node->property(xNode.attributes().namedItem("name").nodeValue().toUtf8()).toString().toUtf8());
     QVariant dataType;
@@ -201,10 +219,7 @@ void btFactory::addProperty(btNode* node, QDomNode xNode ,btBrain* brain)
 
 btNode* btFactory::createRootNode(QDomNode xmlNode, btBrain* brain)
 {
-//    btNode* newRootNode = new btNode();
-//    newRootNode->setType((btNodeType*)this->m_nodeTypes["[sequence]"]->metaObject()->newInstance());
 	btNode* newRootNode = (btNode*)this->m_nodeTypes["[sequence]"]->metaObject()->newInstance();
-    //newRootNode->type()->setParentNode(newRootNode);
     newRootNode->setParent(brain);
     
     newRootNode->setName(xmlNode.attributes().namedItem("name").nodeValue());

@@ -1,5 +1,7 @@
 #include "btnode.h"
 
+#include <QtCore/QDebug>
+
 btNode::btNode()
 {
 	m_name = "";
@@ -75,6 +77,7 @@ btNode* btNode::child(int index)
 
 btNode::status btNode::run(btCharacter * self)
 {
+    qDebug() << "The btNode " << this->className() << " has either not been registered or implemented";
 	return btNode::None;
 }
 

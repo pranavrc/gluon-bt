@@ -143,7 +143,7 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node, int nodeIndex)
             }
 			
             btNode *  newBTNode = btFactory::instance()->newObject(currentNode, workingBtNode ,this);
-            //if(workingBtNode->parentNode())
+
             if(newBTNode != NULL)
             {
                 if(currentNode.hasChildNodes())

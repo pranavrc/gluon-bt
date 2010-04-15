@@ -32,7 +32,7 @@ class btPerception::btPerceptionPrivate
         qreal knowledgePrecision;
         qreal perceptionLimit;
         QHash<QString, btPerceptionAtom*> perceptionAtoms;
-        QList<btPerceptionViewcone*> viewCones;
+        QList<btPerceptionViewcone*> viewcones;
 };
 
 btPerception::btPerception(QObject* parent)
@@ -69,17 +69,17 @@ void btPerception::setPerceptionLimit(const qreal& newPerceptionLimit)
 
 QList< btPerceptionViewcone* > btPerception::viewCones() const
 {
-    return d->viewCones;
+    return d->viewcones;
 }
 
 void btPerception::setViewCones(const QList< btPerceptionViewcone* > newViewCones)
 {
-    d->viewCones = newViewCones;
+    d->viewcones = newViewCones;
 }
 
 void btPerception::addViewCone(btPerceptionViewcone * viewcone)
 {
-	d->viewCones.append(viewcone);
+	d->viewcones.append(viewcone);
 }
 
 QList< btPerceptionAtom* > btPerception::perceptionAtoms() const
