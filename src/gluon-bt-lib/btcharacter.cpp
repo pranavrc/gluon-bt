@@ -1,6 +1,9 @@
 #include "btcharacter.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QXmlStreamWriter>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 
 btCharacter::btCharacter()
 {
@@ -9,6 +12,8 @@ btCharacter::btCharacter()
     m_position = QVector3D();
     m_orientation = QQuaternion();
     m_behaviortree = 0;
+	m_thinksBeforeSaving = 10;
+	m_thinksDone = 0;
 }
 
 btCharacter::~btCharacter()
@@ -34,6 +39,12 @@ void btCharacter::setBehaviorTree(btNode* behaviorTree)
 	pair.first = currentNodeStack;
 	pair.second = NULL;
 	m_currentNodeStackQueue.enqueue(pair);
+	
+	m_nodesProbabilities.clear();
+	initProbabilityHash(m_behaviortree);
+	
+	btBrain * brain = qobject_cast<btBrain*>(m_behaviortree->parent());
+	this->setFile(brain->getFile());
 }
 
 void btCharacter::think()
@@ -151,9 +162,20 @@ void btCharacter::think()
 				m_visitedProbChildrenHash[currentNodeStack].push(probSelector->visitedProbNodes());
 			}
 			
+			//add to runs
+			m_nodesProbabilities[currentNode->currentChild()].runs++;
+			
 			break;
 		case btNode::Failed:
 		case btNode::Succeeded:
+			//calculate probs
+			if(nodeStatus == btNode::Succeeded)
+			{
+				probability * p = & m_nodesProbabilities[currentNode->currentChild()];
+				p->succeeds++;
+				p->prob = (double)(p->succeeds / p->runs);
+			}
+			
 			//when the node fails or succeeds
 			if(currentNodeStack->count() > 1)
 			{	
@@ -226,6 +248,17 @@ void btCharacter::think()
 			m_nodesStatusQueue.enqueue(nodeStatus);
 			break;
 	}
+	
+	if(m_thinksBeforeSaving == m_thinksDone)
+	{
+		this->saveProbabilities();
+		m_thinksDone = 0;
+	}
+	else
+	{
+		m_thinksDone++;
+	}
+
 }
 
 void btCharacter::stopParallelExecution(btNode * currentNode, QStack<btNode*>* parentStack)
@@ -299,6 +332,63 @@ void btCharacter::setOrientation(const QQuaternion& newOrientation)
 btPerception* btCharacter::perception()
 {
     return m_perception;
+}
+
+void btCharacter::saveProbabilities()
+{	
+	QString m_xmlData = "";
+	QFile file(m_filename);
+	
+	QXmlStreamWriter* xmlWriter = new QXmlStreamWriter(&m_xmlData);
+	xmlWriter->setAutoFormatting(true);
+	
+	if(!file.exists())
+		xmlWriter->writeStartDocument("1.0");
+	
+	this->saveNodeProbabilities(m_behaviortree, xmlWriter);
+	
+	file.open(QIODevice::Append | QIODevice::Text);
+	QByteArray byteFileContents(m_xmlData.toUtf8());
+	file.write(byteFileContents);
+	file.close();
+}
+
+void btCharacter::initProbabilityHash(btNode * node)
+{
+	m_nodesProbabilities[node] = probability();
+	
+	for(int i = 0; i < node->childCount(); i++)
+	{
+		initProbabilityHash(node->child(i));
+	}
+}
+
+void btCharacter::saveNodeProbabilities(btNode * node, QXmlStreamWriter * xmlWriter)
+{
+	xmlWriter->writeStartElement("behaviornode");
+	xmlWriter->writeAttribute("name", node->name());
+	xmlWriter->writeAttribute("description", node->description());
+	xmlWriter->writeAttribute("probability", QString("%1").arg(m_nodesProbabilities[node].prob));
+	
+	int count = node->childCount();
+
+	for (int i = 0; i < count; i++)
+	{
+		saveNodeProbabilities(node->child(i), xmlWriter);
+	}
+	
+	xmlWriter->writeEndElement();
+}
+
+void btCharacter::setFile(QString file)
+{
+	QFileInfo info(file);
+	QString path = info.path();
+	QString name = info.fileName();
+	
+	int insert = name.lastIndexOf(".") - 1;
+	
+	m_filename = name.insert(insert, "-probabilities");
 }
 
 #include "btcharacter.moc"

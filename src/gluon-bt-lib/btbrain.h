@@ -22,7 +22,7 @@ class BT_LIB_EXPORT btBrain : public QObject
     Q_PROPERTY(QList<btPerceptionInfo*> perceptionInfos READ perceptionInfos WRITE setPerceptionInfos)
     
 public:
-    btBrain(QString data);
+    btBrain(QString data, QString file);
     ~btBrain();
     
     btNode* getBehaviorTree(int index);
@@ -39,6 +39,7 @@ public:
     void setPerceptionInfos(const QList<btPerceptionInfo*>& newPerceptionInfos);
     btPerceptionInfo* perceptionInfo(const QString& name) const;
 	void addPerceptionInfo(btPerceptionInfo * newPercpetionInfo);
+	QString getFile();
     
 private:
     QHash<int, btNode*> m_behaviorTrees;
@@ -49,6 +50,8 @@ private:
     
     void parseNodeTypes(QDomNode xNode);
     void parseBehaviorTrees(QDomNode xNode, btNode* node, int nodeIndex);
+	
+	QString m_file;
 };
 
 #endif

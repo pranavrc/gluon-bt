@@ -6,6 +6,7 @@
 #include <QtCore/QList>
 #include <QtCore/QQueue>
 #include <QtCore/QMultiHash>
+#include <QtCore/QHash>
 #include <QtCore/QPair>
 #include <QQuaternion>
 
@@ -16,6 +17,7 @@
 
 struct ProbNode;
 class btPerception;
+class QXmlStreamWriter;
 
 class BT_LIB_EXPORT btCharacter : public QObject
 {
@@ -49,6 +51,28 @@ class BT_LIB_EXPORT btCharacter : public QObject
          */
         virtual btPerception* perception();
     private:
+		struct probability
+		{
+			double prob;
+			int runs;
+			int succeeds;
+			
+			probability()
+			{
+				runs = 0;
+				succeeds = 0;
+				prob = 0.0;
+			}
+		};
+		void saveProbabilities();
+		void saveNodeProbabilities(btNode * node, QXmlStreamWriter * xmlWriter);
+		void initProbabilityHash(btNode * node); 
+		QString m_filename;
+		QHash<btNode*, probability> m_nodesProbabilities;
+		void setFile(QString file);
+		int m_thinksBeforeSaving;
+		int m_thinksDone;
+	
         void stopParallelExecution(btNode * currentNode, QStack<btNode*>* parentStack);
         void clearExecution();
         

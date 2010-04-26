@@ -75,7 +75,6 @@ public:
 	virtual void appendingChild(int index){};
 	virtual void removingChild(int index){};
 	
-	
 private:
 	QString m_name;
 	QString m_description;
@@ -84,7 +83,6 @@ private:
 	btNode* m_parent;
 	int m_currentChildIndex;
 	status m_currentChildStatus;
-	
 	QList<btNode*> m_children;
 };
 

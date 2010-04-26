@@ -5,8 +5,10 @@
 
 #include <QtCore/QDebug>
 
-btBrain::btBrain(QString data)
+btBrain::btBrain(QString data, QString file)
 {
+	m_file = file;
+	
     QDomDocument xmlDocument("data");
     if(xmlDocument.setContent(data))
     {
@@ -183,6 +185,11 @@ btPerceptionInfo* btBrain::perceptionInfo(const QString& name) const
 void btBrain::addPerceptionInfo(btPerceptionInfo * newPercpetionInfo)
 {
 	m_perceptionInfos.append(newPercpetionInfo);
+}
+
+QString btBrain::getFile()
+{
+	return m_file;
 }
 
 #include "btbrain.moc"
