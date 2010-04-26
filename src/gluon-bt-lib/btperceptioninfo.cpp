@@ -16,6 +16,9 @@
 
 #include "btperceptioninfo.h"
 
+#include "btbrain.h"
+
+
 class btPerceptionInfo::btPerceptionInfoPrivate
 {
     public:
@@ -29,10 +32,13 @@ class btPerceptionInfo::btPerceptionInfoPrivate
         qreal radius;
 };
 
-btPerceptionInfo::btPerceptionInfo(QObject* parent)
+btPerceptionInfo::btPerceptionInfo(btBrain * parent)
     : QObject(parent)
 {
     d = new btPerceptionInfoPrivate();
+	
+	if(parent)
+		parent->addPerceptionInfo(this);
 }
 
 btPerceptionInfo::~btPerceptionInfo()

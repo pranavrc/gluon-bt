@@ -38,13 +38,14 @@ public:
     QList<btPerceptionInfo*> perceptionInfos() const;
     void setPerceptionInfos(const QList<btPerceptionInfo*>& newPerceptionInfos);
     btPerceptionInfo* perceptionInfo(const QString& name) const;
+	void addPerceptionInfo(btPerceptionInfo * newPercpetionInfo);
     
 private:
     QHash<int, btNode*> m_behaviorTrees;
+	QList<btPerceptionInfo*> m_perceptionInfos;
     
     QString m_name;
-    QString m_description;
-    
+    QString m_description;    
     
     void parseNodeTypes(QDomNode xNode);
     void parseBehaviorTrees(QDomNode xNode, btNode* node, int nodeIndex);

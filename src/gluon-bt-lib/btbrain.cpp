@@ -157,5 +157,33 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node, int nodeIndex)
     }
 }
 
+QList<btPerceptionInfo*> btBrain::perceptionInfos() const
+{
+	return m_perceptionInfos;
+}
+
+void btBrain::setPerceptionInfos(const QList<btPerceptionInfo*>& newPerceptionInfos)
+{
+	m_perceptionInfos = newPerceptionInfos;
+}
+
+btPerceptionInfo* btBrain::perceptionInfo(const QString& name) const
+{
+	foreach(btPerceptionInfo * info, m_perceptionInfos)
+	{
+		if(info->objectName() == name)
+		{
+			return info;
+		}
+	}
+	
+	return NULL;
+}
+
+void btBrain::addPerceptionInfo(btPerceptionInfo * newPercpetionInfo)
+{
+	m_perceptionInfos.append(newPercpetionInfo);
+}
+
 #include "btbrain.moc"
 

@@ -21,6 +21,8 @@
 #include <QtCore/QVariant>
 #include <QtGui/QVector3D>
 
+class btBrain;
+
 class btPerceptionInfo : public QObject
 {
     Q_OBJECT
@@ -28,7 +30,7 @@ class btPerceptionInfo : public QObject
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusUpdated)
     
     public:
-        btPerceptionInfo(QObject* parent = 0);
+        btPerceptionInfo(btBrain* parent = 0);
         ~btPerceptionInfo();
         
         virtual QVector3D position() const;
