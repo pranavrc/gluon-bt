@@ -32,13 +32,14 @@ class btPerceptionInfo::btPerceptionInfoPrivate
         qreal radius;
 };
 
-btPerceptionInfo::btPerceptionInfo(btBrain * parent)
+btPerceptionInfo::btPerceptionInfo(QObject * parent)
     : QObject(parent)
 {
     d = new btPerceptionInfoPrivate();
 	
-	if(parent)
-		parent->addPerceptionInfo(this);
+    btBrain* potentialBrain = qobject_cast<btBrain*>(parent);
+	if(potentialBrain)
+		potentialBrain->addPerceptionInfo(this);
 }
 
 btPerceptionInfo::~btPerceptionInfo()

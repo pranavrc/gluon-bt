@@ -30,7 +30,7 @@ class btPerceptionInfo : public QObject
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusUpdated)
     
     public:
-        btPerceptionInfo(btBrain* parent = 0);
+        btPerceptionInfo(QObject* parent);
         ~btPerceptionInfo();
         
         virtual QVector3D position() const;
