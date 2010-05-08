@@ -54,7 +54,25 @@ set(btlib_HEADERS
 add_definitions(-DMAKE_BT_LIB)
 
 qt4_automoc(${btlib_SRCS})
-add_library(btlib SHARED ${btlib_SRCS} ${btlib_UIS_H})
+
+if(APPLE)
+	add_library(btlib SHARED ${btlib_SRCS} ${btlib_HEADERS})#${btlib_UIS_H})
+else()
+	add_library(btlib SHARED ${btlib_SRCS} )#${btlib_UIS_H})
+endif()
+
+if(APPLE)
+	list(APPEND btlib_HEADERS
+		${btlib_HEADERS}
+	)
+	
+	set_target_properties(btlib PROPERTIES FRAMEWORK TRUE)
+	set_target_properties(btlib PROPERTIES BUILD_WITH_INSTALL_RPATH 1 INSTALL_NAME_DIR "@executable_path/../Frameworks")
+	set_target_properties(btlib PROPERTIES PUBLIC_HEADER "${btlib_HEADERS}")
+	
+	set(MACOSX_FRAMEWORK_IDENTIFIER smarts)
+	set_target_properties(btlib PROPERTIES OUTPUT_NAME SMARTS)
+endif()
 
 target_link_libraries(btlib ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY})
 
