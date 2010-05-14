@@ -78,6 +78,7 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
         }
         
 		xmlWriter->writeEndElement();
+		return;
     }
     else
     {
