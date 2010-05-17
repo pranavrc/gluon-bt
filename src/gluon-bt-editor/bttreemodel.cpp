@@ -216,8 +216,8 @@ bool btTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int
     btEditorNode* parentNode = static_cast<btEditorNode*>(parent.internalPointer());
     
     // We do not allow dropping on Actions and References
-    if( parentNode->type()->type() == btNodeType::ActionNodeType    ||
-/*       parentNode->type()->type() == btNodeType::ReferenceNodeType ||*/
+    if(/* parentNode->type()->type() == btNodeType::ActionNodeType    ||
+        parentNode->type()->type() == btNodeType::ReferenceNodeType ||*/
        parentNode->type()->type() == btNodeType::ConditionNodeType )
     {
         emit dataChanged(parent, parent);

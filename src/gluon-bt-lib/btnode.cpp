@@ -78,7 +78,7 @@ btNode* btNode::child(int index)
 btNode::status btNode::run(btCharacter * self)
 {
     qDebug() << "The btNode " << this->className() << " has either not been registered or implemented";
-	return btNode::None;
+	return btNode::Failed;
 }
 
 void btNode::setCurrentChildStatus(status nodeStatus)
@@ -159,6 +159,19 @@ int btNode::nextChildIndex()
 void btNode::insertChild(int index, btNode* child)
 {
 	m_children.insert(index, child);
+}
+
+int btNode::childIndex(btNode * child)
+{
+    for (int i = 0; i < m_children.count(); i++)
+    {
+        if(m_children.at(i) == child)
+        {
+            return i;
+        }
+    }
+    
+    return -1;
 }
 
 #include "btnode.moc"

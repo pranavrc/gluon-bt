@@ -38,25 +38,29 @@ btNode::status btProbSelectorNode::run(btCharacter *self)
 		start += node->probability;
 	}
 	
-	float randNum = ((float)qrand()/RAND_MAX) * scale;
+	float randNum = 0;
 	
-	for(int i = 0; i < m_probStats.count(); i++)
-	{
-		ProbNode * node = m_probStats[i];
-		
-		if(node->visited == false)
-		{
-			if(start < randNum && randNum <= (node->probability + start))
-			{				
-				m_visitedProbStats.append(node);
-				return runChild(i);
-			}
-			start += node->probability;
-		}
-	}
+    for(int j = 0; j < m_probStats.count(); j++)
+    {
+        randNum = ((float)qrand()/RAND_MAX) * scale;
+        
+        for(int i = 0; i < m_probStats.count(); i++)
+        {
+            ProbNode * node = m_probStats[i];
+            
+            if(node->visited == false)
+            {
+                if(start < randNum && randNum <= (node->probability + start))
+                {				
+                    m_visitedProbStats.append(node);
+                    return runChild(i);
+                }
+                start += node->probability;
+            }
+        }
+    }
 	
     this->resetProbNodes();
-	
     return Failed;
 }
 
@@ -85,6 +89,7 @@ void btProbSelectorNode::childrenAdded()
 			// qDebug() << "probs.count(): " << probs.count();
             foreach(ProbNode *node, m_probStats)
 			{
+                node->visited = false;
                 node->probability = probs.at(i).toDouble();
                 i++;
             }
@@ -96,6 +101,8 @@ void btProbSelectorNode::childrenAdded()
                 node->probability = (1.0 / count);
             }
         }
+        
+        this->resetProbNodes();
     }
 }
 

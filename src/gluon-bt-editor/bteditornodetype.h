@@ -51,7 +51,7 @@ public Q_SLOTS:
     void changeName(QString name);
     void changeDescription(QString description);
     void changeClassName(QString className);
-	void changeCondition(int state);
+	void changeCondition(bool state);
     
     //used for moving decoratos up and down
     void removeActionTriggered();

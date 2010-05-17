@@ -46,22 +46,11 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
     }
 	
 	btNode* nodeType = m_nodeTypes[xmlNode.attributes().namedItem("nodetype").nodeValue()];
-    btNode* newBTNode = NULL;
-    if(nodeType)
+    btNode* newBTNode = qobject_cast<btNode*>(nodeType->metaObject()->newInstance());
+    newBTNode->setType(nodeType->type());
+    foreach(const QString &name ,nodeType->dynamicPropertyNames())
     {
-        newBTNode = qobject_cast<btNode*>(nodeType->metaObject()->newInstance());
-        newBTNode->setType(nodeType->type());
-        
-        foreach(const QString &name ,nodeType->dynamicPropertyNames())
-        {
-            newBTNode->setProperty(name.toUtf8(),nodeType->property(name.toUtf8()));
-        }
-    }
-    else
-    {
-        newBTNode = new btNode();
-        newBTNode->setType(btNode::UnusableNodeType);
-        newBTNode->setClassName(xmlNode.attributes().namedItem("nodetype").nodeValue());
+        newBTNode->setProperty(name.toUtf8(),nodeType->property(name.toUtf8()));
     }
     
     if(!xmlNode.attributes().namedItem("name").isNull())
@@ -71,6 +60,10 @@ btNode* btFactory::newObject(QDomNode xmlNode, btNode* parentNode, btBrain* brai
     if(!xmlNode.attributes().namedItem("description").isNull())
     {
         newBTNode->setDescription(xmlNode.attributes().namedItem("description").nodeValue());
+    }
+    if(!xmlNode.attributes().namedItem("nodetype").isNull())
+    {
+        newBTNode->setClassName(xmlNode.attributes().namedItem("nodetype").nodeValue());
     }
     
     parentNode->appendChild(newBTNode);
@@ -114,37 +107,39 @@ void btFactory::initNodeType(QDomNode xmlNode)
         nodeType->setType(btNode::UnusableNodeType);
         btFactory::instance()->registerNodeType(nodeType, nodeTypeAttributes.namedItem("className").nodeValue());
     }
+    else
+    {
+        QString typeCategory = nodeTypeAttributes.namedItem("category").nodeValue();
+    
+        if(typeCategory == "action")
+        {
+            nodeType->setType(btNode::ActionNodeType);
+        }
+        else if(typeCategory == "condition")
+        {
+            nodeType->setType(btNode::ConditionNodeType);
+        }
+        else if(typeCategory == "composite")
+        {
+            nodeType->setType(btNode::CompositeNodeType);
+        }
+        else if(typeCategory == "decorator")
+        {
+            nodeType->setType(btNode::DecoratorNodeType);
+        }
+        else if(typeCategory == "reference")
+        {
+            nodeType->setType(btNode::ReferenceNodeType);
+        }
+        else
+        {
+            nodeType->setType(btNode::UnusableNodeType);
+        }
+    }
     
     nodeType->setName(nodeTypeAttributes.namedItem("name").nodeValue());
     nodeType->setDescription(nodeTypeAttributes.namedItem("description").nodeValue());
     nodeType->setClassName(nodeTypeAttributes.namedItem("className").nodeValue());
-    
-    QString typeCategory = nodeTypeAttributes.namedItem("category").nodeValue();
-    
-    if(typeCategory == "action")
-    {
-        nodeType->setType(btNode::ActionNodeType);
-    }
-    else if(typeCategory == "condition")
-    {
-        nodeType->setType(btNode::ConditionNodeType);
-    }
-    else if(typeCategory == "composite")
-    {
-        nodeType->setType(btNode::CompositeNodeType);
-    }
-    else if(typeCategory == "decorator")
-    {
-        nodeType->setType(btNode::DecoratorNodeType);
-    }
-    else if(typeCategory == "reference")
-    {
-        nodeType->setType(btNode::ReferenceNodeType);
-    }
-    else
-    {
-        nodeType->setType(btNode::UnusableNodeType);
-    }
     
     for(int j = 0; j < xmlNode.childNodes().count(); j++)
     {

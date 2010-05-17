@@ -7,7 +7,8 @@
 #include <QtCore/QVariant>
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QCheckBox>
+#include <QtGui/QRadioButton>
+#include <QtGui/QGroupBox>
 
 btParallelConditionsWidget::btParallelConditionsWidget(QWidget * parent) : QWidget(parent)
 {
@@ -37,45 +38,57 @@ void btParallelConditionsWidget::setParallelConditions(QString propertyName, QOb
 	
 	btParallelConditions conditionsList = nodeType->property(propertyName.toUtf8()).value<btParallelConditions>();
     for (int i = 0; i < node->childCount(); i++) 
-    {        
-        QLabel * nodeName = new QLabel(this);
-        nodeName->setText(node->child(i)->name());
+    {
         
-		QCheckBox * sCheckBox = new QCheckBox(this);
-		sCheckBox->setEnabled(enabled);
-		sCheckBox->setText("Succeeded");
-		QCheckBox * fCheckBox = new QCheckBox(this);
-		fCheckBox->setEnabled(enabled);
-		fCheckBox->setText("Failed");
-		
+        QGroupBox * group = new QGroupBox(node->child(i)->name());
+        group->setFlat(true);
+        
+		QRadioButton * sRButton = new QRadioButton(this);
+		sRButton->setEnabled(enabled);
+		sRButton->setText("Succeeded");
+		QRadioButton * fRButton = new QRadioButton(this);
+		fRButton->setEnabled(enabled);
+		fRButton->setText("Failed");
+        QRadioButton * rRButton = new QRadioButton(this);
+        rRButton->setEnabled(enabled);
+        rRButton->setText("Running");
+        
+        QVBoxLayout * vbox = new QVBoxLayout();
+        
+       //parallelConditionsLayout->addWidget(nodeName);
+        vbox->addWidget(sRButton);
+		vbox->addWidget(fRButton);
+        vbox->addWidget(rRButton);
+        
+        group->setLayout(vbox);
+        parallelConditionsLayout->addWidget(group);
         
         if(i > conditionsList.parallelConditions.count()-1)
         {
             conditionsList.parallelConditions.append(1.0);
-            sCheckBox->setCheckState(Qt::Checked);
+            sRButton->setChecked(true);
         }
         else
         {
-			double value = conditionsList.parallelConditions[i].toDouble();
-			
-			if(value >= 1.0)
-			{
-				sCheckBox->setCheckState(Qt::Checked);
-				fCheckBox->setCheckState(Qt::Unchecked);
-			}
-			else if (value <= 0.0)
-			{
-				sCheckBox->setCheckState(Qt::Unchecked);
-				fCheckBox->setCheckState(Qt::Checked);
-			}
+            double value = conditionsList.parallelConditions[i].toDouble();
+            
+            if(value >= 1.0)
+            {
+                sRButton->setChecked(true);
+            }
+            else if (value == 0.0)
+            {
+                fRButton->setChecked(true);
+            }
+            else if(value < 0.0)
+            {
+                rRButton->setChecked(true);
+            }
         }
         
-        connect(sCheckBox, SIGNAL(stateChanged(int)), node->child(i)->type(), SLOT(changeCondition(int)));
-		connect(fCheckBox, SIGNAL(stateChanged(int)), node->child(i)->type(), SLOT(changeCondition(int)));
-        
-        parallelConditionsLayout->addWidget(nodeName);
-        parallelConditionsLayout->addWidget(sCheckBox);
-		parallelConditionsLayout->addWidget(fCheckBox);
+        connect(sRButton, SIGNAL(toggled(bool)), node->child(i)->type(), SLOT(changeCondition(bool)));
+        connect(fRButton, SIGNAL(toggled(bool)), node->child(i)->type(), SLOT(changeCondition(bool)));
+        connect(rRButton, SIGNAL(toggled(bool)), node->child(i)->type(), SLOT(changeCondition(bool)));
 		
     }
     QVariant v;

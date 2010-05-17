@@ -8,7 +8,7 @@
 #include <QtCore/QDebug>
 #include <QtXml>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QCheckBox>
+#include <QtGui/QRadioButton>
 
 btEditorNodeType::btEditorNodeType(QObject * parent) : btNodeType(parent)
 {
@@ -386,23 +386,32 @@ void btEditorNodeType::changeClassName(QString className)
     emit classNameChanged(className);
 }
 
-void btEditorNodeType::changeCondition(int state)
+void btEditorNodeType::changeCondition(bool state)
 {
 	qRegisterMetaType<btParallelConditions>("btParallelConditions");
 	
-	QCheckBox * checkBox = qobject_cast<QCheckBox*>(QObject::sender());
+	QRadioButton * radioButton = qobject_cast<QRadioButton*>(QObject::sender());
 	
     foreach(const QString &name, this->parentNode()->parentNode()->type()->dynamicPropertyNames())
     {
         if(this->parentNode()->parentNode()->type()->property(name.toUtf8()).type() == QVariant::UserType && name == "conditions")
         {			
             btParallelConditions list = this->parentNode()->parentNode()->type()->property(name.toUtf8()).value<btParallelConditions>();
-			double value = checkBox->text() == "Succeeded" ? 1 : 0;			
+			double value = 0;
+            if(radioButton->text() == "Succeeded")
+            {
+                value = 1;
+            }
+            else if(radioButton->text() == "Failed")
+            {
+                value = 0;
+            }
+            else
+            {
+                value = -1;
+            }
 			
             list.parallelConditions[this->parentNode()->parentNode()->children().indexOf(this->parentNode())] = value;
-			
-			foreach(QVariant v, list.parallelConditions)
-				qDebug() << v;
 			
             QVariant v;
             v.setValue(list);
@@ -410,31 +419,6 @@ void btEditorNodeType::changeCondition(int state)
             break;
         }
     }
-	
-	int startIndex = QObject::sender()->parent()->children().indexOf(QObject::sender());
-	
-	int groupIndex = (startIndex-1) % 3;
-
-	switch(groupIndex)
-	{
-		case 1:
-			checkBox = qobject_cast<QCheckBox*>(QObject::sender()->parent()->children().at(startIndex+1));
-			break;
-		case 2:
-			checkBox = qobject_cast<QCheckBox*>(QObject::sender()->parent()->children().at(startIndex-1));
-			break;
-	}
-	
-	disconnect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(changeCondition(int)));
-	if(state == 2)
-	{
-		checkBox->setCheckState(Qt::Unchecked);
-	}
-	else
-	{
-		checkBox->setCheckState(Qt::Checked);
-	}
-	connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(changeCondition(int)));
 }
 
 #include "bteditornodetype.moc"

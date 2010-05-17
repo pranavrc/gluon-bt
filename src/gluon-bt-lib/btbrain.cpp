@@ -122,45 +122,11 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)//, int nodeIndex
 				
 				decNode->appendChild(node);
 				continue;
-                /*if(workingBtNode == node->parentNode())
-                {
-                    btNode * child = workingBtNode->child(workingBtNode->childCount()-1);
-                    workingBtNode->removeChild(child);
-                    workingBtNode->insertChild(nodeIndex, child);
-                    workingBtNode = child;
-					
-                }
-                else if(workingBtNode->type() == btNode::DecoratorNodeType)
-                {
-                    workingBtNode = workingBtNode->child(0);
-                }
-                else
-                {
-					qDebug() << workingBtNode->name();
-                    workingBtNode = node->parentNode();
-					qDebug() << workingBtNode->name();
-                    workingBtNode->removeChild(nodeIndex);
-                }
-            }
-            else if(workingBtNode->type() == btNode::DecoratorNodeType) 
-            {
-                if(workingBtNode->childCount() > 0 && workingBtNode->child(0)->type() == btNode::DecoratorNodeType)
-                {
-                    workingBtNode = workingBtNode->child(0);
-                }
-                
-                workingBtNode->appendChild(node);
-                workingBtNode = node;
-            }
-            else if(workingBtNode->childCount() > 0 && workingBtNode->child(workingBtNode->childCount()-1)->type() == btNode::DecoratorNodeType)
-            {
-                workingBtNode->child(workingBtNode->childCount()-1)->appendChild(node);
-                workingBtNode = node;*/
             }
 			
 
 			btNode * newBTNode = btFactory::instance()->newObject(currentNode, workingBtNode ,this);
-
+            
             if(newBTNode != NULL)
             {
                 if(currentNode.hasChildNodes())

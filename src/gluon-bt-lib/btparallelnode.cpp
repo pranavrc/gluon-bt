@@ -2,6 +2,7 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QVariant>
+#include "btnode.h"
 
 REGISTER_NODETYPE(btParallelNode)
 
@@ -56,14 +57,18 @@ void btParallelNode::childrenAdded()
 			
 			for	(int i = 0; i < count; i++)
 			{
-				if(conditions[i].toBool() == true)
+				if(conditions[i].toDouble() == 1.0)
 				{
 					m_conditionStatus->append(btNode::Succeeded);
 				}
-				else 
+				else if(conditions[i].toDouble() == 0.0)
 				{
 					m_conditionStatus->append(btNode::Failed);
 				}
+				else
+                {
+                    m_conditionStatus->append(btNode::Running);
+                }
 
 			}
         }

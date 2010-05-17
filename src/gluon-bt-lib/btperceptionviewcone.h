@@ -56,6 +56,12 @@ struct btPerceptionViewcone
          * 0 is no precision at all, 1.0 is full precision
          */
         qreal knowledgePrecision;
+        /**
+         * The precion of knowledge discovered in this view cone's area of perception
+         * 0 is no precision at all, 1.0 is full precision
+         */
+        int position;
+        
 };
 
 #endif // BTPERCEPTIONVIEWCONE_H

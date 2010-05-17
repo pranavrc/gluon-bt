@@ -54,6 +54,7 @@ public:
 	void insertChild(int index, btNode* child);
 	void removeChild(int index);
 	void removeChild(btNode* child);
+    int childIndex(btNode * child);
 	Q_INVOKABLE btNode* child(int index);
 	Q_INVOKABLE btNode* currentChild();
 	Q_INVOKABLE int currentChildIndex();

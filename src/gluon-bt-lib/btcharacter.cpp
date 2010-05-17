@@ -145,6 +145,7 @@ void btCharacter::think()
 	switch (nodeStatus)
 	{
 		case btNode::RunningChild:
+            qDebug() << "running child";
 			//when running child, push the child and child index onto the stacks
 			currentNodeStack->push(currentNode->currentChild());
 			currentChildStack.push(currentNode->currentChildIndex());
@@ -168,6 +169,7 @@ void btCharacter::think()
 			break;
 		case btNode::Failed:
 		case btNode::Succeeded:
+            qDebug() << "failed or succeeded";
 			//calculate probs
 			if(nodeStatus == btNode::Succeeded)
 			{
@@ -240,6 +242,7 @@ void btCharacter::think()
 			}			
 			break;
 		case btNode::Running:
+            qDebug() << "still running";
 			//enqueue stack and stuff
 			currentChildIndex = currentNode->currentChildIndex();			
 			m_currentNodeStackQueue.enqueue(currentChildParentStackPair);
