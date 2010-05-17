@@ -58,6 +58,7 @@ btNode::status btProbSelectorNode::run(btCharacter *self)
                 start += node->probability;
             }
         }
+        start = 0;
     }
 	
     this->resetProbNodes();
