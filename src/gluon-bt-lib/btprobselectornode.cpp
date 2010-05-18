@@ -52,9 +52,11 @@ btNode::status btProbSelectorNode::run(btCharacter *self)
 	
     randNum = ((float)qrand()/RAND_MAX) * scale;
 
-    for(int i = 0; i < unvisitedNodes.count(); i++)
+	QList<int> values = unvisitedNodes.values();
+	
+    for(int i = 0; i < values.count(); i++)
     {
-        ProbNode * node = unvisitedNodes.key(i);
+        ProbNode * node = unvisitedNodes.key(values[i]);
         
         if(node->visited == false)
         {
@@ -115,6 +117,7 @@ void btProbSelectorNode::childrenAdded()
 
 void btProbSelectorNode::resetProbNodes()
 {
+	m_visitedProbStats.clear();
 	foreach(ProbNode *node, m_probStats)
 	{
         node->visited = false;
