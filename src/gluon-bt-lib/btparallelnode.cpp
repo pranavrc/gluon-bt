@@ -85,17 +85,21 @@ void btParallelNode::childrenAdded()
 btNode::status btParallelNode::conditionsFulfilled()
 {
 	btNode::status fulfilled = Succeeded;
+    bool terminate = false;
 	for (int i = 0; i < this->childCount(); i++)
 	{
-		if(m_runningNodesStatus->value(i) == btNode::None)
-			fulfilled = Running;
+		if(m_runningNodesStatus->value(i) == btNode::Running && m_runningNodesStatus->value(i) != m_conditionStatus->value(i))
+        {
+            fulfilled = Running;
+        }
 		
-		if(m_runningNodesStatus->value(i) != btNode::None && m_runningNodesStatus->value(i) != m_conditionStatus->value(i))
+        if(m_runningNodesStatus->value(i) != btNode::Running && m_runningNodesStatus->value(i) != m_conditionStatus->value(i))
 		{
 			this->resetRunningNodesStatus();
 			return Failed;
 		}
 	}
+    
 	if(fulfilled == Succeeded)
 		this->resetRunningNodesStatus();
 	

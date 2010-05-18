@@ -113,7 +113,7 @@ void btCharacter::think()
 				pair.second = currentNodeStack;
 				m_currentNodeStackQueue.enqueue(pair);
 				
-				childStatus->append(btNode::None);
+				childStatus->append(btNode::Running);
 				m_nodesStatusQueue.enqueue(btNode::None);
 				
 				m_parallelNodeStatusHash.insert(newStack, childStatus);
@@ -137,7 +137,7 @@ void btCharacter::think()
 	currentNode->setCurrentChildStatus(nodeStatus);
 	currentNode->setParentNode(currentParent);
 	
-	qDebug() << currentNode->name();
+	//qDebug() << currentNode->name();
 	//run the node
 	nodeStatus = currentNode->run(this);
 	
@@ -145,7 +145,7 @@ void btCharacter::think()
 	switch (nodeStatus)
 	{
 		case btNode::RunningChild:
-            qDebug() << "running child";
+            //qDebug() << "running child";
 			//when running child, push the child and child index onto the stacks
 			currentNodeStack->push(currentNode->currentChild());
 			currentChildStack.push(currentNode->currentChildIndex());
@@ -165,16 +165,18 @@ void btCharacter::think()
 			
 			//add to runs
 			m_nodesProbabilities[currentNode->currentChild()].runs++;
-			
 			break;
 		case btNode::Failed:
 		case btNode::Succeeded:
-            qDebug() << "failed or succeeded";
+            qDebug() << currentNode->name();
+            //qDebug() << "failed or succeeded";
 			//calculate probs
 			if(nodeStatus == btNode::Succeeded)
 			{
-				probability * p = & m_nodesProbabilities[currentNode->currentChild()];
+				probability * p = & m_nodesProbabilities[currentNode];
 				p->succeeds++;
+                if(p->runs == 0)
+                    p->runs++;
 				p->prob = (double)(p->succeeds / p->runs);
 			}
 			
@@ -242,7 +244,7 @@ void btCharacter::think()
 			}			
 			break;
 		case btNode::Running:
-            qDebug() << "still running";
+            //qDebug() << "still running";
 			//enqueue stack and stuff
 			currentChildIndex = currentNode->currentChildIndex();			
 			m_currentNodeStackQueue.enqueue(currentChildParentStackPair);
