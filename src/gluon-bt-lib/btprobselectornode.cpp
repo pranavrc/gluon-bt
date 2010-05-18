@@ -5,6 +5,7 @@ REGISTER_NODETYPE(btProbSelectorNode)
 #include <QDebug>
 #include <QDateTime>
 #include <QVariant>
+#include <QHash>
 
 btProbSelectorNode::btProbSelectorNode()
 {
@@ -35,32 +36,37 @@ btNode::status btProbSelectorNode::run(btCharacter *self)
 	{
 		node->visited = true;
 		scale -= node->probability;
-		start += node->probability;
+		//start += node->probability;
 	}
+	
+	QHash<ProbNode*, int> unvisitedNodes;
+	for(int i = 0; i <  m_probStats.count(); i++)
+    {
+        if(!m_probStats[i]->visited)
+        {
+            unvisitedNodes.insert(m_probStats[i], i);
+        }
+    }
 	
 	float randNum = 0;
 	
-    for(int j = 0; j < m_probStats.count(); j++)
+    randNum = ((float)qrand()/RAND_MAX) * scale;
+
+    for(int i = 0; i < unvisitedNodes.count(); i++)
     {
-        randNum = ((float)qrand()/RAND_MAX) * scale;
+        ProbNode * node = unvisitedNodes.key(i);
         
-        for(int i = 0; i < m_probStats.count(); i++)
+        if(node->visited == false)
         {
-            ProbNode * node = m_probStats[i];
-            
-            if(node->visited == false)
-            {
-                if(start < randNum && randNum <= (node->probability + start))
-                {				
-                    m_visitedProbStats.append(node);
-                    return runChild(i);
-                }
-                start += node->probability;
+            if(start < randNum && randNum <= (node->probability + start))
+            {				
+                m_visitedProbStats.append(node);
+                return runChild(unvisitedNodes[node]);
             }
+            start += node->probability;
         }
-        start = 0;
     }
-	
+ 
     this->resetProbNodes();
     return Failed;
 }
