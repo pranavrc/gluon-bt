@@ -159,6 +159,7 @@ int btNode::nextChildIndex()
 void btNode::insertChild(int index, btNode* child)
 {
 	m_children.insert(index, child);
+    this->appendingChild(index);
 }
 
 int btNode::childIndex(btNode * child)
