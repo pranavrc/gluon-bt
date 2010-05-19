@@ -6,6 +6,7 @@ REGISTER_NODETYPE(btProbSelectorNode)
 #include <QDateTime>
 #include <QVariant>
 #include <QHash>
+#include <cmath>
 
 btProbSelectorNode::btProbSelectorNode()
 {
@@ -29,15 +30,12 @@ btNode::status btProbSelectorNode::run(btCharacter *self)
 		return Succeeded;
 	}
 	
-	float scale = 1.0f;
-	float start = 0.0f;
-	
 	foreach(ProbNode * node, m_visitedProbStats)
 	{
 		node->visited = true;
-		scale -= node->probability;
-		//start += node->probability;
 	}
+	
+	float maxProbability = 0.0f;
 	
 	QHash<ProbNode*, int> unvisitedNodes;
 	for(int i = 0; i <  m_probStats.count(); i++)
@@ -45,14 +43,19 @@ btNode::status btProbSelectorNode::run(btCharacter *self)
         if(!m_probStats[i]->visited)
         {
             unvisitedNodes.insert(m_probStats[i], i);
+			maxProbability += m_probStats[i]->probability;
         }
     }
 	
 	float randNum = 0;
 	
-    randNum = ((float)qrand()/RAND_MAX) * scale;
+	if(maxProbability == 0.0f)
+		randNum = 0;
+	else
+		randNum = fmodf(((float)qrand()/RAND_MAX), maxProbability);
 
 	QList<int> values = unvisitedNodes.values();
+	float start = 0.0f;
 	
     for(int i = 0; i < values.count(); i++)
     {
