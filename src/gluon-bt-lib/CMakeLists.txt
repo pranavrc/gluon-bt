@@ -30,7 +30,7 @@ set(btlib_SRCS
     btperceptioninfo.cpp
     btperceptionatom.cpp
 	
-	main.cpp
+	#main.cpp
 )
 
 
@@ -59,20 +59,20 @@ add_definitions(-DMAKE_BT_LIB)
 qt4_automoc(${btlib_SRCS})
 
 if(APPLE)
-	add_executable(btlib ${btlib_SRCS} ${btlib_HEADERS})
-	#add_library(btlib SHARED ${btlib_SRCS} ${btlib_HEADERS})#${btlib_UIS_H})
+	#add_executable(btlib ${btlib_SRCS} ${btlib_HEADERS})
+	add_library(btlib SHARED ${btlib_SRCS} ${btlib_HEADERS})#${btlib_UIS_H})
 	
-	#set_target_properties(btlib PROPERTIES FRAMEWORK TRUE)
-	#set_target_properties(btlib PROPERTIES BUILD_WITH_INSTALL_RPATH 1 INSTALL_NAME_DIR "@executable_path/../Frameworks")
-	#set_target_properties(btlib PROPERTIES PUBLIC_HEADER "${btlib_HEADERS}")
+	set_target_properties(btlib PROPERTIES FRAMEWORK TRUE)
+	set_target_properties(btlib PROPERTIES BUILD_WITH_INSTALL_RPATH 1 INSTALL_NAME_DIR "@executable_path/../Frameworks")
+	set_target_properties(btlib PROPERTIES PUBLIC_HEADER "${btlib_HEADERS}")
 	
-	#add_custom_command(TARGET btlib POST_BUILD
-	#	COMMAND mkdir ARGS -p ${CMAKE_CURRENT_BINARY_DIR}/$(CONFIGURATION)/SMARTS.framework/Headers/smarts/
-	#	COMMAND mv ${CMAKE_CURRENT_BINARY_DIR}/$(CONFIGURATION)/SMARTS.framework/Headers/*.h ${CMAKE_CURRENT_BINARY_DIR}/$(CONFIGURATION)/SMARTS.framework/Headers/smarts/
-	#)
+	add_custom_command(TARGET btlib POST_BUILD
+		COMMAND mkdir ARGS -p ${CMAKE_CURRENT_BINARY_DIR}/$(CONFIGURATION)/SMARTS.framework/Headers/smarts/
+		COMMAND mv ${CMAKE_CURRENT_BINARY_DIR}/$(CONFIGURATION)/SMARTS.framework/Headers/*.h ${CMAKE_CURRENT_BINARY_DIR}/$(CONFIGURATION)/SMARTS.framework/Headers/smarts/
+	)
 	
-	#set(MACOSX_FRAMEWORK_IDENTIFIER SMARTS)
-	#set_target_properties(btlib PROPERTIES OUTPUT_NAME SMARTS)
+	set(MACOSX_FRAMEWORK_IDENTIFIER SMARTS)
+	set_target_properties(btlib PROPERTIES OUTPUT_NAME SMARTS)
 else()
 	add_library(btlib SHARED ${btlib_SRCS} )#${btlib_UIS_H})
 endif()
