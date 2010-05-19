@@ -65,6 +65,7 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
             if(btRefNode->referenceBehaviorTree() == behaviorTrees.at(i))
             {
 				xmlWriter->writeAttribute("value",  QVariant(i).toString());
+				break;
             }
         }
         
@@ -78,7 +79,6 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
         }
         
 		xmlWriter->writeEndElement();
-		return;
     }
     else
     {
@@ -157,15 +157,15 @@ void btEditorNode::toXml(QXmlStreamWriter* xmlWriter, QList<btTreeModel *> behav
 			
 			xmlWriter->writeEndElement(); //property
         }
-    }
-    
-    for(int i = 0; i < this->decoratorCount(); i++)
-    {
-		qobject_cast<btEditorNodeType*>(this->decorators().at(i))->toDataXml(xmlWriter);
-    }
-    for(int i = 0; i < this->childCount(); i++)
-    {
-		qobject_cast<btEditorNode*>(this->child(i))->toXml(xmlWriter, behaviorTrees);
+		
+		for(int i = 0; i < this->decoratorCount(); i++)
+		{
+			qobject_cast<btEditorNodeType*>(this->decorators().at(i))->toDataXml(xmlWriter);
+		}
+		for(int i = 0; i < this->childCount(); i++)
+		{
+			qobject_cast<btEditorNode*>(this->child(i))->toXml(xmlWriter, behaviorTrees);
+		}		
     }
 	
 	xmlWriter->writeEndElement(); //behaviornode
