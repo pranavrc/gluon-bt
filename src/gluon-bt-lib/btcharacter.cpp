@@ -137,7 +137,7 @@ void btCharacter::think()
 	currentNode->setCurrentChildStatus(nodeStatus);
 	currentNode->setParentNode(currentParent);
 	
-	qDebug() << currentNode->name();
+	//qDebug() << currentNode->name();
 	//run the node
 	nodeStatus = currentNode->run(this);
 	
@@ -145,7 +145,7 @@ void btCharacter::think()
 	switch (nodeStatus)
 	{
 		case btNode::RunningChild:
-            qDebug() << "running child";
+            qDebug() << currentNode->name() <<  ": running child";
 			//when running child, push the child and child index onto the stacks
 			currentNodeStack->push(currentNode->currentChild());
 			currentChildStack.push(currentNode->currentChildIndex());
@@ -168,7 +168,7 @@ void btCharacter::think()
 			break;
 		case btNode::Failed:
 		case btNode::Succeeded:
-            qDebug() << "failed or succeeded";
+            qDebug() << currentNode->name() <<  ": failed or succeeded";
 			//calculate probs
 			if(nodeStatus == btNode::Succeeded)
 			{
@@ -223,6 +223,7 @@ void btCharacter::think()
 			
 			if(QString(currentNode->metaObject()->className()) == "btParallelNode")
 			{				
+                qDebug() << "failing parallel";
 				//if parallel stop the children and remove the node status list from the hash
 				stopParallelExecution(currentNode, currentChildParentStackPair.second);
 				
@@ -243,7 +244,7 @@ void btCharacter::think()
 			}			
 			break;
 		case btNode::Running:
-            qDebug() << "still running";
+            qDebug() << currentNode->name() <<  ": still running";
 			//enqueue stack and stuff
 			currentChildIndex = currentNode->currentChildIndex();			
 			m_currentNodeStackQueue.enqueue(currentChildParentStackPair);
@@ -266,33 +267,62 @@ void btCharacter::think()
 }
 
 void btCharacter::stopParallelExecution(btNode * currentNode, QStack<btNode*>* parentStack)
-{
-	int counter = m_currentNodeStackQueue.count();
+{    
+    QList<QPair<QStack<btNode*>*, QStack<btNode*>*> > nodeStacksForTermination;
 	
-	while (counter > 0)
-	{
-		QPair<QStack<btNode*>*, QStack<btNode*>*> pair =  m_currentNodeStackQueue.dequeue();
-		if(pair.first->front() == currentNode && pair.second == parentStack)
-		{
-			QList<btNode::status>* status = m_parallelNodeStatusHash.value(pair.first);
-			m_parallelNodeStatusHash.remove(pair.first, m_parallelNodeStatusHash.value(pair.first));
-			delete pair.first;
-			delete status;
-			
-			m_visitedProbChildrenHash.remove(pair.first);
-			
-			m_nodesStatusQueue.dequeue();
-			m_currentChildStackQueue.dequeue();
-		}									 
-		else
-		{
-			m_currentNodeStackQueue.enqueue(pair);
-			m_nodesStatusQueue.enqueue(m_nodesStatusQueue.dequeue());
-			m_currentChildStackQueue.enqueue(m_currentChildStackQueue.dequeue());
-		}
-		
-		counter--;
-	}
+    nodeStacksForTermination.append(findParallelsForTermination(currentNode, parentStack));
+    
+    for(int i = 0; i < nodeStacksForTermination.count(); i++)
+    {
+        int counter = m_currentNodeStackQueue.count();
+        QPair<QStack<btNode*>*, QStack<btNode*>*> terminationPair = nodeStacksForTermination[i];
+        while (counter > 0)
+        {
+            QPair<QStack<btNode*>*, QStack<btNode*>*> pair =  m_currentNodeStackQueue.dequeue();
+            if(pair.first->front() == terminationPair.first->last()  && pair.second == terminationPair.second)
+            {            
+                QList<btNode::status>* status = m_parallelNodeStatusHash.value(pair.first);
+                m_parallelNodeStatusHash.remove(pair.first, m_parallelNodeStatusHash.value(pair.first));
+                
+                m_visitedProbChildrenHash.remove(pair.first);
+                delete pair.first;
+                delete status;
+
+                m_nodesStatusQueue.dequeue();
+                m_currentChildStackQueue.dequeue();
+                break;
+            }									 
+            else
+            {
+                m_currentNodeStackQueue.enqueue(pair);
+                m_nodesStatusQueue.enqueue(m_nodesStatusQueue.dequeue());
+                m_currentChildStackQueue.enqueue(m_currentChildStackQueue.dequeue());
+            }
+            
+            counter--;
+        }
+    }
+}
+
+QList<QPair<QStack<btNode*>*, QStack<btNode*>*> > btCharacter::findParallelsForTermination(btNode * currentNode, QStack<btNode*>* parentStack)
+{
+    QList<QPair<QStack<btNode*>*, QStack<btNode*>*> > nodeStacksForTermination;
+    
+    for(int i = 0; i < m_currentNodeStackQueue.count(); i++)
+    {
+        QPair<QStack<btNode*>*, QStack<btNode*>*> pair =  m_currentNodeStackQueue.value(i);
+        if(pair.first->front() == currentNode && pair.second == parentStack)
+        {
+            nodeStacksForTermination.append(pair);
+            
+            if(pair.first->last()->metaObject()->className() == "btParallelNode")
+            {
+                nodeStacksForTermination.append(findParallelsForTermination(pair.first->last(), pair.first));
+            }
+        }
+    }
+    
+    return nodeStacksForTermination;
 }
 
 void btCharacter::clearExecution()

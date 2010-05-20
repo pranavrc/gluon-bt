@@ -74,6 +74,7 @@ class BT_LIB_EXPORT btCharacter : public QObject
 		int m_thinksDone;
 	
         void stopParallelExecution(btNode * currentNode, QStack<btNode*>* parentStack);
+        QList<QPair<QStack<btNode*>*, QStack<btNode*>*> > findParallelsForTermination(btNode * currentNode, QStack<btNode*>* parentStack);
         void clearExecution();
         
         btNode* m_behaviortree;
