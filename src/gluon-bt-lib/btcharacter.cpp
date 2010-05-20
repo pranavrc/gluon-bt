@@ -140,7 +140,7 @@ void btCharacter::think()
 	//qDebug() << currentNode->name();
 	//run the node
 	nodeStatus = currentNode->run(this);
-	
+    
 	//handle the status messsage
 	switch (nodeStatus)
 	{
@@ -223,9 +223,8 @@ void btCharacter::think()
 			
 			if(QString(currentNode->metaObject()->className()) == "btParallelNode")
 			{				
-                qDebug() << "failing parallel";
 				//if parallel stop the children and remove the node status list from the hash
-				stopParallelExecution(currentNode, currentChildParentStackPair.second);
+				stopParallelExecution(currentNode, currentNodeStack);//currentChildParentStackPair.second);
 				
 				if(currentNodeStack)
 				{
@@ -268,10 +267,11 @@ void btCharacter::think()
 
 void btCharacter::stopParallelExecution(btNode * currentNode, QStack<btNode*>* parentStack)
 {    
+    qDebug() <<"stopping parallel";
     QList<QPair<QStack<btNode*>*, QStack<btNode*>*> > nodeStacksForTermination;
 	
     nodeStacksForTermination.append(findParallelsForTermination(currentNode, parentStack));
-    
+    qDebug() << nodeStacksForTermination.count();
     for(int i = 0; i < nodeStacksForTermination.count(); i++)
     {
         int counter = m_currentNodeStackQueue.count();
@@ -279,8 +279,9 @@ void btCharacter::stopParallelExecution(btNode * currentNode, QStack<btNode*>* p
         while (counter > 0)
         {
             QPair<QStack<btNode*>*, QStack<btNode*>*> pair =  m_currentNodeStackQueue.dequeue();
-            if(pair.first->front() == terminationPair.first->last()  && pair.second == terminationPair.second)
+            if(pair.first->front() == terminationPair.first->front()  && pair.second == terminationPair.second)
             {            
+                qDebug() <<"stopping stack";
                 QList<btNode::status>* status = m_parallelNodeStatusHash.value(pair.first);
                 m_parallelNodeStatusHash.remove(pair.first, m_parallelNodeStatusHash.value(pair.first));
                 
@@ -314,8 +315,8 @@ QList<QPair<QStack<btNode*>*, QStack<btNode*>*> > btCharacter::findParallelsForT
         if(pair.first->front() == currentNode && pair.second == parentStack)
         {
             nodeStacksForTermination.append(pair);
-            
-            if(pair.first->last()->metaObject()->className() == "btParallelNode")
+
+            if(QString(pair.first->top()->metaObject()->className()) == QString("btParallelNode"))
             {
                 nodeStacksForTermination.append(findParallelsForTermination(pair.first->last(), pair.first));
             }

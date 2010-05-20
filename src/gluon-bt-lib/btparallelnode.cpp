@@ -89,17 +89,11 @@ btNode::status btParallelNode::conditionsFulfilled()
 	{
 		if(m_runningNodesStatus->value(i) == btNode::Running && m_runningNodesStatus->value(i) != m_conditionStatus->value(i))
         {
-            qDebug() <<"parallel still running";
-            /*qDebug() <<"node val: " << m_runningNodesStatus->value(i);
-            qDebug() <<"cond val: " << m_conditionStatus->value(i);//*/
             fulfilled = Running;
         }
 		
         if(m_runningNodesStatus->value(i) != btNode::Running && m_runningNodesStatus->value(i) != m_conditionStatus->value(i))
 		{
-            qDebug() <<"parallel failed";
-            /*qDebug() <<"node val: " << m_runningNodesStatus->value(i);
-            qDebug() <<"cond val: " << m_conditionStatus->value(i);//*/
 			this->resetRunningNodesStatus();
 			return Failed;
 		}
@@ -107,7 +101,6 @@ btNode::status btParallelNode::conditionsFulfilled()
     
 	if(fulfilled == Succeeded)
     {
-        qDebug() <<"parallel succeeded";
 		this->resetRunningNodesStatus();
     }
 	
