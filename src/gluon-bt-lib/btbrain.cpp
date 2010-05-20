@@ -89,6 +89,8 @@ void btBrain::parseNodeTypes(QDomNode xNode)
 void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)//, int nodeIndex)
 {    
 	btNode * workingBtNode = node;
+	if(node)
+		qDebug() << node->name();
 	
     for(int i = 0; i < xNode.childNodes().count(); i++)
     {		
@@ -109,18 +111,16 @@ void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)//, int nodeIndex
             }
             
             if(currentNode.nodeName() == "decorator")
-            {				
+            {
 				workingBtNode = node->parentNode();
 				workingBtNode->removeChild(node);
 				
 				btNode * decNode = btFactory::instance()->newObject(currentNode, workingBtNode ,this);
 				
-				if(currentNode.hasChildNodes())
-                {
-                    parseBehaviorTrees(currentNode, decNode);//, i);
-                }
-				
 				decNode->appendChild(node);
+				node->setParentNode(decNode);
+				workingBtNode = node;
+				
 				continue;
             }
 			

@@ -50,7 +50,6 @@ void btParallelNode::childrenAdded()
 	int count = this->childCount();
     if(count > 0)
 	{
-		
         if(this->property("conditions").isValid())
 		{
             QList<QVariant> conditions = property("conditions").toList();
