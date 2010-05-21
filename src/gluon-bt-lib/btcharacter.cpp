@@ -271,14 +271,17 @@ void btCharacter::stopParallelExecution(btNode * currentNode, QStack<btNode*>* p
     QStack<QPair<QStack<btNode*>*, QStack<btNode*>*> >  * nodeStacksForTermination = new QStack<QPair<QStack<btNode*>*, QStack<btNode*>*> >();
 	
 	QList<QList<btNode::status>*> statusForDeletion;
+	QList<QStack<btNode*>*> stacksForDeletion;
 	
 	findParallelsForTermination(currentNode, parentStack, nodeStacksForTermination);
-	
+
 	while(!nodeStacksForTermination->empty())
     {		
         int counter = m_currentNodeStackQueue.count();
 		
         QPair<QStack<btNode*>*, QStack<btNode*>*> terminationPair = nodeStacksForTermination->pop();
+		qDebug() << terminationPair.first;
+		
         while (counter > 0)
         {
             QPair<QStack<btNode*>*, QStack<btNode*>*> pair =  m_currentNodeStackQueue.dequeue();
@@ -296,7 +299,8 @@ void btCharacter::stopParallelExecution(btNode * currentNode, QStack<btNode*>* p
                 
                 m_visitedProbChildrenHash.remove(pair.first);
 				
-                delete pair.first;
+				if(!stacksForDeletion.contains(pair.first))
+					stacksForDeletion.append(pair.first);
 				
 				if(!statusForDeletion.contains(status))
 					statusForDeletion.append(status);
@@ -320,18 +324,22 @@ void btCharacter::stopParallelExecution(btNode * currentNode, QStack<btNode*>* p
 	{
 		delete statusForDeletion[i];
 	}
+	
+	for(int i = 0; i < stacksForDeletion.count(); i++)
+	{
+		delete stacksForDeletion[i];
+	}
 }
 
 void btCharacter::findParallelsForTermination(btNode * currentNode, QStack<btNode*>* parentStack, QStack<QPair<QStack<btNode*>*, QStack<btNode*>*> > * stack)
 {
-    
     for(int i = 0; i < m_currentNodeStackQueue.count(); i++)
     {
         QPair<QStack<btNode*>*, QStack<btNode*>*> pair =  m_currentNodeStackQueue.value(i);
         if(pair.first->front() == currentNode && pair.second == parentStack)
         {
             stack->push(pair);
-
+			
             if(QString(pair.first->top()->metaObject()->className()) == QString("btParallelNode"))
             {
                 findParallelsForTermination(pair.first->last(), pair.first, stack);
