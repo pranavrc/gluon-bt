@@ -89,8 +89,6 @@ void btBrain::parseNodeTypes(QDomNode xNode)
 void btBrain::parseBehaviorTrees(QDomNode xNode, btNode * node)//, int nodeIndex)
 {    
 	btNode * workingBtNode = node;
-	if(node)
-		qDebug() << node->name();
 	
     for(int i = 0; i < xNode.childNodes().count(); i++)
     {		
